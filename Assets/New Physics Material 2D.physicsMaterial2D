@@ -6,16 +6,9 @@ PhysicsMaterial2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BallPhysicsMarerial
+  m_Name: New Physics Material 2D
   serializedVersion: 2
-<<<<<<< HEAD:Assets/Ball/BallPhysicsMarerial.physicsMaterial2D
-  friction: 1.2
-  bounciness: 1.1
-  m_FrictionCombine: 1
-  m_BounceCombine: 0
-=======
   friction: 0.1
   bounciness: 1
   m_FrictionCombine: 0
   m_BounceCombine: 4
->>>>>>> 87069ab6c243899faa36bd861004cb5d4fcad882:Assets/New Physics Material 2D.physicsMaterial2D
