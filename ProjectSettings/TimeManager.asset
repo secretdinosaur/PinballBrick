@@ -4,7 +4,11 @@
 TimeManager:
   m_ObjectHideFlags: 0
   Fixed Timestep:
+<<<<<<< HEAD
+    m_Count: 141120
+=======
     m_Count: 1411199
+>>>>>>> 87069ab6c243899faa36bd861004cb5d4fcad882
     m_Rate:
       m_Denominator: 1
       m_Numerator: 141120000
