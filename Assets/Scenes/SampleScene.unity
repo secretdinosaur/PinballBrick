@@ -1400,6 +1400,7 @@ GameObject:
   - component: {fileID: 681818595}
   - component: {fileID: 681818597}
   - component: {fileID: 681818598}
+  - component: {fileID: 681818599}
   m_Layer: 0
   m_Name: RightPin
   m_TagString: Untagged
@@ -1523,7 +1524,7 @@ PolygonCollider2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
@@ -1539,11 +1540,30 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: -0.23066187, y: -0.19234514}
-      - {x: 1.9664942, y: -0.36267424}
-      - {x: 2.0093706, y: -0.11205393}
+      - {x: 1.902879, y: -0.3273325}
+      - {x: 1.9104135, y: -0.108519614}
       - {x: 1.18, y: 0.089999996}
       - {x: -0.23602593, y: 0.43411028}
   m_UseDelaunayMesh: 0
+--- !u!251 &681818599
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681818593}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 0
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 180
+  m_UseSideFriction: 1
+  m_UseSideBounce: 1
+  m_SideArc: 1
 --- !u!1 &732315416
 GameObject:
   m_ObjectHideFlags: 0
@@ -1839,6 +1859,7 @@ GameObject:
   - component: {fileID: 1078148821}
   - component: {fileID: 1078148825}
   - component: {fileID: 1078148826}
+  - component: {fileID: 1078148827}
   m_Layer: 0
   m_Name: LeftPin
   m_TagString: Untagged
@@ -1962,7 +1983,7 @@ PolygonCollider2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
@@ -1978,11 +1999,30 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: -0.23280668, y: -0.18704398}
-      - {x: 1.9018676, y: -0.3542838}
-      - {x: 2.0008984, y: -0.12434155}
+      - {x: 1.9018676, y: -0.30480528}
+      - {x: 1.9019413, y: -0.10667044}
       - {x: 1.18, y: 0.089999996}
       - {x: -0.23190284, y: 0.4444486}
   m_UseDelaunayMesh: 0
+--- !u!251 &1078148827
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078148820}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 0
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 180
+  m_UseSideFriction: 1
+  m_UseSideBounce: 1
+  m_SideArc: 1
 --- !u!1 &1284247721
 GameObject:
   m_ObjectHideFlags: 0
