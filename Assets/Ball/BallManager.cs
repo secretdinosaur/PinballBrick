@@ -3,7 +3,7 @@ using Redcode.Pools;
 public class BallManager : MonoBehaviour
 {
     public static BallManager Instance;
-    public PoolManager PoolManager;
+    private PoolManager PoolManager;
     void Start()
     {
         Instance = this;
