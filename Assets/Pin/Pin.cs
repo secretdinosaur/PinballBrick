@@ -7,45 +7,46 @@ public class Pin : MonoBehaviour
 {
     public float RotationSpeed;
     public float TargetAngle;
-    private bool isButtonPressed = false;
     public float CurrentAngle;
-    private float BeginningYAngle;
 
-    private float Angle;
+    private bool isButtonPressed = false;
+    private float BeginningYAngle;
+    private float BeginningZAngle;
+    private Rigidbody2D rb;
     public void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         BeginningYAngle = transform.rotation.eulerAngles.y;
+        BeginningZAngle = transform.rotation.eulerAngles.z;
     }
     public void Update()
+    {
+        CurrentAngle = GetTrueAngle(transform.rotation.eulerAngles.z);
+    }
+    public void FixedUpdate()
     {
         if (isButtonPressed)
         {
             if (CurrentAngle < TargetAngle)
             {
-                //transform.Rotate(new Vector3(0, 0, RotationSpeed) * Time.deltaTime, Space.World);
-                float Angle = RotationSpeed * Time.deltaTime;
-                CurrentAngle += Angle;
-                transform.rotation = Quaternion.Euler(0, BeginningYAngle, CurrentAngle);
+                rb.angularVelocity = RotationSpeed;
             }
             else
             {
-                //transform.eulerAngles = new Vector3(0, BeginningAngle.y, TargetAngle);
+                rb.angularVelocity = 0;
                 transform.rotation = Quaternion.Euler(0, BeginningYAngle, TargetAngle);
             }
         }
         else
         {
-            if (CurrentAngle > 0)
+            if (CurrentAngle > BeginningZAngle)
             {
-                //transform.Rotate(new Vector3(0, 0, -RotationSpeed) * Time.deltaTime, Space.World);
-                float Angle = -RotationSpeed * Time.deltaTime;
-                CurrentAngle += Angle;
-                transform.rotation = Quaternion.Euler(0, BeginningYAngle, CurrentAngle);
+                rb.angularVelocity = -RotationSpeed;
             }
             else
             {
-                //transform.eulerAngles = new Vector3(0, BeginningAngle.y, BeginningAngle.z);
-                transform.rotation = Quaternion.Euler(0, BeginningYAngle, 0);
+                rb.angularVelocity = 0;
+                transform.rotation = Quaternion.Euler(0, BeginningYAngle, BeginningZAngle);
             }
         }
     }
@@ -57,5 +58,15 @@ public class Pin : MonoBehaviour
     public void OnPointerUp()
     {
         isButtonPressed = false;
+    }
+
+    public float GetTrueAngle(float angle)
+    {
+        angle %= 360;
+        if(angle > 180)
+        {
+            return angle - 360;
+        }
+        return angle;
     }
 }
