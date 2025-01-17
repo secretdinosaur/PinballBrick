@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour
 
     private IEnumerator EnableCollider()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         GetComponent<Collider2D>().enabled = true;
     }
 

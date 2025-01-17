@@ -12,15 +12,18 @@ public class Brick : MonoBehaviour
         set
         {
             hp = value;
-            // Do UI update
-
 
             if(hp <= 0)
             {
                 //destroy brick
-                Destroy(gameObject);
+                BrickManager.Instance.TakeBrick(this);
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        HP = 5;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
