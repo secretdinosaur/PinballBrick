@@ -36,7 +36,7 @@ public class DiceManager : MonoBehaviour
     public void RollDice(int NumOfDice)
     {
         IsRolling = true;
-        Dices = new List<Dice>();
+        
         for (int i = 0; i < NumOfDice; i++)
         {
             Dices.Add(poolManager.GetFromPool<Dice>());
@@ -46,10 +46,16 @@ public class DiceManager : MonoBehaviour
     private void CheckDice()
     {
         int DiceSum = 0;
+        List<Dice> RemoveDices = new List<Dice>();
         foreach (Dice dice in Dices)
         {
             DiceSum += dice.Die;
+            RemoveDices.Add(dice);
             poolManager.TakeToPool<Dice>(dice);
+        }
+        foreach (Dice RemoveDice in RemoveDices)
+        {
+            Dices.Remove(RemoveDice);
         }
         BallManager.Instance.CreateBall(DiceSum);
     }

@@ -8,6 +8,7 @@ public class ItemManager : MonoBehaviour
     void Start()
     {
         Instance = this;
+        PoolManager = GetComponent<PoolManager>();
     }
 
     // Update is called once per frame
@@ -22,12 +23,17 @@ public class ItemManager : MonoBehaviour
         Item item;
         if (RandomNumber < 10)
         {
-            item = PoolManager.GetComponent<DiceItem>();
+            item = PoolManager.GetFromPool<DiceItem>();
             item.transform.position = BlockPosition;
         }
         else
         {
             
         }
+    }
+
+    public void TakeItem(Item item)
+    {
+        PoolManager.TakeToPool<Item>(item);
     }
 }

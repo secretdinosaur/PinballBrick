@@ -11,6 +11,7 @@ public abstract class Item : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         UseItem();
+        ItemManager.Instance.TakeItem(this);
     }
 
     public abstract void UseItem();
