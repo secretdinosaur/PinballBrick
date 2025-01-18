@@ -10,10 +10,12 @@ public class BallManager : MonoBehaviour
         PoolManager = GetComponent<PoolManager>();
     }
 
-    public void CreateBall()
+    public void CreateBall(int Num)
     {
-        DiceManager.Instance.RollDice(1);
-        
+        for(int i = 0; i < Num; i++)
+        {
+            Ball ball = PoolManager.GetFromPool<Ball>();
+        }
     }
 
     public void TakeBall(Ball ball)
