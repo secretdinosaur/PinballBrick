@@ -279,6 +279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db131bf8cb301d84bb1c6ca16732c592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Point: 10
   BasicHP: 20
   HPText: {fileID: 0}
 --- !u!61 &6192912420728445079
@@ -339,5 +340,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45a70a6e8cc97946b7135b1e978c613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Point: 0
   BasicHP: 10
   HPText: {fileID: 0}

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Brick : MonoBehaviour
 {
+    public int Point;
     public float BasicHP;
     private float hp;
 
@@ -29,6 +30,11 @@ public class Brick : MonoBehaviour
             if (hp <= 0)
             {
                 BrickManager.Instance.TakeBrick(this);
+                Fever.StartFever = true;
+                Fever.Instance.FeverCount *= 2;
+                Fever.Instance.FeverGauge = 100;
+                ScoreManager.Instance.ContinuousScore += Point;
+                Level.Instance.Exp += 10;
             }
         }
     }
@@ -42,13 +48,6 @@ public class Brick : MonoBehaviour
         if (collision.gameObject.CompareTag("Ball"))
         {
             HP -= collision.gameObject.GetComponent<Ball>().Power;
-            
-            Fever.StartFever = true;
-            Fever.Instance.FeverCount *= 2;
-            Fever.Instance.FeverGauge = 100;
-            ScoreManager.Instance.ContinuousScore++;
-
-            Level.Instance.Exp += 10f;
         }
     }
   

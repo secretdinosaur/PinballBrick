@@ -280,6 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db131bf8cb301d84bb1c6ca16732c592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Point: 5
   BasicHP: 5
   HPText: {fileID: 0}
 --- !u!61 &8065087008795427907
