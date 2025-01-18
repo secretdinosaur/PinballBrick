@@ -3,6 +3,7 @@ using System.Collections;
 public class Dice : MonoBehaviour
 {
     public Rigidbody Rigidbody;
+    public int Die;
 
     private void Awake()
     {
@@ -10,8 +11,8 @@ public class Dice : MonoBehaviour
     }
     private void OnEnable()
     {
-        Rigidbody.AddForce(new Vector3(Random.Range(-1f, 1f), 5f, 3f), ForceMode.Impulse);
+        transform.position = new Vector3(0,-1,-15);
+        Rigidbody.AddForce(new Vector3(Random.Range(-1f, 1f), 3f, 3f), ForceMode.Impulse);
         Rigidbody.AddTorque(new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f)) * 10f, ForceMode.Impulse);
     }
-
 }

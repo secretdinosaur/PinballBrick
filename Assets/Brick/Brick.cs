@@ -54,7 +54,6 @@ public class Brick : MonoBehaviour
     void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
-        HPText.text = HP.ToString();
     }
 
     // Update is called once per frame
