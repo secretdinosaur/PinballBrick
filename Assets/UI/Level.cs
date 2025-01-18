@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class Level : MonoBehaviour
 {
     public static Level Instance;
+    [SerializeField]
     private Slider LevelBar;
 
     public int Lv {  get; set; }
@@ -12,11 +13,12 @@ public class Level : MonoBehaviour
     {
         get
         {
-            return Exp;
+            return exp;
         }
         set
         {
-            if(exp >= LevelBar.maxValue)
+            exp = value;
+            if (exp >= LevelBar.maxValue)
             {
                 LevelUp();
             }
@@ -42,5 +44,7 @@ public class Level : MonoBehaviour
         Exp -= LevelBar.maxValue;
         Lv++;
         LevelBar.maxValue *= 1.5f;
+
+        Debug.Log("Now Level : " + Lv);
     }
 }
