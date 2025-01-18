@@ -19,6 +19,9 @@ public class Ball : MonoBehaviour
     void OnEnable()
     {
         GetComponent<Collider2D>().enabled = false;
+        transform.position = new Vector2(0, -5);
+        gameObject.GetComponent<Rigidbody2D>().linearVelocityY = 10;
+        gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
         StartCoroutine(EnableCollider());
     }
 
