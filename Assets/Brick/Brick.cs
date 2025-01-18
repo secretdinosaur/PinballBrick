@@ -42,6 +42,11 @@ public class Brick : MonoBehaviour
         if (collision.gameObject.CompareTag("Ball"))
         {
             HP -= collision.gameObject.GetComponent<Ball>().Power;
+            Debug.Log("Activate");
+            Fever.StartFever = true;
+            Fever.FeverCount *= 2;
+            Fever.FeverGauge = 100f;
+            ScoreManager.Instance.ContinuousScore++;
         }
     }
   
