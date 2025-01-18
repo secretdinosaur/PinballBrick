@@ -4,18 +4,16 @@ using UnityEngine.UI;
 
 public class Fever : MonoBehaviour
 {
+    public static Fever Instance;
     public static bool StartFever;
-    [SerializeField]
-    private TMP_Text MultipleText;
-    [SerializeField]
-    private Slider FeverBar;
-    [SerializeField]
-    private GameObject FeverObj;
 
+    private TMP_Text MultipleText;
+    private Slider FeverBar;
+    private GameObject FeverObj;
     private static float feverGauge;
     private static int feverCount;
 
-    public static float FeverGauge
+    public float FeverGauge
     {
         get
         {
@@ -26,7 +24,7 @@ public class Fever : MonoBehaviour
             feverGauge = Mathf.Max(0, value);
         }
     }
-    public static int FeverCount
+    public int FeverCount
     {
         get
         {
@@ -34,16 +32,22 @@ public class Fever : MonoBehaviour
         }
         set
         {
+            MultipleText.fontSize = MultipleText.fontSize < 140 ? MultipleText.fontSize += 7 : MultipleText.fontSize = 140;
             feverCount = Mathf.Clamp(value, 1, 1024);
         }
     }
-    void Start()
+    void Awake()
     {
         FeverObj = GameObject.Find("Canvas").transform.Find("Fever").gameObject;
-        FeverGauge = 0;
-        FeverCount = 1;
         FeverBar = FeverObj.GetComponent<Slider>();
         MultipleText = FeverObj.transform.Find("MultipleText").GetComponent<TMP_Text>();
+    }
+    void Start()
+    {
+        Instance = this;
+        FeverGauge = 0;
+        FeverCount = 1;
+        MultipleText.fontSize = 70;
         StartFever = false;
     }
 
@@ -57,13 +61,17 @@ public class Fever : MonoBehaviour
             if (FeverGauge > 0)
             {
                 FeverBar.value = FeverGauge;
-                FeverGauge -= 0.1f;
+
+                FeverGauge -= (FeverCount >= 128) ? 0.4f
+                      : (FeverCount >= 16) ? 0.3f
+                      : 0.2f;
             }
             else if ((int)FeverGauge == 0 && ScoreManager.Instance.ContinuousScore != 0)
             {
                 ScoreManager.Instance.TotalScore += ScoreManager.Instance.ContinuousScore * FeverCount;
                 ScoreManager.Instance.ContinuousScore = 0;
                 FeverCount = 1;
+                MultipleText.fontSize = 70;
                 StartFever = false;
             }
         }
