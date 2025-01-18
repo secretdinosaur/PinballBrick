@@ -3,6 +3,7 @@ using Redcode.Pools;
 using System.Collections.Generic;
 public class BrickManager : MonoBehaviour
 {
+    public int BrickStage = 1;
     public static BrickManager Instance;
     public Brick[] CurrentBricks;
     public GameObject Brick;
@@ -80,14 +81,30 @@ public class BrickManager : MonoBehaviour
 
         foreach (var pos in randomPositions)
         {
-            Brick brick = PoolManager.GetFromPool<Brick>();
-            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, Camera.main.nearClipPlane + 1f));
+            Brick brick = GetBrick();
+            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 35));
         }
+        BrickStage++;
     }
 
     public void TakeBrick(Brick brick)
     {
         PoolManager.TakeToPool<Brick>(brick);
         UpdateCurrentBricks();
+    }
+
+    private Brick GetBrick()
+    {
+        int RandomNumber = Random.Range(0, 100);
+        Brick brick;
+        if(RandomNumber < 10)
+        {
+            brick = PoolManager.GetFromPool<HardBrick>();
+        }
+        else
+        {
+            brick = PoolManager.GetFromPool<Brick>();
+        }
+        return brick;
     }
 }
