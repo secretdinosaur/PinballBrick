@@ -1,8 +1,12 @@
+using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Brick : MonoBehaviour
 {
-    private float hp = 5;
+    public float BasicHP;
+    private float hp;
+
+    public TextMeshPro HPText;
     public float HP
     {
         get
@@ -12,10 +16,18 @@ public class Brick : MonoBehaviour
         set
         {
             hp = value;
-
-            if(hp <= 0)
+            if (HPText != null)
             {
-                //destroy brick
+                HPText.text = hp.ToString();
+            }
+            else
+            {
+                HPText = GetComponentInChildren<TextMeshPro>();
+                HPText.text = hp.ToString();
+            }
+
+            if (hp <= 0)
+            {
                 BrickManager.Instance.TakeBrick(this);
             }
         }
@@ -23,7 +35,7 @@ public class Brick : MonoBehaviour
 
     private void OnEnable()
     {
-        HP = 5;
+        HP = BasicHP * BrickManager.Instance.BrickStage;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -36,7 +48,8 @@ public class Brick : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        HPText = GetComponentInChildren<TextMeshPro>();
+        HPText.text = HP.ToString();
     }
 
     // Update is called once per frame
