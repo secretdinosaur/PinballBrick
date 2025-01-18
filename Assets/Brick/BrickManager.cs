@@ -89,6 +89,7 @@ public class BrickManager : MonoBehaviour
 
     public void TakeBrick(Brick brick)
     {
+        ItemManager.Instance.SpawnItem(brick.transform.position);
         PoolManager.TakeToPool<Brick>(brick);
         UpdateCurrentBricks();
     }
