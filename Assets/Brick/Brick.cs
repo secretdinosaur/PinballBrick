@@ -44,8 +44,8 @@ public class Brick : MonoBehaviour
             HP -= collision.gameObject.GetComponent<Ball>().Power;
             Debug.Log("Activate");
             Fever.StartFever = true;
-            Fever.FeverCount *= 2;
-            Fever.FeverGauge = 100f;
+            Fever.Instance.FeverCount *= 2;
+            Fever.Instance.FeverGauge = 100;
             ScoreManager.Instance.ContinuousScore++;
         }
     }
