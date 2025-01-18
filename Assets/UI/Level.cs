@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class Level : MonoBehaviour
 {
     public static Level Instance;
-    [SerializeField]
     private Slider LevelBar;
 
     public int Lv {  get; set; }
