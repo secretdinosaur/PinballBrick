@@ -4562,6 +4562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowStat: {fileID: 1544780219}
+<<<<<<< HEAD
   stat:
     AttackDamage: 0
     StartingBall: 0
@@ -4569,6 +4570,8 @@ MonoBehaviour:
     ItemDropChance: 0
     CriticalChance: 0
     CriticalMultiplier: 0
+=======
+>>>>>>> de54840033c4ea6f0d145fd225b0f53f1525f857
 --- !u!4 &1779539961
 Transform:
   m_ObjectHideFlags: 0
@@ -4596,7 +4599,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70d1115e35cc99e4a86871336e321d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   filePath: 
+=======
+>>>>>>> de54840033c4ea6f0d145fd225b0f53f1525f857
 --- !u!1 &1780149401
 GameObject:
   m_ObjectHideFlags: 0

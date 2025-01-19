@@ -3,11 +3,13 @@ using Redcode.Pools;
 public class BallManager : MonoBehaviour
 {
     public static BallManager Instance;
+    public Stat stat;
     private PoolManager PoolManager;
     void Start()
     {
         Instance = this;
         PoolManager = GetComponent<PoolManager>();
+        stat = StatManager.instance.LoadStats();
     }
 
     public void CreateBall(int Num)
