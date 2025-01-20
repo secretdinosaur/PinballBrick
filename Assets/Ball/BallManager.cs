@@ -3,6 +3,7 @@ using Redcode.Pools;
 public class BallManager : MonoBehaviour
 {
     public static BallManager Instance;
+    [SerializeField]
     public Stat stat;
     private PoolManager PoolManager;
     void Start()

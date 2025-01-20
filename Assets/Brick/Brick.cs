@@ -6,6 +6,7 @@ public class Brick : MonoBehaviour
     public int Point;
     public float BasicHP;
     private float hp;
+    [SerializeField]
     private Stat stat;
 
     public TextMeshPro HPText;
@@ -50,7 +51,7 @@ public class Brick : MonoBehaviour
         {
             if (Random.value < stat.CriticalChance)
             {
-                HP -= stat.AttackDamage * stat.CriticalMultiplier;
+                HP -= (stat.AttackDamage * stat.CriticalMultiplier);
             }
             else
             {
@@ -60,10 +61,10 @@ public class Brick : MonoBehaviour
     }
   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
-        stat = BallManager.Instance.stat;
+        stat = StatManager.instance.LoadStats();
     }
 
     // Update is called once per frame
