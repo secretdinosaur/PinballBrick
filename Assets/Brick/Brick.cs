@@ -7,7 +7,9 @@ public class Brick : MonoBehaviour
     public float BasicHP;
     private float hp;
     [SerializeField]
-    private Stat stat;
+    private Persistent_Stat Persistent_Stat;
+    [SerializeField]
+    private Temporary_Stat Temporary_Stat;
 
     public TextMeshPro HPText;
     public float HP
@@ -36,7 +38,7 @@ public class Brick : MonoBehaviour
                 Fever.Instance.FeverCount *= 2;
                 Fever.Instance.FeverGauge = 100;
                 ScoreManager.Instance.ContinuousScore += Point;
-                Level.Instance.Exp += 10 * stat.BonusExp;
+                LevelManager.Instance.Exp += 10 * Persistent_Stat.BonusExp;
             }
         }
     }
@@ -49,13 +51,15 @@ public class Brick : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            if (Random.value < stat.CriticalChance)
+            if (Random.value < 
+                (Persistent_Stat.CriticalChance != 0.0f ? Persistent_Stat.CriticalChance : 1) * Temporary_Stat.CriticalChance)
             {
-                HP -= (stat.AttackDamage * stat.CriticalMultiplier);
+                HP -= (Persistent_Stat.AttackDamage + Temporary_Stat.AttackDamage) 
+                       * (Persistent_Stat.CriticalDamage * Temporary_Stat.CriticalDamage);
             }
             else
             {
-                HP -= stat.AttackDamage;
+                HP -= Persistent_Stat.AttackDamage + Temporary_Stat.AttackDamage;
             }
         }
     }
@@ -64,7 +68,8 @@ public class Brick : MonoBehaviour
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
-        stat = StatManager.instance.LoadStats();
+        Persistent_Stat = StatManager.instance.LoadPersistentStats();
+        Temporary_Stat = StatManager.instance.LoadTemporaryStat();
     }
 
     // Update is called once per frame

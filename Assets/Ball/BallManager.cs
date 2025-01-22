@@ -4,13 +4,13 @@ public class BallManager : MonoBehaviour
 {
     public static BallManager Instance;
     [SerializeField]
-    public Stat stat;
+    public Persistent_Stat Persistent_Stat;
     private PoolManager PoolManager;
     void Start()
     {
         Instance = this;
         PoolManager = GetComponent<PoolManager>();
-        stat = StatManager.instance.LoadStats();
+        Persistent_Stat = StatManager.instance.LoadPersistentStats();
     }
 
     public void CreateBall(int Num)
