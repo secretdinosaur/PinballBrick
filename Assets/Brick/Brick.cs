@@ -7,7 +7,7 @@ public class Brick : MonoBehaviour
     public float BasicHP;
     private float hp;
     [SerializeField]
-    private Stat stat;
+    private Persistent_Stat Persistent_Stat;
 
     public TextMeshPro HPText;
     public float HP
@@ -36,7 +36,7 @@ public class Brick : MonoBehaviour
                 Fever.Instance.FeverCount *= 2;
                 Fever.Instance.FeverGauge = 100;
                 ScoreManager.Instance.ContinuousScore += Point;
-                Level.Instance.Exp += 10 * stat.BonusExp;
+                LevelManager.Instance.Exp += 10 * Persistent_Stat.BonusExp;
             }
         }
     }
@@ -49,27 +49,22 @@ public class Brick : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            if (Random.value < stat.CriticalChance)
+            if (Random.value < (Persistent_Stat.CriticalChance != 0.0f 
+                    ? Persistent_Stat.CriticalChance : 1) * StatManager.instance.Temporary_stat.CriticalChance)
             {
-                HP -= (stat.AttackDamage * stat.CriticalMultiplier);
+                HP -= (Persistent_Stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) 
+                       * (Persistent_Stat.CriticalDamage * StatManager.instance.Temporary_stat.CriticalDamage);
             }
             else
             {
-                HP -= stat.AttackDamage;
+                HP -= Persistent_Stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage;
             }
         }
     }
-  
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
-        stat = StatManager.instance.LoadStats();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Persistent_Stat = StatManager.instance.LoadPersistentStats();
     }
 }

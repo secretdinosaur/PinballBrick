@@ -4,44 +4,91 @@ using UnityEngine;
 public class StatManager : MonoBehaviour
 {
     public static StatManager instance;
-
-    private string filePath;
+    
+    public Temporary_Stat Temporary_stat; // If you want to use it elsewhere, use this variable
+    
+    private string persistent_stat_filePath;
+    private string temporary_stat_filePath;
     void Awake()
     {
-        filePath = Application.persistentDataPath + "/PinballBrickPlayer.json";
-
-        if (!File.Exists(filePath))
-        {
-            InitializeStats();
-        }
-    }
-    void Start()
-    {
         instance = this;
+        persistent_stat_filePath = Application.persistentDataPath + "/PinballBrick_persistentData.json";
+        temporary_stat_filePath = Application.persistentDataPath + "/PinballBrick_temporaryData.json";
+
+        if (!File.Exists(persistent_stat_filePath))
+        {
+            InitializePersistentStats();
+        }
+
+        if (!File.Exists(temporary_stat_filePath))
+        {
+            InitializeTemporaryStats();
+        }
+        else if (File.Exists(temporary_stat_filePath))
+        {
+            File.Delete(temporary_stat_filePath);
+            InitializeTemporaryStats();
+        }
+
+        Temporary_stat = LoadTemporaryStat();
     }
-    void InitializeStats()
+    void InitializePersistentStats()
     {
-        Stat initialStats = new Stat
+        Persistent_Stat initialStats = new Persistent_Stat
         {
             AttackDamage = 5,
             StartingBall = 1,
             BonusExp = 1f,
             ItemDropChance = 0.2f,
             CriticalChance = 0.0f,
-            CriticalMultiplier = 1.1f
+            CriticalDamage = 1.1f
         };
 
         string json = JsonUtility.ToJson(initialStats, true);
-        File.WriteAllText(filePath, json);
+        File.WriteAllText(persistent_stat_filePath, json);
     }
-    public Stat LoadStats()
+
+    public void InitializeTemporaryStats()
     {
-        string json = File.ReadAllText(filePath);
-        return JsonUtility.FromJson<Stat>(json);
+        Temporary_Stat initialStats = new Temporary_Stat
+        {
+            StatLevel = new []{1, 1, 1, 1, 1, 1, 1},
+            AttackDamage = 0,
+            CriticalDamage = 0.0f,
+            CriticalChance = 0.0f,
+            BallSpeed = 0.0f,
+            EffectDamage = 0.0f,
+            EffectDuration = 0.0f,
+            GoldGain = 0.0f
+        };
+        
+        string json = JsonUtility.ToJson(initialStats, true);
+        File.WriteAllText(temporary_stat_filePath, json);
     }
-    public void SaveStats(Stat stats)
+    public Persistent_Stat LoadPersistentStats()
+    {
+        string json = File.ReadAllText(persistent_stat_filePath);
+        return JsonUtility.FromJson<Persistent_Stat>(json);
+    }
+    public void SavePersistentStats(Persistent_Stat stats)
     {
         string json = JsonUtility.ToJson(stats, true);
-        File.WriteAllText(filePath, json);
+        File.WriteAllText(persistent_stat_filePath, json);
     }
+
+    public Temporary_Stat LoadTemporaryStat() // Just Load
+    {
+        string json = File.ReadAllText(temporary_stat_filePath);
+        return JsonUtility.FromJson<Temporary_Stat>(json);
+    }
+    
+    public void SaveTemporaryStat(Temporary_Stat stats) //Save and Synchronization
+    {
+        string json = JsonUtility.ToJson(stats, true);
+        File.WriteAllText(temporary_stat_filePath, json);
+        
+        json = File.ReadAllText(temporary_stat_filePath);
+        Temporary_stat = JsonUtility.FromJson<Temporary_Stat>(json);
+    }
+    
 }

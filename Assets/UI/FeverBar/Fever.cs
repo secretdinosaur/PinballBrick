@@ -59,7 +59,7 @@ public class Fever : MonoBehaviour
         ActiveFever();
         MultipleText.text = "x" + feverCount.ToString();
 
-        if (FeverObj.activeSelf)
+        if (FeverObj.activeSelf && Time.timeScale != 0)
         {
             if (FeverGauge > 0)
             {
