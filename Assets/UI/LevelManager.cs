@@ -50,14 +50,14 @@ public class LevelManager : MonoBehaviour
         Exp -= LevelBar.maxValue;
         Level++;
         LevelBar.maxValue *= 1.2f;
-        StatPoints += 2;
+        StatPoints += 4;
         StatPointsTemp = StatPoints;
         StatLevelTemp = (int[])Temporary_Stat.StatLevel.Clone();
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
     }
 
-    public Temporary_Stat CalculateTemporaryStatWithLevel()
+    public Temporary_Stat CalculateTemporaryStatWithLevel() // stat formula
     {
         Temporary_Stat stat = new Temporary_Stat();
         stat.AttackDamage = 1 + (Temporary_Stat.StatLevel[0] - 1) * 2;

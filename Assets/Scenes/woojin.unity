@@ -605,8 +605,9 @@ GameObject:
   - component: {fileID: 218456164}
   - component: {fileID: 218456168}
   - component: {fileID: 218456169}
+  - component: {fileID: 218456170}
   m_Layer: 0
-  m_Name: UIManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -670,6 +671,7 @@ MonoBehaviour:
   StatPoints: 0
   StatPointsTemp: 0
   Temporary_Stat:
+    StatLevel: 
     AttackDamage: 0
     CriticalDamage: 0
     CriticalChance: 0
@@ -677,7 +679,6 @@ MonoBehaviour:
     EffectDamage: 0
     EffectDuration: 0
     GoldGain: 0
-  StatLevel: 
   StatLevelTemp: 
 --- !u!114 &218456169
 MonoBehaviour:
@@ -691,6 +692,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9fed516a26b30449f03f451786af60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &218456170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218456163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70d1115e35cc99e4a86871336e321d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Temporary_stat:
+    StatLevel: 
+    AttackDamage: 0
+    CriticalDamage: 0
+    CriticalChance: 0
+    BallSpeed: 0
+    EffectDamage: 0
+    EffectDuration: 0
+    GoldGain: 0
 --- !u!1 &243593039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,7 +1270,7 @@ GameObject:
   - component: {fileID: 298582046}
   - component: {fileID: 298582045}
   m_Layer: 5
-  m_Name: LevelUpTestButton
+  m_Name: ContinueButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1318,8 +1340,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 218456168}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+      - m_Target: {fileID: 218456169}
+        m_TargetAssemblyTypeName: LevelUpPanel, Assembly-CSharp
         m_MethodName: LevelUpEnd
         m_Mode: 1
         m_Arguments:
@@ -3750,7 +3772,7 @@ GameObject:
   - component: {fileID: 920137817}
   - component: {fileID: 920137816}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4050,7 +4072,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1016066634}
-  - component: {fileID: 1016066635}
   m_Layer: 0
   m_Name: SpawnObject
   m_TagString: Untagged
@@ -4077,18 +4098,6 @@ Transform:
   - {fileID: 2137679926}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1016066635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1016066633}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70d1115e35cc99e4a86871336e321d41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1268440064
 GameObject:
   m_ObjectHideFlags: 0
@@ -7260,7 +7269,7 @@ MonoBehaviour:
     BonusExp: 0
     ItemDropChance: 0
     CriticalChance: 0
-    CriticalMultiplier: 0
+    CriticalDamage: 0
 --- !u!114 &2056700638
 MonoBehaviour:
   m_ObjectHideFlags: 0

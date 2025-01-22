@@ -14,7 +14,7 @@ public class LevelUpPanel : MonoBehaviour
    private TMP_Text EffectDurationStatLevel;
    private TMP_Text GoldGainStatLevel;
 
-   private int maxLevel = 10;
+   private int maxLevel = 20;
     void Start()
     {
         NoticeLevelText = LevelManager.Instance.LevelUpPanel.transform.Find("NoticeLevelText").GetComponent<TMP_Text>();

@@ -324,13 +324,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45a70a6e8cc97946b7135b1e978c613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Point: 0
+  Point: 10
   BasicHP: 10
-  stat:
+  Persistent_Stat:
     AttackDamage: 0
     StartingBall: 0
     BonusExp: 0
     ItemDropChance: 0
     CriticalChance: 0
-    CriticalMultiplier: 0
+    CriticalDamage: 0
   HPText: {fileID: 0}
