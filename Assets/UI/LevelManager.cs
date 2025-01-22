@@ -9,7 +9,6 @@ public class LevelManager : MonoBehaviour
     public int StatPoints;
     public int StatPointsTemp;
     public Temporary_Stat Temporary_Stat;
-    public int[] StatLevel;
     public int[] StatLevelTemp;
     public int Level { get; set; }
     private float exp;
@@ -39,8 +38,7 @@ public class LevelManager : MonoBehaviour
         Exp = 0;
         Level = 1;
         StatPoints = 0;
-        StatLevel = new[] { 1, 1, 1, 1, 1, 1, 1 };
-        Temporary_Stat = StatManager.instance.LoadTemporaryStat();
+        Temporary_Stat = StatManager.instance.Temporary_stat;
     }
     void Update()
     {
@@ -54,7 +52,7 @@ public class LevelManager : MonoBehaviour
         LevelBar.maxValue *= 1.2f;
         StatPoints += 2;
         StatPointsTemp = StatPoints;
-        StatLevelTemp = (int[])StatLevel.Clone();
+        StatLevelTemp = (int[])Temporary_Stat.StatLevel.Clone();
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
     }
@@ -62,13 +60,13 @@ public class LevelManager : MonoBehaviour
     public Temporary_Stat CalculateTemporaryStatWithLevel()
     {
         Temporary_Stat stat = new Temporary_Stat();
-        stat.AttackDamage = 1 + (StatLevel[0] - 1) * 2;
-        stat.CriticalDamage = 0.01f * StatLevel[1];
-        stat.CriticalChance = 0.02f * StatLevel[2];
-        stat.BallSpeed = 0.01f * StatLevel[3];
-        stat.EffectDamage = 0.01f * StatLevel[4];
-        stat.EffectDuration = 0.5f * StatLevel[5];
-        stat.GoldGain = 0.05f * StatLevel[6];
+        stat.AttackDamage = 1 + (Temporary_Stat.StatLevel[0] - 1) * 2;
+        stat.CriticalDamage = 0.01f * (Temporary_Stat.StatLevel[1] - 1);
+        stat.CriticalChance = 0.02f * (Temporary_Stat.StatLevel[2] - 1);
+        stat.BallSpeed = 0.01f * (Temporary_Stat.StatLevel[3] - 1);
+        stat.EffectDamage = 0.01f * (Temporary_Stat.StatLevel[4] - 1);
+        stat.EffectDuration = 0.5f * (Temporary_Stat.StatLevel[5] - 1);
+        stat.GoldGain = 0.05f * (Temporary_Stat.StatLevel[6] - 1);
         return stat;
     }
 }

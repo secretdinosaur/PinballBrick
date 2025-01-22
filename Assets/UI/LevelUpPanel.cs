@@ -42,80 +42,87 @@ public class LevelUpPanel : MonoBehaviour
         SPText.text = "SP: " + LevelManager.Instance.StatPoints;
 
         AtkStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.StatLevel[0] != maxLevel ? LevelManager.Instance.StatLevel[0] : "Max");
+            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[0] != maxLevel 
+                ? LevelManager.Instance.Temporary_Stat.StatLevel[0] : "Max");
         CritDamageStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.StatLevel[1] != maxLevel ? LevelManager.Instance.StatLevel[1] : "Max");
+            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[1] != maxLevel 
+                ? LevelManager.Instance.Temporary_Stat.StatLevel[1] : "Max");
         CritChanceStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.StatLevel[2] != maxLevel ? LevelManager.Instance.StatLevel[2] : "Max");
+            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[2] != maxLevel 
+                ? LevelManager.Instance.Temporary_Stat.StatLevel[2] : "Max");
         BallSpeedStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.StatLevel[3] != maxLevel ? LevelManager.Instance.StatLevel[3] : "Max");
+            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[3] != maxLevel 
+                ? LevelManager.Instance.Temporary_Stat.StatLevel[3] : "Max");
         EffectDamageStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.StatLevel[4] != maxLevel ? LevelManager.Instance.StatLevel[4] : "Max");
+            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[4] != maxLevel 
+                ? LevelManager.Instance.Temporary_Stat.StatLevel[4] : "Max");
         EffectDurationStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.StatLevel[5] != maxLevel ? LevelManager.Instance.StatLevel[5] : "Max");
+            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[5] != maxLevel 
+                ? LevelManager.Instance.Temporary_Stat.StatLevel[5] : "Max");
         GoldGainStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.StatLevel[6] != maxLevel ? LevelManager.Instance.StatLevel[6] : "Max");
+            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[6] != maxLevel 
+                ? LevelManager.Instance.Temporary_Stat.StatLevel[6] : "Max");
     }
 
     public void AtkLevelUpButton()
     {
-        if (LevelManager.Instance.StatLevel[0] < maxLevel && LevelManager.Instance.StatPoints != 0)
+        if (LevelManager.Instance.Temporary_Stat.StatLevel[0] < maxLevel && LevelManager.Instance.StatPoints != 0)
         {
-            LevelManager.Instance.StatLevel[0]++;
+            LevelManager.Instance.Temporary_Stat.StatLevel[0]++;
             LevelManager.Instance.StatPoints--;
         }
     }
 
     public void CritDamageLevelUpButton()
     {
-        if (LevelManager.Instance.StatLevel[1] < maxLevel && LevelManager.Instance.StatPoints != 0)
+        if (LevelManager.Instance.Temporary_Stat.StatLevel[1] < maxLevel && LevelManager.Instance.StatPoints != 0)
         {
-            LevelManager.Instance.StatLevel[1]++;
+            LevelManager.Instance.Temporary_Stat.StatLevel[1]++;
             LevelManager.Instance.StatPoints--;
         }
     }
     
     public void CritChanceLevelUpButton()
     {
-        if (LevelManager.Instance.StatLevel[2] < maxLevel && LevelManager.Instance.StatPoints != 0)
+        if (LevelManager.Instance.Temporary_Stat.StatLevel[2] < maxLevel && LevelManager.Instance.StatPoints != 0)
         {
-            LevelManager.Instance.StatLevel[2]++;
+            LevelManager.Instance.Temporary_Stat.StatLevel[2]++;
             LevelManager.Instance.StatPoints--;
         }
     }
     
     public void BallSpeedLevelUpButton()
     {
-        if (LevelManager.Instance.StatLevel[3] < maxLevel && LevelManager.Instance.StatPoints != 0)
+        if (LevelManager.Instance.Temporary_Stat.StatLevel[3] < maxLevel && LevelManager.Instance.StatPoints != 0)
         {
-            LevelManager.Instance.StatLevel[3]++;
+            LevelManager.Instance.Temporary_Stat.StatLevel[3]++;
             LevelManager.Instance.StatPoints--;
         }
     }
 
     public void EffectDamageLevelUpButton()
     {
-        if (LevelManager.Instance.StatLevel[4] < maxLevel && LevelManager.Instance.StatPoints != 0)
+        if (LevelManager.Instance.Temporary_Stat.StatLevel[4] < maxLevel && LevelManager.Instance.StatPoints != 0)
         {
-            LevelManager.Instance.StatLevel[4]++;
+            LevelManager.Instance.Temporary_Stat.StatLevel[4]++;
             LevelManager.Instance.StatPoints--;
         }
     }
 
     public void EffectDurationLevelUpButton()
     {
-        if (LevelManager.Instance.StatLevel[5] < maxLevel && LevelManager.Instance.StatPoints != 0)
+        if (LevelManager.Instance.Temporary_Stat.StatLevel[5] < maxLevel && LevelManager.Instance.StatPoints != 0)
         {
-            LevelManager.Instance.StatLevel[5]++;
+            LevelManager.Instance.Temporary_Stat.StatLevel[5]++;
             LevelManager.Instance.StatPoints--;
         }
     }
 
     public void GoldGainLevelUpButton()
     {
-        if (LevelManager.Instance.StatLevel[6] < maxLevel && LevelManager.Instance.StatPoints != 0)
+        if (LevelManager.Instance.Temporary_Stat.StatLevel[6] < maxLevel && LevelManager.Instance.StatPoints != 0)
         {
-            LevelManager.Instance.StatLevel[6]++;
+            LevelManager.Instance.Temporary_Stat.StatLevel[6]++;
             LevelManager.Instance.StatPoints--;
         }
     }
@@ -123,7 +130,7 @@ public class LevelUpPanel : MonoBehaviour
     public void ResetButton()
     {
         LevelManager.Instance.StatPoints = LevelManager.Instance.StatPointsTemp;
-        LevelManager.Instance.StatLevel = (int[])LevelManager.Instance.StatLevelTemp.Clone();
+        LevelManager.Instance.Temporary_Stat.StatLevel = (int[])LevelManager.Instance.StatLevelTemp.Clone();
     }
     
     public void LevelUpEnd()

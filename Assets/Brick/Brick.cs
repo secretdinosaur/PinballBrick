@@ -8,8 +8,6 @@ public class Brick : MonoBehaviour
     private float hp;
     [SerializeField]
     private Persistent_Stat Persistent_Stat;
-    [SerializeField]
-    private Temporary_Stat Temporary_Stat;
 
     public TextMeshPro HPText;
     public float HP
@@ -51,30 +49,22 @@ public class Brick : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            if (Random.value < 
-                (Persistent_Stat.CriticalChance != 0.0f ? Persistent_Stat.CriticalChance : 1) * Temporary_Stat.CriticalChance)
+            if (Random.value < (Persistent_Stat.CriticalChance != 0.0f 
+                    ? Persistent_Stat.CriticalChance : 1) * StatManager.instance.Temporary_stat.CriticalChance)
             {
-                HP -= (Persistent_Stat.AttackDamage + Temporary_Stat.AttackDamage) 
-                       * (Persistent_Stat.CriticalDamage * Temporary_Stat.CriticalDamage);
+                HP -= (Persistent_Stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) 
+                       * (Persistent_Stat.CriticalDamage * StatManager.instance.Temporary_stat.CriticalDamage);
             }
             else
             {
-                HP -= Persistent_Stat.AttackDamage + Temporary_Stat.AttackDamage;
+                HP -= Persistent_Stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage;
             }
         }
     }
-  
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
         Persistent_Stat = StatManager.instance.LoadPersistentStats();
-        Temporary_Stat = StatManager.instance.LoadTemporaryStat();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

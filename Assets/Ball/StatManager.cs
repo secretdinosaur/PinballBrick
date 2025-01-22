@@ -5,19 +5,7 @@ public class StatManager : MonoBehaviour
 {
     public static StatManager instance;
     
-    private Temporary_Stat temporarystat;
-    public Temporary_Stat TemporaryStat
-    {
-        get
-        {
-            temporarystat = LoadTemporaryStat();
-            return temporarystat;
-        }
-        set
-        {
-            SaveTemporaryStat(value);
-        }
-    }
+    public Temporary_Stat Temporary_stat; // If you want to use it elsewhere, use this variable
     
     private string persistent_stat_filePath;
     private string temporary_stat_filePath;
@@ -41,6 +29,8 @@ public class StatManager : MonoBehaviour
             File.Delete(temporary_stat_filePath);
             InitializeTemporaryStats();
         }
+
+        Temporary_stat = LoadTemporaryStat();
     }
     void InitializePersistentStats()
     {
@@ -62,6 +52,7 @@ public class StatManager : MonoBehaviour
     {
         Temporary_Stat initialStats = new Temporary_Stat
         {
+            StatLevel = new []{1, 1, 1, 1, 1, 1, 1},
             AttackDamage = 0,
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
@@ -85,16 +76,19 @@ public class StatManager : MonoBehaviour
         File.WriteAllText(persistent_stat_filePath, json);
     }
 
-    public Temporary_Stat LoadTemporaryStat()
+    public Temporary_Stat LoadTemporaryStat() // Just Load
     {
         string json = File.ReadAllText(temporary_stat_filePath);
         return JsonUtility.FromJson<Temporary_Stat>(json);
     }
     
-    public void SaveTemporaryStat(Temporary_Stat stats)
+    public void SaveTemporaryStat(Temporary_Stat stats) //Save and Synchronization
     {
         string json = JsonUtility.ToJson(stats, true);
         File.WriteAllText(temporary_stat_filePath, json);
+        
+        json = File.ReadAllText(temporary_stat_filePath);
+        Temporary_stat = JsonUtility.FromJson<Temporary_Stat>(json);
     }
     
 }
