@@ -5,8 +5,10 @@ public class StatManager : MonoBehaviour
 {
     public static StatManager instance;
     
-    public Temporary_Stat Temporary_stat; // If you want to use it elsewhere, use this variable
-    public StatMultiplier statMultiplier;
+    public Persistent_Stat Persistent_stat; // If you want to use it elsewhere, use this variable
+    public Temporary_Stat Temporary_stat; //
+    public StatMultiplier statMultiplier; //
+    
     private string persistent_stat_filePath;
     private string temporary_stat_filePath;
     private string stat_Multiplier_filePath;
@@ -41,7 +43,8 @@ public class StatManager : MonoBehaviour
             File.Delete(stat_Multiplier_filePath);
             InitializeStatMultiplier();
         }
-        
+
+        Persistent_stat = LoadPersistentStats();
         Temporary_stat = LoadTemporaryStat();
         statMultiplier = LoadStatMultiplier();
     }
