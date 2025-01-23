@@ -125,7 +125,7 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            brick = PoolManager.GetFromPool<Brick>();
+            brick = PoolManager.GetFromPool<IBrick>();
             brick.Type = "Basic";
         }
         return brick;
