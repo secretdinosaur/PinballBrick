@@ -139,4 +139,10 @@ public class LevelUpPanel : MonoBehaviour
         StatManager.instance.SaveTemporaryStat(LevelManager.Instance.CalculateTemporaryStatWithLevel());
         LevelManager.Instance.LevelUpPanel.SetActive(false);
     }
+
+    public void TestAugmentButton()
+    {
+        IAugment TestAtkUp1 = AugmentManager.instance.TestAtkUp1();
+        AugmentManager.instance.AddAugment(TestAtkUp1);
+    }
 }

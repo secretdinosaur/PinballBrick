@@ -21,12 +21,12 @@ public class Brick : MonoBehaviour
             hp = value;
             if (HPText != null)
             {
-                HPText.text = hp.ToString();
+                HPText.text = ((int)hp).ToString();
             }
             else
             {
                 HPText = GetComponentInChildren<TextMeshPro>();
-                HPText.text = hp.ToString();
+                HPText.text = ((int)hp).ToString();
             }
 
             if (hp <= 0)
@@ -45,26 +45,38 @@ public class Brick : MonoBehaviour
     {
         HP = BasicHP * BrickManager.Instance.BrickStage;
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ball"))
-        {
-            if (Random.value < (Persistent_Stat.CriticalChance != 0.0f 
-                    ? Persistent_Stat.CriticalChance : 1) * StatManager.instance.Temporary_stat.CriticalChance)
-            {
-                HP -= (Persistent_Stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) 
-                       * (Persistent_Stat.CriticalDamage * StatManager.instance.Temporary_stat.CriticalDamage);
-            }
-            else
-            {
-                HP -= Persistent_Stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage;
-            }
-        }
-    }
     
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
         Persistent_Stat = StatManager.instance.LoadPersistentStats();
+    }
+    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            if (IsCriticalHit())
+            {
+                HP -= FinalAttackDamage() * (Persistent_Stat.CriticalDamage + StatManager.instance.Temporary_stat.CriticalDamage);
+            }
+            else
+            {
+                HP -= FinalAttackDamage();
+            }
+        }
+    }
+
+    private bool IsCriticalHit()
+    {
+        return Random.value < (Persistent_Stat.CriticalChance != 0.0f
+            ? Persistent_Stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance
+            : StatManager.instance.Temporary_stat.CriticalChance);
+    }
+
+    private float FinalAttackDamage()
+    {
+        return (Persistent_Stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) 
+               * StatManager.instance.statMultiplier.AttackDamageMultiplier;
     }
 }

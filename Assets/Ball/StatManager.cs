@@ -6,15 +6,17 @@ public class StatManager : MonoBehaviour
     public static StatManager instance;
     
     public Temporary_Stat Temporary_stat; // If you want to use it elsewhere, use this variable
-    
+    public StatMultiplier statMultiplier;
     private string persistent_stat_filePath;
     private string temporary_stat_filePath;
+    private string stat_Multiplier_filePath;
     void Awake()
     {
         instance = this;
         persistent_stat_filePath = Application.persistentDataPath + "/PinballBrick_persistentData.json";
         temporary_stat_filePath = Application.persistentDataPath + "/PinballBrick_temporaryData.json";
-
+        stat_Multiplier_filePath = Application.persistentDataPath + "/PinballBrick_multiplierData.json";
+        
         if (!File.Exists(persistent_stat_filePath))
         {
             InitializePersistentStats();
@@ -24,15 +26,26 @@ public class StatManager : MonoBehaviour
         {
             InitializeTemporaryStats();
         }
-        else if (File.Exists(temporary_stat_filePath))
+        else
         {
             File.Delete(temporary_stat_filePath);
             InitializeTemporaryStats();
         }
 
+        if (!File.Exists(stat_Multiplier_filePath))
+        {
+            InitializeStatMultiplier();
+        }
+        else
+        {
+            File.Delete(stat_Multiplier_filePath);
+            InitializeStatMultiplier();
+        }
+        
         Temporary_stat = LoadTemporaryStat();
+        statMultiplier = LoadStatMultiplier();
     }
-    void InitializePersistentStats()
+    void InitializePersistentStats() // persistent stats
     {
         Persistent_Stat initialStats = new Persistent_Stat
         {
@@ -48,7 +61,7 @@ public class StatManager : MonoBehaviour
         File.WriteAllText(persistent_stat_filePath, json);
     }
 
-    public void InitializeTemporaryStats()
+    public void InitializeTemporaryStats() // temporary stats
     {
         Temporary_Stat initialStats = new Temporary_Stat
         {
@@ -64,6 +77,18 @@ public class StatManager : MonoBehaviour
         
         string json = JsonUtility.ToJson(initialStats, true);
         File.WriteAllText(temporary_stat_filePath, json);
+    }
+    
+    public void InitializeStatMultiplier() // stat multiplier
+    {
+        StatMultiplier initialMultiplier = new StatMultiplier
+        {
+            AttackDamageMultiplier = 1.0f,
+            EffectDamageMultiplier = 1.0f
+        };
+        
+        string json = JsonUtility.ToJson(initialMultiplier, true);
+        File.WriteAllText(stat_Multiplier_filePath, json);
     }
     public Persistent_Stat LoadPersistentStats()
     {
@@ -89,6 +114,21 @@ public class StatManager : MonoBehaviour
         
         json = File.ReadAllText(temporary_stat_filePath);
         Temporary_stat = JsonUtility.FromJson<Temporary_Stat>(json);
+    }
+    
+    public StatMultiplier LoadStatMultiplier() // Just Load
+    {
+        string json = File.ReadAllText(stat_Multiplier_filePath);
+        return JsonUtility.FromJson<StatMultiplier>(json);
+    }
+    
+    public void SaveStatMultiplier(StatMultiplier stats) //Save and Synchronization
+    {
+        string json = JsonUtility.ToJson(stats, true);
+        File.WriteAllText(stat_Multiplier_filePath, json);
+        
+        json = File.ReadAllText(stat_Multiplier_filePath);
+        statMultiplier = JsonUtility.FromJson<StatMultiplier>(json);
     }
     
 }

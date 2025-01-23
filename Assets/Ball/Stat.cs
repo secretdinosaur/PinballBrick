@@ -23,3 +23,10 @@ public class Temporary_Stat //In Game Stats(Upgradeable Stats Using Skill Points
     public float EffectDuration;
     public float GoldGain;
 }
+
+[System.Serializable]
+public class StatMultiplier
+{
+    public float AttackDamageMultiplier;
+    public float EffectDamageMultiplier;
+}
