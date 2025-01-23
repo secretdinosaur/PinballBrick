@@ -142,7 +142,6 @@ public class LevelUpPanel : MonoBehaviour
 
     public void TestAugmentButton()
     {
-        IAugment TestAtkUp1 = AugmentManager.instance.TestAtkUp1();
-        AugmentManager.instance.AddAugment(TestAtkUp1);
+        AugmentManager.instance.AddSpecialAugment(AugmentManager.instance.FireBall());
     }
 }

@@ -1,10 +1,28 @@
 using UnityEngine;
 
-public interface IAugment
+public interface IStatAugment
 {
     string Name { get; }
     string Description { get; }
-    void Apply(Temporary_Stat stat, StatMultiplier multiplier);
-    void Remove(Temporary_Stat stat, StatMultiplier multiplier);
+    void Apply();
+    void Remove();
+}
+
+public interface IFieldAugment
+{
+    string Name { get; }
+    string Description { get; }
+    void Apply();
+    void Remove();
+}
+
+
+public interface ISpecialAugment
+{
+    string Name { get; }
+    string Description { get; }
+    string Type { get; }
+    void Apply();
+    void Remove();
 }
 

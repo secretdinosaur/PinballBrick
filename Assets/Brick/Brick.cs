@@ -64,6 +64,11 @@ public class Brick : MonoBehaviour
             {
                 HP -= FinalAttackDamage();
             }
+
+            if (AugmentManager.instance.determineSpecialAugmentType("Effect"))
+            {
+                HP -= StatManager.instance.Temporary_stat.EffectDamage; //test
+            }
         }
     }
 
