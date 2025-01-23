@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 public class IBrick : MonoBehaviour
 {
     public int Point;
@@ -53,6 +54,23 @@ public class IBrick : MonoBehaviour
         else
         {
             HP -= FinalDamage();
+        }
+
+        if (AugmentManager.instance.determineSpecialAugmentType("Effect"))
+        {
+            Debug.Log("TLqkf");
+            StartCoroutine(DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
+        }
+    }
+
+    IEnumerator DamageByEffect(float EffectDuration)
+    {
+        while (EffectDuration > 0)
+        {
+            Debug.Log(EffectDuration + " seconds left! Hp is " + HP);
+            EffectDuration -= 0.02f;
+            HP -= StatManager.instance.Temporary_stat.EffectDamage;
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
