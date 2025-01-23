@@ -119,6 +119,86 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &41321447
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 41321448}
+  - component: {fileID: 41321450}
+  - component: {fileID: 41321449}
+  m_Layer: 0
+  m_Name: BrickSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &41321448
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41321447}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -7.4558506}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1016066634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -961.8361, y: -980.86127}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &41321449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41321447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34a86ae4ccff6854286b10139bad7c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BrickStage: 1
+  CurrentBricks: []
+  Brick: {fileID: 4578290841325250270, guid: 40ee803e6939e2b4499a3707f777b2dd, type: 3}
+--- !u!114 &41321450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41321447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733f4e1ff483611408f4a8d4fc9202ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pools:
+  - _name: brick
+    _component: {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+    _count: 0
+    _container: {fileID: 41321448}
+    _nonLazy: 0
+  - _name: Hard
+    _component: {fileID: -977798360730988515, guid: 5d8e5d6e556634948bffc7c88fffd630, type: 3}
+    _count: 0
+    _container: {fileID: 41321448}
+    _nonLazy: 0
+  - _name: Shield
+    _component: {fileID: 8715328750586643657, guid: a4c16860799e88e4da46f796a23d139a, type: 3}
+    _count: 0
+    _container: {fileID: 41321448}
+    _nonLazy: 0
 --- !u!1 &66721428
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,6 +785,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70d1115e35cc99e4a86871336e321d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Persistent_stat:
+    AttackDamage: 0
+    StartingBall: 0
+    BonusExp: 0
+    ItemDropChance: 0
+    CriticalChance: 0
+    CriticalDamage: 0
   Temporary_stat:
     StatLevel: 
     AttackDamage: 0
@@ -4110,9 +4197,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2056700639}
-  - {fileID: 1268440067}
   - {fileID: 160033619}
   - {fileID: 2137679926}
+  - {fileID: 41321448}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1063421681
@@ -4384,81 +4471,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1211481538}
   m_CullTransparentMesh: 1
---- !u!1 &1268440064
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1268440067}
-  - component: {fileID: 1268440066}
-  - component: {fileID: 1268440065}
-  m_Layer: 0
-  m_Name: BrickSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1268440065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268440064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34a86ae4ccff6854286b10139bad7c39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BrickStage: 1
-  CurrentBricks: []
-  Brick: {fileID: 4578290841325250270, guid: 40ee803e6939e2b4499a3707f777b2dd, type: 3}
---- !u!114 &1268440066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268440064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733f4e1ff483611408f4a8d4fc9202ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pools:
-  - _name: brick
-    _component: {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
-    _count: 0
-    _container: {fileID: 1268440067}
-    _nonLazy: 0
-  - _name: Hard
-    _component: {fileID: -977798360730988515, guid: 5d8e5d6e556634948bffc7c88fffd630, type: 3}
-    _count: 0
-    _container: {fileID: 1268440067}
-    _nonLazy: 0
---- !u!224 &1268440067
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268440064}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7.4558506}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1016066634}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -961.8361, y: -980.86127}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1303877927
 GameObject:
   m_ObjectHideFlags: 0
@@ -4953,6 +4965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891e30582599bb24f9f2130d1a873f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocity: 2
   RotationSpeed: 300
   TargetAngle: 40
   CurrentAngle: 0
@@ -6904,6 +6917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891e30582599bb24f9f2130d1a873f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocity: 2
   RotationSpeed: -300
   TargetAngle: 40
   CurrentAngle: 0

@@ -19,7 +19,7 @@ public partial class AugmentManager //Utility
 {
     public bool determineSpecialAugmentType(string Type)
     {
-        return activeSpecialAugments.All(a => a.Type == Type) ? true : false;
+        return activeSpecialAugments.Any(a => a.Type == Type);
     }
 }
 

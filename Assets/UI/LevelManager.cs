@@ -64,7 +64,7 @@ public class LevelManager : MonoBehaviour
         stat.CriticalDamage = 0.01f * (Temporary_Stat.StatLevel[1] - 1);
         stat.CriticalChance = 0.02f * (Temporary_Stat.StatLevel[2] - 1);
         stat.BallSpeed = 0.01f * (Temporary_Stat.StatLevel[3] - 1);
-        stat.EffectDamage = 0.01f * (Temporary_Stat.StatLevel[4] - 1);
+        stat.EffectDamage = 0.1f * (Temporary_Stat.StatLevel[4] - 1);
         stat.EffectDuration = 0.5f * (Temporary_Stat.StatLevel[5] - 1);
         stat.GoldGain = 0.05f * (Temporary_Stat.StatLevel[6] - 1);
         return stat;
