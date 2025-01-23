@@ -5,6 +5,8 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Pin : MonoBehaviour
 {
+    public float velocity = 2;
+
     public float RotationSpeed;
     public float TargetAngle;
     public float CurrentAngle;
@@ -68,5 +70,13 @@ public class Pin : MonoBehaviour
             return angle - 360;
         }
         return angle;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Ball") && collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity.y > 3)
+        {
+            //collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity += collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity.normalized * velocity;
+        }
     }
 }
