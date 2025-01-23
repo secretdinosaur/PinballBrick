@@ -7,7 +7,4 @@ public class Brick : IBrick
     {
         if(collision.gameObject.CompareTag("Ball"))
         {
-            TakeDamage(collision.gameObject.GetComponent<Ball>());
-        }
-    }
 }
