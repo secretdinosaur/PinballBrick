@@ -874,6 +874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fbe326a1532444c91d43e5a68d52ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PoolManager: {fileID: 0}
 --- !u!114 &535793919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -889,6 +890,16 @@ MonoBehaviour:
   _pools:
   - _name: DiceItem
     _component: {fileID: 5583699915093996604, guid: 32b83b477a85e1b4fa3cc29a362a0b76, type: 3}
+    _count: 0
+    _container: {fileID: 535793917}
+    _nonLazy: 0
+  - _name: BangBangItem
+    _component: {fileID: 5020224198338934819, guid: 8cd1493bc085b6344a81cea5adfce5b6, type: 3}
+    _count: 0
+    _container: {fileID: 535793917}
+    _nonLazy: 0
+  - _name: BangBang
+    _component: {fileID: 117655277687620841, guid: 37b42b64b0eeb2b4a998a3a89624dcef, type: 3}
     _count: 0
     _container: {fileID: 535793917}
     _nonLazy: 0
