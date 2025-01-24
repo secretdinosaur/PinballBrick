@@ -1,147 +1,94 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class LevelUpPanel : MonoBehaviour
 {
    private TMP_Text NoticeLevelText;
-   private TMP_Text SPText;
 
-   private TMP_Text AtkStatLevel;
-   private TMP_Text CritDamageStatLevel;
-   private TMP_Text CritChanceStatLevel;
-   private TMP_Text BallSpeedStatLevel;
-   private TMP_Text EffectDamageStatLevel;
-   private TMP_Text EffectDurationStatLevel;
-   private TMP_Text GoldGainStatLevel;
+   private Button[] OptionButtons;
+   
+   private TMP_Text Option_1_Name;
+   private TMP_Text Option_1_Description;
+   private TMP_Text Option_2_Name;
+   private TMP_Text Option_2_Description;
+   private TMP_Text Option_3_Name;
+   private TMP_Text Option_3_Description;
 
-   private int maxLevel = 20;
-    void Start()
+   private List<KeyValuePair<string, int>> randomStats;
+    void Awake()
     {
         NoticeLevelText = LevelManager.Instance.LevelUpPanel.transform.Find("NoticeLevelText").GetComponent<TMP_Text>();
-        SPText = LevelManager.Instance.LevelUpPanel.transform.Find("SkillPointText").GetComponent<TMP_Text>();
         
-        AtkStatLevel = LevelManager.Instance.LevelUpPanel.transform.Find("AttackDamageUp").gameObject
-            .transform.Find("AtkStatLevel").GetComponent<TMP_Text>();
-        CritDamageStatLevel = LevelManager.Instance.LevelUpPanel.transform.Find("CriticalDamageUp").gameObject
-            .transform.Find("CritDamageStatLevel").GetComponent<TMP_Text>();
-        CritChanceStatLevel = LevelManager.Instance.LevelUpPanel.transform.Find("CriticalChanceUp").gameObject
-            .transform.Find("CritChanceStatLevel").GetComponent<TMP_Text>();
-        BallSpeedStatLevel = LevelManager.Instance.LevelUpPanel.transform.Find("BallSpeedUp").gameObject
-            .transform.Find("BallSpeedStatLevel").GetComponent<TMP_Text>();
-        EffectDamageStatLevel = LevelManager.Instance.LevelUpPanel.transform.Find("EffectDamageUp").gameObject
-            .transform.Find("EffectDamageStatLevel").GetComponent<TMP_Text>();
-        EffectDurationStatLevel = LevelManager.Instance.LevelUpPanel.transform.Find("EffectDurationUp").gameObject
-            .transform.Find("EffectDurationStatLevel").GetComponent<TMP_Text>();
-        GoldGainStatLevel = LevelManager.Instance.LevelUpPanel.transform.Find("GoldGainUp").gameObject
-            .transform.Find("GoldGainStatLevel").GetComponent<TMP_Text>();
+        OptionButtons = new []
+        {
+            LevelManager.Instance.LevelUpPanel.transform.Find("SelectButton_1").GetComponent<Button>(),
+            LevelManager.Instance.LevelUpPanel.transform.Find("SelectButton_2").GetComponent<Button>(),
+            LevelManager.Instance.LevelUpPanel.transform.Find("SelectButton_3").GetComponent<Button>()
+        };
+        Option_1_Name = LevelManager.Instance.LevelUpPanel.transform.Find("SelectButton_1").gameObject
+            .transform.Find("Name").GetComponent<TMP_Text>();
+        Option_1_Description = LevelManager.Instance.LevelUpPanel.transform.Find("SelectButton_1").gameObject
+            .transform.Find("Description").GetComponent<TMP_Text>();
+        Option_2_Name = LevelManager.Instance.LevelUpPanel.transform.Find("SelectButton_2").gameObject
+            .transform.Find("Name").GetComponent<TMP_Text>();
+        Option_2_Description = LevelManager.Instance.LevelUpPanel.transform.Find("SelectButton_2").gameObject
+            .transform.Find("Description").GetComponent<TMP_Text>();
+        Option_3_Name = LevelManager.Instance.LevelUpPanel.transform.Find("SelectButton_3").gameObject
+            .transform.Find("Name").GetComponent<TMP_Text>();
+        Option_3_Description = LevelManager.Instance.LevelUpPanel.transform.Find("SelectButton_3").gameObject
+            .transform.Find("Description").GetComponent<TMP_Text>();
     }
-
+    
+    private bool isActive;
     void Update()
     {
-        NoticeLevelText.text = "Now Your Level: " + LevelManager.Instance.Level;
-        SPText.text = "SP: " + LevelManager.Instance.StatPoints;
-
-        AtkStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[0] != maxLevel 
-                ? LevelManager.Instance.Temporary_Stat.StatLevel[0] : "Max");
-        CritDamageStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[1] != maxLevel 
-                ? LevelManager.Instance.Temporary_Stat.StatLevel[1] : "Max");
-        CritChanceStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[2] != maxLevel 
-                ? LevelManager.Instance.Temporary_Stat.StatLevel[2] : "Max");
-        BallSpeedStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[3] != maxLevel 
-                ? LevelManager.Instance.Temporary_Stat.StatLevel[3] : "Max");
-        EffectDamageStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[4] != maxLevel 
-                ? LevelManager.Instance.Temporary_Stat.StatLevel[4] : "Max");
-        EffectDurationStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[5] != maxLevel 
-                ? LevelManager.Instance.Temporary_Stat.StatLevel[5] : "Max");
-        GoldGainStatLevel.text = 
-            "Lv. " + (LevelManager.Instance.Temporary_Stat.StatLevel[6] != maxLevel 
-                ? LevelManager.Instance.Temporary_Stat.StatLevel[6] : "Max");
-    }
-
-    public void AtkLevelUpButton()
-    {
-        if (LevelManager.Instance.Temporary_Stat.StatLevel[0] < maxLevel && LevelManager.Instance.StatPoints != 0)
+        if (LevelManager.Instance.LevelUpPanel.activeSelf && !isActive)
         {
-            LevelManager.Instance.Temporary_Stat.StatLevel[0]++;
-            LevelManager.Instance.StatPoints--;
+            isActive = true;
+            NoticeLevelText.text = "Now Your Level: " + LevelManager.Instance.Level;
+            RollRandomStats();
+            Option_1_Name.text = randomStats[0].Key;
+            Option_1_Description.text = 
+                "Lv. " + StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 
+                " -> " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1);
+            Option_2_Name.text = randomStats[1].Key;
+            Option_2_Description.text = 
+                "Lv. " + StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 
+                " -> " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1);
+            Option_3_Name.text = randomStats[2].Key;
+            Option_3_Description.text = 
+                "Lv. " + StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 
+                " -> " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1);
+        }
+        else if (!LevelManager.Instance.LevelUpPanel.activeSelf && isActive)
+        {
+            isActive = false;
         }
     }
 
-    public void CritDamageLevelUpButton()
+    private void RollRandomStats()
     {
-        if (LevelManager.Instance.Temporary_Stat.StatLevel[1] < maxLevel && LevelManager.Instance.StatPoints != 0)
-        {
-            LevelManager.Instance.Temporary_Stat.StatLevel[1]++;
-            LevelManager.Instance.StatPoints--;
-        }
+        randomStats = LevelManager.Instance.GetRandomStats();
     }
     
-    public void CritChanceLevelUpButton()
+    private int optionIndex;
+    public void OptionButtonClick(Button clickedButton)
     {
-        if (LevelManager.Instance.Temporary_Stat.StatLevel[2] < maxLevel && LevelManager.Instance.StatPoints != 0)
+        foreach (Button button in OptionButtons)
         {
-            LevelManager.Instance.Temporary_Stat.StatLevel[2]++;
-            LevelManager.Instance.StatPoints--;
+            button.transform.localScale = button == clickedButton ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
         }
-    }
-    
-    public void BallSpeedLevelUpButton()
-    {
-        if (LevelManager.Instance.Temporary_Stat.StatLevel[3] < maxLevel && LevelManager.Instance.StatPoints != 0)
-        {
-            LevelManager.Instance.Temporary_Stat.StatLevel[3]++;
-            LevelManager.Instance.StatPoints--;
-        }
-    }
-
-    public void EffectDamageLevelUpButton()
-    {
-        if (LevelManager.Instance.Temporary_Stat.StatLevel[4] < maxLevel && LevelManager.Instance.StatPoints != 0)
-        {
-            LevelManager.Instance.Temporary_Stat.StatLevel[4]++;
-            LevelManager.Instance.StatPoints--;
-        }
-    }
-
-    public void EffectDurationLevelUpButton()
-    {
-        if (LevelManager.Instance.Temporary_Stat.StatLevel[5] < maxLevel && LevelManager.Instance.StatPoints != 0)
-        {
-            LevelManager.Instance.Temporary_Stat.StatLevel[5]++;
-            LevelManager.Instance.StatPoints--;
-        }
-    }
-
-    public void GoldGainLevelUpButton()
-    {
-        if (LevelManager.Instance.Temporary_Stat.StatLevel[6] < maxLevel && LevelManager.Instance.StatPoints != 0)
-        {
-            LevelManager.Instance.Temporary_Stat.StatLevel[6]++;
-            LevelManager.Instance.StatPoints--;
-        }
-    }
-
-    public void ResetButton()
-    {
-        LevelManager.Instance.StatPoints = LevelManager.Instance.StatPointsTemp;
-        LevelManager.Instance.Temporary_Stat.StatLevel = (int[])LevelManager.Instance.StatLevelTemp.Clone();
+        optionIndex = Array.IndexOf(OptionButtons, clickedButton);
     }
     
     public void LevelUpEnd()
     {
+        LevelManager.Instance.Temporary_Stat.StatLevel[randomStats[optionIndex].Value]++;
         Time.timeScale = 1f;
         StatManager.instance.SaveTemporaryStat(LevelManager.Instance.CalculateTemporaryStatWithLevel());
         LevelManager.Instance.LevelUpPanel.SetActive(false);
-    }
-
-    public void TestAugmentButton()
-    {
-        AugmentManager.instance.AddSpecialAugment(AugmentManager.instance.FireBall());
     }
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,10 +8,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance;
     public Slider LevelBar;
     public GameObject LevelUpPanel;
-    public int StatPoints;
-    public int StatPointsTemp;
     public Temporary_Stat Temporary_Stat;
-    public int[] StatLevelTemp;
     public int Level { get; set; }
     private float exp;
     public float Exp
@@ -37,7 +36,6 @@ public class LevelManager : MonoBehaviour
     {
         Exp = 0;
         Level = 1;
-        StatPoints = 0;
         Temporary_Stat = StatManager.instance.Temporary_stat;
     }
     void Update()
@@ -50,16 +48,43 @@ public class LevelManager : MonoBehaviour
         Exp -= LevelBar.maxValue;
         Level++;
         LevelBar.maxValue *= 1.2f;
-        StatPoints += 4;
-        StatPointsTemp = StatPoints;
-        StatLevelTemp = (int[])Temporary_Stat.StatLevel.Clone();
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
+    }
+    
+    public List<KeyValuePair<string, int>> GetRandomStats()
+    {
+        Dictionary<string, int> statTable = new Dictionary<string, int>
+        {
+            { "Attack\nDamage", 0},
+            { "Critical\nDamage", 1 },
+            { "Critical\nChance", 2 },
+            { "Ball\nSpeed", 3 },
+            { "Effect\nDamage", 4 },
+            { "Effect\nDuration", 5 },
+            { "Gold\nGain", 6 }
+        };
+        
+        List<string> keys = new List<string>(statTable.Keys);
+        
+        List<KeyValuePair<string, int>> selectedStats = new List<KeyValuePair<string, int>>();
+        while (selectedStats.Count < 3)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, keys.Count);
+            string randomKey = keys[randomIndex];
+            
+            if (!selectedStats.Exists(stat => stat.Key == randomKey))
+            {
+                selectedStats.Add(new KeyValuePair<string, int>(randomKey, statTable[randomKey]));
+            }
+        }
+        return selectedStats;
     }
 
     public Temporary_Stat CalculateTemporaryStatWithLevel() // stat formula
     {
         Temporary_Stat stat = new Temporary_Stat();
+        stat.StatLevel = Temporary_Stat.StatLevel;
         stat.AttackDamage = (Temporary_Stat.StatLevel[0] - 1) * 2;
         stat.CriticalDamage = 0.01f * (Temporary_Stat.StatLevel[1] - 1);
         stat.CriticalChance = 0.02f * (Temporary_Stat.StatLevel[2] - 1);
