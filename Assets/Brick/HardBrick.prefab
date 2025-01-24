@@ -186,7 +186,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4264442194327204661}
   - component: {fileID: 1703873298121387710}
-  - component: {fileID: 9013705358846480136}
   - component: {fileID: 6192912420728445079}
   - component: {fileID: -977798360730988515}
   m_Layer: 0
@@ -267,21 +266,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9013705358846480136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5496276838865342879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db131bf8cb301d84bb1c6ca16732c592, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Point: 10
-  BasicHP: 20
-  HPText: {fileID: 0}
 --- !u!61 &6192912420728445079
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -340,6 +324,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45a70a6e8cc97946b7135b1e978c613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Point: 0
+  Point: 10
   BasicHP: 10
+  Persistent_Stat:
+    AttackDamage: 0
+    StartingBall: 0
+    BonusExp: 0
+    ItemDropChance: 0
+    CriticalChance: 0
+    CriticalDamage: 0
   HPText: {fileID: 0}

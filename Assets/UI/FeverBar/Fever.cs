@@ -12,6 +12,7 @@ public class Fever : MonoBehaviour
     private GameObject FeverObj;
     private static float feverGauge;
     private static int feverCount;
+    private float FeverGaugeLossValue;
 
     public float FeverGauge
     {
@@ -32,6 +33,7 @@ public class Fever : MonoBehaviour
         }
         set
         {
+            FeverGaugeLossValue += 0.1f;
             MultipleText.fontSize = MultipleText.fontSize < 140 ? MultipleText.fontSize += 7 : MultipleText.fontSize = 140;
             feverCount = Mathf.Clamp(value, 1, 1024);
         }
@@ -47,6 +49,7 @@ public class Fever : MonoBehaviour
         Instance = this;
         FeverGauge = 0;
         FeverCount = 1;
+        FeverGaugeLossValue = 0.1f;
         MultipleText.fontSize = 70;
         StartFever = false;
     }
@@ -56,15 +59,12 @@ public class Fever : MonoBehaviour
         ActiveFever();
         MultipleText.text = "x" + feverCount.ToString();
 
-        if (FeverObj.activeSelf)
+        if (FeverObj.activeSelf && Time.timeScale != 0)
         {
             if (FeverGauge > 0)
             {
                 FeverBar.value = FeverGauge;
-
-                FeverGauge -= (FeverCount >= 128) ? 0.4f
-                      : (FeverCount >= 16) ? 0.3f
-                      : 0.2f;
+                FeverGauge -= FeverGaugeLossValue;
             }
             else if ((int)FeverGauge == 0 && ScoreManager.Instance.ContinuousScore != 0)
             {
@@ -72,6 +72,7 @@ public class Fever : MonoBehaviour
                 ScoreManager.Instance.ContinuousScore = 0;
                 FeverCount = 1;
                 MultipleText.fontSize = 70;
+                FeverGaugeLossValue = 0.1f;
                 StartFever = false;
             }
         }
