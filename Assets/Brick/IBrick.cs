@@ -23,7 +23,7 @@ public partial class IBrick : MonoBehaviour
 
             if (hp <= 0)
             {
-
+                isEffectActive = false;
                 Fever.StartFever = true;
                 Fever.Instance.FeverCount *= 2;
                 Fever.Instance.FeverGauge = 100;

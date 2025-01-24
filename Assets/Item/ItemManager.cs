@@ -6,9 +6,9 @@ public class ItemManager : MonoBehaviour
     public static ItemManager Instance;
     public PoolManager PoolManager;
 
-    private float DiceItemProbability = 10;
-    private float BangBangItemProbability = 10;
-
+    private float DiceItemProbability = 0.1f;
+    private float BangBangItemProbability = 0.05f;
+    private float HPOneItemProbability = 0.05f;
 
 
 
@@ -31,7 +31,7 @@ public class ItemManager : MonoBehaviour
 
     public void SpawnItem(Vector2 BlockPosition)
     {
-        float RandomNumber = Random.Range(0, 100);
+        float RandomNumber = Random.value;
         Item item;
         if (RandomNumber < DiceItemProbability)
         {
@@ -42,6 +42,12 @@ public class ItemManager : MonoBehaviour
         else if (RandomNumber < DiceItemProbability + BangBangItemProbability)
         {
             item = PoolManager.GetFromPool<BangBangItem>();
+            item.transform.position = BlockPosition;
+        }
+
+        else if (RandomNumber < DiceItemProbability + BangBangItemProbability + HPOneItemProbability)
+        {
+            item = PoolManager.GetFromPool<HPOneItem>();
             item.transform.position = BlockPosition;
         }
     }
