@@ -62,6 +62,11 @@ public class ItemManager : MonoBehaviour
         PoolManager.TakeToPool<BangBangItem>(item);
     }
 
+    public void TakeHPOneItem(HPOneItem item)
+    {
+        PoolManager.TakeToPool<HPOneItem>(item);
+    }
+
     public void CreateBangBang()
     {
         BangBang bangbang = PoolManager.GetFromPool<BangBang>();

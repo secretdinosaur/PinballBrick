@@ -9,6 +9,6 @@ public class HPOneItem : Item
             if (brick.Type == "Shield") brick.GetComponent<ShieldBrick>().ShieldCount = 0;
             brick.HP = 1;
         }
-        ItemManager.Instance.TakeItem(this);
+        ItemManager.Instance.TakeHPOneItem(this);
     }
 }
