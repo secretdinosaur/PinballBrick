@@ -5,7 +5,7 @@ public class BrickManager : MonoBehaviour
 {
     public int BrickStage = 1;
     public static BrickManager Instance;
-    public Brick[] CurrentBricks;
+    public IBrick[] CurrentBricks;
     public GameObject Brick;
     private PoolManager PoolManager;
 
@@ -37,7 +37,7 @@ public class BrickManager : MonoBehaviour
 
     public void UpdateCurrentBricks()
     {
-        CurrentBricks = GetComponentsInChildren<Brick>();
+        CurrentBricks = GetComponentsInChildren<IBrick>();
         if(CurrentBricks.Length == 0)
         {
             CreateBricks();
@@ -81,30 +81,52 @@ public class BrickManager : MonoBehaviour
 
         foreach (var pos in randomPositions)
         {
-            Brick brick = GetBrick();
+            IBrick brick = GetBrick();
             brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 35));
         }
         BrickStage++;
     }
 
-    public void TakeBrick(Brick brick)
+    public void TakeBrick(IBrick brick)
     {
-        ItemManager.Instance.SpawnItem(brick.transform.position);
-        PoolManager.TakeToPool<Brick>(brick);
-        UpdateCurrentBricks();
+        if(brick.gameObject.activeSelf)
+        {
+            ItemManager.Instance.SpawnItem(brick.transform.position);
+
+            switch(brick.Type)
+            {
+                case "Hard":
+                    PoolManager.TakeToPool<HardBrick>(brick);
+                    break;
+                case "Shield":
+                    PoolManager.TakeToPool<ShieldBrick>(brick);
+                    break;
+                case "Basic":
+                    PoolManager.TakeToPool<Brick>(brick);
+                    break;
+            }
+            UpdateCurrentBricks();
+        }
     }
 
-    private Brick GetBrick()
+    private IBrick GetBrick()
     {
         int RandomNumber = Random.Range(0, 100);
-        Brick brick;
+        IBrick brick;
         if(RandomNumber < 10)
         {
             brick = PoolManager.GetFromPool<HardBrick>();
+            brick.Type = "Hard";
+        }
+        else if (RandomNumber < 70)
+        {
+            brick = PoolManager.GetFromPool<ShieldBrick>();
+            brick.Type = "Shield";
         }
         else
         {
-            brick = PoolManager.GetFromPool<Brick>();
+            brick = PoolManager.GetFromPool<IBrick>();
+            brick.Type = "Basic";
         }
         return brick;
     }

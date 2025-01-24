@@ -1,9 +1,21 @@
 using Redcode.Pools;
 using UnityEngine;
+using System.Collections;
 public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance;
-    private PoolManager PoolManager;
+    public PoolManager PoolManager;
+
+    private float DiceItemProbability = 0.1f;
+    private float BangBangItemProbability = 0.05f;
+    private float HPOneItemProbability = 0.05f;
+
+
+
+
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,21 +31,46 @@ public class ItemManager : MonoBehaviour
 
     public void SpawnItem(Vector2 BlockPosition)
     {
-        int RandomNumber = Random.Range(0, 100);
+        float RandomNumber = Random.value;
         Item item;
-        if (RandomNumber < 10)
+        if (RandomNumber < DiceItemProbability)
         {
             item = PoolManager.GetFromPool<DiceItem>();
             item.transform.position = BlockPosition;
         }
-        else
+        
+        else if (RandomNumber < DiceItemProbability + BangBangItemProbability)
         {
-            
+            item = PoolManager.GetFromPool<BangBangItem>();
+            item.transform.position = BlockPosition;
+        }
+
+        else if (RandomNumber < DiceItemProbability + BangBangItemProbability + HPOneItemProbability)
+        {
+            item = PoolManager.GetFromPool<HPOneItem>();
+            item.transform.position = BlockPosition;
         }
     }
 
     public void TakeItem(Item item)
     {
         PoolManager.TakeToPool<Item>(item);
+    }
+
+    public void TakeBangBangItem(BangBangItem item)
+    {
+        PoolManager.TakeToPool<BangBangItem>(item);
+    }
+
+    public void CreateBangBang()
+    {
+        BangBang bangbang = PoolManager.GetFromPool<BangBang>();
+        bangbang.transform.position = new Vector2(0, -2.9f);
+        StartCoroutine(DisappearAfter5s(bangbang));
+    }
+    private IEnumerator DisappearAfter5s(BangBang bangbang)
+    {
+        yield return new WaitForSeconds(5f);
+        PoolManager.TakeToPool<BangBang>(bangbang);
     }
 }

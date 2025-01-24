@@ -2,19 +2,6 @@ using UnityEngine;
 using System.Collections;
 public class Ball : MonoBehaviour
 {
-    private float power = 5;
-    public float Power
-    {
-        get
-        {
-            return power;
-        }
-        set
-        {
-            power = value;
-        }
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {
@@ -27,7 +14,7 @@ public class Ball : MonoBehaviour
 
     private IEnumerator EnableCollider()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         GetComponent<Collider2D>().enabled = true;
     }
 
