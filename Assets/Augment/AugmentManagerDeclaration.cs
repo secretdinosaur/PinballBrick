@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class AugmentManager //Declaration
+public partial class AugmentManager : MonoBehaviour //Declaration
 {
     public static AugmentManager instance;
     private List<IAugment> augmentsSet;

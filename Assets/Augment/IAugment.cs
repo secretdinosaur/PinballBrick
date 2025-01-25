@@ -20,9 +20,9 @@ public abstract class StatAugment : IAugment
         Description = description;
     }
 
-    public void Apply() { }
+    public virtual void Apply() { }
 
-    public void Remove() { }
+    public virtual void Remove() { }
 }
 
 public abstract class FieldAugment : IAugment
@@ -36,9 +36,9 @@ public abstract class FieldAugment : IAugment
         Description = description;
     }
 
-    public void Apply() { }
+    public virtual void Apply() { }
 
-    public void Remove() { }
+    public virtual void Remove() { }
 }
 
 public abstract class SpecialAugment : IAugment
@@ -54,7 +54,7 @@ public abstract class SpecialAugment : IAugment
         Type = type;
     }
 
-    public void Apply() { }
+    public virtual void Apply() { }
 
-    public void Remove() { }
+    public virtual void Remove() { }
 }

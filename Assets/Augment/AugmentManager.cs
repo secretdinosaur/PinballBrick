@@ -9,6 +9,7 @@ public partial class AugmentManager //Utility
         return activeSpecialAugments.Any(a => a.Type == Type);
     }
     
+    
     public List<IAugment> GetRandomAugments(int count)
     {
         List<IAugment> randomAugments = new List<IAugment>();
@@ -28,23 +29,27 @@ public partial class AugmentManager //Utility
     }
 }
 
-public partial class AugmentManager //StatAugment
+public partial class AugmentManager
 {
     public void AddAugment(IAugment augment)
     {
         if (augment is StatAugment statAugment)
         {
+            augment.Apply();
             activeStatAugments.Add(statAugment);
         }
         else if (augment is FieldAugment fieldAugment)
         {
+            augment.Apply();
             activeFieldAugments.Add(fieldAugment);
         }
         else if (augment is SpecialAugment specialAugment)
         {
+            augment.Apply();
             activeSpecialAugments.Add(specialAugment);
         }
     }
+
 
     public void RemoveAugment(IAugment augment)
     {

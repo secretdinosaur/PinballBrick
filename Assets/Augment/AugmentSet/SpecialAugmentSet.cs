@@ -10,14 +10,14 @@ public class FireBall : SpecialAugment
         FireDuration += 0.5f;
     }
 
-    public void Apply()
+    public override void Apply()
     {
         StatManager.instance.Temporary_stat.EffectDamage += FireDamage;
         StatManager.instance.Temporary_stat.EffectDuration += FireDuration;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 
-    public void Remove()
+    public override void Remove()
     {
         StatManager.instance.Temporary_stat.EffectDamage -= FireDamage;
         StatManager.instance.Temporary_stat.EffectDuration -= FireDuration;
