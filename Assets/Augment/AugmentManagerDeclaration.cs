@@ -17,10 +17,17 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
-            new FireBall(),
             new Atk30Up(),
             new Atk70Up(),
-            new CritChanceUp()
+            new CritChanceUp(),
+            new CritDamage30Up(),
+            new CritDamage70Up(), 
+            ///////////////////////// Stat
+            
+            ///////////////////////// Field
+            new FireBall(),
+            new Homing(),
+            ///////////////////////// Special
         };
     }
 }

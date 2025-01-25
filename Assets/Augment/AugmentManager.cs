@@ -9,6 +9,13 @@ public partial class AugmentManager //Utility
     {
         return activeSpecialAugments.Any(a => a.Type == Type);
     }
+
+    public bool determineAugmentID(string ID)
+    {
+       return activeStatAugments.Any(a => a.ID == ID) || 
+            activeFieldAugments.Any(a => a.ID == ID) || 
+            activeSpecialAugments.Any(a => a.ID == ID);
+    }
     
     
     public List<IAugment> GetRandomAugments(int count)

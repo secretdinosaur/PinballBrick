@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public interface IAugment
 {
+    string ID { get; }
     string Name { get; }
     string Description { get; }
     void Apply();
@@ -11,11 +12,13 @@ public interface IAugment
 
 public abstract class StatAugment : IAugment
 {
+    public string ID { get; }
     public string Name { get; }
     public string Description { get; }
 
-    protected StatAugment(string name, string description)
+    protected StatAugment(string id, string name, string description)
     {
+        ID = id;
         Name = name;
         Description = description;
     }
@@ -27,11 +30,13 @@ public abstract class StatAugment : IAugment
 
 public abstract class FieldAugment : IAugment
 {
+    public string ID { get; }
     public string Name { get; }
     public string Description { get; }
 
-    protected FieldAugment(string name, string description)
+    protected FieldAugment(string id, string name, string description)
     {
+        ID = id;
         Name = name;
         Description = description;
     }
@@ -43,12 +48,14 @@ public abstract class FieldAugment : IAugment
 
 public abstract class SpecialAugment : IAugment
 {
+    public string ID { get; }
     public string Name { get; }
     public string Description { get; }
     public string Type { get; }
 
-    protected SpecialAugment(string name, string description, string type)
+    protected SpecialAugment(string id, string name, string description, string type)
     {
+        ID = id;
         Name = name;
         Description = description;
         Type = type;

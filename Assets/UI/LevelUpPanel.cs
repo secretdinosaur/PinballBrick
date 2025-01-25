@@ -50,7 +50,7 @@ public class LevelUpPanel : MonoBehaviour
         {
             isActive = true;
             NoticeLevelText.text = "Now Your Level: " + LevelManager.Instance.Level;
-            if (LevelManager.Instance.Level % 2 != 0)
+            if (LevelManager.Instance.Level / 1 == 0)
             {
                 randomStats = LevelManager.Instance.GetRandomStats();
                 Option_1_Name.text = randomStats[0].Key;
@@ -94,8 +94,9 @@ public class LevelUpPanel : MonoBehaviour
     {
         if (LevelManager.Instance.Level % 2 != 0)
         {
-            LevelManager.Instance.Temporary_Stat.StatLevel[randomStats[optionIndex].Value]++;
-            StatManager.instance.SaveTemporaryStat(LevelManager.Instance.CalculateTemporaryStatWithLevel());
+            //LevelManager.Instance.Temporary_Stat.StatLevel[randomStats[optionIndex].Value]++;
+            //StatManager.instance.SaveTemporaryStat(LevelManager.Instance.CalculateTemporaryStatWithLevel());
+            AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
         }
         else
         {

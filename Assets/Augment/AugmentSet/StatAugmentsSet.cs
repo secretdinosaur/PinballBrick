@@ -3,7 +3,7 @@
 /*
 public class Example : StatAugment
 {
-    public Example() : base( "Name" , "Description" ) { }
+    public Example() : base( "STAT_n", "Example" , "Just Example" ) { }
 
     public override void Apply(){ Augment Effect (Plus) }
 
@@ -13,7 +13,7 @@ public class Example : StatAugment
 
 public class Atk30Up : StatAugment
 {
-    public Atk30Up() : base("Atk Up", "Ball Atk 30% Up") { }
+    public Atk30Up() : base("STAT_1","Atk Up", "Ball Atk 30% Up") { }
 
     public override void Apply()
     {
@@ -30,7 +30,7 @@ public class Atk30Up : StatAugment
 
 public class Atk70Up : StatAugment
 {
-    public Atk70Up() : base("Super Atk Up", "Ball Atk 70% Up") { }
+    public Atk70Up() : base("STAT_2","Super Atk Up", "Ball Atk 70% Up") { }
 
     public override void Apply()
     {
@@ -47,7 +47,7 @@ public class Atk70Up : StatAugment
 
 public class CritChanceUp : StatAugment
 {
-    public CritChanceUp() : base("Critical Chance Up", "Ball Critical Chance 50% Up") { }
+    public CritChanceUp() : base("STAT_3","Critical Chance Up", "Ball Critical Chance 50% Up") { }
 
     public override void Apply()
     {
@@ -57,7 +57,41 @@ public class CritChanceUp : StatAugment
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalChance += 0.5f;
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class CritDamage30Up : StatAugment
+{
+    public CritDamage30Up() : base( "STAT_4","Critical Damage Up" , "Ball Critical Damage 30% Up" ) { }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.CriticalDamage += 0.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalDamage -= 0.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class CritDamage70Up : StatAugment
+{
+    public CritDamage70Up() : base( "STAT_5","Super Critical Damage Up" , "Ball Critical Damage 70% Up" ) { }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.CriticalDamage += 0.7f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalDamage -= 0.7f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
