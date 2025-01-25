@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
-public class Atk30Up : IStatAugment
+public class Atk30Up : StatAugment
 {
-    public string Name => "Atk30Up";
-    public string Description => "Ball Atk 30% Up";
+    public Atk30Up() : base("Atk Up", "Ball Atk 30% Up") { }
 
     public void Apply()
     {
@@ -18,10 +17,9 @@ public class Atk30Up : IStatAugment
     }
 }
 
-public class Atk70Up : IStatAugment
+public class Atk70Up : StatAugment
 {
-    public string Name => "Atk70Up";
-    public string Description => "Ball Atk 70% Up";
+    public Atk70Up() : base("Super Atk Up", "Ball Atk 70% Up") { }
 
     public void Apply()
     {
@@ -36,10 +34,9 @@ public class Atk70Up : IStatAugment
     }
 }
 
-public class CritChanceUp : IStatAugment
+public class CritChanceUp : StatAugment
 {
-    public string Name => "CritChanceUp";
-    public string Description => "Ball Crit Chacne 50% Up";
+    public CritChanceUp() : base("Critical Chance Up", "Ball Critical Chance 50% Up") { }
 
     public void Apply()
     {

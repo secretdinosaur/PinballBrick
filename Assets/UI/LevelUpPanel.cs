@@ -16,8 +16,7 @@ public class LevelUpPanel : MonoBehaviour
    private TMP_Text Option_2_Description;
    private TMP_Text Option_3_Name;
    private TMP_Text Option_3_Description;
-
-   private List<KeyValuePair<string, int>> randomStats;
+   
     void Awake()
     {
         NoticeLevelText = LevelManager.Instance.LevelUpPanel.transform.Find("NoticeLevelText").GetComponent<TMP_Text>();
@@ -43,35 +42,42 @@ public class LevelUpPanel : MonoBehaviour
     }
     
     private bool isActive;
+    private List<KeyValuePair<string, int>> randomStats;
+    private List<IAugment> augmentsSet;
     void Update()
     {
         if (LevelManager.Instance.LevelUpPanel.activeSelf && !isActive)
         {
             isActive = true;
             NoticeLevelText.text = "Now Your Level: " + LevelManager.Instance.Level;
-            RollRandomStats();
-            Option_1_Name.text = randomStats[0].Key;
-            Option_1_Description.text = 
-                "Lv. " + StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 
-                " -> " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1);
-            Option_2_Name.text = randomStats[1].Key;
-            Option_2_Description.text = 
-                "Lv. " + StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 
-                " -> " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1);
-            Option_3_Name.text = randomStats[2].Key;
-            Option_3_Description.text = 
-                "Lv. " + StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 
-                " -> " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1);
+            if (LevelManager.Instance.Level % 2 != 0)
+            {
+                randomStats = LevelManager.Instance.GetRandomStats();
+                Option_1_Name.text = randomStats[0].Key;
+                Option_1_Description.text =
+                    "Lv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1);
+                Option_2_Name.text = randomStats[1].Key;
+                Option_2_Description.text =
+                    "Lv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1);
+                Option_3_Name.text = randomStats[2].Key;
+                Option_3_Description.text =
+                    "Lv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1);
+            }
+            else
+            {
+                augmentsSet = AugmentManager.instance.GetRandomAugments(3);
+                Option_1_Name.text = augmentsSet[0].Name;
+                Option_1_Description.text = augmentsSet[0].Description;
+                Option_2_Name.text = augmentsSet[1].Name;
+                Option_2_Description.text = augmentsSet[1].Description;
+                Option_3_Name.text = augmentsSet[2].Name;
+                Option_3_Description.text = augmentsSet[2].Description;
+            }
         }
         else if (!LevelManager.Instance.LevelUpPanel.activeSelf && isActive)
         {
             isActive = false;
         }
-    }
-
-    private void RollRandomStats()
-    {
-        randomStats = LevelManager.Instance.GetRandomStats();
     }
     
     private int optionIndex;
@@ -86,9 +92,16 @@ public class LevelUpPanel : MonoBehaviour
     
     public void LevelUpEnd()
     {
-        LevelManager.Instance.Temporary_Stat.StatLevel[randomStats[optionIndex].Value]++;
+        if (LevelManager.Instance.Level % 2 != 0)
+        {
+            LevelManager.Instance.Temporary_Stat.StatLevel[randomStats[optionIndex].Value]++;
+            StatManager.instance.SaveTemporaryStat(LevelManager.Instance.CalculateTemporaryStatWithLevel());
+        }
+        else
+        {
+            AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
+        }
         Time.timeScale = 1f;
-        StatManager.instance.SaveTemporaryStat(LevelManager.Instance.CalculateTemporaryStatWithLevel());
         LevelManager.Instance.LevelUpPanel.SetActive(false);
     }
 }

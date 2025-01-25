@@ -2,110 +2,94 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class AugmentManager : MonoBehaviour
-{
-    public static AugmentManager instance;
-    private List<IStatAugment> activeStatAugments = new List<IStatAugment>();
-    private List<IFieldAugment> activeFieldAugments = new List<IFieldAugment>();
-    private List<ISpecialAugment> activeSpecialAugments = new List<ISpecialAugment>();
-    
-    void Awake()
-    {
-        instance = this;
-    }
-}
-
 public partial class AugmentManager //Utility
 {
     public bool determineSpecialAugmentType(string Type)
     {
         return activeSpecialAugments.Any(a => a.Type == Type);
     }
+    
+    public List<IAugment> GetRandomAugments(int count)
+    {
+        List<IAugment> randomAugments = new List<IAugment>();
+        List<int> usedIndexes = new List<int>();
+
+        while (randomAugments.Count < count)
+        {
+            int index = Random.Range(0, augmentsSet.Count);
+            if (!usedIndexes.Contains(index))
+            {
+                randomAugments.Add(augmentsSet[index]);
+                usedIndexes.Add(index);
+            }
+        }
+
+        return randomAugments;
+    }
 }
 
 public partial class AugmentManager //StatAugment
 {
-    public void AddStatAugment(IStatAugment augment)
+    public void AddAugment(IAugment augment)
     {
-        if (activeStatAugments.All(a => a.Name != augment.Name))
+        if (augment is StatAugment statAugment)
         {
-            augment.Apply();
-            activeStatAugments.Add(augment);
+            activeStatAugments.Add(statAugment);
+        }
+        else if (augment is FieldAugment fieldAugment)
+        {
+            activeFieldAugments.Add(fieldAugment);
+        }
+        else if (augment is SpecialAugment specialAugment)
+        {
+            activeSpecialAugments.Add(specialAugment);
         }
     }
 
-    public void RemoveStatAugment(IStatAugment augment)
+    public void RemoveAugment(IAugment augment)
     {
-        if (activeStatAugments.Any(a => a.Name == augment.Name))
+        if (augment is StatAugment statAugment)
         {
-            augment.Remove();
-            activeStatAugments.Remove(augment);
+            if (activeStatAugments.Any(a => a.Name == augment.Name))
+            {
+                augment.Remove();
+                activeStatAugments.Remove(statAugment);
+            }
         }
+        else if (augment is FieldAugment fieldAugment)
+        {
+            if (activeFieldAugments.Any(a => a.Name == augment.Name))
+            {
+                augment.Remove();
+                activeFieldAugments.Remove(fieldAugment);
+            }
+        }
+        else if (augment is SpecialAugment specialAugment)
+        {
+            if (activeSpecialAugments.Any(a => a.Name == augment.Name))
+            {
+                augment.Remove();
+                activeSpecialAugments.Remove(specialAugment);
+            }
+        }
+        
     }
-    public void ClearAllStatAugments()
+    public void ClearAllAugments()
     {
         foreach (var augment in activeStatAugments)
         {
             augment.Remove();
         }
-        activeStatAugments.Clear();
-    }
-}
-
-public partial class AugmentManager //FieldAugment
-{
-    public void AddFieldAugment(IFieldAugment augment)
-    {
-        if (activeFieldAugments.All(a => a.Name != augment.Name))
-        {
-            augment.Apply();
-            activeFieldAugments.Add(augment);
-        }
-    }
-
-    public void RemoveFieldAugment(IFieldAugment augment)
-    {
-        if (activeFieldAugments.Any(a => a.Name == augment.Name))
-        {
-            augment.Remove();
-            activeFieldAugments.Remove(augment);
-        }
-    }
-    public void ClearFieldAllAugments()
-    {
         foreach (var augment in activeFieldAugments)
         {
             augment.Remove();
         }
-        activeFieldAugments.Clear();
-    }
-}
-
-public partial class AugmentManager //SpecialAugment
-{
-    public void AddSpecialAugment(ISpecialAugment augment)
-    {
-        if (activeSpecialAugments.All(a => a.Name != augment.Name))
-        {
-            augment.Apply();
-            activeSpecialAugments.Add(augment);
-        }
-    }
-
-    public void RemoveSpecialAugment(ISpecialAugment augment)
-    {
-        if (activeSpecialAugments.Any(a => a.Name == augment.Name))
-        {
-            augment.Remove();
-            activeSpecialAugments.Remove(augment);
-        }
-    }
-    public void ClearAllSpecialAugments()
-    {
         foreach (var augment in activeSpecialAugments)
         {
             augment.Remove();
         }
+        activeStatAugments.Clear();
+        activeFieldAugments.Clear();
         activeSpecialAugments.Clear();
     }
 }
