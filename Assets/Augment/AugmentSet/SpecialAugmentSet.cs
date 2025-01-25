@@ -1,5 +1,16 @@
 using UnityEngine;
 
+/*
+public class Example : SpecialAugment
+{
+    public Example() : base( "Name" , "Description", "Type" ) { } 
+
+    public override void Apply(){ Augment Effect (Plus) }
+
+    public override void Remove(){ Augment Effect (Minus) }
+}
+ */
+
 public class FireBall : SpecialAugment
 {
     private float FireDamage; //EffectDamage

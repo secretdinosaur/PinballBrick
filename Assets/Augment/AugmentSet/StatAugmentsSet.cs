@@ -1,5 +1,16 @@
 ﻿using UnityEngine;
 
+/*
+public class Example : StatAugment
+{
+    public Example() : base( "Name" , "Description" ) { }
+
+    public override void Apply(){ Augment Effect (Plus) }
+
+    public override void Remove(){ Augment Effect (Minus) }
+}
+ */
+
 public class Atk30Up : StatAugment
 {
     public Atk30Up() : base("Atk Up", "Ball Atk 30% Up") { }

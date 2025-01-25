@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 public partial class AugmentManager //Utility
 {
@@ -14,10 +15,10 @@ public partial class AugmentManager //Utility
     {
         List<IAugment> randomAugments = new List<IAugment>();
         List<int> usedIndexes = new List<int>();
-
         while (randomAugments.Count < count)
         {
             int index = Random.Range(0, augmentsSet.Count);
+            
             if (!usedIndexes.Contains(index))
             {
                 randomAugments.Add(augmentsSet[index]);
