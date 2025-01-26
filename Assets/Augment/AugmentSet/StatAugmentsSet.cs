@@ -17,13 +17,13 @@ public class Atk30Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier += 0.3f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.3f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier -= 0.3f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.3f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
@@ -34,13 +34,13 @@ public class Atk70Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier += 0.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.7f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier -= 0.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.7f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }

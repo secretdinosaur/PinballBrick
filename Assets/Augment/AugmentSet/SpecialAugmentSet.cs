@@ -44,3 +44,12 @@ public class Homing : SpecialAugment
 
     public override void Remove(){  }
 }
+
+public class BouncePower: SpecialAugment
+{
+    public BouncePower() : base( "SPECIAL_3", "Bounce = Power", "Get Stronger with Bounces", "Bounce" ) { } 
+
+    public override void Apply(){ }
+
+    public override void Remove(){  }
+}

@@ -1,12 +1,16 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using Random = UnityEngine.Random;
+
 public partial class Ball : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         GetComponent<Collider2D>().enabled = false;
         transform.position = new Vector2(0, -5);
         gameObject.GetComponent<Rigidbody2D>().linearVelocityY = 10;
@@ -32,9 +36,9 @@ public partial class Ball : MonoBehaviour
         }
     }
     
-    private void FixedUpdate() //Homing
+    private void FixedUpdate()
     {
-        if (!AugmentManager.instance.determineAugmentID("SPECIAL_2"))
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_2")) //Homing
         {
             DetectTargets();
             UpdateCurrentTarget();
@@ -45,6 +49,21 @@ public partial class Ball : MonoBehaviour
                 float angle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
                 rb.rotation = Mathf.LerpAngle(rb.rotation, angle, rotationSpeed * Time.fixedDeltaTime);
                 rb.AddForce(directionToTarget * homingThrust);
+            }
+        }
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
+        {
+            if (collision.gameObject.CompareTag("Wall"))
+            {
+                BounceTime += 0.25f;
+                spriteRenderer.color = new Color(1f, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
+            }
+            else if (collision.gameObject.CompareTag("Brick"))
+            {
+                spriteRenderer.color = new Color(1f, 1f, 1f);
             }
         }
     }
@@ -117,4 +136,10 @@ public partial class Ball //Homing
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
+}
+
+public partial class Ball //Bounce = Power
+{
+    public static float BounceTime { get; set; } = 1f;
+    private SpriteRenderer spriteRenderer;
 }
