@@ -281,8 +281,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Point: 5
-  BasicHP: 5
+  BasicHP: 1
   HPText: {fileID: 0}
+  Type: 
 --- !u!61 &8065087008795427907
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -149,15 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Point: 0
-  BasicHP: 10
-  Persistent_Stat:
-    AttackDamage: 0
-    StartingBall: 0
-    BonusExp: 0
-    ItemDropChance: 0
-    CriticalChance: 0
-    CriticalDamage: 0
+  BasicHP: 1
   HPText: {fileID: 0}
+  Type: 
   ShieldCount: 5
 --- !u!1 &605556270459215625
 GameObject:
