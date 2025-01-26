@@ -4,10 +4,12 @@ public class ShieldBrick : IBrick
 {
     public float BasicShieldCount;
     public float ShieldCount;
-    private bool IsShieldDestroyed;
+    public bool IsShieldDestroyed;
     public float HPMultiplier;
     private void OnEnable()
     {
+        BrickType = "Shield";
+
         IsShieldDestroyed = false;
         ShieldCount = BasicShieldCount * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)] / 5;
         HPMultiplier = ShieldCount / BasicShieldCount;

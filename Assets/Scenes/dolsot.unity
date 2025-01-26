@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HPPool: []
   CurrentBricks: []
+  BrickInfo: {fileID: 11400000, guid: bbb84a3b34e8063498cc697faa3a9f0f, type: 2}
   availablePositions: []
   usingPositions: []
 --- !u!114 &41321450

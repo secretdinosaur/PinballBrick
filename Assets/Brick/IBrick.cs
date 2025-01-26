@@ -14,7 +14,7 @@ public partial class IBrick : MonoBehaviour
     private float hp;
     public bool IsBoss = false;
     public TextMeshPro HPText;
-    public string Type;
+    public string BrickType;
 
     public float HP
     {
@@ -34,7 +34,6 @@ public partial class IBrick : MonoBehaviour
                 ScoreManager.Instance.ContinuousScore += Point;
                 LevelManager.Instance.Exp += 10 * StatManager.instance.Persistent_stat.BonusExp;
                 BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
-                ;
             }
         }
     }
@@ -54,7 +53,7 @@ public partial class IBrick : MonoBehaviour
     {
         HPText = GetComponentInChildren<TextMeshPro>();
     }
-    private void OnEnable()
+    public void OnEnable()
     {
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
     }
