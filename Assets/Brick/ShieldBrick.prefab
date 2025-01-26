@@ -150,8 +150,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Point: 0
   BasicHP: 10
+  IsBoss: 0
   HPText: {fileID: 0}
   Type: 
+  BasicShieldCount: 5
   ShieldCount: 5
 --- !u!1 &605556270459215625
 GameObject:

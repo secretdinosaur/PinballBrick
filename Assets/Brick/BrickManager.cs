@@ -124,24 +124,9 @@ public class BrickManager : MonoBehaviour
         while (true)
         {
             int Wave = UnityEngine.Random.Range(10, 20);
-            int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f);
             for (int i = 0; i < Wave; i++)
             {
-                HPPool = new List<float>();
-
-                //need to adjust
-                for (int j = HPBase; j < 3 + HPBase; j++)
-                {
-                    HPPool.Add(j);
-                }
-
-                if (availablePositions.Count > 0)
-                {
-                    Vector2 randomPosition = GenerateRandomPosition();
-                    IBrick brick = GetBrick();
-                    brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
-                }
-
+                SpawnBrick();
                 //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
                 yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * 5);
             }
@@ -149,33 +134,44 @@ public class BrickManager : MonoBehaviour
             bool IsBossSpawn = (UnityEngine.Random.value < 0.5) ? true : false;
             if(IsBossSpawn) //Boss Spawn
             {
-                HPPool = new List<float>();
-                HPPool.Add(HPBase * 10);
-                Vector2 randomPosition = GenerateRandomPosition();
-                IBrick brick = GetBrick();
-                brick.IsBoss = true;
-                brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+                SpawnBoss();
             }
             else // Start Rapid Stage
             {
                 for (int i = 0; i < Wave; i++)
                 {
-                    HPPool = new List<float>();
-                    for (int j = HPBase; j < 3 + HPBase; j++)
-                    {
-                        HPPool.Add(j);
-                    }
-
-                    if (availablePositions.Count > 0)
-                    {
-                        Vector2 randomPosition = GenerateRandomPosition();
-                        IBrick brick = GetBrick();
-                        brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
-                    }
-
+                    SpawnBrick();
                     yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * 0.5f);
                 }
             }
         }
+    }
+
+    public void SpawnBrick()
+    {
+        HPPool = new List<float>();
+        int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f);
+        //need to adjust
+        for (int j = HPBase; j < 3 + HPBase; j++)
+        {
+            HPPool.Add(j);
+        }
+
+        if (availablePositions.Count > 0)
+        {
+            Vector2 randomPosition = GenerateRandomPosition();
+            IBrick brick = GetBrick();
+            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+        }
+    }
+
+    public void SpawnBoss()
+    {
+        HPPool = new List<float>();
+        HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * 10);
+        Vector2 randomPosition = GenerateRandomPosition();
+        IBrick brick = GetBrick();
+        brick.IsBoss = true;
+        brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
     }
 }
