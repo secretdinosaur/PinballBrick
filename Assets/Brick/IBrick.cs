@@ -11,7 +11,7 @@ public partial class IBrick : MonoBehaviour
     public int Point;
     public float BasicHP;
     private float hp;
-
+    public bool IsBoss = false;
     public TextMeshPro HPText;
     public string Type;
 
@@ -55,7 +55,7 @@ public partial class IBrick : MonoBehaviour
     }
     private void OnEnable()
     {
-        HP = BasicHP * BrickManager.Instance.BrickStage;
+        HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
     }
 }
 

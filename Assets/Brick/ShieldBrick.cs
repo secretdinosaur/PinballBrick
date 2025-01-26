@@ -18,7 +18,7 @@ public class ShieldBrick : IBrick
                 ShieldCount -= 1;
                 if (ShieldCount == 0)
                 {
-                    HP = BasicHP * BrickManager.Instance.BrickStage;
+                    HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
                     IsShieldDestroyed = true;
                 }
                 else
