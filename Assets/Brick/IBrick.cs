@@ -131,6 +131,11 @@ public partial class IBrick
         isEffectActive = false;
     }
 
+    private void RunAdditionalAttack()
+    {
+        StartCoroutine(AdditionalAttack());
+    }
+    
     IEnumerator AdditionalAttack() // AdditionalThreeAttack
     {
         float Time = 0.5f;
@@ -146,9 +151,5 @@ public partial class IBrick
             yield return new WaitForSeconds(0.1f);
             Time -= 0.1f;
         }
-    }
-    private void RunAdditionalAttack()
-    {
-        StartCoroutine(AdditionalAttack());
     }
 }
