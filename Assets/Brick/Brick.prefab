@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6543651159492969353}
   - component: {fileID: 2593977364155923201}
   - component: {fileID: 8521442660743975225}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HPText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 2930037138640383005}
   - component: {fileID: 3876147228226315843}
   - component: {fileID: 8065087008795427907}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Brick
   m_TagString: Untagged
   m_Icon: {fileID: 0}

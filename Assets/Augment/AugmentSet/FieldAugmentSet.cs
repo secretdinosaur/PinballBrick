@@ -1,16 +1,12 @@
 using UnityEngine;
 
-public class FieldAugmentSet : MonoBehaviour
+/*
+public class Example : FieldAugment
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+     public Example() : base( "FIELD_n", "Example" , "Just Example" ) { }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public override void Apply(){ Augment Effect (Plus) }
+
+    public override void Remove(){ Augment Effect (Minus) }
 }
+ */

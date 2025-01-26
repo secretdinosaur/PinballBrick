@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7906727846835597588}
   - component: {fileID: 4157598360281211985}
   - component: {fileID: 8715328750586643657}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ShieldBrick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Point: 0
-  BasicHP: 1
+  BasicHP: 10
   HPText: {fileID: 0}
   Type: 
   ShieldCount: 5
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 6350815296758937116}
   - component: {fileID: 8631982216968875248}
   - component: {fileID: 6377751113909567938}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HPText
   m_TagString: Untagged
   m_Icon: {fileID: 0}

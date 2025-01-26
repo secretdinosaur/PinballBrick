@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6124919726161622813}
   - component: {fileID: 6213314253313929790}
   - component: {fileID: 558479502483496028}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HPText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 1703873298121387710}
   - component: {fileID: 6192912420728445079}
   - component: {fileID: -977798360730988515}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HardBrick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,6 +325,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Point: 10
-  BasicHP: 2
+  BasicHP: 10
   HPText: {fileID: 0}
   Type: 
