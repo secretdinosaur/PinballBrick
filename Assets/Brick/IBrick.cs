@@ -8,7 +8,7 @@ public partial class IBrick : MonoBehaviour
     public int Point;
     public float BasicHP;
     private float hp;
-
+    public bool IsBoss = false;
     public TextMeshPro HPText;
     public string Type;
 

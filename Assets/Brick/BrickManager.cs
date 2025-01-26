@@ -153,6 +153,7 @@ public class BrickManager : MonoBehaviour
                 HPPool.Add(HPBase * 10);
                 Vector2 randomPosition = GenerateRandomPosition();
                 IBrick brick = GetBrick();
+                brick.IsBoss = true;
                 brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
             }
             else // Start Rapid Stage
