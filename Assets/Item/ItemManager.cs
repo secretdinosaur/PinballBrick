@@ -6,13 +6,10 @@ public class ItemManager : MonoBehaviour
     public static ItemManager Instance;
     public PoolManager PoolManager;
 
-    private float DiceItemProbability = 0.1f;
-    private float BangBangItemProbability = 0.05f;
-    private float HPOneItemProbability = 0.05f;
-
-
-
-
+    private float DiceItemChance = 0.1f;
+    private float BangBangItemChance = 0.05f;
+    private float HPOneItemChance = 0.05f;
+    private float PowerUpItemChance = 0.2f;
 
 
 
@@ -33,21 +30,33 @@ public class ItemManager : MonoBehaviour
     {
         float RandomNumber = Random.value;
         Item item;
-        if (RandomNumber < DiceItemProbability)
+        if (RandomNumber < DiceItemChance)
         {
             item = PoolManager.GetFromPool<DiceItem>();
             item.transform.position = BlockPosition;
         }
         
-        else if (RandomNumber < DiceItemProbability + BangBangItemProbability)
+        else if (RandomNumber < DiceItemChance + BangBangItemChance)
         {
             item = PoolManager.GetFromPool<BangBangItem>();
             item.transform.position = BlockPosition;
         }
 
-        else if (RandomNumber < DiceItemProbability + BangBangItemProbability + HPOneItemProbability)
+        else if (RandomNumber < DiceItemChance + BangBangItemChance + HPOneItemChance)
         {
             item = PoolManager.GetFromPool<HPOneItem>();
+            item.transform.position = BlockPosition;
+        }
+
+        else if (RandomNumber < DiceItemChance + BangBangItemChance + HPOneItemChance)
+        {
+            item = PoolManager.GetFromPool<HPOneItem>();
+            item.transform.position = BlockPosition;
+        }
+
+        else if (RandomNumber < DiceItemChance + BangBangItemChance + HPOneItemChance + PowerUpItemChance)
+        {
+            item = PoolManager.GetFromPool<PowerUpItem>();
             item.transform.position = BlockPosition;
         }
     }
@@ -65,6 +74,10 @@ public class ItemManager : MonoBehaviour
     public void TakeHPOneItem(HPOneItem item)
     {
         PoolManager.TakeToPool<HPOneItem>(item);
+    }
+    public void TakePowerUpItem(PowerUpItem item)
+    {
+        PoolManager.TakeToPool<PowerUpItem>(item);
     }
 
     public void CreateBangBang()

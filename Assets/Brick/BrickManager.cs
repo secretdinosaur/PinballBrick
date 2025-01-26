@@ -124,7 +124,7 @@ public class BrickManager : MonoBehaviour
         while (true)
         {
             int Wave = UnityEngine.Random.Range(10, 20);
-            int HPBase = LevelManager.Instance.Level + GameTick;
+            int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f);
             for (int i = 0; i < Wave; i++)
             {
                 HPPool = new List<float>();
