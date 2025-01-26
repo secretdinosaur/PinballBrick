@@ -1,22 +1,55 @@
 using UnityEngine;
 
-public class FireBall : ISpecialAugment
+/*
+public class Example : SpecialAugment
 {
-    public string Name => "FireBall";
-    public string Description => "Ball Become a Fireball";
-    public string Type => "Effect";
+    public Example() : base( "SPECIAL_N", "Example", "Just Example", "Preset" ) { } 
 
-    public void Apply()
+    public override void Apply(){ Augment Effect (Plus) }
+
+    public override void Remove(){ Augment Effect (Minus) }
+}
+ */
+
+public class FireBall : SpecialAugment
+{
+    private float FireDamage; //EffectDamage
+    private float FireDuration; //EffectDuration
+    public FireBall() : base("SPECIAL_1","FireBall", "And FireBall.", "Effect")
     {
-        StatManager.instance.Temporary_stat.EffectDamage += 0.1f;
-        StatManager.instance.Temporary_stat.EffectDuration += 0.5f;
+        FireDamage += 0.1f;
+        FireDuration += 0.5f;
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.EffectDamage += FireDamage;
+        StatManager.instance.Temporary_stat.EffectDuration += FireDuration;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 
-    public void Remove()
+    public override void Remove()
     {
-        StatManager.instance.Temporary_stat.EffectDamage -= 0.1f;
-        StatManager.instance.Temporary_stat.EffectDuration -= 0.5f;
+        StatManager.instance.Temporary_stat.EffectDamage -= FireDamage;
+        StatManager.instance.Temporary_stat.EffectDuration -= FireDuration;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
+}
+
+public class Homing : SpecialAugment
+{
+    public Homing() : base( "SPECIAL_2","Homing Ball" , "Lock On!", "Homing" ) { }
+
+    public override void Apply(){ }
+
+    public override void Remove(){  }
+}
+
+public class BouncePower: SpecialAugment
+{
+    public BouncePower() : base( "SPECIAL_3", "Bounce = Power", "Get Stronger with Bounces", "Bounce" ) { } 
+
+    public override void Apply(){ }
+
+    public override void Remove(){  }
 }

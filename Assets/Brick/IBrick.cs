@@ -1,14 +1,17 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using Random = UnityEngine.Random;
 
 public partial class IBrick : MonoBehaviour
 {
     public int Point;
     public float BasicHP;
     private float hp;
-
+    public bool IsBoss = false;
     public TextMeshPro HPText;
     public string Type;
 
@@ -52,7 +55,7 @@ public partial class IBrick : MonoBehaviour
     }
     private void OnEnable()
     {
-        HP = BasicHP * BrickManager.Instance.BrickStage;
+        HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
     }
 }
 
@@ -60,16 +63,9 @@ public partial class IBrick
 {
     private int EffectStack;
     private bool isEffectActive = false;
-    public void TakeDamage(Ball ball)
+    protected void TakeDamage(Ball ball)
     {
-        if (IsCriticalHit())
-        {
-            HP -= FinalDamage() * CriticalDamage();
-        }
-        else
-        {
-            HP -= FinalDamage();
-        }
+        HP -= FinalDamage();
 
         if (AugmentManager.instance.determineSpecialAugmentType("Effect") && gameObject.activeSelf)
         {
@@ -79,13 +75,22 @@ public partial class IBrick
     }
     private float FinalDamage()
     {
-        return StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage;
+        float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
+                                StatManager.instance.Temporary_stat.AttackDamage; 
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
+        {
+            TotalAttackStat *= Ball.BounceTime;
+            Ball.BounceTime = 1;
+        }
+
+        return IsCriticalHit() ? TotalAttackStat * CriticalDamage() * StatManager.instance.statMultiplier.AttackDamageMultiplier
+                               : TotalAttackStat * StatManager.instance.statMultiplier.AttackDamageMultiplier;
     }
     private bool IsCriticalHit()
     {
         return (Random.value < (StatManager.instance.Persistent_stat.CriticalChance != 0.0f
-            ? StatManager.instance.Persistent_stat.CriticalChance
-            : StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance));
+            ? StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance
+            : StatManager.instance.Temporary_stat.CriticalChance));
     }
     private float CriticalDamage()
     {
@@ -97,10 +102,11 @@ public partial class IBrick
         isEffectActive = true;
 
         float interval = 0.1f;
-        while (effectDuration > 0)
+        while (effectDuration > 0 && EffectStack > 0)
         {
-            HP -= StatManager.instance.Temporary_stat.EffectDamage * EffectStack;
-
+            HP -= (StatManager.instance.Temporary_stat.EffectDamage * StatManager.instance.statMultiplier.EffectDamageMultiplier)
+                  * EffectStack;
+            EffectStack--;
             effectDuration -= interval;
             yield return new WaitForSeconds(interval);
         }

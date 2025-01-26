@@ -1,12 +1,15 @@
 using UnityEngine;
 using Redcode.Pools;
 using System.Collections.Generic;
+using System;
+using System.Collections;
 public class BrickManager : MonoBehaviour
 {
-    public int BrickStage = 1;
+    public List<float> HPPool;
+    private int GameTick = 1;
+
     public static BrickManager Instance;
     public IBrick[] CurrentBricks;
-    public GameObject Brick;
     private PoolManager PoolManager;
 
     private float ScreenWidth;
@@ -17,7 +20,9 @@ public class BrickManager : MonoBehaviour
 
     private int minYGrid = 5;
 
-    private List<Vector2> availablePositions = new List<Vector2>();
+
+    public List<Vector2> availablePositions = new List<Vector2>();
+    public List<Vector2> usingPositions = new List<Vector2>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,6 +32,7 @@ public class BrickManager : MonoBehaviour
         InitializeGrid();
         PoolManager = GetComponent<PoolManager>();
         UpdateCurrentBricks();
+        StartCoroutine(SpawnBricks());
     }
 
     // Update is called once per frame
@@ -38,10 +44,6 @@ public class BrickManager : MonoBehaviour
     public void UpdateCurrentBricks()
     {
         CurrentBricks = GetComponentsInChildren<IBrick>();
-        if(CurrentBricks.Length == 0)
-        {
-            CreateBricks();
-        }
     }
     void InitializeGrid()
     {
@@ -59,32 +61,15 @@ public class BrickManager : MonoBehaviour
         }
     }
 
-    List<Vector2> GenerateRandomPositions(int count)
+    Vector2 GenerateRandomPosition()
     {
-        List<Vector2> selectedPositions = new List<Vector2>();
+        int randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
+        Vector2 selectedPosition = availablePositions[randomIndex];
 
-        for (int i = 0; i < count; i++)
-        {
-            int randomIndex = Random.Range(0, availablePositions.Count);
-            Vector2 selectedPosition = availablePositions[randomIndex];
+        usingPositions.Add(selectedPosition);
+        availablePositions.RemoveAt(randomIndex);
 
-            selectedPositions.Add(selectedPosition);
-            availablePositions.RemoveAt(randomIndex);
-        }
-
-        return selectedPositions;
-    }
-    public void CreateBricks()
-    {
-        InitializeGrid();
-        List<Vector2> randomPositions = GenerateRandomPositions(10);
-
-        foreach (var pos in randomPositions)
-        {
-            IBrick brick = GetBrick();
-            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 35));
-        }
-        BrickStage++;
+        return selectedPosition;
     }
 
     public void TakeBrick(IBrick brick)
@@ -93,7 +78,10 @@ public class BrickManager : MonoBehaviour
         {
             ItemManager.Instance.SpawnItem(brick.transform.position);
 
-            switch(brick.Type)
+            availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
+            usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
+
+            switch (brick.Type)
             {
                 case "Hard":
                     PoolManager.TakeToPool<HardBrick>(brick);
@@ -111,14 +99,14 @@ public class BrickManager : MonoBehaviour
 
     private IBrick GetBrick()
     {
-        int RandomNumber = Random.Range(0, 100);
+        float RandomNumber = UnityEngine.Random.value;
         IBrick brick;
-        if(RandomNumber < 10)
+        if(RandomNumber < 0.1)
         {
             brick = PoolManager.GetFromPool<HardBrick>();
             brick.Type = "Hard";
         }
-        else if (RandomNumber < 70)
+        else if (RandomNumber < 0.2)
         {
             brick = PoolManager.GetFromPool<ShieldBrick>();
             brick.Type = "Shield";
@@ -129,5 +117,61 @@ public class BrickManager : MonoBehaviour
             brick.Type = "Basic";
         }
         return brick;
+    }
+
+    private IEnumerator SpawnBricks()
+    {
+        while (true)
+        {
+            int Wave = UnityEngine.Random.Range(10, 20);
+            for (int i = 0; i < Wave; i++)
+            {
+                SpawnBrick();
+                //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
+                yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * 5);
+            }
+            GameTick += 1;
+            bool IsBossSpawn = (UnityEngine.Random.value < 0.5) ? true : false;
+            if(IsBossSpawn) //Boss Spawn
+            {
+                SpawnBoss();
+            }
+            else // Start Rapid Stage
+            {
+                for (int i = 0; i < Wave; i++)
+                {
+                    SpawnBrick();
+                    yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * 0.5f);
+                }
+            }
+        }
+    }
+
+    public void SpawnBrick()
+    {
+        HPPool = new List<float>();
+        int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f);
+        //need to adjust
+        for (int j = HPBase; j < 3 + HPBase; j++)
+        {
+            HPPool.Add(j);
+        }
+
+        if (availablePositions.Count > 0)
+        {
+            Vector2 randomPosition = GenerateRandomPosition();
+            IBrick brick = GetBrick();
+            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+        }
+    }
+
+    public void SpawnBoss()
+    {
+        HPPool = new List<float>();
+        HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * 10);
+        Vector2 randomPosition = GenerateRandomPosition();
+        IBrick brick = GetBrick();
+        brick.IsBoss = true;
+        brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
     }
 }

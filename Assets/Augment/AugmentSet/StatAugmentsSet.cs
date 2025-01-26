@@ -1,55 +1,97 @@
 ﻿using UnityEngine;
 
-public class Atk30Up : IStatAugment
+/*
+public class Example : StatAugment
 {
-    public string Name => "Atk30Up";
-    public string Description => "Ball Atk 30% Up";
+    public Example() : base( "STAT_n", "Example" , "Just Example" ) { }
 
-    public void Apply()
+    public override void Apply(){ Augment Effect (Plus) }
+
+    public override void Remove(){ Augment Effect (Minus) }
+}
+ */
+
+public class Atk30Up : StatAugment
+{
+    public Atk30Up() : base("STAT_1","Atk Up", "Ball Atk 30% Up") { }
+
+    public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier += 0.3f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.3f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 
-    public void Remove()
+    public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier -= 0.3f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.3f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
 
-public class Atk70Up : IStatAugment
+public class Atk70Up : StatAugment
 {
-    public string Name => "Atk70Up";
-    public string Description => "Ball Atk 70% Up";
+    public Atk70Up() : base("STAT_2","Super Atk Up", "Ball Atk 70% Up") { }
 
-    public void Apply()
+    public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier += 0.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.7f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 
-    public void Remove()
+    public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier -= 0.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.7f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
 
-public class CritChanceUp : IStatAugment
+public class CritChanceUp : StatAugment
 {
-    public string Name => "CritChanceUp";
-    public string Description => "Ball Crit Chacne 50% Up";
+    public CritChanceUp() : base("STAT_3","Critical Chance Up", "Ball Critical Chance 50% Up") { }
 
-    public void Apply()
+    public override void Apply()
     {
         StatManager.instance.Temporary_stat.CriticalChance += 0.5f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 
-    public void Remove()
+    public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalChance += 0.5f;
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class CritDamage30Up : StatAugment
+{
+    public CritDamage30Up() : base( "STAT_4","Critical Damage Up" , "Ball Critical Damage 30% Up" ) { }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.CriticalDamage += 0.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalDamage -= 0.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class CritDamage70Up : StatAugment
+{
+    public CritDamage70Up() : base( "STAT_5","Super Critical Damage Up" , "Ball Critical Damage 70% Up" ) { }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.CriticalDamage += 0.7f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalDamage -= 0.7f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
