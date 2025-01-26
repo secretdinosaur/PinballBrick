@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class HardBrick : IBrick
 {
+    private void OnEnable()
+    {
+        base.OnEnable();
+        BrickType = "Hard";
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball"))

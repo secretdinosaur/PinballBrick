@@ -6,7 +6,7 @@ public class HPOneItem : Item
     {
         foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
         {
-            if(!brick.IsBoss && brick.Type != "Shield") 
+            if(!brick.IsBoss && (brick.BrickType == "Shield" && brick.GetComponent<ShieldBrick>().IsShieldDestroyed)) 
                 brick.HP /= 2;
         }
         ItemManager.Instance.TakeHPOneItem(this);

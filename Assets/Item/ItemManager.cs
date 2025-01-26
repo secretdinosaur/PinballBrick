@@ -48,12 +48,6 @@ public class ItemManager : MonoBehaviour
             item.transform.position = BlockPosition;
         }
 
-        else if (RandomNumber < DiceItemChance + BangBangItemChance + HPOneItemChance)
-        {
-            item = PoolManager.GetFromPool<HPOneItem>();
-            item.transform.position = BlockPosition;
-        }
-
         else if (RandomNumber < DiceItemChance + BangBangItemChance + HPOneItemChance + PowerUpItemChance)
         {
             item = PoolManager.GetFromPool<PowerUpItem>();
