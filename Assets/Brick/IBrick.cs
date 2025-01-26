@@ -75,11 +75,16 @@ public partial class IBrick
     }
     private float FinalDamage()
     {
-        return IsCriticalHit()
-            ? (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage
-              * CriticalDamage()) * StatManager.instance.statMultiplier.AttackDamageMultiplier
-            : StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage
-            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
+                                StatManager.instance.Temporary_stat.AttackDamage; 
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
+        {
+            TotalAttackStat *= Ball.BounceTime;
+            Ball.BounceTime = 1;
+        }
+
+        return IsCriticalHit() ? TotalAttackStat * CriticalDamage() * StatManager.instance.statMultiplier.AttackDamageMultiplier
+                               : TotalAttackStat * StatManager.instance.statMultiplier.AttackDamageMultiplier;
     }
     private bool IsCriticalHit()
     {
@@ -97,11 +102,11 @@ public partial class IBrick
         isEffectActive = true;
 
         float interval = 0.1f;
-        while (effectDuration > 0)
+        while (effectDuration > 0 && EffectStack > 0)
         {
             HP -= (StatManager.instance.Temporary_stat.EffectDamage * StatManager.instance.statMultiplier.EffectDamageMultiplier)
                   * EffectStack;
-
+            EffectStack--;
             effectDuration -= interval;
             yield return new WaitForSeconds(interval);
         }
