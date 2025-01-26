@@ -3451,6 +3451,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 1383320637}
     _nonLazy: 0
+  - _name: PowerUp
+    _component: {fileID: 5990604376983689626, guid: 3c3c40efe626b4d468a996641fef36f5, type: 3}
+    _count: 0
+    _container: {fileID: 1383320637}
+    _nonLazy: 0
 --- !u!1 &1419739202
 GameObject:
   m_ObjectHideFlags: 0

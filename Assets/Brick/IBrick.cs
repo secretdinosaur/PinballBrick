@@ -76,15 +76,27 @@ public partial class IBrick
     private float FinalDamage()
     {
         float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
-                                StatManager.instance.Temporary_stat.AttackDamage; 
+                                StatManager.instance.Temporary_stat.AttackDamage;
+        float TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
         if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
         {
-            TotalAttackStat *= Ball.BounceTime;
+            TotalMultiple *= Ball.BounceTime;
             Ball.BounceTime = 1;
         }
 
-        return IsCriticalHit() ? TotalAttackStat * CriticalDamage() * StatManager.instance.statMultiplier.AttackDamageMultiplier
-                               : TotalAttackStat * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        if (IsCriticalHit())
+        {
+            TotalMultiple *= CriticalDamage();
+        }
+        
+        if (AugmentManager.instance.determineAugmentID("STAT_6")) //Boss Damage Up
+        {
+            if (IsBoss)
+            {
+                TotalMultiple *= 1.3f;
+            }
+        }
+        return TotalAttackStat * TotalMultiple;
     }
     private bool IsCriticalHit()
     {
