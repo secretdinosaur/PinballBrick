@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 using Random = UnityEngine.Random;
 
 public partial class IBrick : MonoBehaviour
@@ -72,6 +73,11 @@ public partial class IBrick
             EffectStack += (EffectStack != 5) ? 1 : 0;
             StartCoroutine(DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
         }
+
+        if (!AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf)
+        {
+            RunAdditionalAttack();
+        }
     }
     private float FinalDamage()
     {
@@ -122,7 +128,27 @@ public partial class IBrick
             effectDuration -= interval;
             yield return new WaitForSeconds(interval);
         }
-
         isEffectActive = false;
+    }
+
+    IEnumerator AdditionalAttack() // AdditionalThreeAttack
+    {
+        float Time = 0.5f;
+        
+        yield return new WaitForSeconds(1f);
+        
+        while (Time > 0f)
+        {
+            HP -= IsCriticalHit() ? (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage)
+                  * StatManager.instance.statMultiplier.AttackDamageMultiplier * CriticalDamage() :
+                (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage)
+                * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+            yield return new WaitForSeconds(0.1f);
+            Time -= 0.1f;
+        }
+    }
+    private void RunAdditionalAttack()
+    {
+        StartCoroutine(AdditionalAttack());
     }
 }

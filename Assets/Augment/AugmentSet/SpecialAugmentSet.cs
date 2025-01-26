@@ -35,7 +35,6 @@ public class FireBall : SpecialAugment
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
-
 public class Homing : SpecialAugment
 {
     public Homing() : base( "SPECIAL_2","Homing Ball" , "Lock On!", "Homing", 1 ) { }
@@ -44,7 +43,6 @@ public class Homing : SpecialAugment
 
     public override void Remove(){  }
 }
-
 public class BouncePower: SpecialAugment
 {
     public BouncePower() : base( "SPECIAL_3", "Bounce = Power", "Get Stronger with Bounces", "Bounce", 3 ) { } 
@@ -52,4 +50,13 @@ public class BouncePower: SpecialAugment
     public override void Apply(){ }
 
     public override void Remove(){  }
+}
+
+public class AdditionalThreeAttack: SpecialAugment
+{
+    public AdditionalThreeAttack() : base( "SPECIAL_4", "Ninja", "Blink of an Eye", "AdditionalAttack", 1 ) { } 
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
 }

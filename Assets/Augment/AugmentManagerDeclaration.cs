@@ -29,6 +29,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             new FireBall(),
             new Homing(),
             new BouncePower(),
+            new AdditionalThreeAttack(),
             ///////////////////////// Special
         };
     }
