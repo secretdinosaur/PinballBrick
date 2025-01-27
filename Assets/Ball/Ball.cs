@@ -59,7 +59,7 @@ public partial class Ball : MonoBehaviour
             if (collision.gameObject.CompareTag("Wall"))
             {
                 BounceTime += 0.25f;
-                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
+                spriteRenderer.color = new Color(1f, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
             }
             else if (collision.gameObject.CompareTag("Brick"))
             {

@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 177869546}
   m_Layer: 0
   m_Name: Square (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -541,6 +541,7 @@ MonoBehaviour:
     ItemDropChance: 0
     CriticalChance: 0
     CriticalDamage: 0
+    Gold: 0
   Temporary_stat:
     StatLevel: 
     AttackDamage: 0
@@ -2610,7 +2611,7 @@ GameObject:
   - component: {fileID: 859326322}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3119,6 +3120,7 @@ MonoBehaviour:
     ItemDropChance: 0
     CriticalChance: 0
     CriticalDamage: 0
+    Gold: 0
 --- !u!114 &998555654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5640,6 +5642,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 2033836775}
     _nonLazy: 0
+  - _name: GoldItem
+    _component: {fileID: -8510176905807851411, guid: c7f1cdcc40b90ce48842b89ca36dc528, type: 3}
+    _count: 0
+    _container: {fileID: 2033836775}
+    _nonLazy: 0
 --- !u!1 &2036733785
 GameObject:
   m_ObjectHideFlags: 0
@@ -6060,7 +6067,7 @@ GameObject:
   - component: {fileID: 2100810086}
   m_Layer: 0
   m_Name: Square (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
