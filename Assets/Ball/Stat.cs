@@ -9,6 +9,7 @@ public class Persistent_Stat  //Out Game Stats(Upgradeable Stats Using Gold)
     public float ItemDropChance;
     public float CriticalChance;
     public float CriticalDamage;
+    public float Gold;
 }
 
 [System.Serializable]
