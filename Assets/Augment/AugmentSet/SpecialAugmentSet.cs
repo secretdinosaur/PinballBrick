@@ -60,3 +60,12 @@ public class AdditionalThreeAttack: SpecialAugment
 
     public override void Remove(){ }
 }
+
+public class CriticalAdditionalAttack : SpecialAugment
+{
+    public CriticalAdditionalAttack() : base( "SPECIAL_5", "Critical", "Additional Attack when Attack Hit Critical", "AdditionalAttack", 3 ) { } 
+
+    public override void Apply(){  }
+
+    public override void Remove(){ }
+}

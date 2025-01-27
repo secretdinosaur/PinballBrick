@@ -73,9 +73,9 @@ public partial class IBrick
             StartCoroutine(DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
         }
 
-        if (!AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf)
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf)
         {
-            RunAdditionalAttack();
+            RunAdditionalAttack(0.5f, 0.1f);
         }
     }
     private float FinalDamage()
@@ -92,6 +92,10 @@ public partial class IBrick
         if (IsCriticalHit())
         {
             TotalMultiple *= CriticalDamage();
+            if (!AugmentManager.instance.determineAugmentID("SPECIAL_5") && gameObject.activeSelf)
+            {
+                RunAdditionalAttack(0.5f, 0.5f); //Critical Additional Attack
+            }
         }
         
         if (AugmentManager.instance.determineAugmentID("STAT_6")) //Boss Damage Up
@@ -130,25 +134,23 @@ public partial class IBrick
         isEffectActive = false;
     }
 
-    private void RunAdditionalAttack()
+    private void RunAdditionalAttack(float MaxAttackTime, float TimeCount)
     {
-        StartCoroutine(AdditionalAttack());
+        StartCoroutine(AdditionalAttack(MaxAttackTime, TimeCount));
     }
     
-    IEnumerator AdditionalAttack() // AdditionalThreeAttack
+    IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack
     {
-        float Time = 0.5f;
+        yield return new WaitForSeconds(0.5f);
         
-        yield return new WaitForSeconds(1f);
-        
-        while (Time > 0f)
+        while (MaxAttackTime > 0f)
         {
             HP -= IsCriticalHit() ? (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage)
                   * StatManager.instance.statMultiplier.AttackDamageMultiplier * CriticalDamage() :
                 (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage)
                 * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-            yield return new WaitForSeconds(0.1f);
-            Time -= 0.1f;
+            yield return new WaitForSeconds(TimeCount);
+            MaxAttackTime -= TimeCount;
         }
     }
 }
