@@ -1,11 +1,12 @@
+using TMPro;
 using UnityEngine;
-
-public class HardBrick : IBrick
+using UnityEngine.UI;
+public class Brick : IBrick
 {
     private void OnEnable()
     {
         base.OnEnable();
-        BrickType = "Hard";
+        BrickType = "Brick";
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

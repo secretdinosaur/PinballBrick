@@ -21,7 +21,7 @@ public partial class IBrick : MonoBehaviour
         get { return hp; }
         set
         {
-            if (BrickType == "Shield" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+            if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
             {
                 if (GetComponent<ShieldBrick>().FirstShieldSpawn)
                 {
@@ -43,20 +43,34 @@ public partial class IBrick : MonoBehaviour
                 hp = value;
             }
 
-            UpdateHPtext();
 
-            if (hp <= 0)
+            if (hp <= 0 && BrickType != "TwinBrick")
             {
-                isEffectActive = false;
-                Fever.StartFever = true;
-                Fever.Instance.FeverCount *= 2;
-                Fever.Instance.FeverGauge = 100;
-                ScoreManager.Instance.ContinuousScore += Point;
-                LevelManager.Instance.Exp += 10 * StatManager.instance.Persistent_stat.BonusExp;
-                BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
+                BrickDie();
             }
+            else if(hp <= 0 && BrickType == "TwinBrick")
+            {
+                if (GetComponentInParent<TwinBrick>() != null)
+                {
+                    hp = 0;
+                    GetComponentInParent<TwinBrick>().CheckBothBrickDead();
+                }
+            }
+            UpdateHPtext();
         }
     }
+
+    public void BrickDie()
+    {
+        isEffectActive = false;
+        Fever.StartFever = true;
+        Fever.Instance.FeverCount *= 2;
+        Fever.Instance.FeverGauge = 100;
+        ScoreManager.Instance.ContinuousScore += Point;
+        LevelManager.Instance.Exp += 10 * StatManager.instance.Persistent_stat.BonusExp;
+        BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
+    }
+
     public void UpdateHPtext()
     {
         if (HPText != null)
@@ -82,7 +96,7 @@ public partial class IBrick : MonoBehaviour
 public partial class IBrick
 {
     private int EffectStack;
-    private bool isEffectActive = false;
+    public bool isEffectActive = false;
     protected void TakeDamage(Ball ball)
     {
         HP -= FinalDamage();
@@ -93,7 +107,7 @@ public partial class IBrick
             StartCoroutine(DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
         }
 
-        if (!AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf)
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf)
         {
             RunAdditionalAttack();
         }

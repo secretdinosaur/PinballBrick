@@ -10,7 +10,7 @@ public class ShieldBrick : IBrick
     public bool FirstShieldSpawn = true;
     private void OnEnable()
     {
-        BrickType = "Shield";
+        BrickType = "ShieldBrick";
 
         IsShieldDestroyed = false;
         ShieldCount = BasicShieldCount * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)] / 5;

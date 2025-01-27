@@ -82,18 +82,11 @@ public class BrickManager : MonoBehaviour
             availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
             usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
 
-            switch (brick.BrickType)
-            {
-                case "Hard":
-                    PoolManager.TakeToPool<HardBrick>(brick);
-                    break;
-                case "Shield":
-                    PoolManager.TakeToPool<ShieldBrick>(brick);
-                    break;
-                case "Basic":
-                    PoolManager.TakeToPool<Brick>(brick);
-                    break;
-            }
+            Type brickType = Type.GetType(brick.BrickType);
+            var method = typeof(PoolManager).GetMethod("TakeToPool");
+            var genericMethod = method.MakeGenericMethod(brickType);
+            genericMethod.Invoke(PoolManager, new object[] { brick.GetComponent<IBrick>() });
+
             UpdateCurrentBricks();
         }
     }
