@@ -1,12 +1,12 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-public class Brick : IBrick
+public class UpperBrick : IBrick
 {
     private void OnEnable()
     {
-        base.OnEnable();
-        BrickType = "Basic";
+        HP = BasicHP * BrickManager.Instance.HPPool[0];
+        BrickType = "TwinBrick";
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
