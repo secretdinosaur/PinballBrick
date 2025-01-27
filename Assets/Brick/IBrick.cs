@@ -130,6 +130,7 @@ public partial class IBrick
                 TotalMultiple *= 1.3f;
             }
         }
+        DamageTextManager.instance.CreateDamageText()
         return TotalAttackStat * TotalMultiple;
     }
     private bool IsCriticalHit()
