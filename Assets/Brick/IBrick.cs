@@ -92,9 +92,14 @@ public partial class IBrick
         if (IsCriticalHit())
         {
             TotalMultiple *= CriticalDamage();
-            if (!AugmentManager.instance.determineAugmentID("SPECIAL_5") && gameObject.activeSelf)
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_5") && gameObject.activeSelf) //Critical Additional Attack
             {
-                RunAdditionalAttack(0.5f, 0.5f); //Critical Additional Attack
+                RunAdditionalAttack(0.5f, 0.5f);
+            }
+
+            if (AugmentManager.instance.determineAugmentID("STAT_7") && gameObject.activeSelf) //AtkUpWhenCriticalHit
+            {
+                RunAttackDamageUpFewSec(3f, 0.2f);
             }
         }
         
@@ -152,5 +157,19 @@ public partial class IBrick
             yield return new WaitForSeconds(TimeCount);
             MaxAttackTime -= TimeCount;
         }
+    }
+
+    private void RunAttackDamageUpFewSec(float setTime, float AttackUpValue)
+    {
+        StartCoroutine(AttackDamageUpFewSec(setTime, AttackUpValue));
+    }
+
+    IEnumerator AttackDamageUpFewSec(float setTime, float AttackUpValue)
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier += AttackUpValue;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        yield return new WaitForSeconds(setTime);
+        StatManager.instance.statMultiplier.AttackDamageMultiplier -= AttackUpValue;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
