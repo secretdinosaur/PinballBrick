@@ -21,7 +21,27 @@ public partial class IBrick : MonoBehaviour
         get { return hp; }
         set
         {
-            hp = value;
+            if (BrickType == "Shield" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+            {
+                if (GetComponent<ShieldBrick>().FirstShieldSpawn)
+                {
+                    hp = value;
+                    GetComponent<ShieldBrick>().FirstShieldSpawn = false;
+                }
+                else
+                {
+                    hp -= 1;
+                }
+
+                if(hp <= 0)
+                {
+                    GetComponent<ShieldBrick>().DestroyShield();
+                }
+            }
+            else
+            {
+                hp = value;
+            }
 
             UpdateHPtext();
 
