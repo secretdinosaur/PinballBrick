@@ -16,11 +16,14 @@ MonoBehaviour:
   - {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
   - {fileID: -977798360730988515, guid: 5d8e5d6e556634948bffc7c88fffd630, type: 3}
   - {fileID: 8715328750586643657, guid: a4c16860799e88e4da46f796a23d139a, type: 3}
+  - {fileID: 3994378899015205521, guid: 1d95b5ffe5d31ed489c639058c8d3d8e, type: 3}
   BrickSpawnChance:
+  - 0
   - 0.5
-  - 0.2
-  - 0.3
+  - 0
+  - 0.5
   BrickTypes:
   - Brick
   - HardBrick
   - ShieldBrick
+  - TwinBrick
