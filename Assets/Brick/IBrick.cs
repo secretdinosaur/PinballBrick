@@ -95,7 +95,7 @@ public partial class IBrick
 
         if (AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf)
         {
-            RunAdditionalAttack(0.5f, 0.1f);
+            RunAdditionalAttack(0.3f, 0.1f);
         }
     }
     private float FinalDamage()
@@ -164,7 +164,7 @@ public partial class IBrick
         StartCoroutine(AdditionalAttack(MaxAttackTime, TimeCount));
     }
     
-    IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack
+    IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack Coroutine
     {
         yield return new WaitForSeconds(0.5f);
         
