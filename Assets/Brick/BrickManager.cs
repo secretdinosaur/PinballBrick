@@ -3,6 +3,7 @@ using Redcode.Pools;
 using System.Collections.Generic;
 using System;
 using System.Collections;
+using System.Linq;
 public class BrickManager : MonoBehaviour
 {
     public List<float> HPPool;
@@ -35,8 +36,7 @@ public class BrickManager : MonoBehaviour
         UpdateCurrentBricks();
         StartCoroutine(SpawnBricks());
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         

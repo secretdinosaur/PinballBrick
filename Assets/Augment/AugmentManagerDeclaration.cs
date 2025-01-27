@@ -23,6 +23,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             new CritDamage30Up(),
             new CritDamage70Up(),
             new BossDamageUp(),
+            new AtkUpWhenCritical(),
             ///////////////////////// Stat
             
             ///////////////////////// Field
@@ -30,6 +31,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             new Homing(),
             new BouncePower(),
             new AdditionalThreeAttack(),
+            new CriticalAdditionalAttack(),
             ///////////////////////// Special
         };
     }

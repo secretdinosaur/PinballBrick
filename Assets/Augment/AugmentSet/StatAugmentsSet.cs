@@ -104,3 +104,12 @@ public class BossDamageUp : StatAugment
 
     public override void Remove(){  }
 }
+
+public class AtkUpWhenCritical : StatAugment
+{
+    public AtkUpWhenCritical() : base( "STAT_7", "On Critical Hit, Ball Attack Damage increases for a few seconds" , "Just Example", 1 ) { }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+}
