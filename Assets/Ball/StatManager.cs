@@ -57,7 +57,8 @@ public class StatManager : MonoBehaviour
             BonusExp = 1f,
             ItemDropChance = 0.2f,
             CriticalChance = 0.0f,
-            CriticalDamage = 1.1f
+            CriticalDamage = 1.1f,
+            Gold = 0.0f
         };
 
         string json = JsonUtility.ToJson(initialStats, true);
