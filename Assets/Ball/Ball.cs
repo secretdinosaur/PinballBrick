@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public partial class Ball : MonoBehaviour
 {
+    public float maxSpeed = 15f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {
@@ -33,6 +34,11 @@ public partial class Ball : MonoBehaviour
         if(transform.position.y <= -10)
         {
             BallManager.Instance.TakeBall(this);
+        }
+
+        if (rb.linearVelocity.magnitude > maxSpeed)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
     }
     
