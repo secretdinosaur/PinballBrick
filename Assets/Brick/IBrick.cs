@@ -120,7 +120,7 @@ public partial class IBrick
 {
     private int EffectStack;
     public bool isEffectActive = false;
-    protected void TakeDamage(Ball ball)
+    public void TakeDamage(Ball ball)
     {
         HP -= FinalDamage();
 
