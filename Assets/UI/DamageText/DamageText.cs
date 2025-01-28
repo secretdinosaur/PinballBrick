@@ -41,13 +41,11 @@ public class DamageText : MonoBehaviour
     IEnumerator ShowDamageText()
     {
         float timer = 0f;
+        Vector2 StartPosition = rectTransform.anchoredPosition;
 
         while (timer < lifetime)
         {
-            if (timer < 0.3f)
-            {
-                rectTransform.anchoredPosition += (direction * speed);
-            }
+            StartPosition = (direction * speed * timer);
             timer += Time.deltaTime;
             yield return null;
         }

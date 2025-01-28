@@ -17,6 +17,7 @@ public partial class IBrick : MonoBehaviour
     public string BrickType;
     public Transform BrickTransform;
     private Canvas canvas;
+    private Camera camera;
     
     public float HP
     {
@@ -72,7 +73,7 @@ public partial class IBrick : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRect,
             screenPosition,
-            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : camera,
             out damageTextPosition
         );
 
@@ -107,6 +108,7 @@ public partial class IBrick : MonoBehaviour
     {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
+        camera = Camera.main;
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
     }
 }
