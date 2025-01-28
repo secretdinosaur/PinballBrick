@@ -216,6 +216,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
+  - _name: TeleportBrick
+    _component: {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
 --- !u!1 &153662569
 GameObject:
   m_ObjectHideFlags: 0
