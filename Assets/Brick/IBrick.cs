@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 using Random = UnityEngine.Random;
 
 public partial class IBrick : MonoBehaviour
@@ -13,8 +14,11 @@ public partial class IBrick : MonoBehaviour
     private float hp;
     public bool IsBoss = false;
     public TextMeshPro HPText;
-    public string Type;
-
+    public string BrickType;
+    public Transform BrickTransform;
+    private Canvas canvas;
+    private Camera camera;
+    
     public float HP
     {
         get { return hp; }
@@ -22,21 +26,65 @@ public partial class IBrick : MonoBehaviour
         {
             hp = value;
 
-            UpdateHPtext();
-
-            if (hp <= 0)
+            if(hp <= 0)
             {
-                isEffectActive = false;
-                Fever.StartFever = true;
-                Fever.Instance.FeverCount *= 2;
-                Fever.Instance.FeverGauge = 100;
-                ScoreManager.Instance.ContinuousScore += Point;
-                LevelManager.Instance.Exp += 10 * StatManager.instance.Persistent_stat.BonusExp;
-                BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
-                ;
+                if (BrickType == "TwinBrick")
+                {
+                        hp = 0;
+                        GetComponentInParent<TwinBrick>().CheckBothBrickDead();
+                }
+                else if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+                {
+                    GetComponent<ShieldBrick>().DestroyShield();
+                }
+                else
+                {
+                    BrickDie();
+                }
             }
+            
+            UpdateHPtext();
         }
     }
+
+    public void BrickDie()
+    {
+        isEffectActive = false;
+        Fever.StartFever = true;
+        Fever.Instance.FeverCount *= 2;
+        Fever.Instance.FeverGauge = 100;
+        ScoreManager.Instance.ContinuousScore += Point;
+        LevelManager.Instance.Exp += 10 * StatManager.instance.Persistent_stat.BonusExp;
+        BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
+    }
+
+    private void ShowDamageText(float Damage, string DamageType, bool isCritical)
+    {
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+        if(canvas == null)
+        {
+            canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        }
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        Vector2 damageTextPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPosition,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : camera,
+            out damageTextPosition
+        );
+
+        if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+        {
+            DamageTextManager.instance.CreateDamageText(damageTextPosition, Damage, DamageType, isCritical);
+        }
+        else if ((BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed) ||
+                 BrickType != "ShieldBrick")
+        {
+            DamageTextManager.instance.CreateDamageText(damageTextPosition, Damage, DamageType, isCritical);
+        }
+    }
+
     public void UpdateHPtext()
     {
         if (HPText != null)
@@ -53,38 +101,77 @@ public partial class IBrick : MonoBehaviour
     {
         HPText = GetComponentInChildren<TextMeshPro>();
     }
-    private void OnEnable()
+    public void OnEnable()
     {
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
+        GetComponents();
+    }
+
+    public void GetComponents()
+    {
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        BrickTransform = GetComponent<Transform>();
+        camera = Camera.main;
     }
 }
+
 
 public partial class IBrick
 {
     private int EffectStack;
-    private bool isEffectActive = false;
+    public bool isEffectActive = false;
     protected void TakeDamage(Ball ball)
     {
         HP -= FinalDamage();
 
-        if (AugmentManager.instance.determineSpecialAugmentType("Effect") && gameObject.activeSelf)
+        if (AugmentManager.instance.determineSpecialAugmentType("Effect") && gameObject.activeSelf && BrickType != "IgnoreBrick")
         {
             EffectStack += (EffectStack != 5) ? 1 : 0;
             StartCoroutine(DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
         }
+        if (!AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf && BrickType != "IgnoreBrick")
+        {
+            RunAdditionalAttack(0.3f, 0.1f);
+        }
     }
     private float FinalDamage()
     {
+        bool CriticalHit = false;
         float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
-                                StatManager.instance.Temporary_stat.AttackDamage; 
+                                StatManager.instance.Temporary_stat.AttackDamage;
+        float TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
         if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
         {
-            TotalAttackStat *= Ball.BounceTime;
+            TotalMultiple *= Ball.BounceTime;
             Ball.BounceTime = 1;
         }
 
-        return IsCriticalHit() ? TotalAttackStat * CriticalDamage() * StatManager.instance.statMultiplier.AttackDamageMultiplier
-                               : TotalAttackStat * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        if (IsCriticalHit())
+        {
+            CriticalHit = true;
+            TotalMultiple *= CriticalDamage();
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_5") && gameObject.activeSelf) //Critical Additional Attack
+            {
+                RunAdditionalAttack(0.5f, 0.5f);
+            }
+
+            if (AugmentManager.instance.determineAugmentID("STAT_7") && gameObject.activeSelf) //AtkUpWhenCriticalHit
+            {
+                RunAttackDamageUpFewSec(3f, 0.2f);
+            }
+        }
+        
+        if (AugmentManager.instance.determineAugmentID("STAT_6")) //Boss Damage Up
+        {
+            if (IsBoss)
+            {
+                TotalMultiple *= 1.3f;
+            }
+        }
+
+        float FinalDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : TotalAttackStat * TotalMultiple;
+        ShowDamageText(FinalDamage, "Normal", CriticalHit);
+        return FinalDamage;
     }
     private bool IsCriticalHit()
     {
@@ -104,13 +191,59 @@ public partial class IBrick
         float interval = 0.1f;
         while (effectDuration > 0 && EffectStack > 0)
         {
-            HP -= (StatManager.instance.Temporary_stat.EffectDamage * StatManager.instance.statMultiplier.EffectDamageMultiplier)
-                  * EffectStack;
+            float EffectAttackDamage = (StatManager.instance.Temporary_stat.EffectDamage *
+                                        StatManager.instance.statMultiplier.EffectDamageMultiplier)
+                                       * EffectStack;
+
+            float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
+            HP -= FinalEffectAttackDamage;
+            ShowDamageText(EffectAttackDamage, "Effect", false);
             EffectStack--;
             effectDuration -= interval;
             yield return new WaitForSeconds(interval);
         }
-
         isEffectActive = false;
+    }
+
+    private void RunAdditionalAttack(float MaxAttackTime, float TimeCount)
+    {
+        StartCoroutine(AdditionalAttack(MaxAttackTime, TimeCount));
+    }
+    
+    IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack Coroutine
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        while (MaxAttackTime > 0f)
+        {
+            bool CriticalHit = IsCriticalHit();
+            float AdditionalAttackDamage = CriticalHit
+                    ? (StatManager.instance.Persistent_stat.AttackDamage +
+                       StatManager.instance.Temporary_stat.AttackDamage)
+                      * StatManager.instance.statMultiplier.AttackDamageMultiplier * CriticalDamage()
+                    : (StatManager.instance.Persistent_stat.AttackDamage +
+                       StatManager.instance.Temporary_stat.AttackDamage)
+                      * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+
+            float FinalAdditionalAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : AdditionalAttackDamage;
+            HP -= FinalAdditionalAttackDamage;
+            ShowDamageText(FinalAdditionalAttackDamage, "Additional", CriticalHit);
+            yield return new WaitForSeconds(TimeCount);
+            MaxAttackTime -= TimeCount;
+        }
+    }
+
+    private void RunAttackDamageUpFewSec(float setTime, float AttackUpValue)
+    {
+        StartCoroutine(AttackDamageUpFewSec(setTime, AttackUpValue));
+    }
+
+    IEnumerator AttackDamageUpFewSec(float setTime, float AttackUpValue)
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier += AttackUpValue;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        yield return new WaitForSeconds(setTime);
+        StatManager.instance.statMultiplier.AttackDamageMultiplier -= AttackUpValue;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }

@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public partial class Ball : MonoBehaviour
 {
+    public float maxSpeed = 15f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {
@@ -34,6 +35,11 @@ public partial class Ball : MonoBehaviour
         {
             BallManager.Instance.TakeBall(this);
         }
+
+        if (rb.linearVelocity.magnitude > maxSpeed)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+        }
     }
     
     private void FixedUpdate()
@@ -58,11 +64,16 @@ public partial class Ball : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Wall"))
             {
-                BounceTime += 0.25f;
-                spriteRenderer.color = new Color(1f, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
+                if (MaxBounce < 3)
+                {
+                    BounceTime += 0.2f;
+                    MaxBounce++;
+                    spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
+                }
             }
             else if (collision.gameObject.CompareTag("Brick"))
             {
+                MaxBounce = 0;
                 spriteRenderer.color = new Color(1f, 1f, 1f);
             }
         }
@@ -141,5 +152,6 @@ public partial class Ball //Homing
 public partial class Ball //Bounce = Power
 {
     public static float BounceTime { get; set; } = 1f;
+    private int MaxBounce = 0;
     private SpriteRenderer spriteRenderer;
 }

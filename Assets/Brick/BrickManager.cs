@@ -3,6 +3,7 @@ using Redcode.Pools;
 using System.Collections.Generic;
 using System;
 using System.Collections;
+using System.Linq;
 public class BrickManager : MonoBehaviour
 {
     public List<float> HPPool;
@@ -20,6 +21,7 @@ public class BrickManager : MonoBehaviour
 
     private int minYGrid = 5;
 
+    public BrickInfo BrickInfo;
 
     public List<Vector2> availablePositions = new List<Vector2>();
     public List<Vector2> usingPositions = new List<Vector2>();
@@ -34,8 +36,7 @@ public class BrickManager : MonoBehaviour
         UpdateCurrentBricks();
         StartCoroutine(SpawnBricks());
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         
@@ -81,18 +82,11 @@ public class BrickManager : MonoBehaviour
             availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
             usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
 
-            switch (brick.Type)
-            {
-                case "Hard":
-                    PoolManager.TakeToPool<HardBrick>(brick);
-                    break;
-                case "Shield":
-                    PoolManager.TakeToPool<ShieldBrick>(brick);
-                    break;
-                case "Basic":
-                    PoolManager.TakeToPool<Brick>(brick);
-                    break;
-            }
+            Type brickType = Type.GetType(brick.BrickType);
+            var method = typeof(PoolManager).GetMethod("TakeToPool");
+            var genericMethod = method.MakeGenericMethod(brickType);
+            genericMethod.Invoke(PoolManager, new object[] { brick.GetComponent<IBrick>() });
+
             UpdateCurrentBricks();
         }
     }
@@ -100,22 +94,23 @@ public class BrickManager : MonoBehaviour
     private IBrick GetBrick()
     {
         float RandomNumber = UnityEngine.Random.value;
-        IBrick brick;
-        if(RandomNumber < 0.1)
+        IBrick brick = null;
+
+        float ChanseSum = 0;
+
+        for(int i = 0; i < BrickInfo.BrickSpawnChance.Length; i++)
         {
-            brick = PoolManager.GetFromPool<HardBrick>();
-            brick.Type = "Hard";
+            ChanseSum += BrickInfo.BrickSpawnChance[i];
+            if (RandomNumber < ChanseSum)
+            {
+                Type brickType = Type.GetType(BrickInfo.BrickTypes[i]);
+                var method = typeof(PoolManager).GetMethod("GetFromPool");
+                var genericMethod = method.MakeGenericMethod(brickType);
+                brick = (IBrick)genericMethod.Invoke(PoolManager, null);
+                break;
+            }
         }
-        else if (RandomNumber < 0.2)
-        {
-            brick = PoolManager.GetFromPool<ShieldBrick>();
-            brick.Type = "Shield";
-        }
-        else
-        {
-            brick = PoolManager.GetFromPool<IBrick>();
-            brick.Type = "Basic";
-        }
+
         return brick;
     }
 

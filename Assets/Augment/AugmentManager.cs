@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using Random = UnityEngine.Random;
+using UnityEngine;
 
 public partial class AugmentManager //Utility
 {
@@ -104,5 +106,28 @@ public partial class AugmentManager
         activeStatAugments.Clear();
         activeFieldAugments.Clear();
         activeSpecialAugments.Clear();
+    }
+}
+
+public partial class AugmentManager // Field Augment
+{
+    private float timer = 0f;
+    private float greetingInterval = 5f;
+    private void Update()
+    {
+        if (determineAugmentID("FIELD_1")) //All Damage
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= greetingInterval)
+            {
+                IBrick[] bricks = FindObjectsOfType<MonoBehaviour>().OfType<IBrick>().ToArray();
+                foreach (IBrick brick in bricks)
+                {
+                    brick.HP -= 10 * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+                }
+                timer = 0f;
+            }
+        }
     }
 }

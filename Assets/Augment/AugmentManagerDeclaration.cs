@@ -21,13 +21,17 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             new Atk70Up(),
             new CritChanceUp(),
             new CritDamage30Up(),
-            new CritDamage70Up(), 
+            new CritDamage70Up(),
+            new BossDamageUp(),
+            new AtkUpWhenCritical(),
             ///////////////////////// Stat
-            
+            new AllDamage(),
             ///////////////////////// Field
             new FireBall(),
             new Homing(),
             new BouncePower(),
+            new AdditionalThreeAttack(),
+            new CriticalAdditionalAttack(),
             ///////////////////////// Special
         };
     }
