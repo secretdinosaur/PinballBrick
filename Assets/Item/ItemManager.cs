@@ -1,17 +1,13 @@
 using Redcode.Pools;
 using UnityEngine;
 using System.Collections;
+using System;
 public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance;
     public PoolManager PoolManager;
 
-    private float DiceItemChance = 0.1f;
-    private float BangBangItemChance = 0.05f;
-    private float HPOneItemChance = 0.05f;
-    private float PowerUpItemChance = 0.2f;
-    private float GoldItemChance = 0.3f;
-
+    public ItemInfo ItemInfo;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,61 +25,30 @@ public class ItemManager : MonoBehaviour
 
     public void SpawnItem(Vector2 BlockPosition)
     {
-        float RandomNumber = Random.value;
+        float RandomNumber = UnityEngine.Random.value;
         Item item;
-        if (RandomNumber < DiceItemChance)
+        float ChanceSum = 0;
+        for (int i = 0; i < ItemInfo.Items.Length; i++)
         {
-            item = PoolManager.GetFromPool<DiceItem>();
-            item.transform.position = BlockPosition;
-        }
-        
-        else if (RandomNumber < DiceItemChance + BangBangItemChance)
-        {
-            item = PoolManager.GetFromPool<BangBangItem>();
-            item.transform.position = BlockPosition;
-        }
-
-        else if (RandomNumber < DiceItemChance + BangBangItemChance + HPOneItemChance)
-        {
-            item = PoolManager.GetFromPool<HPOneItem>();
-            item.transform.position = BlockPosition;
-        }
-
-        else if (RandomNumber < DiceItemChance + BangBangItemChance + HPOneItemChance + PowerUpItemChance)
-        {
-            item = PoolManager.GetFromPool<PowerUpItem>();
-            item.transform.position = BlockPosition;
-        }
-        
-        else if (RandomNumber < DiceItemChance + BangBangItemChance + HPOneItemChance + PowerUpItemChance + GoldItemChance)
-        {
-            item = PoolManager.GetFromPool<GoldItem>();
-            item.transform.position = BlockPosition;
+            ChanceSum += ItemInfo.ItemSpawnChance[i];
+            if (RandomNumber < ChanceSum)
+            {
+                Type brickType = Type.GetType(ItemInfo.ItemName[i]);
+                var method = typeof(PoolManager).GetMethod("GetFromPool");
+                var genericMethod = method.MakeGenericMethod(brickType);
+                item = (Item)genericMethod.Invoke(PoolManager, null);
+                item.transform.position = BlockPosition;
+                break;
+            }
         }
     }
 
     public void TakeItem(Item item)
     {
-        PoolManager.TakeToPool<Item>(item);
-    }
-
-    public void TakeBangBangItem(BangBangItem item)
-    {
-        PoolManager.TakeToPool<BangBangItem>(item);
-    }
-
-    public void TakeHPOneItem(HPOneItem item)
-    {
-        PoolManager.TakeToPool<HPOneItem>(item);
-    }
-    public void TakePowerUpItem(PowerUpItem item)
-    {
-        PoolManager.TakeToPool<PowerUpItem>(item);
-    }
-
-    public void TakeGoldItem(GoldItem item)
-    {
-        PoolManager.TakeToPool<GoldItem>(item);
+        Type ItemName = Type.GetType(item.ItemName);
+        var method = typeof(PoolManager).GetMethod("TakeToPool");
+        var genericMethod = method.MakeGenericMethod(ItemName);
+        genericMethod.Invoke(PoolManager, new object[] { item.GetComponent<Item>() });
     }
 
     public void CreateBangBang()

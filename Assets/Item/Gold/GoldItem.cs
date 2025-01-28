@@ -7,6 +7,6 @@ public class GoldItem : Item
         StatManager.instance.Persistent_stat.Gold += 10;
         StatManager.instance.SavePersistentStats(StatManager.instance.Persistent_stat);
         Debug.Log("Now Gold is " + StatManager.instance.Persistent_stat.Gold);
-        ItemManager.Instance.TakeGoldItem(this);
+        ItemManager.Instance.TakeItem(this);
     }
 }

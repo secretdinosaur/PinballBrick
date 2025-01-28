@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e473e4ddb063b4f45b69079518f1d074, type: 3}
+  m_Name: ItemInfo
+  m_EditorClassIdentifier: 
+  Items:
+  - {fileID: 5020224198338934819, guid: 8cd1493bc085b6344a81cea5adfce5b6, type: 3}
+  - {fileID: 5583699915093996604, guid: 32b83b477a85e1b4fa3cc29a362a0b76, type: 3}
+  - {fileID: -8510176905807851411, guid: c7f1cdcc40b90ce48842b89ca36dc528, type: 3}
+  - {fileID: -3221218634140616889, guid: 5f65fb50e8c8abf409432977a590d9a5, type: 3}
+  - {fileID: -6166823036124189305, guid: 3c3c40efe626b4d468a996641fef36f5, type: 3}
+  ItemSpawnChance:
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
+  ItemName:
+  - BangBangItem
+  - DiceItem
+  - GoldItem
+  - HPOneItem
+  - PowerUpItem

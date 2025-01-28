@@ -18,6 +18,6 @@ public class PowerUpItem : Item
         GetComponent<SpriteRenderer>().enabled = true;
         StatManager.instance.statMultiplier.AttackDamageMultiplier /= 2;
         StatManager.instance.statMultiplier.EffectDamageMultiplier /= 2;
-        ItemManager.Instance.TakePowerUpItem(this);
+        ItemManager.Instance.TakeItem(this);
     }
 }
