@@ -86,7 +86,7 @@ public partial class Ball : MonoBehaviour
     bool IsStucking = false;
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Brick"))
+        if(collision.gameObject.CompareTag("Brick") && gameObject.activeSelf)
         {
             rb.AddForce(rb.linearVelocity.normalized / 2, ForceMode2D.Impulse);
             StopCoroutine(BallStuckCoroutine);
