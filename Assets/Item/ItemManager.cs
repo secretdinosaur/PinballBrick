@@ -10,6 +10,7 @@ public class ItemManager : MonoBehaviour
     private float BangBangItemChance = 0.05f;
     private float HPOneItemChance = 0.05f;
     private float PowerUpItemChance = 0.2f;
+    private float GoldItemChance = 0.3f;
 
 
 
@@ -53,6 +54,12 @@ public class ItemManager : MonoBehaviour
             item = PoolManager.GetFromPool<PowerUpItem>();
             item.transform.position = BlockPosition;
         }
+        
+        else if (RandomNumber < DiceItemChance + BangBangItemChance + HPOneItemChance + PowerUpItemChance + GoldItemChance)
+        {
+            item = PoolManager.GetFromPool<GoldItem>();
+            item.transform.position = BlockPosition;
+        }
     }
 
     public void TakeItem(Item item)
@@ -72,6 +79,11 @@ public class ItemManager : MonoBehaviour
     public void TakePowerUpItem(PowerUpItem item)
     {
         PoolManager.TakeToPool<PowerUpItem>(item);
+    }
+
+    public void TakeGoldItem(GoldItem item)
+    {
+        PoolManager.TakeToPool<GoldItem>(item);
     }
 
     public void CreateBangBang()

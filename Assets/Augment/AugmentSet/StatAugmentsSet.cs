@@ -107,7 +107,7 @@ public class BossDamageUp : StatAugment
 
 public class AtkUpWhenCritical : StatAugment
 {
-    public AtkUpWhenCritical() : base( "STAT_7", "On Critical Hit, Ball Attack Damage increases for a few seconds" , "Just Example", 1 ) { }
+    public AtkUpWhenCritical() : base( "STAT_7", "AtkUpWhenCritical" , "On Critical Hit, Ball Attack Damage increases for a few seconds", 2 ) { }
 
     public override void Apply(){ }
 

@@ -15,7 +15,10 @@ public partial class IBrick : MonoBehaviour
     public bool IsBoss = false;
     public TextMeshPro HPText;
     public string BrickType;
-
+    public Transform BrickTransform;
+    private Canvas canvas;
+    private Camera camera;
+    
     public float HP
     {
         get { return hp; }
@@ -23,16 +26,7 @@ public partial class IBrick : MonoBehaviour
         {
             if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
             {
-                if (GetComponent<ShieldBrick>().FirstShieldSpawn)
-                {
-                    hp = value;
-                    GetComponent<ShieldBrick>().FirstShieldSpawn = false;
-                }
-                else
-                {
-                    hp -= 1;
-                }
-
+                hp -= 1;
                 if(hp <= 0)
                 {
                     GetComponent<ShieldBrick>().DestroyShield();
@@ -42,7 +36,6 @@ public partial class IBrick : MonoBehaviour
             {
                 hp = value;
             }
-
 
             if (hp <= 0 && BrickType != "TwinBrick")
             {
@@ -71,6 +64,30 @@ public partial class IBrick : MonoBehaviour
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
 
+    private void ShowDamageText(float Damage, string DamageType, bool isCritical)
+    {
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        Vector2 damageTextPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPosition,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : camera,
+            out damageTextPosition
+        );
+
+        if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+        {
+            DamageTextManager.instance.CreateDamageText(damageTextPosition, Damage, DamageType, isCritical);
+        }
+        else if ((BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed) ||
+                 BrickType != "ShieldBrick")
+        {
+            DamageTextManager.instance.CreateDamageText(damageTextPosition, Damage, DamageType, isCritical);
+        }
+    }
+
     public void UpdateHPtext()
     {
         if (HPText != null)
@@ -89,6 +106,9 @@ public partial class IBrick : MonoBehaviour
     }
     public void OnEnable()
     {
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        BrickTransform = GetComponent<Transform>();
+        camera = Camera.main;
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
     }
 }
@@ -106,14 +126,14 @@ public partial class IBrick
             EffectStack += (EffectStack != 5) ? 1 : 0;
             StartCoroutine(DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
         }
-
         if (AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf && BrickType != "IgnoreBrick")
         {
-            RunAdditionalAttack(0.5f, 0.1f);
+            RunAdditionalAttack(0.3f, 0.1f);
         }
     }
     private float FinalDamage()
     {
+        bool CriticalHit = false;
         float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
                                 StatManager.instance.Temporary_stat.AttackDamage;
         float TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
@@ -125,6 +145,7 @@ public partial class IBrick
 
         if (IsCriticalHit())
         {
+            CriticalHit = true;
             TotalMultiple *= CriticalDamage();
             if (AugmentManager.instance.determineAugmentID("SPECIAL_5") && gameObject.activeSelf) //Critical Additional Attack
             {
@@ -144,6 +165,8 @@ public partial class IBrick
                 TotalMultiple *= 1.3f;
             }
         }
+
+        ShowDamageText(TotalAttackStat * TotalMultiple, "Normal", CriticalHit);
         return TotalAttackStat * TotalMultiple;
     }
     private bool IsCriticalHit()
@@ -164,8 +187,11 @@ public partial class IBrick
         float interval = 0.1f;
         while (effectDuration > 0 && EffectStack > 0)
         {
-            HP -= (StatManager.instance.Temporary_stat.EffectDamage * StatManager.instance.statMultiplier.EffectDamageMultiplier)
-                  * EffectStack;
+            float EffectAttackDamage = (StatManager.instance.Temporary_stat.EffectDamage *
+                                        StatManager.instance.statMultiplier.EffectDamageMultiplier)
+                                       * EffectStack;
+            HP -= EffectAttackDamage;
+            ShowDamageText(EffectAttackDamage, "Effect", false);
             EffectStack--;
             effectDuration -= interval;
             yield return new WaitForSeconds(interval);
@@ -178,16 +204,22 @@ public partial class IBrick
         StartCoroutine(AdditionalAttack(MaxAttackTime, TimeCount));
     }
     
-    IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack
+    IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack Coroutine
     {
         yield return new WaitForSeconds(0.5f);
         
         while (MaxAttackTime > 0f)
         {
-            HP -= IsCriticalHit() ? (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage)
-                  * StatManager.instance.statMultiplier.AttackDamageMultiplier * CriticalDamage() :
-                (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage)
-                * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+            bool CriticalHit = IsCriticalHit();
+            float AdditionalAttackDamage = CriticalHit
+                    ? (StatManager.instance.Persistent_stat.AttackDamage +
+                       StatManager.instance.Temporary_stat.AttackDamage)
+                      * StatManager.instance.statMultiplier.AttackDamageMultiplier * CriticalDamage()
+                    : (StatManager.instance.Persistent_stat.AttackDamage +
+                       StatManager.instance.Temporary_stat.AttackDamage)
+                      * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+            HP -= AdditionalAttackDamage;
+            ShowDamageText(AdditionalAttackDamage, "Additional", CriticalHit);
             yield return new WaitForSeconds(TimeCount);
             MaxAttackTime -= TimeCount;
         }

@@ -115,7 +115,7 @@ public partial class AugmentManager // Field Augment
     private float greetingInterval = 5f;
     private void Update()
     {
-        if (!determineAugmentID("FIELD_1")) //All Damage
+        if (determineAugmentID("FIELD_1")) //All Damage
         {
             timer += Time.deltaTime;
 

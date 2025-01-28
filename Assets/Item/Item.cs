@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-public abstract class Item : MonoBehaviour
+public abstract class  Item : MonoBehaviour
 {
     private void OnEnable()
     {

@@ -25,7 +25,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             new BossDamageUp(),
             new AtkUpWhenCritical(),
             ///////////////////////// Stat
-            
+            new AllDamage(),
             ///////////////////////// Field
             new FireBall(),
             new Homing(),
