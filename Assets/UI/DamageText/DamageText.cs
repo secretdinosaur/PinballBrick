@@ -1,15 +1,24 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using TMPro;
+using Random = UnityEngine.Random;
 
 public class DamageText : MonoBehaviour
 {
+    public RectTransform rectTransform;
     private Vector2 direction;
-    private float radius = 1.0f;
-    private float speed = 2.0f;
-    private float lifetime = 1.0f;
+    private float speed = 8f;
+    private float lifetime = 0.9f;
 
-    [SerializeField] private TMPro.TextMeshProUGUI textMeshPro;
+    private TMP_Text damageText;
+    
+    public void Awake()
+    {
+        damageText = GetComponent<TMP_Text>();
+        rectTransform = GetComponent<RectTransform>();
+    }
 
     public void OnEnable()
     {
@@ -17,27 +26,31 @@ public class DamageText : MonoBehaviour
         {
             direction = Random.insideUnitCircle.normalized;
         } while (direction.y < 0);
-
         StartCoroutine(ShowDamageText());
     }
 
-    public void SetDamage(int damage)
+    public void SetDamage(float damage, string damageType, bool isCritical)
     {
-        textMeshPro.text = damage.ToString();
+        damageText.color = (damageType == "Normal") ? Color.white
+            : (damageType == "Additional") ? new Color(1f, 0.5f, 0f)
+            : (damageType == "Effect") ? Color.red : Color.white;
+        damageText.text = isCritical ? "!" + damage.ToString("F1") 
+                                     : damage.ToString("F1");
     }
-
+    
     IEnumerator ShowDamageText()
     {
         float timer = 0f;
-        Vector3 startPosition = transform.position;
 
         while (timer < lifetime)
         {
-            transform.position = startPosition + (Vector3)(direction * speed * timer);
+            if (timer < 0.3f)
+            {
+                rectTransform.anchoredPosition += (direction * speed);
+            }
             timer += Time.deltaTime;
             yield return null;
         }
-
         DamageTextManager.instance.TakeDamageText(this);
     }
 }

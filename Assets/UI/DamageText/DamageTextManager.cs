@@ -10,15 +10,17 @@ public class DamageTextManager : MonoBehaviour
     {
         instance = this;
         PoolManager = GetComponent<PoolManager>();
+        
     }
 
-    public void CreateDamageText(Vector2 position, int damage)
+    public void CreateDamageText(Vector2 position, float damage, string damageType, bool isCritical)
     {
-        DamageText damageText = PoolManager.GetFromPool<DamageText>();
-        damageText.transform.position = position;
-        damageText.SetDamage(damage);
+        DamageText damageText;
+        damageText = PoolManager.GetFromPool<DamageText>();
+        damageText.rectTransform.anchoredPosition = position;
+        damageText.SetDamage(damage, damageType, isCritical);
     }
-
+    
     public void TakeDamageText(DamageText damageText)
     {
         PoolManager.TakeToPool<DamageText>(damageText);

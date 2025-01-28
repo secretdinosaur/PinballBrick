@@ -6,8 +6,7 @@ public class ShieldBrick : IBrick
     public float ShieldCount;
     public bool IsShieldDestroyed;
     public float HPMultiplier;
-
-    public bool FirstShieldSpawn = true;
+    
     private void OnEnable()
     {
         BrickType = "ShieldBrick";
