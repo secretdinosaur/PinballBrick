@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using Random = UnityEngine.Random;
+using TMPro;
 
 public partial class Ball : MonoBehaviour
 {
@@ -39,7 +40,9 @@ public partial class Ball : MonoBehaviour
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
-        }
+        } 
+
+
     }
     
     private void FixedUpdate()
@@ -76,6 +79,37 @@ public partial class Ball : MonoBehaviour
                 MaxBounce = 0;
                 spriteRenderer.color = new Color(1f, 1f, 1f);
             }
+        }
+    }
+
+    Coroutine BallStuckCoroutine = null;
+    bool IsStucking = false;
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Brick"))
+        {
+            rb.AddForce(rb.linearVelocity.normalized / 2, ForceMode2D.Impulse);
+            StopCoroutine(BallStuckCoroutine);
+            IsStucking = false;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Brick") && !IsStucking)
+        {
+            BallStuckCoroutine = StartCoroutine(BallStuckDamage(collision.gameObject.GetComponent<IBrick>()));
+        }
+    }
+
+    private IEnumerator BallStuckDamage(IBrick brick)
+    {
+        IsStucking = true;
+        yield return new WaitForSeconds(5);
+        while(true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            brick.TakeDamage(this);
         }
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 public abstract class  Item : MonoBehaviour
 {
+    public string ItemName;
     private void OnEnable()
     {
         StartCoroutine(DisappearAfter3s());
