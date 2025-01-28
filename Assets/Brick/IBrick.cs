@@ -25,8 +25,8 @@ public partial class IBrick : MonoBehaviour
         set
         {
             hp = value;
-
-            if(hp <= 0)
+            
+            if (hp <= 0)
             {
                 if (BrickType == "TwinBrick")
                 {
@@ -170,6 +170,7 @@ public partial class IBrick
         }
 
         float FinalDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : TotalAttackStat * TotalMultiple;
+        if (BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
         ShowDamageText(FinalDamage, "Normal", CriticalHit);
         return FinalDamage;
     }
@@ -226,6 +227,8 @@ public partial class IBrick
                       * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
             float FinalAdditionalAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : AdditionalAttackDamage;
+            
+            if(BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
             HP -= FinalAdditionalAttackDamage;
             ShowDamageText(FinalAdditionalAttackDamage, "Additional", CriticalHit);
             yield return new WaitForSeconds(TimeCount);

@@ -19,12 +19,15 @@ MonoBehaviour:
   - {fileID: 3994378899015205521, guid: 1d95b5ffe5d31ed489c639058c8d3d8e, type: 3}
   - {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
   - {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
+  - {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
   BrickSpawnChance:
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 1
   BrickTypes:
   - Brick
   - HardBrick
@@ -32,3 +35,4 @@ MonoBehaviour:
   - TwinBrick
   - IgnoreBrick
   - SlimeBrick
+  - TeleportBrick

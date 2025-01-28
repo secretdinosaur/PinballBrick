@@ -62,7 +62,7 @@ public class BrickManager : MonoBehaviour
         }
     }
 
-    Vector2 GenerateRandomPosition()
+    public Vector2 GenerateRandomPosition()
     {
         int randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
         Vector2 selectedPosition = availablePositions[randomIndex];
@@ -73,6 +73,13 @@ public class BrickManager : MonoBehaviour
         return selectedPosition;
     }
 
+    public void TeleportBrickPosition(TeleportBrick brick)
+    {
+        availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
+        usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
+        Vector2 RandomPosition = GenerateRandomPosition();
+        brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(RandomPosition.x, RandomPosition.y, 35));
+    }
     public void TakeBrick(IBrick brick)
     {
         if(brick.gameObject.activeSelf)
