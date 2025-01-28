@@ -206,6 +206,16 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 41321448}
     _nonLazy: 0
+  - _name: IgnoreBrick
+    _component: {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
+    _count: 0
+    _container: {fileID: 41321448}
+    _nonLazy: 0
+  - _name: SlimeBrick
+    _component: {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
+    _count: 0
+    _container: {fileID: 41321448}
+    _nonLazy: 0
 --- !u!1 &160033616
 GameObject:
   m_ObjectHideFlags: 0

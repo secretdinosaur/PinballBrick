@@ -121,13 +121,12 @@ public partial class IBrick
     {
         HP -= FinalDamage();
 
-        if (AugmentManager.instance.determineSpecialAugmentType("Effect") && gameObject.activeSelf)
+        if (AugmentManager.instance.determineSpecialAugmentType("Effect") && gameObject.activeSelf && BrickType != "IgnoreBrick")
         {
             EffectStack += (EffectStack != 5) ? 1 : 0;
             StartCoroutine(DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
         }
-
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf) //Additional Three Attack
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf && BrickType != "IgnoreBrick")
         {
             RunAdditionalAttack(0.3f, 0.1f);
         }
