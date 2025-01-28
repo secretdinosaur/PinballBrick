@@ -11,6 +11,8 @@ public class TwinBrick : IBrick
     private void OnEnable()
     {
         BrickType = "TwinBrick";
+
+        base.OnEnable();
     }
     public void CheckBothBrickDead()
     {
@@ -22,7 +24,13 @@ public class TwinBrick : IBrick
         else if (UpperBrick.HP <= 0 || LowerBrick.HP <= 0)
         {
             if (!IsWaitingHeal)
-                StartCoroutine(HealAfter10s());
+            {
+                if (gameObject.activeInHierarchy)
+                {
+                    StartCoroutine(HealAfter10s());
+
+                }
+            }
         }
     }
 

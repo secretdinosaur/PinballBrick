@@ -12,14 +12,16 @@ public class IgnoreBrick : IBrick
         base.OnEnable();
         BrickType = "IgnoreBrick";
         Ignoring = false;
-        StopCoroutine(IgnoreDamage());
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball") && !Ignoring)
         {
             TakeDamage(collision.gameObject.GetComponent<Ball>());
-            StartCoroutine(IgnoreDamage());
+            if (gameObject.activeInHierarchy)
+            {
+                StartCoroutine(IgnoreDamage());
+            }
         }
     }
 
