@@ -100,3 +100,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52795aae9ff13fa47b83d36c6d10db7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemName: DiceItem

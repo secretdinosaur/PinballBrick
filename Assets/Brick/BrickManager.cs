@@ -103,12 +103,12 @@ public class BrickManager : MonoBehaviour
         float RandomNumber = UnityEngine.Random.value;
         IBrick brick = null;
 
-        float ChanseSum = 0;
+        float ChanceSum = 0;
 
         for(int i = 0; i < BrickInfo.BrickSpawnChance.Length; i++)
         {
-            ChanseSum += BrickInfo.BrickSpawnChance[i];
-            if (RandomNumber < ChanseSum)
+            ChanceSum += BrickInfo.BrickSpawnChance[i];
+            if (RandomNumber < ChanceSum)
             {
                 Type brickType = Type.GetType(BrickInfo.BrickTypes[i]);
                 var method = typeof(PoolManager).GetMethod("GetFromPool");

@@ -5692,6 +5692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolManager: {fileID: 0}
+  ItemInfo: {fileID: 11400000, guid: ae23a3d2222f51e4da533cabb4858316, type: 2}
 --- !u!114 &2033836777
 MonoBehaviour:
   m_ObjectHideFlags: 0

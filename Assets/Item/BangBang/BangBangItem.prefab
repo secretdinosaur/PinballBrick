@@ -100,3 +100,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282388e99dcce4b4e91cf74caf92ae7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemName: BangBangItem
