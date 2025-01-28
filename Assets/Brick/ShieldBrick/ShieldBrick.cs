@@ -6,7 +6,7 @@ public class ShieldBrick : IBrick
     public float ShieldCount;
     public bool IsShieldDestroyed;
     public float HPMultiplier;
-    
+    public bool FirstShieldSpawn = true;
     private void OnEnable()
     {
         BrickType = "ShieldBrick";
@@ -15,6 +15,8 @@ public class ShieldBrick : IBrick
         ShieldCount = BasicShieldCount * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)] / 5;
         HPMultiplier = ShieldCount / BasicShieldCount;
         HP = ShieldCount;
+
+        GetComponents();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

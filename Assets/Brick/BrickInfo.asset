@@ -20,10 +20,11 @@ MonoBehaviour:
   - {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
   - {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
   BrickSpawnChance:
-  - 0.5
-  - 0.5
-  - 0
-  - 0
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
   BrickTypes:
   - Brick
   - HardBrick
