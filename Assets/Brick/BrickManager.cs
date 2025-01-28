@@ -117,6 +117,17 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
+        return brick;
+    }
+    
+    private IBrick GetSpecificBrick(string brickTypeName)
+    {
+        IBrick brick = null;
+        
+        Type brickType = Type.GetType(brickTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(brickType);
+        brick = (IBrick)genericMethod.Invoke(PoolManager, null);
 
         return brick;
     }
@@ -158,11 +169,15 @@ public class BrickManager : MonoBehaviour
         {
             HPPool.Add(j);
         }
-
         if (availablePositions.Count > 0)
         {
             Vector2 randomPosition = GenerateRandomPosition();
             IBrick brick = GetBrick();
+            if (brick.BrickType == "BlackAndWhiteBrick")
+            {
+                brick.transform.position = new Vector3(0, 0, 0);
+                return;
+            }
             brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
         }
     }
@@ -175,5 +190,18 @@ public class BrickManager : MonoBehaviour
         IBrick brick = GetBrick();
         brick.IsBoss = true;
         brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+    }
+
+    public IBrick SpawnSpecificBrick(string BrickType)
+    {
+        IBrick brick = null;
+        if (availablePositions.Count > 0)
+        {
+            Vector2 randomPosition = GenerateRandomPosition();
+            brick = GetSpecificBrick(BrickType);
+            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+        }
+
+        return brick;
     }
 }

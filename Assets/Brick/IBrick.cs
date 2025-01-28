@@ -250,3 +250,14 @@ public partial class IBrick
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
+
+public partial class IBrick
+{
+    public bool isTouchedBlackHole = false;
+    public GameObject TouchedObject;
+    public void TouchedBlackHole(Collision2D collision)
+    {
+        isTouchedBlackHole = true;
+        TouchedObject = collision.gameObject;
+    }
+}

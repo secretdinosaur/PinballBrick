@@ -206,13 +206,33 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
+  - _name: IgnoreBrick
+    _component: {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
   - _name: SlimeBrick
     _component: {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
-  - _name: IgnoreBrick
-    _component: {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
+  - _name: TeleportBrick
+    _component: {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
+  - _name: BlackAndWhiteBrick
+    _component: {fileID: 671170277417014381, guid: 1ff56609fa21e9b4a865c1de3d658530, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
+  - _name: BlackBrick
+    _component: {fileID: -3384781788680756480, guid: de966c7a39a1b0f40a7d91811b707933, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
+  - _name: WhiteBrick
+    _component: {fileID: 1708533091770634106, guid: 2c348e231a74f5045a32d0f3665b8982, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
@@ -247,8 +267,8 @@ Transform:
   m_Children:
   - {fileID: 998555652}
   - {fileID: 2000923007}
-  - {fileID: 2033836775}
   - {fileID: 137631891}
+  - {fileID: 1363721654}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &177869544
@@ -3866,6 +3886,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303877927}
   m_CullTransparentMesh: 1
+--- !u!1 &1363721653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1363721654}
+  - component: {fileID: 1363721656}
+  - component: {fileID: 1363721655}
+  m_Layer: 0
+  m_Name: ItemSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1363721654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363721653}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -959.9174, y: -979.0927, z: 7.8079376}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 153662570}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1363721655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363721653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31fbe326a1532444c91d43e5a68d52ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PoolManager: {fileID: 0}
+  ItemInfo: {fileID: 0}
+--- !u!114 &1363721656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363721653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733f4e1ff483611408f4a8d4fc9202ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pools:
+  - _name: DiceItem
+    _component: {fileID: 5583699915093996604, guid: 32b83b477a85e1b4fa3cc29a362a0b76, type: 3}
+    _count: 0
+    _container: {fileID: 1363721654}
+    _nonLazy: 0
+  - _name: BangBangItem
+    _component: {fileID: 5020224198338934819, guid: 8cd1493bc085b6344a81cea5adfce5b6, type: 3}
+    _count: 0
+    _container: {fileID: 1363721654}
+    _nonLazy: 0
+  - _name: BangBang
+    _component: {fileID: 117655277687620841, guid: 37b42b64b0eeb2b4a998a3a89624dcef, type: 3}
+    _count: 0
+    _container: {fileID: 1363721654}
+    _nonLazy: 0
+  - _name: HPOneItem
+    _component: {fileID: -3221218634140616889, guid: 5f65fb50e8c8abf409432977a590d9a5, type: 3}
+    _count: 0
+    _container: {fileID: 1363721654}
+    _nonLazy: 0
+  - _name: PowerUpItem
+    _component: {fileID: -6166823036124189305, guid: 3c3c40efe626b4d468a996641fef36f5, type: 3}
+    _count: 0
+    _container: {fileID: 1363721654}
+    _nonLazy: 0
+  - _name: GoldItem
+    _component: {fileID: -8510176905807851411, guid: c7f1cdcc40b90ce48842b89ca36dc528, type: 3}
+    _count: 0
+    _container: {fileID: 1363721654}
+    _nonLazy: 0
 --- !u!1 &1372685449
 GameObject:
   m_ObjectHideFlags: 0
@@ -4080,7 +4190,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1419739208
 RectTransform:
@@ -5640,95 +5750,6 @@ MonoBehaviour:
     _component: {fileID: 867072694694211875, guid: e61552d3b7e48154189d7651679beffe, type: 3}
     _count: 0
     _container: {fileID: 2000923007}
-    _nonLazy: 0
---- !u!1 &2033836774
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2033836775}
-  - component: {fileID: 2033836777}
-  - component: {fileID: 2033836776}
-  m_Layer: 0
-  m_Name: ItemSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2033836775
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2033836774}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -959.9174, y: -979.0927, z: 7.8079376}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 153662570}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2033836776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2033836774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31fbe326a1532444c91d43e5a68d52ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PoolManager: {fileID: 0}
---- !u!114 &2033836777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2033836774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733f4e1ff483611408f4a8d4fc9202ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pools:
-  - _name: DiceItem
-    _component: {fileID: 5583699915093996604, guid: 32b83b477a85e1b4fa3cc29a362a0b76, type: 3}
-    _count: 0
-    _container: {fileID: 2033836775}
-    _nonLazy: 0
-  - _name: BangBangItem
-    _component: {fileID: 5020224198338934819, guid: 8cd1493bc085b6344a81cea5adfce5b6, type: 3}
-    _count: 0
-    _container: {fileID: 2033836775}
-    _nonLazy: 0
-  - _name: BangBang
-    _component: {fileID: 117655277687620841, guid: 37b42b64b0eeb2b4a998a3a89624dcef, type: 3}
-    _count: 0
-    _container: {fileID: 2033836775}
-    _nonLazy: 0
-  - _name: HPOneItem
-    _component: {fileID: -3221218634140616889, guid: 5f65fb50e8c8abf409432977a590d9a5, type: 3}
-    _count: 0
-    _container: {fileID: 2033836775}
-    _nonLazy: 0
-  - _name: PowerUpItem
-    _component: {fileID: -6166823036124189305, guid: 3c3c40efe626b4d468a996641fef36f5, type: 3}
-    _count: 0
-    _container: {fileID: 2033836775}
-    _nonLazy: 0
-  - _name: GoldItem
-    _component: {fileID: -8510176905807851411, guid: c7f1cdcc40b90ce48842b89ca36dc528, type: 3}
-    _count: 0
-    _container: {fileID: 2033836775}
     _nonLazy: 0
 --- !u!1 &2036733785
 GameObject:
