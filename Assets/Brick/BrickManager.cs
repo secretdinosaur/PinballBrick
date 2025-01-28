@@ -166,9 +166,10 @@ public class BrickManager : MonoBehaviour
         {
             Vector2 randomPosition = GenerateRandomPosition();
             IBrick brick = GetBrick();
-            if (brick.BrickType == "BlackBrick")
+            if (brick.BrickType == "BlackAndWhiteBrick")
             {
-                SpawnSpecificBrick("WhiteBrick");
+                brick.transform.position = new Vector3(0, 0, 0);
+                return;
             }
             brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
         }
@@ -184,13 +185,16 @@ public class BrickManager : MonoBehaviour
         brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
     }
 
-    public void SpawnSpecificBrick(string BrickType)
+    public IBrick SpawnSpecificBrick(string BrickType)
     {
+        IBrick brick = null;
         if (availablePositions.Count > 0)
         {
             Vector2 randomPosition = GenerateRandomPosition();
-            IBrick brick = GetSpecificBrick(BrickType);
+            brick = GetSpecificBrick(BrickType);
             brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
         }
+
+        return brick;
     }
 }

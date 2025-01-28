@@ -2,8 +2,11 @@
 
 public class BlackBrick : IBrick
 {
+    public int RebirthCount = 3;
+    public BlackAndWhiteBrick BlackAndWhiteBrick;
     private void OnEnable()
     {
+        base.OnEnable();
         BrickType = "BlackBrick";
         GetComponents();
     }
@@ -12,7 +15,9 @@ public class BlackBrick : IBrick
     {
         if(collision.gameObject.CompareTag("Ball"))
         {
+            Debug.Log("Active 2");
             TakeDamage(collision.gameObject.GetComponent<Ball>());
+            BlackAndWhiteBrick.TouchedBlackHole(collision);
         }
     }
 }
