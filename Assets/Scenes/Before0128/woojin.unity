@@ -206,33 +206,13 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
-  - _name: IgnoreBrick
-    _component: {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
   - _name: SlimeBrick
     _component: {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
-  - _name: TeleportBrick
-    _component: {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: BlackAndWhiteBrick
-    _component: {fileID: 671170277417014381, guid: 1ff56609fa21e9b4a865c1de3d658530, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: BlackBrick
-    _component: {fileID: -3384781788680756480, guid: de966c7a39a1b0f40a7d91811b707933, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: WhiteBrick
-    _component: {fileID: 1708533091770634106, guid: 2c348e231a74f5045a32d0f3665b8982, type: 3}
+  - _name: IgnoreBrick
+    _component: {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
@@ -4100,7 +4080,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1419739208
 RectTransform:
@@ -5707,7 +5687,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolManager: {fileID: 0}
-  ItemInfo: {fileID: 0}
 --- !u!114 &2033836777
 MonoBehaviour:
   m_ObjectHideFlags: 0
