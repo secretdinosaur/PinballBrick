@@ -205,7 +205,7 @@ MonoBehaviour:
     _component: {fileID: 3994378899015205521, guid: 1d95b5ffe5d31ed489c639058c8d3d8e, type: 3}
     _count: 0
     _container: {fileID: 137631891}
-    _nonLazy: 0
+    _nonLazy: 1
 --- !u!1 &153662569
 GameObject:
   m_ObjectHideFlags: 0
@@ -4058,7 +4058,7 @@ Canvas:
   m_GameObject: {fileID: 1419739202}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1735489777}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
