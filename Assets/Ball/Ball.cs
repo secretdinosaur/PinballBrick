@@ -89,7 +89,8 @@ public partial class Ball : MonoBehaviour
         if(collision.gameObject.CompareTag("Brick") && IsStucking && gameObject.activeSelf)
         {
             rb.AddForce(rb.linearVelocity.normalized / 2, ForceMode2D.Impulse);
-            StopCoroutine(BallStuckCoroutine);
+            if(BallStuckCoroutine != null)
+                StopCoroutine(BallStuckCoroutine);
             IsStucking = false;
         }
     }
