@@ -25,24 +25,27 @@ public partial class IBrick : MonoBehaviour
         set
         {
             hp = value;
-            
+
             if (hp <= 0)
             {
                 if (BrickType == "TwinBrick")
                 {
-                        hp = 0;
-                        GetComponentInParent<TwinBrick>().CheckBothBrickDead();
+                    hp = 0;
+                    GetComponentInParent<TwinBrick>().CheckBothBrickDead();
                 }
                 else if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
                 {
                     GetComponent<ShieldBrick>().DestroyShield();
+                }
+                else if (BrickType == "BlackBrick")
+                {
+                    GetComponent<BlackBrick>().WhiteBrick.isBlackBrickDied();
                 }
                 else
                 {
                     BrickDie();
                 }
             }
-            
             UpdateHPtext();
         }
     }
@@ -124,12 +127,12 @@ public partial class IBrick
     {
         HP -= FinalDamage();
 
-        if (AugmentManager.instance.determineSpecialAugmentType("Effect") && gameObject.activeSelf && BrickType != "IgnoreBrick")
+        if (AugmentManager.instance.determineSpecialAugmentType("Effect") && gameObject.activeSelf && BrickType != "IgnoreBrick" && BrickType != "BlackBrick")
         {
             EffectStack += (EffectStack != 5) ? 1 : 0;
             StartCoroutine(DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
         }
-        if (!AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf && BrickType != "IgnoreBrick")
+        if (!AugmentManager.instance.determineAugmentID("SPECIAL_4") && gameObject.activeSelf && BrickType != "IgnoreBrick" && BrickType != "BlackBrick")
         {
             RunAdditionalAttack(0.3f, 0.1f);
         }
@@ -255,9 +258,9 @@ public partial class IBrick
 {
     public bool isTouchedBlackHole = false;
     public GameObject TouchedObject;
-    public void TouchedBlackHole(Collision2D collision)
+    public void TouchedBlackHole(Ball ball)
     {
         isTouchedBlackHole = true;
-        TouchedObject = collision.gameObject;
+        TouchedObject = ball.gameObject;
     }
 }

@@ -173,11 +173,6 @@ public class BrickManager : MonoBehaviour
         {
             Vector2 randomPosition = GenerateRandomPosition();
             IBrick brick = GetBrick();
-            if (brick.BrickType == "BlackAndWhiteBrick")
-            {
-                brick.transform.position = new Vector3(0, 0, 0);
-                return;
-            }
             brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
         }
     }
