@@ -117,6 +117,7 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
+        UpdateCurrentBricks();
         return brick;
     }
     
@@ -128,7 +129,7 @@ public class BrickManager : MonoBehaviour
         var method = typeof(PoolManager).GetMethod("GetFromPool");
         var genericMethod = method.MakeGenericMethod(brickType);
         brick = (IBrick)genericMethod.Invoke(PoolManager, null);
-
+        UpdateCurrentBricks();
         return brick;
     }
 

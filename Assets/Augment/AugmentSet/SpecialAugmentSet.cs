@@ -1,5 +1,6 @@
+using System.Threading;
 using UnityEngine;
-
+using System.Collections;
 /*
 public class Example : SpecialAugment
 {
@@ -15,10 +16,12 @@ public class FireBall : SpecialAugment
 {
     private float FireDamage; //EffectDamage
     private float FireDuration; //EffectDuration
-    public FireBall() : base("SPECIAL_1","FireBall", "Time to Cast Magic", "Effect", 3)
+
+    private void OnEnable()
     {
-        FireDamage += 0.1f;
-        FireDuration += 0.5f;
+        SetAugment("SPECIAL_1", "FireBall", "Time to Cast Magic", "Effect", 3);
+        FireDamage = 1f;
+        FireDuration = 0.5f;
     }
 
     public override void Apply()
@@ -34,38 +37,83 @@ public class FireBall : SpecialAugment
         StatManager.instance.Temporary_stat.EffectDuration -= FireDuration;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
+        {
+            Brick.EffectStack += (Brick.EffectStack != 5) ? 1 : 0;
+            StartCoroutine(Brick.DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
+        }
+    }
 }
 public class Homing : SpecialAugment
 {
-    public Homing() : base( "SPECIAL_2","Homing Ball" , "Lock On!", "Homing", 1 ) { }
-
-    public override void Apply(){ }
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_2", "Homing Ball", "Lock On!", "Homing", 1);
+    }
+    public override void Apply()
+    { 
+        
+    }
 
     public override void Remove(){  }
 }
 public class BouncePower: SpecialAugment
 {
-    public BouncePower() : base( "SPECIAL_3", "Bounce = Power", "Get Stronger with Bounces", "Bounce", 3 ) { } 
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_3", "Bounce = Power", "Get Stronger with Bounces", "Bounce", 3);
+    }
 
     public override void Apply(){ }
 
-    public override void Remove(){  }
+    public override void Remove(){ }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        Brick.TotalMultiple = Ball.BounceTime * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        Ball.BounceTime = 1;
+    }
 }
 
 public class AdditionalThreeAttack: SpecialAugment
 {
-    public AdditionalThreeAttack() : base( "SPECIAL_4", "Ninja", "Blink of an Eye", "AdditionalAttack", 1 ) { } 
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_4", "Ninja", "Blink of an Eye", "AdditionalAttack", 1);
+    }
 
     public override void Apply(){ }
 
     public override void Remove(){ }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
+        {
+            StartCoroutine(Brick.AdditionalAttack(0.3f, 0.1f));
+        }
+    }
 }
 
 public class CriticalAdditionalAttack : SpecialAugment
 {
-    public CriticalAdditionalAttack() : base( "SPECIAL_5", "Critical", "Additional Attack when Attack Hit Critical", "AdditionalAttack", 3 ) { } 
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_5", "Critical", "Additional Attack when Attack Hit Critical", "AdditionalAttack", 3);
+    }
 
     public override void Apply(){  }
 
     public override void Remove(){ }
+
+    public override void CriticalAttackEffect(IBrick Brick)
+    {
+        if (Brick.gameObject.activeSelf) //Critical Additional Attack
+        {
+            Brick.AdditionalAttack(0.5f, 0.5f);
+        }
+    }
 }

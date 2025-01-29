@@ -9,7 +9,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     //private List<int> usedIndexes;
     private List<StatAugment> activeStatAugments = new List<StatAugment>();
     private List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
-    private List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
+    public List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
     
     void Awake()
     {
@@ -17,22 +17,32 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
-            new Atk30Up(),
-            new Atk70Up(),
-            new CritChanceUp(),
-            new CritDamage30Up(),
-            new CritDamage70Up(),
-            new BossDamageUp(),
-            new AtkUpWhenCritical(),
+            gameObject.AddComponent<Atk30Up>(),
+            gameObject.AddComponent<Atk70Up>(),
+            gameObject.AddComponent<CritChanceUp>(),
+            gameObject.AddComponent<CritDamage30Up>(),
+            gameObject.AddComponent<CritDamage70Up>(),
+            gameObject.AddComponent<BossDamageUp>(),
+            gameObject.AddComponent<AtkUpWhenCritical>(),
+
             ///////////////////////// Stat
-            new AllDamage(),
+            gameObject.AddComponent<AllDamage>(),
             ///////////////////////// Field
-            new FireBall(),
-            new Homing(),
-            new BouncePower(),
-            new AdditionalThreeAttack(),
-            new CriticalAdditionalAttack(),
-            ///////////////////////// Special
+            gameObject.AddComponent<FireBall>(),
+            gameObject.AddComponent<Homing>(),
+            gameObject.AddComponent<BouncePower>(),
+            gameObject.AddComponent<AdditionalThreeAttack>(),
+            gameObject.AddComponent<CriticalAdditionalAttack>()
         };
+
+        List<IAugment> TestAugments = new List<IAugment>
+        {
+            GetComponent<AllDamage>()
+        };
+
+        foreach(IAugment augment in TestAugments)
+        {
+            AddAugment(augment);
+        }
     }
 }

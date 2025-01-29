@@ -1,64 +1,49 @@
 using UnityEngine;
-using System.Collections.Generic;
+using System;
+using System.Collections;
 
-public interface IAugment
+public abstract class IAugment : MonoBehaviour
 {
-    string ID { get; }
-    string Name { get; }
-    string Description { get; }
-    void Apply();
-    void Remove();
+    public string ID;
+    public string Name;
+    public string Description;
+    public int Rarity;
+    public virtual void Apply() { }
+
+    public virtual void Remove() { }
+    public virtual void BeforeAttackEffect(IBrick Brick) { }
+    public virtual void AfterAttackEffect(IBrick Brick) { }
+
+    public virtual void CriticalAttackEffect(IBrick Brick) { }
 }
 
 public abstract class StatAugment : IAugment
 {
-    public string ID { get; }
-    public string Name { get; }
-    public string Description { get; }
-    public int Rarity { get; }
-
-    protected StatAugment(string id, string name, string description, int rarity)
+    protected void SetAugment(string id, string name, string description, int rarity)
     {
         ID = id;
         Name = name;
         Description = description;
         Rarity = rarity;
     }
-
-    public virtual void Apply() { }
-
-    public virtual void Remove() { }
 }
 
 public abstract class FieldAugment : IAugment
 {
-    public string ID { get; }
-    public string Name { get; }
-    public string Description { get; }
-    public int Rarity { get; }
-
-    protected FieldAugment(string id, string name, string description, int rarity)
+    protected void SetAugment(string id, string name, string description, int rarity)
     {
         ID = id;
         Name = name;
         Description = description;
         Rarity = rarity;
     }
-
-    public virtual void Apply() { }
-
-    public virtual void Remove() { }
 }
 
 public abstract class SpecialAugment : IAugment
 {
-    public string ID { get; }
-    public string Name { get; }
-    public string Description { get; }
-    public string Type { get; }
-    public int Rarity { get; }
+    public string Type;
 
-    protected SpecialAugment(string id, string name, string description, string type, int rarity)
+    protected void SetAugment(string id, string name, string description, string type, int rarity)
     {
         ID = id;
         Name = name;
@@ -66,8 +51,4 @@ public abstract class SpecialAugment : IAugment
         Type = type;
         Rarity = rarity;
     }
-
-    public virtual void Apply() { }
-
-    public virtual void Remove() { }
 }

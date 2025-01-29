@@ -13,7 +13,10 @@ public class Example : StatAugment
 
 public class Atk30Up : StatAugment
 {
-    public Atk30Up() : base("STAT_1","Atk Up", "Ball Atk 30% Up", 4) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_1", "Atk Up", "Ball Atk 30% Up", 4);
+    }
 
     public override void Apply()
     {
@@ -30,7 +33,10 @@ public class Atk30Up : StatAugment
 
 public class Atk70Up : StatAugment
 {
-    public Atk70Up() : base("STAT_2","Super Atk Up", "Ball Atk 70% Up", 3) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_2", "Super Atk Up", "Ball Atk 70% Up", 3);
+    }
 
     public override void Apply()
     {
@@ -47,7 +53,10 @@ public class Atk70Up : StatAugment
 
 public class CritChanceUp : StatAugment
 {
-    public CritChanceUp() : base("STAT_3","Critical Chance Up", "Ball Critical Chance 50% Up", 3) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_3", "Critical Chance Up", "Ball Critical Chance 50% Up", 3);
+    }
 
     public override void Apply()
     {
@@ -64,7 +73,10 @@ public class CritChanceUp : StatAugment
 
 public class CritDamage30Up : StatAugment
 {
-    public CritDamage30Up() : base( "STAT_4","Critical Damage Up" , "Ball Critical Damage 30% Up" , 4) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_4", "Critical Damage Up", "Ball Critical Damage 30% Up", 4);
+    }
 
     public override void Apply()
     {
@@ -81,7 +93,10 @@ public class CritDamage30Up : StatAugment
 
 public class CritDamage70Up : StatAugment
 {
-    public CritDamage70Up() : base( "STAT_5","Super Critical Damage Up" , "Ball Critical Damage 70% Up" , 3) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_5", "Super Critical Damage Up", "Ball Critical Damage 70% Up", 3);
+    }
 
     public override void Apply()
     {
@@ -98,18 +113,46 @@ public class CritDamage70Up : StatAugment
 
 public class BossDamageUp : StatAugment
 {
-    public BossDamageUp() : base( "STAT_6", "Boss Additional Damage Up" , "Boss Additional Damage 30% Up" , 4) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_6", "Boss Additional Damage Up", "Boss Additional Damage 30% Up", 4);
+    }
 
     public override void Apply(){  }
 
     public override void Remove(){  }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        if (Brick.IsBoss)
+        {
+            Brick.TotalMultiple *= 1.3f;
+        }
+    }
 }
 
 public class AtkUpWhenCritical : StatAugment
 {
-    public AtkUpWhenCritical() : base( "STAT_7", "AtkUpWhenCritical" , "On Critical Hit, Ball Attack Damage increases for a few seconds", 2 ) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_7", "AtkUpWhenCritical", "On Critical Hit, Ball Attack Damage increases for a few seconds", 2);
+    }
 
-    public override void Apply(){ }
+    public override void Apply()
+    { 
 
-    public override void Remove(){ }
+    }
+
+    public override void Remove()
+    { 
+
+    }
+
+    public override void CriticalAttackEffect(IBrick Brick)
+    {
+        if (Brick.gameObject.activeSelf)
+        {
+            StatManager.instance.RunAttackDamageUpFewSec(3f, 0.2f);
+        }
+    }
 }

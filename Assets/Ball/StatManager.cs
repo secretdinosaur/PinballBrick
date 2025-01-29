@@ -1,6 +1,6 @@
 using System.IO;
 using UnityEngine;
-
+using System.Collections;
 public class StatManager : MonoBehaviour
 {
     public static StatManager instance;
@@ -134,5 +134,19 @@ public class StatManager : MonoBehaviour
         json = File.ReadAllText(stat_Multiplier_filePath);
         statMultiplier = JsonUtility.FromJson<StatMultiplier>(json);
     }
-    
+
+    public void RunAttackDamageUpFewSec(float setTime, float AttackUpValue)
+    {
+        StartCoroutine(AttackDamageUpFewSec(setTime, AttackUpValue));
+    }
+
+    IEnumerator AttackDamageUpFewSec(float setTime, float AttackUpValue)
+    {
+        statMultiplier.AttackDamageMultiplier += AttackUpValue;
+        SaveStatMultiplier(statMultiplier);
+        yield return new WaitForSeconds(setTime);
+        statMultiplier.AttackDamageMultiplier -= AttackUpValue;
+        SaveStatMultiplier(statMultiplier);
+    }
+
 }
