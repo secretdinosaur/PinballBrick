@@ -221,11 +221,6 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
-  - _name: BlackAndWhiteBrick
-    _component: {fileID: 671170277417014381, guid: 1ff56609fa21e9b4a865c1de3d658530, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
   - _name: BlackBrick
     _component: {fileID: -3384781788680756480, guid: de966c7a39a1b0f40a7d91811b707933, type: 3}
     _count: 0
@@ -3932,7 +3927,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolManager: {fileID: 0}
-  ItemInfo: {fileID: 0}
+  ItemInfo: {fileID: 11400000, guid: ae23a3d2222f51e4da533cabb4858316, type: 2}
 --- !u!114 &1363721656
 MonoBehaviour:
   m_ObjectHideFlags: 0

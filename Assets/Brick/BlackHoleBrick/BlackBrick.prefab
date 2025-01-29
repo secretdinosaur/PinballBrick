@@ -327,9 +327,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Point: 5
-  BasicHP: 1
+  BasicHP: 0.5
   IsBoss: 0
   HPText: {fileID: 0}
   BrickType: 
   BrickTransform: {fileID: 0}
   isEffectActive: 0
+  isTouchedBlackHole: 0
+  TouchedObject: {fileID: 0}
+  WhiteBrick: {fileID: 0}
