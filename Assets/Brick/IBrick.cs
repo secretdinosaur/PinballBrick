@@ -14,6 +14,7 @@ public partial class IBrick : MonoBehaviour
     public Transform BrickTransform;
     private Canvas canvas;
     private Camera camera;
+    public float HpTemp;
 
     public float TotalMultiple;
 
@@ -97,6 +98,7 @@ public partial class IBrick : MonoBehaviour
     public void OnEnable()
     {
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
+        HpTemp = HP;
         GetComponents();
     }
 
@@ -167,19 +169,32 @@ public partial class IBrick
     {
         if (isEffectActive) yield break;
         isEffectActive = true;
-
         float interval = 0.1f;
-        while (effectDuration > 0 && EffectStack > 0)
+        while (effectDuration > 0)
         {
-            float EffectAttackDamage = (StatManager.instance.Temporary_stat.EffectDamage *
-                                        StatManager.instance.statMultiplier.EffectDamageMultiplier)
-                                       * EffectStack;
+            bool isCritical = false;
+            float EffectAttackDamage;
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
+            {
+                isCritical = IsCriticalHit();
+            }
+            
+            EffectAttackDamage = isCritical
+                ? (StatManager.instance.Temporary_stat.EffectDamage *
+                   StatManager.instance.statMultiplier.EffectDamageMultiplier)
+                  * EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage
+                : (StatManager.instance.Temporary_stat.EffectDamage *
+                   StatManager.instance.statMultiplier.EffectDamageMultiplier)
+                  * EffectStack;
 
             float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
             HP -= FinalEffectAttackDamage;
-            ShowDamageText(EffectAttackDamage, "Effect", false);
-            EffectStack--;
+            ShowDamageText(EffectAttackDamage, "Effect", isCritical);
             effectDuration -= interval;
+            if (!gameObject.activeSelf)
+            {
+                yield break;
+            }
             yield return new WaitForSeconds(interval);
         }
         isEffectActive = false;
@@ -208,6 +223,12 @@ public partial class IBrick
             yield return new WaitForSeconds(TimeCount);
             MaxAttackTime -= TimeCount;
         }
+    }
+
+    public void ArbitraryDamageAttack(float damage, bool isCritical)
+    {
+        HP -= damage;
+        ShowDamageText(damage, "Normal", isCritical);
     }
 }
 

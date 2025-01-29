@@ -4,11 +4,20 @@ using System.Collections;
 /*
 public class Example : SpecialAugment
 {
-    public Example() : base( "SPECIAL_N", "Example", "Just Example", "Preset", 1 ) { } 
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_N", "Example", "Example", "Example", 3);
+    }
 
-    public override void Apply(){ Augment Effect (Plus) }
+    public override void Apply(){  }
 
-    public override void Remove(){ Augment Effect (Minus) }
+    public override void Remove(){ }
+
+    public virtual void BeforeAttackEffect(IBrick Brick) { }
+    
+    public virtual void AfterAttackEffect(IBrick Brick) { }
+
+    public virtual void CriticalAttackEffect(IBrick Brick) { }
 }
  */
 
@@ -20,8 +29,8 @@ public class FireBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_1", "FireBall", "Time to Cast Magic", "Effect", 3);
-        FireDamage = 1f;
-        FireDuration = 0.5f;
+        FireDamage = 3f;
+        FireDuration = 5f;
     }
 
     public override void Apply()
@@ -116,4 +125,31 @@ public class CriticalAdditionalAttack : SpecialAugment
             Brick.AdditionalAttack(0.5f, 0.5f);
         }
     }
+}
+
+public class Execution : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_6", "Execution", "Execution", "Special", 1);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        if (Brick.gameObject.activeSelf)
+        {
+            if (Brick.HP <= Brick.HpTemp * 0.15)
+            {
+                if (Brick.BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)
+                {
+                    Brick.ArbitraryDamageAttack(999999, true);
+                }
+                Brick.ArbitraryDamageAttack(999999, true);
+            }
+        }
+    } 
 }

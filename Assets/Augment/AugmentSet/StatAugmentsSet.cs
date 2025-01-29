@@ -3,13 +3,22 @@
 /*
 public class Example : StatAugment
 {
-    public Example() : base( "STAT_n", "Example" , "Just Example", 1 ) { }
+    private void OnEnable()
+    {
+        SetAugment("Stat_N", "Example", "Example", 3);
+    }
 
-    public override void Apply(){ Augment Effect (Plus) }
+    public override void Apply(){  }
 
-    public override void Remove(){ Augment Effect (Minus) }
+    public override void Remove(){ }
+
+    public virtual void BeforeAttackEffect(IBrick Brick) { }
+    
+    public virtual void AfterAttackEffect(IBrick Brick) { }
+
+    public virtual void CriticalAttackEffect(IBrick Brick) { }
 }
- */
+*/
 
 public class Atk30Up : StatAugment
 {
@@ -154,5 +163,23 @@ public class AtkUpWhenCritical : StatAugment
         {
             StatManager.instance.RunAttackDamageUpFewSec(3f, 0.2f);
         }
+    }
+}
+
+public class EffectCritical : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_8", "EffectCritical", "EffectCritical", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.EffectCriticalDamage += 0.2f;
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.EffectCriticalDamage -= 0.2f;
     }
 }

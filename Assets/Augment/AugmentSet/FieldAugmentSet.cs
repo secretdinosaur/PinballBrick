@@ -5,11 +5,20 @@ using Unity.VisualScripting;
 /*
 public class Example : FieldAugment
 {
-     public Example() : base( "FIELD_n", "Example" , "Just Example", 1 ) { }
+    private void OnEnable()
+    {
+        SetAugment("Field_N", "Example", "Example", 3);
+    }
 
-    public override void Apply(){ Augment Effect (Plus) }
+    public override void Apply(){  }
 
-    public override void Remove(){ Augment Effect (Minus) }
+    public override void Remove(){ }
+
+    public virtual void BeforeAttackEffect(IBrick Brick) { }
+    
+    public virtual void AfterAttackEffect(IBrick Brick) { }
+
+    public virtual void CriticalAttackEffect(IBrick Brick) { }
 }
  */
 

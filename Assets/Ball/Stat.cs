@@ -22,6 +22,7 @@ public class Temporary_Stat //In Game Stats(Upgradeable Stats Using Skill Points
     public float BallSpeed;
     public float EffectDamage;
     public float EffectDuration;
+    public float EffectCriticalDamage;
     public float GoldGain;
 }
 
