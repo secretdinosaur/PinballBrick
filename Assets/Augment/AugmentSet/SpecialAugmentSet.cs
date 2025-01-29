@@ -117,3 +117,30 @@ public class CriticalAdditionalAttack : SpecialAugment
         }
     }
 }
+
+public class Execution : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_6", "Execution", "Execution", "Special", 1);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        if (Brick.gameObject.activeSelf)
+        {
+            if (Brick.HP <= Brick.HpTemp * 0.15)
+            {
+                if (Brick.BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)
+                {
+                    Brick.ArbitraryDamageAttack(999999, true);
+                }
+                Brick.ArbitraryDamageAttack(999999, true);
+            }
+        }
+    } 
+}

@@ -14,6 +14,7 @@ public partial class IBrick : MonoBehaviour
     public Transform BrickTransform;
     private Canvas canvas;
     private Camera camera;
+    public float HpTemp;
 
     public float TotalMultiple;
 
@@ -97,6 +98,7 @@ public partial class IBrick : MonoBehaviour
     public void OnEnable()
     {
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
+        HpTemp = HP;
         GetComponents();
     }
 
@@ -208,6 +210,12 @@ public partial class IBrick
             yield return new WaitForSeconds(TimeCount);
             MaxAttackTime -= TimeCount;
         }
+    }
+
+    public void ArbitraryDamageAttack(float damage, bool isCritical)
+    {
+        HP -= damage;
+        ShowDamageText(damage, "Normal", isCritical);
     }
 }
 

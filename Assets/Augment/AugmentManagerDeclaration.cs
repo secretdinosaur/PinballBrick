@@ -32,12 +32,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<Homing>(),
             gameObject.AddComponent<BouncePower>(),
             gameObject.AddComponent<AdditionalThreeAttack>(),
-            gameObject.AddComponent<CriticalAdditionalAttack>()
+            gameObject.AddComponent<CriticalAdditionalAttack>(),
+            gameObject.AddComponent<Execution>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            GetComponent<AllDamage>()
+            GetComponent<Execution>()
         };
 
         foreach(IAugment augment in TestAugments)
