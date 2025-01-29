@@ -216,6 +216,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
+  - _name: TeleportBrick
+    _component: {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
 --- !u!1 &153662569
 GameObject:
   m_ObjectHideFlags: 0
@@ -4467,7 +4472,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5687,6 +5692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolManager: {fileID: 0}
+  ItemInfo: {fileID: 11400000, guid: ae23a3d2222f51e4da533cabb4858316, type: 2}
 --- !u!114 &2033836777
 MonoBehaviour:
   m_ObjectHideFlags: 0
