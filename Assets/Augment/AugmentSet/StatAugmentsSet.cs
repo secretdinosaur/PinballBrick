@@ -165,3 +165,21 @@ public class AtkUpWhenCritical : StatAugment
         }
     }
 }
+
+public class EffectCritical : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_8", "EffectCritical", "EffectCritical", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.EffectCriticalDamage += 0.2f;
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.EffectCriticalDamage -= 0.2f;
+    }
+}

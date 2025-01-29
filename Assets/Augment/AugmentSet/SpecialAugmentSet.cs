@@ -153,15 +153,3 @@ public class Execution : SpecialAugment
         }
     } 
 }
-
-public class EffectCritical : SpecialAugment
-{
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_7", "EffectCritical", "EffectCritical", "Special", 4);
-    }
-
-    public override void Apply(){ }
-
-    public override void Remove(){ }
-}

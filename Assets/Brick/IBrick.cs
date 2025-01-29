@@ -182,7 +182,7 @@ public partial class IBrick
             EffectAttackDamage = isCritical
                 ? (StatManager.instance.Temporary_stat.EffectDamage *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier)
-                  * EffectStack * 1.2f
+                  * EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage
                 : (StatManager.instance.Temporary_stat.EffectDamage *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier)
                   * EffectStack;

@@ -76,6 +76,7 @@ public class StatManager : MonoBehaviour
             BallSpeed = 0.0f,
             EffectDamage = 0.0f,
             EffectDuration = 0.0f,
+            EffectCriticalDamage = 1.0f,
             GoldGain = 0.0f
         };
         
