@@ -24,7 +24,14 @@ public partial class IBrick : MonoBehaviour
         set
         {
             hp = value;
-
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_6"))
+            {
+                if (hp <= HpTemp * 0.15)
+                { 
+                    hp -= 999999 + HpTemp;
+                    ShowText("EXECUTION", null , true);
+                }
+            }
             if (hp <= 0)
             {
                 if (BrickType == "TwinBrick")
@@ -60,7 +67,7 @@ public partial class IBrick : MonoBehaviour
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
 
-    private void ShowDamageText(float Damage, string DamageType, bool isCritical)
+    private void ShowText(string Text, string DamageType, bool isCritical)
     {
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
         if(canvas == null)
@@ -68,15 +75,15 @@ public partial class IBrick : MonoBehaviour
             canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         }
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-        Vector2 damageTextPosition;
+        Vector2 TextPosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRect,
             screenPosition,
             canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : camera,
-            out damageTextPosition
+            out TextPosition
         );
      
-        DamageTextManager.instance.CreateDamageText(damageTextPosition, Damage, DamageType, isCritical);
+        DamageTextManager.instance.CreateDamageText(TextPosition, Text, DamageType, isCritical);
     }
 
     public void UpdateHPtext()
@@ -152,7 +159,7 @@ public partial class IBrick
 
         float FinalDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : TotalAttackStat * TotalMultiple;
         if (BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
-        ShowDamageText(FinalDamage, "Normal", CriticalHit);
+        ShowText(FinalDamage.ToString("F1"), "Normal", CriticalHit);
         return FinalDamage;
     }
     private bool IsCriticalHit()
@@ -189,7 +196,7 @@ public partial class IBrick
 
             float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
             HP -= FinalEffectAttackDamage;
-            ShowDamageText(EffectAttackDamage, "Effect", isCritical);
+            ShowText(EffectAttackDamage.ToString("F1"), "Effect", isCritical);
             effectDuration -= interval;
             if (!gameObject.activeSelf)
             {
@@ -219,7 +226,7 @@ public partial class IBrick
             
             if(BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
             HP -= FinalAdditionalAttackDamage;
-            ShowDamageText(FinalAdditionalAttackDamage, "Additional", CriticalHit);
+            ShowText(FinalAdditionalAttackDamage.ToString("F1"), "Additional", CriticalHit);
             yield return new WaitForSeconds(TimeCount);
             MaxAttackTime -= TimeCount;
         }
@@ -227,8 +234,12 @@ public partial class IBrick
 
     public void ArbitraryDamageAttack(float damage, bool isCritical)
     {
+        if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+        {
+            return;
+        }
         HP -= damage;
-        ShowDamageText(damage, "Normal", isCritical);
+        ShowText(damage.ToString("F1"), "Normal", isCritical);
     }
 }
 

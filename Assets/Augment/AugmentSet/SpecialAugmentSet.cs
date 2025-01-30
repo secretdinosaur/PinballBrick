@@ -29,8 +29,8 @@ public class FireBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_1", "FireBall", "Time to Cast Magic", "Effect", 3);
-        FireDamage = 3f;
-        FireDuration = 5f;
+        FireDamage = 0.5f;
+        FireDuration = 0.5f;
     }
 
     public override void Apply()
@@ -137,19 +137,24 @@ public class Execution : SpecialAugment
     public override void Apply(){ }
 
     public override void Remove(){ }
+}
 
-    public override void BeforeAttackEffect(IBrick Brick)
+public class PercentDamage : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_7", "Percent Damage", "Percent Damage", "Special", 2);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void AfterAttackEffect(IBrick Brick)
     {
         if (Brick.gameObject.activeSelf)
-        {
-            if (Brick.HP <= Brick.HpTemp * 0.15)
-            {
-                if (Brick.BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)
-                {
-                    Brick.ArbitraryDamageAttack(999999, true);
-                }
-                Brick.ArbitraryDamageAttack(999999, true);
-            }
+        { 
+            Brick.ArbitraryDamageAttack(Brick.HpTemp * 0.01f, false);
         }
     } 
 }

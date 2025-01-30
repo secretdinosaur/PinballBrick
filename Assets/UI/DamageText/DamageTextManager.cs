@@ -13,12 +13,12 @@ public class DamageTextManager : MonoBehaviour
         
     }
 
-    public void CreateDamageText(Vector2 position, float damage, string damageType, bool isCritical)
+    public void CreateDamageText(Vector2 position, string Text, string damageType, bool isCritical)
     {
         DamageText damageText;
         damageText = PoolManager.GetFromPool<DamageText>();
         damageText.rectTransform.anchoredPosition = position;
-        damageText.SetDamage(damage, damageType, isCritical);
+        damageText.SetText(Text, damageType, isCritical);
     }
     
     public void TakeDamageText(DamageText damageText)
