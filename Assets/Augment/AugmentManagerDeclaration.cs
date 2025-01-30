@@ -5,7 +5,7 @@ using System.Linq;
 public partial class AugmentManager : MonoBehaviour //Declaration
 {
     public static AugmentManager instance;
-    private List<IAugment> augmentsSet;
+    public List<IAugment> augmentsSet;
     //private List<int> usedIndexes;
     public List<StatAugment> activeStatAugments = new List<StatAugment>();
     public List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
@@ -41,7 +41,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            GetComponent<ChainLightning>(),
+            
         };
 
         foreach(IAugment augment in TestAugments)

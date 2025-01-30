@@ -65,7 +65,11 @@ public class LevelUpPanel : MonoBehaviour
             }
             else
             {
-                augmentsSet = AugmentManager.instance.GetRandomAugments(3);
+                List<IAugment> augmentsSet = new List<IAugment>();
+                for (int i = 0; i < 3; i++)
+                {
+                    augmentsSet.Add(AugmentManager.instance.GetRandomAugment());
+                }
                 Option_1_Name.text = augmentsSet[0].Name;
                 Option_1_Description.text = augmentsSet[0].Description;
                 Option_2_Name.text = augmentsSet[1].Name;
