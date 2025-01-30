@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
 public partial class IBrick : MonoBehaviour
@@ -24,7 +25,14 @@ public partial class IBrick : MonoBehaviour
         set
         {
             hp = value;
-
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_6"))
+            {
+                if (hp <= HpTemp * 0.15)
+                { 
+                    hp -= 999999 + HpTemp;
+                    ShowText("EXECUTION", null , true);
+                }
+            }
             if (hp <= 0)
             {
                 if (BrickType == "TwinBrick")
@@ -60,7 +68,7 @@ public partial class IBrick : MonoBehaviour
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
 
-    private void ShowDamageText(float Damage, string DamageType, bool isCritical)
+    private void ShowText(string Text, string DamageType, bool isCritical)
     {
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
         if(canvas == null)
@@ -68,15 +76,15 @@ public partial class IBrick : MonoBehaviour
             canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         }
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-        Vector2 damageTextPosition;
+        Vector2 TextPosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRect,
             screenPosition,
             canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : camera,
-            out damageTextPosition
+            out TextPosition
         );
      
-        DamageTextManager.instance.CreateDamageText(damageTextPosition, Damage, DamageType, isCritical);
+        DamageTextManager.instance.CreateDamageText(TextPosition, Text, DamageType, isCritical);
     }
 
     public void UpdateHPtext()
@@ -99,6 +107,7 @@ public partial class IBrick : MonoBehaviour
     {
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
+        boxSize = new Vector2(2f, 2f);
         GetComponents();
     }
 
@@ -152,7 +161,7 @@ public partial class IBrick
 
         float FinalDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : TotalAttackStat * TotalMultiple;
         if (BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
-        ShowDamageText(FinalDamage, "Normal", CriticalHit);
+        ShowText(FinalDamage.ToString("F1"), "Normal", CriticalHit);
         return FinalDamage;
     }
     private bool IsCriticalHit()
@@ -189,10 +198,11 @@ public partial class IBrick
 
             float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
             HP -= FinalEffectAttackDamage;
-            ShowDamageText(EffectAttackDamage, "Effect", isCritical);
+            ShowText(EffectAttackDamage.ToString("F1"), "Effect", isCritical);
             effectDuration -= interval;
             if (!gameObject.activeSelf)
             {
+                EffectStack = 0;
                 yield break;
             }
             yield return new WaitForSeconds(interval);
@@ -219,20 +229,61 @@ public partial class IBrick
             
             if(BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
             HP -= FinalAdditionalAttackDamage;
-            ShowDamageText(FinalAdditionalAttackDamage, "Additional", CriticalHit);
+            ShowText(FinalAdditionalAttackDamage.ToString("F1"), "Additional", CriticalHit);
+            if (!gameObject.activeSelf)
+            {
+                yield break;
+            }
             yield return new WaitForSeconds(TimeCount);
             MaxAttackTime -= TimeCount;
         }
     }
 
-    public void ArbitraryDamageAttack(float damage, bool isCritical)
+    public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText)
     {
         HP -= damage;
-        ShowDamageText(damage, "Normal", isCritical);
+        ShowText(damageText, null, isCritical);
     }
 }
 
-public partial class IBrick
+public partial class IBrick //Detect Nearby Bricks
+{
+    public List<IBrick> NearbyBricks = new List<IBrick>();
+    public Vector2 boxSize;
+
+    void FixedUpdate()
+    {
+        CollectNearbyBricks();
+        RemoveInactiveBricks();
+    }
+
+    void CollectNearbyBricks()
+    {
+        LayerMask detectionLayer = LayerMask.GetMask("Game");
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, boxSize, 0, detectionLayer);
+        foreach (Collider2D collider in colliders)
+        {
+            IBrick obj = collider.gameObject.GetComponent<IBrick>();
+            if (obj != null && collider.gameObject.activeInHierarchy && !NearbyBricks.Contains(obj) && obj != this)
+            {
+                NearbyBricks.Add(obj);
+            }
+        }
+    }
+
+    void RemoveInactiveBricks()
+    {
+        NearbyBricks.RemoveAll(brick => brick == null || !brick.gameObject.activeInHierarchy);
+    }
+    
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position, boxSize);
+    }
+}
+
+public partial class IBrick //BlackHole Brick
 {
     public bool isTouchedBlackHole = false;
     public GameObject TouchedObject;

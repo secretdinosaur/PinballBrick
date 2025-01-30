@@ -28,15 +28,14 @@ public class DamageText : MonoBehaviour
         } while (direction.y < 0);
     }
 
-    public void SetDamage(float damage, string damageType, bool isCritical)
+    public void SetText(string Text, string TextType, bool isCritical)
     {
         StartCoroutine(ShowDamageText());
 
-        damageText.color = (damageType == "Normal") ? Color.white
-            : (damageType == "Additional") ? new Color(1f, 0.5f, 0f)
-            : (damageType == "Effect") ? Color.red : Color.white;
-        damageText.text = isCritical ? "!" + damage.ToString("F1") 
-                                     : damage.ToString("F1");
+        damageText.color = (TextType == "Normal") ? Color.white
+            : (TextType == "Additional") ? new Color(1f, 0.5f, 0f)
+            : (TextType == "Effect") ? Color.red : Color.blue;
+        damageText.text = isCritical ? "!" + Text : Text;
     }
     
     IEnumerator ShowDamageText()

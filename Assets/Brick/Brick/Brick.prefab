@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6543651159492969353}
   - component: {fileID: 2593977364155923201}
   - component: {fileID: 8521442660743975225}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: HPText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,8 +282,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Point: 5
   BasicHP: 1
+  IsBoss: 0
   HPText: {fileID: 0}
-  Type: 
+  BrickType: 
+  BrickTransform: {fileID: 0}
+  HpTemp: 0
+  TotalMultiple: 0
+  EffectStack: 0
+  isEffectActive: 0
+  NearbyBricks: []
+  boxSize: {x: 5, y: 5}
+  isTouchedBlackHole: 0
+  TouchedObject: {fileID: 0}
 --- !u!61 &8065087008795427907
 BoxCollider2D:
   m_ObjectHideFlags: 0

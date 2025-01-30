@@ -1,6 +1,8 @@
 using System.Threading;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 /*
 public class Example : SpecialAugment
 {
@@ -29,8 +31,8 @@ public class FireBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_1", "FireBall", "Time to Cast Magic", "Effect", 3);
-        FireDamage = 3f;
-        FireDuration = 5f;
+        FireDamage = 0.5f;
+        FireDuration = 0.5f;
     }
 
     public override void Apply()
@@ -137,19 +139,83 @@ public class Execution : SpecialAugment
     public override void Apply(){ }
 
     public override void Remove(){ }
+}
+
+public class PercentDamage : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_7", "Percent Damage", "Percent Damage", "Special", 2);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
         if (Brick.gameObject.activeSelf)
+        { 
+            Brick.ArbitraryDamageAttack(Brick.HpTemp * 0.01f, false, "1%");
+        }
+    }
+}
+
+public class EffectStackBlast : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_8", "EffectStackBlast", "EffectStackBlast", "Effect", 3);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        if (Brick.EffectStack >= 5)
         {
-            if (Brick.HP <= Brick.HpTemp * 0.15)
+            Brick.EffectStack -= 3;
+            foreach (IBrick nearbyBrick in Brick.NearbyBricks)
             {
-                if (Brick.BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)
-                {
-                    Brick.ArbitraryDamageAttack(999999, true);
-                }
-                Brick.ArbitraryDamageAttack(999999, true);
+                nearbyBrick.EffectStack += (nearbyBrick.EffectStack != 5) ? 2 : 0;
+                StartCoroutine(nearbyBrick.DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
             }
         }
-    } 
+    }
+}
+
+public class ChainLightning : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_9", "ChainLightning", "ChainLightning", "AdditionalAttack", 3);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        IBrick targetBrick = Brick;
+        if (Brick.NearbyBricks.Count == 0)
+        {
+            return;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            List<IBrick> BrickToBrick = targetBrick.NearbyBricks;
+            if (BrickToBrick.Count == 0)
+            {
+                break;
+            }
+            int RandomNumber = Random.Range(0, BrickToBrick.Count);
+            BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 * StatManager.instance.statMultiplier.EffectDamageMultiplier, 
+                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"));
+            BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
+            targetBrick = BrickToBrick[RandomNumber];
+        }
+    }
 }

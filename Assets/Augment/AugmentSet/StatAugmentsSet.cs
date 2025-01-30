@@ -24,7 +24,7 @@ public class Atk30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_1", "Atk Up", "Ball Atk 30% Up", 4);
+        SetAugment("STAT_1", "Atk Up", "Ball Atk 30% Up", 5);
     }
 
     public override void Apply()

@@ -5,10 +5,10 @@ using System.Linq;
 public partial class AugmentManager : MonoBehaviour //Declaration
 {
     public static AugmentManager instance;
-    private List<IAugment> augmentsSet;
+    public List<IAugment> augmentsSet;
     //private List<int> usedIndexes;
-    private List<StatAugment> activeStatAugments = new List<StatAugment>();
-    private List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
+    public List<StatAugment> activeStatAugments = new List<StatAugment>();
+    public List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
     public List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
     
     void Awake()
@@ -24,7 +24,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<CritDamage70Up>(),
             gameObject.AddComponent<BossDamageUp>(),
             gameObject.AddComponent<AtkUpWhenCritical>(),
-
+            gameObject.AddComponent<EffectCritical>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             ///////////////////////// Field
@@ -34,14 +34,14 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<AdditionalThreeAttack>(),
             gameObject.AddComponent<CriticalAdditionalAttack>(),
             gameObject.AddComponent<Execution>(),
-            gameObject.AddComponent<EffectCritical>(),
+            gameObject.AddComponent<PercentDamage>(),
+            gameObject.AddComponent<EffectStackBlast>(),
+            gameObject.AddComponent<ChainLightning>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            GetComponent<EffectCritical>(),
-            GetComponent<CritChanceUp>(),
-            GetComponent<FireBall>(),
+            
         };
 
         foreach(IAugment augment in TestAugments)
