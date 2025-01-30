@@ -154,7 +154,32 @@ public class PercentDamage : SpecialAugment
     {
         if (Brick.gameObject.activeSelf)
         { 
-            Brick.ArbitraryDamageAttack(Brick.HpTemp * 0.01f, false);
+            Brick.ArbitraryDamageAttack(Brick.HpTemp * 0.01f, false, "1%");
         }
-    } 
+    }
+}
+
+public class EffectStackBlast : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_8", "EffectStackBlast", "EffectStackBlast", "Effect", 3);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        if (Brick.EffectStack >= 5)
+        {
+            Brick.EffectStack -= 3;
+            foreach (IBrick nearbyBrick in Brick.NearbyBricks)
+            {
+                nearbyBrick.EffectStack += (nearbyBrick.EffectStack != 5) ? 2 : 0;
+                StartCoroutine(nearbyBrick.DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
+            }
+        }
+    }
 }

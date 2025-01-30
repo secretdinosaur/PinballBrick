@@ -282,8 +282,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Point: 5
   BasicHP: 1
+  IsBoss: 0
   HPText: {fileID: 0}
-  Type: 
+  BrickType: 
+  BrickTransform: {fileID: 0}
+  HpTemp: 0
+  TotalMultiple: 0
+  EffectStack: 0
+  isEffectActive: 0
+  NearbyBricks: []
+  boxSize: {x: 5, y: 5}
+  isTouchedBlackHole: 0
+  TouchedObject: {fileID: 0}
 --- !u!61 &8065087008795427907
 BoxCollider2D:
   m_ObjectHideFlags: 0

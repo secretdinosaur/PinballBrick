@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
 public partial class IBrick : MonoBehaviour
@@ -106,6 +107,7 @@ public partial class IBrick : MonoBehaviour
     {
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
+        boxSize = new Vector2(2f, 2f);
         GetComponents();
     }
 
@@ -200,6 +202,7 @@ public partial class IBrick
             effectDuration -= interval;
             if (!gameObject.activeSelf)
             {
+                EffectStack = 0;
                 yield break;
             }
             yield return new WaitForSeconds(interval);
@@ -227,23 +230,67 @@ public partial class IBrick
             if(BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
             HP -= FinalAdditionalAttackDamage;
             ShowText(FinalAdditionalAttackDamage.ToString("F1"), "Additional", CriticalHit);
+            if (!gameObject.activeSelf)
+            {
+                yield break;
+            }
             yield return new WaitForSeconds(TimeCount);
             MaxAttackTime -= TimeCount;
         }
     }
 
-    public void ArbitraryDamageAttack(float damage, bool isCritical)
+    public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText)
     {
         if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
         {
             return;
         }
         HP -= damage;
-        ShowText(damage.ToString("F1"), "Normal", isCritical);
+        ShowText(damageText, "Normal", isCritical);
     }
 }
 
-public partial class IBrick
+public partial class IBrick //Detect Nearby Bricks
+{
+    public List<IBrick> NearbyBricks = new List<IBrick>();
+    public Vector2 boxSize;
+
+    void FixedUpdate()
+    {
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_8"))
+        {
+            CollectNearbyBricks();
+            RemoveInactiveBricks();
+        }
+    }
+
+    void CollectNearbyBricks()
+    {
+        LayerMask detectionLayer = LayerMask.GetMask("Game");
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, boxSize, 0, detectionLayer);
+        foreach (Collider2D collider in colliders)
+        {
+            IBrick obj = collider.gameObject.GetComponent<IBrick>();
+            if (obj != null && collider.gameObject.activeInHierarchy && !NearbyBricks.Contains(obj) && obj != this)
+            {
+                NearbyBricks.Add(obj);
+            }
+        }
+    }
+
+    void RemoveInactiveBricks()
+    {
+        NearbyBricks.RemoveAll(brick => brick == null || !brick.gameObject.activeInHierarchy);
+    }
+    
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position, boxSize);
+    }
+}
+
+public partial class IBrick //BlackHole Brick
 {
     public bool isTouchedBlackHole = false;
     public GameObject TouchedObject;
