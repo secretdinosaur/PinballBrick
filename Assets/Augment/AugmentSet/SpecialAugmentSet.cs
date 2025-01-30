@@ -1,6 +1,8 @@
 using System.Threading;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 /*
 public class Example : SpecialAugment
 {
@@ -150,7 +152,7 @@ public class PercentDamage : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterAttackEffect(IBrick Brick)
+    public override void BeforeAttackEffect(IBrick Brick)
     {
         if (Brick.gameObject.activeSelf)
         { 
@@ -180,6 +182,40 @@ public class EffectStackBlast : SpecialAugment
                 nearbyBrick.EffectStack += (nearbyBrick.EffectStack != 5) ? 2 : 0;
                 StartCoroutine(nearbyBrick.DamageByEffect(StatManager.instance.Temporary_stat.EffectDuration));
             }
+        }
+    }
+}
+
+public class ChainLightning : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_9", "ChainLightning", "ChainLightning", "AdditionalAttack", 3);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        IBrick targetBrick = Brick;
+        if (Brick.NearbyBricks.Count == 0)
+        {
+            return;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            List<IBrick> BrickToBrick = targetBrick.NearbyBricks;
+            if (BrickToBrick.Count == 0)
+            {
+                break;
+            }
+            int RandomNumber = Random.Range(0, BrickToBrick.Count);
+            BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 * StatManager.instance.statMultiplier.EffectDamageMultiplier, 
+                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"));
+            BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
+            targetBrick = BrickToBrick[RandomNumber];
         }
     }
 }

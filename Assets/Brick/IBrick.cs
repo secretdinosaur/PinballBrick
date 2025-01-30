@@ -241,12 +241,8 @@ public partial class IBrick
 
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText)
     {
-        if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
-        {
-            return;
-        }
         HP -= damage;
-        ShowText(damageText, "Normal", isCritical);
+        ShowText(damageText, null, isCritical);
     }
 }
 
@@ -257,11 +253,8 @@ public partial class IBrick //Detect Nearby Bricks
 
     void FixedUpdate()
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_8"))
-        {
-            CollectNearbyBricks();
-            RemoveInactiveBricks();
-        }
+        CollectNearbyBricks();
+        RemoveInactiveBricks();
     }
 
     void CollectNearbyBricks()
