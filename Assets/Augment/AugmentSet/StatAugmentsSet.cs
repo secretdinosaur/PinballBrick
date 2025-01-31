@@ -24,7 +24,7 @@ public class Atk30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_1", "Atk Up", "Ball Atk 30% Up", 5);
+        SetAugment("STAT_1", "Atk Up", "Ball Atk 30% Up", 4);
     }
 
     public override void Apply()
@@ -40,31 +40,31 @@ public class Atk30Up : StatAugment
     }
 }
 
-public class Atk70Up : StatAugment
+public class Atk50Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_2", "Super Atk Up", "Ball Atk 70% Up", 3);
+        SetAugment("STAT_2", "Super Atk Up", "Ball Atk 50% Up", 2);
     }
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
 
-public class CritChanceUp : StatAugment
+public class CritChance50Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_3", "Critical Chance Up", "Ball Critical Chance 50% Up", 3);
+        SetAugment("STAT_3", "Super Critical Chance Up", "Ball Critical Chance 50% Up", 2);
     }
 
     public override void Apply()
@@ -100,22 +100,22 @@ public class CritDamage30Up : StatAugment
     }
 }
 
-public class CritDamage70Up : StatAugment
+public class CritDamage50Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_5", "Super Critical Damage Up", "Ball Critical Damage 70% Up", 3);
+        SetAugment("STAT_5", "Super Critical Damage Up", "Ball Critical Damage 50% Up", 2);
     }
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.CriticalDamage += 0.7f;
+        StatManager.instance.Temporary_stat.CriticalDamage += 0.5f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalDamage -= 0.7f;
+        StatManager.instance.Temporary_stat.CriticalDamage -= 0.5f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
@@ -181,5 +181,65 @@ public class EffectCritical : StatAugment
     public override void Remove()
     {
         StatManager.instance.Temporary_stat.EffectCriticalDamage -= 0.2f;
+    }
+}
+
+public class Atk10Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_9", "Weak Atk Up", "Ball Atk 10% Up", 5);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+}
+
+public class CritChance10Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_10", "Weak Critical Chance Up", "Ball Critical Chance 10% Up", 5);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance += 0.1f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.1f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class CritChance20Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_11", "Critical Chance Up", "Ball Critical Chance 20% Up", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance += 0.2f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.2f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
