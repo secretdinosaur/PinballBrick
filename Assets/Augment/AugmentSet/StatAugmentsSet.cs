@@ -243,3 +243,64 @@ public class CritChance20Up : StatAugment
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
+
+public class GoldGain10Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_12", "Weak Gold Gain Up", "Gold Gain 10% Up", 5);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.GoldGain += 0.1f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.1f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class GoldGain30Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_13", "Gold Gain Up", "Gold Gain 30% Up", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.GoldGain += 0.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class GoldGain50Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_14", "Super Gold Gain Up", "Gold Gain 50% Up", 3);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.GoldGain += 0.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+

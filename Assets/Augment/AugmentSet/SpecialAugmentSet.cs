@@ -113,7 +113,7 @@ public class CriticalAdditionalAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_5", "Critical", "Additional Attack when Attack Hit Critical", "AdditionalAttack", 3);
+        SetAugment("SPECIAL_5", "Critical", "Additional Attack when Attack Hit Critical", "AdditionalAttack", 4);
     }
 
     public override void Apply(){  }
