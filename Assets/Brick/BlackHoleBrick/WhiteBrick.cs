@@ -32,8 +32,8 @@ public class WhiteBrick : IBrick
         if (RebirthCount > 0)
         {
             RebirthCount--;
-            BrickManager.Instance.TakeBrick(GetBlackBrick);
-            GetBlackBrick = BrickManager.Instance.SpawnSpecificBrick("BlackBrick");
+            BlackBrick.HP = HpTemp;
+            BrickManager.Instance.TeleportBrickPosition(BlackBrick);
             BlackBrick = GetBlackBrick.GetComponent<BlackBrick>();
         }
         else

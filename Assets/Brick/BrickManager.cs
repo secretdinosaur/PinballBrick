@@ -34,7 +34,7 @@ public class BrickManager : MonoBehaviour
         InitializeGrid();
         PoolManager = GetComponent<PoolManager>();
         UpdateCurrentBricks();
-        StartCoroutine(SpawnBricks());
+        //StartCoroutine(SpawnBricks());
     }
     
     void Update()
@@ -73,7 +73,7 @@ public class BrickManager : MonoBehaviour
         return selectedPosition;
     }
 
-    public void TeleportBrickPosition(TeleportBrick brick)
+    public void TeleportBrickPosition(IBrick brick)
     {
         availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
         usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
