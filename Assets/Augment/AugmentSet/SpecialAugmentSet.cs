@@ -113,7 +113,7 @@ public class CriticalAdditionalAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_5", "Critical", "Additional Attack when Attack Hit Critical", "AdditionalAttack", 3);
+        SetAugment("SPECIAL_5", "CriticalAdditionalAttack", "CriticalAdditionalAttack", "AdditionalAttack", 4);
     }
 
     public override void Apply(){  }
@@ -217,5 +217,39 @@ public class ChainLightning : SpecialAugment
             BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
             targetBrick = BrickToBrick[RandomNumber];
         }
+    }
+}
+
+public class DeathExp : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_10", "Death = Exp", "Death = Exp", "Death", 5);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void AfterDeathEffect()
+    {
+        LevelManager.Instance.Exp += 30 * StatManager.instance.Persistent_stat.BonusExp;
+    }
+}
+
+public class DeathGold : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_11", "Death = Gold", "Death = Gold", "Death", 5);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void AfterDeathEffect()
+    {
+        StatManager.instance.Persistent_stat.Gold += 18 + (18 * StatManager.instance.Temporary_stat.GoldGain);
     }
 }

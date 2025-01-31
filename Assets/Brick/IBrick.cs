@@ -139,8 +139,6 @@ public partial class IBrick
         {
             Augment.AfterAttackEffect(this);
         }
-        
-        
     }
     private float FinalDamage()
     {
