@@ -3,17 +3,29 @@
 /*
 public class Example : StatAugment
 {
-    public Example() : base( "STAT_n", "Example" , "Just Example", 1 ) { }
+    private void OnEnable()
+    {
+        SetAugment("Stat_N", "Example", "Example", 3);
+    }
 
-    public override void Apply(){ Augment Effect (Plus) }
+    public override void Apply(){  }
 
-    public override void Remove(){ Augment Effect (Minus) }
+    public override void Remove(){ }
+
+    public virtual void BeforeAttackEffect(IBrick Brick) { }
+    
+    public virtual void AfterAttackEffect(IBrick Brick) { }
+
+    public virtual void CriticalAttackEffect(IBrick Brick) { }
 }
- */
+*/
 
 public class Atk30Up : StatAugment
 {
-    public Atk30Up() : base("STAT_1","Atk Up", "Ball Atk 30% Up", 4) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_1", "Atk Up", "Ball Atk 30% Up", 4);
+    }
 
     public override void Apply()
     {
@@ -28,26 +40,32 @@ public class Atk30Up : StatAugment
     }
 }
 
-public class Atk70Up : StatAugment
+public class Atk50Up : StatAugment
 {
-    public Atk70Up() : base("STAT_2","Super Atk Up", "Ball Atk 70% Up", 3) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_2", "Super Atk Up", "Ball Atk 50% Up", 2);
+    }
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
 
-public class CritChanceUp : StatAugment
+public class CritChance50Up : StatAugment
 {
-    public CritChanceUp() : base("STAT_3","Critical Chance Up", "Ball Critical Chance 50% Up", 3) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_3", "Super Critical Chance Up", "Ball Critical Chance 50% Up", 2);
+    }
 
     public override void Apply()
     {
@@ -64,7 +82,10 @@ public class CritChanceUp : StatAugment
 
 public class CritDamage30Up : StatAugment
 {
-    public CritDamage30Up() : base( "STAT_4","Critical Damage Up" , "Ball Critical Damage 30% Up" , 4) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_4", "Critical Damage Up", "Ball Critical Damage 30% Up", 4);
+    }
 
     public override void Apply()
     {
@@ -79,37 +100,207 @@ public class CritDamage30Up : StatAugment
     }
 }
 
-public class CritDamage70Up : StatAugment
+public class CritDamage50Up : StatAugment
 {
-    public CritDamage70Up() : base( "STAT_5","Super Critical Damage Up" , "Ball Critical Damage 70% Up" , 3) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_5", "Super Critical Damage Up", "Ball Critical Damage 50% Up", 2);
+    }
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.CriticalDamage += 0.7f;
+        StatManager.instance.Temporary_stat.CriticalDamage += 0.5f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalDamage -= 0.7f;
+        StatManager.instance.Temporary_stat.CriticalDamage -= 0.5f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
 
 public class BossDamageUp : StatAugment
 {
-    public BossDamageUp() : base( "STAT_6", "Boss Additional Damage Up" , "Boss Additional Damage 30% Up" , 4) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_6", "Boss Additional Damage Up", "Boss Additional Damage 30% Up", 4);
+    }
 
     public override void Apply(){  }
 
     public override void Remove(){  }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        if (Brick.IsBoss)
+        {
+            Brick.TotalMultiple *= 1.3f;
+        }
+    }
 }
 
 public class AtkUpWhenCritical : StatAugment
 {
-    public AtkUpWhenCritical() : base( "STAT_7", "AtkUpWhenCritical" , "On Critical Hit, Ball Attack Damage increases for a few seconds", 2 ) { }
+    private void OnEnable()
+    {
+        SetAugment("STAT_7", "AtkUpWhenCritical", "AtkUpWhenCritical", 4);
+    }
 
-    public override void Apply(){ }
+    public override void Apply()
+    { 
 
-    public override void Remove(){ }
+    }
+
+    public override void Remove()
+    { 
+
+    }
+
+    public override void CriticalAttackEffect(IBrick Brick)
+    {
+        if (Brick.gameObject.activeSelf)
+        {
+            StatManager.instance.RunAttackDamageUpFewSec(3f, 0.2f);
+        }
+    }
 }
+
+public class EffectCritical : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_8", "EffectCritical", "EffectCritical", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.EffectCriticalDamage += 0.2f;
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.EffectCriticalDamage -= 0.2f;
+    }
+}
+
+public class Atk10Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_9", "Weak Atk Up", "Ball Atk 10% Up", 5);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+}
+
+public class CritChance10Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_10", "Weak Critical Chance Up", "Ball Critical Chance 10% Up", 5);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance += 0.1f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.1f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class CritChance20Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_11", "Critical Chance Up", "Ball Critical Chance 20% Up", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance += 0.2f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.2f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class GoldGain10Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_12", "Weak Gold Gain Up", "Gold Gain 10% Up", 5);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.GoldGain += 0.1f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.1f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class GoldGain30Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_13", "Gold Gain Up", "Gold Gain 30% Up", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.GoldGain += 0.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class GoldGain50Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_14", "Super Gold Gain Up", "Gold Gain 50% Up", 3);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.GoldGain += 0.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance -= 0.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+

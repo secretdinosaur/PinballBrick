@@ -216,6 +216,21 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
+  - _name: TeleportBrick
+    _component: {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
+  - _name: WhiteBrick
+    _component: {fileID: 1708533091770634106, guid: 2c348e231a74f5045a32d0f3665b8982, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
+  - _name: BlackBrick
+    _component: {fileID: -3384781788680756480, guid: de966c7a39a1b0f40a7d91811b707933, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
 --- !u!1 &153662569
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,6 +621,7 @@ MonoBehaviour:
     BallSpeed: 0
     EffectDamage: 0
     EffectDuration: 0
+    EffectCriticalDamage: 0
     GoldGain: 0
 --- !u!114 &218456169
 MonoBehaviour:
@@ -619,6 +635,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9fed516a26b30449f03f451786af60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OptionButtonSprites:
+  - {fileID: 4132716061048618184, guid: 86917ebde18f5e1449abd41b4d86856d, type: 3}
+  - {fileID: -7198440490928857949, guid: 60ae8fb2dcf1d4c4c88ab82b0e1b2031, type: 3}
+  - {fileID: 270058920942252848, guid: fdfb4e5045da8224a92dc508e5b83c42, type: 3}
+  - {fileID: 3556431781438714426, guid: 635b388779d75f34dbe8ecd5b431eb22, type: 3}
+  - {fileID: 3788167435311697132, guid: 6f68f645b5373aa49b4bd19637162b1c, type: 3}
 --- !u!114 &218456170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,6 +669,7 @@ MonoBehaviour:
     BallSpeed: 0
     EffectDamage: 0
     EffectDuration: 0
+    EffectCriticalDamage: 0
     GoldGain: 0
   statMultiplier:
     AttackDamageMultiplier: 0
@@ -663,6 +686,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 350071e32e8a418a8fe1fe82613f90dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  augmentsSet: []
+  activeStatAugments: []
+  activeFieldAugments: []
+  activeSpecialAugments: []
 --- !u!1 &248038763
 GameObject:
   m_ObjectHideFlags: 0
@@ -4467,7 +4494,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5687,6 +5714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolManager: {fileID: 0}
+  ItemInfo: {fileID: 11400000, guid: ae23a3d2222f51e4da533cabb4858316, type: 2}
 --- !u!114 &2033836777
 MonoBehaviour:
   m_ObjectHideFlags: 0

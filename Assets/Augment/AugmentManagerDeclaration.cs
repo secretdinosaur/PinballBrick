@@ -5,11 +5,11 @@ using System.Linq;
 public partial class AugmentManager : MonoBehaviour //Declaration
 {
     public static AugmentManager instance;
-    private List<IAugment> augmentsSet;
+    public List<IAugment> augmentsSet;
     //private List<int> usedIndexes;
-    private List<StatAugment> activeStatAugments = new List<StatAugment>();
-    private List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
-    private List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
+    public List<StatAugment> activeStatAugments = new List<StatAugment>();
+    public List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
+    public List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
     
     void Awake()
     {
@@ -17,22 +17,44 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
-            new Atk30Up(),
-            new Atk70Up(),
-            new CritChanceUp(),
-            new CritDamage30Up(),
-            new CritDamage70Up(),
-            new BossDamageUp(),
-            new AtkUpWhenCritical(),
+            gameObject.AddComponent<Atk10Up>(),
+            gameObject.AddComponent<Atk30Up>(),
+            gameObject.AddComponent<Atk50Up>(),
+            gameObject.AddComponent<CritChance10Up>(),
+            gameObject.AddComponent<CritChance20Up>(),
+            gameObject.AddComponent<CritChance50Up>(),
+            gameObject.AddComponent<CritDamage30Up>(),
+            gameObject.AddComponent<CritDamage50Up>(),
+            gameObject.AddComponent<GoldGain10Up>(),
+            gameObject.AddComponent<GoldGain30Up>(),
+            gameObject.AddComponent<GoldGain50Up>(),
+            gameObject.AddComponent<BossDamageUp>(),
+            gameObject.AddComponent<AtkUpWhenCritical>(),
+            gameObject.AddComponent<EffectCritical>(),
             ///////////////////////// Stat
-            new AllDamage(),
+            gameObject.AddComponent<AllDamage>(),
             ///////////////////////// Field
-            new FireBall(),
-            new Homing(),
-            new BouncePower(),
-            new AdditionalThreeAttack(),
-            new CriticalAdditionalAttack(),
-            ///////////////////////// Special
+            gameObject.AddComponent<FireBall>(),
+            gameObject.AddComponent<Homing>(),
+            gameObject.AddComponent<BouncePower>(),
+            gameObject.AddComponent<AdditionalThreeAttack>(),
+            gameObject.AddComponent<CriticalAdditionalAttack>(),
+            gameObject.AddComponent<Execution>(),
+            gameObject.AddComponent<PercentDamage>(),
+            gameObject.AddComponent<EffectStackBlast>(),
+            gameObject.AddComponent<ChainLightning>(),
+            gameObject.AddComponent<DeathExp>(),
+            gameObject.AddComponent<DeathGold>(),
         };
+
+        List<IAugment> TestAugments = new List<IAugment>
+        {
+            
+        };
+
+        foreach(IAugment augment in TestAugments)
+        {
+            AddAugment(augment);
+        }
     }
 }

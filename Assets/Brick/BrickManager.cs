@@ -34,7 +34,7 @@ public class BrickManager : MonoBehaviour
         InitializeGrid();
         PoolManager = GetComponent<PoolManager>();
         UpdateCurrentBricks();
-        StartCoroutine(SpawnBricks());
+        //StartCoroutine(SpawnBricks());
     }
     
     void Update()
@@ -62,7 +62,7 @@ public class BrickManager : MonoBehaviour
         }
     }
 
-    Vector2 GenerateRandomPosition()
+    public Vector2 GenerateRandomPosition()
     {
         int randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
         Vector2 selectedPosition = availablePositions[randomIndex];
@@ -73,6 +73,13 @@ public class BrickManager : MonoBehaviour
         return selectedPosition;
     }
 
+    public void TeleportBrickPosition(IBrick brick)
+    {
+        availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
+        usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
+        Vector2 RandomPosition = GenerateRandomPosition();
+        brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(RandomPosition.x, RandomPosition.y, 35));
+    }
     public void TakeBrick(IBrick brick)
     {
         if(brick.gameObject.activeSelf)
@@ -96,12 +103,12 @@ public class BrickManager : MonoBehaviour
         float RandomNumber = UnityEngine.Random.value;
         IBrick brick = null;
 
-        float ChanseSum = 0;
+        float ChanceSum = 0;
 
         for(int i = 0; i < BrickInfo.BrickSpawnChance.Length; i++)
         {
-            ChanseSum += BrickInfo.BrickSpawnChance[i];
-            if (RandomNumber < ChanseSum)
+            ChanceSum += BrickInfo.BrickSpawnChance[i];
+            if (RandomNumber < ChanceSum)
             {
                 Type brickType = Type.GetType(BrickInfo.BrickTypes[i]);
                 var method = typeof(PoolManager).GetMethod("GetFromPool");
@@ -110,7 +117,19 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
-
+        UpdateCurrentBricks();
+        return brick;
+    }
+    
+    private IBrick GetSpecificBrick(string brickTypeName)
+    {
+        IBrick brick = null;
+        
+        Type brickType = Type.GetType(brickTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(brickType);
+        brick = (IBrick)genericMethod.Invoke(PoolManager, null);
+        UpdateCurrentBricks();
         return brick;
     }
 
@@ -151,7 +170,6 @@ public class BrickManager : MonoBehaviour
         {
             HPPool.Add(j);
         }
-
         if (availablePositions.Count > 0)
         {
             Vector2 randomPosition = GenerateRandomPosition();
@@ -168,5 +186,18 @@ public class BrickManager : MonoBehaviour
         IBrick brick = GetBrick();
         brick.IsBoss = true;
         brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+    }
+
+    public IBrick SpawnSpecificBrick(string BrickType)
+    {
+        IBrick brick = null;
+        if (availablePositions.Count > 0)
+        {
+            Vector2 randomPosition = GenerateRandomPosition();
+            brick = GetSpecificBrick(BrickType);
+            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+        }
+
+        return brick;
     }
 }

@@ -9,6 +9,6 @@ public class HPOneItem : Item
             if(!brick.IsBoss && (brick.BrickType == "Shield" && brick.GetComponent<ShieldBrick>().IsShieldDestroyed)) 
                 brick.HP /= 2;
         }
-        ItemManager.Instance.TakeHPOneItem(this);
+        ItemManager.Instance.TakeItem(this);
     }
 }

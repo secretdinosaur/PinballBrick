@@ -18,24 +18,41 @@ public partial class AugmentManager //Utility
             activeFieldAugments.Any(a => a.ID == ID) || 
             activeSpecialAugments.Any(a => a.ID == ID);
     }
-    
-    
-    public List<IAugment> GetRandomAugments(int count)
+
+    public IAugment GetRandomAugment()
     {
-        List<IAugment> randomAugments = new List<IAugment>();
-        List<int> usedIndexes = new List<int>();
-        while (randomAugments.Count < count)
+        if (augmentsSet == null || augmentsSet.Count == 0) return null;
+        
+        Dictionary<int, float> rarityWeights = new Dictionary<int, float>
         {
-            int index = Random.Range(0, augmentsSet.Count);
-            
-            if (!usedIndexes.Contains(index))
+            { 1, 2f },
+            { 2, 5f },
+            { 3, 13f },
+            { 4, 26f },
+            { 5, 54f }
+        };
+        float totalWeight = 0f;
+        float[] Weights = new float[augmentsSet.Count];
+        
+        for (int i = 0; i < augmentsSet.Count; i++)
+        {
+            totalWeight += rarityWeights[augmentsSet[i].Rarity];
+            Weights[i] = totalWeight;
+        }
+        
+        float randomValue = Random.Range(0f, totalWeight);
+        
+        for (int i = 0; i < augmentsSet.Count; i++)
+        {
+            if (randomValue <= Weights[i])
             {
-                randomAugments.Add(augmentsSet[index]);
-                usedIndexes.Add(index);
+                IAugment ChosenAugment;
+                ChosenAugment = augmentsSet[i];
+                //augmentsSet[i] = null;
+                return ChosenAugment;
             }
         }
-
-        return randomAugments;
+        return augmentsSet[0];
     }
 }
 
@@ -106,28 +123,5 @@ public partial class AugmentManager
         activeStatAugments.Clear();
         activeFieldAugments.Clear();
         activeSpecialAugments.Clear();
-    }
-}
-
-public partial class AugmentManager // Field Augment
-{
-    private float timer = 0f;
-    private float greetingInterval = 5f;
-    private void Update()
-    {
-        if (determineAugmentID("FIELD_1")) //All Damage
-        {
-            timer += Time.deltaTime;
-
-            if (timer >= greetingInterval)
-            {
-                IBrick[] bricks = FindObjectsOfType<MonoBehaviour>().OfType<IBrick>().ToArray();
-                foreach (IBrick brick in bricks)
-                {
-                    brick.HP -= 10 * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-                }
-                timer = 0f;
-            }
-        }
     }
 }
