@@ -15,6 +15,8 @@ public abstract class IAugment : MonoBehaviour
     public virtual void AfterAttackEffect(IBrick Brick) { }
 
     public virtual void CriticalAttackEffect(IBrick Brick) { }
+    
+    public virtual void AfterDeathEffect() { }
 }
 
 public abstract class StatAugment : IAugment

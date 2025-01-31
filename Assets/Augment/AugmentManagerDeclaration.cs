@@ -43,6 +43,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<PercentDamage>(),
             gameObject.AddComponent<EffectStackBlast>(),
             gameObject.AddComponent<ChainLightning>(),
+            gameObject.AddComponent<DeathExp>(),
+            gameObject.AddComponent<DeathGold>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>

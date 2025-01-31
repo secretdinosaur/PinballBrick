@@ -144,7 +144,7 @@ public class AtkUpWhenCritical : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_7", "AtkUpWhenCritical", "On Critical Hit, Ball Attack Damage increases for a few seconds", 2);
+        SetAugment("STAT_7", "AtkUpWhenCritical", "AtkUpWhenCritical", 4);
     }
 
     public override void Apply()

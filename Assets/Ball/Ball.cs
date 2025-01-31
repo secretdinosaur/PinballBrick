@@ -34,6 +34,10 @@ public partial class Ball : MonoBehaviour
     {
         if(transform.position.y <= -10)
         {
+            foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.AfterDeathEffect();
+            }
             BallManager.Instance.TakeBall(this);
         }
 
