@@ -53,7 +53,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            //gameObject.GetComponent<WeakButFast>(),
+            gameObject.GetComponent<BouncePower>(),
         };
 
         foreach(IAugment augment in TestAugments)

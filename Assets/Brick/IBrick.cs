@@ -123,10 +123,12 @@ public partial class IBrick : MonoBehaviour
 
 public partial class IBrick
 {
+    public Ball Ball;
     public int EffectStack;
     public bool isEffectActive = false;
     public void TakeDamage(Ball ball)
     {
+        Ball = ball;
         TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)

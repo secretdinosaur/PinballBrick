@@ -18,7 +18,9 @@ public partial class Ball : MonoBehaviour
         gameObject.GetComponent<Rigidbody2D>().linearVelocityY = 10;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
         StartCoroutine(EnableCollider());
-        
+        spriteRenderer.color = new Color(1f, 1f, 1f);
+        BounceTime = 1f;
+        MaxBounce = 0;
         targets.Clear();
         currentTarget = null;
     }
@@ -193,7 +195,7 @@ public partial class Ball //Homing
 
 public partial class Ball //Bounce = Power
 {
-    public static float BounceTime { get; set; } = 1f;
+    public float BounceTime { get; set; } = 1f;
     private int MaxBounce = 0;
     private SpriteRenderer spriteRenderer;
 }
