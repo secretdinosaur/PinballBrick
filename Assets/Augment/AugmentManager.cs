@@ -18,10 +18,13 @@ public partial class AugmentManager //Utility
             activeFieldAugments.Any(a => a.ID == ID) || 
             activeSpecialAugments.Any(a => a.ID == ID);
     }
-
+    
+    private List<IAugment> alreadyChosenAugments = new List<IAugment>();
     public IAugment GetRandomAugment()
     {
         if (augmentsSet == null || augmentsSet.Count == 0) return null;
+        var availableAugments = augmentsSet.Where(a => !alreadyChosenAugments.Contains(a)).ToList();
+        if (availableAugments.Count == 0) return null;
         
         Dictionary<int, float> rarityWeights = new Dictionary<int, float>
         {
@@ -32,27 +35,27 @@ public partial class AugmentManager //Utility
             { 5, 54f }
         };
         float totalWeight = 0f;
-        float[] Weights = new float[augmentsSet.Count];
+        float[] Weights = new float[availableAugments.Count];
         
-        for (int i = 0; i < augmentsSet.Count; i++)
+        for (int i = 0; i < availableAugments.Count; i++)
         {
-            totalWeight += rarityWeights[augmentsSet[i].Rarity];
+            totalWeight += rarityWeights[availableAugments[i].Rarity];
             Weights[i] = totalWeight;
         }
         
         float randomValue = Random.Range(0f, totalWeight);
         
-        for (int i = 0; i < augmentsSet.Count; i++)
+        for (int i = 0; i < availableAugments.Count; i++)
         {
             if (randomValue <= Weights[i])
             {
-                IAugment ChosenAugment;
-                ChosenAugment = augmentsSet[i];
-                //augmentsSet[i] = null;
+                IAugment ChosenAugment = availableAugments[i];
+                alreadyChosenAugments.Add(ChosenAugment);
+                DeleteOppositeAugment(ChosenAugment);
                 return ChosenAugment;
             }
         }
-        return augmentsSet[0];
+        return availableAugments[0];
     }
 }
 
@@ -84,27 +87,23 @@ public partial class AugmentManager
         {
             if (activeStatAugments.Any(a => a.Name == augment.Name))
             {
-                augment.Remove();
-                activeStatAugments.Remove(statAugment);
+                augmentsSet.Remove(statAugment);
             }
         }
         else if (augment is FieldAugment fieldAugment)
         {
             if (activeFieldAugments.Any(a => a.Name == augment.Name))
             {
-                augment.Remove();
-                activeFieldAugments.Remove(fieldAugment);
+                augmentsSet.Remove(fieldAugment);
             }
         }
         else if (augment is SpecialAugment specialAugment)
         {
             if (activeSpecialAugments.Any(a => a.Name == augment.Name))
             {
-                augment.Remove();
-                activeSpecialAugments.Remove(specialAugment);
+                augmentsSet.Remove(specialAugment);
             }
         }
-        
     }
     public void ClearAllAugments()
     {
@@ -123,5 +122,25 @@ public partial class AugmentManager
         activeStatAugments.Clear();
         activeFieldAugments.Clear();
         activeSpecialAugments.Clear();
+    }
+    IAugment oppositeAugment;
+    private void DeleteOppositeAugment(IAugment ChosenAugment)
+    {
+        if (ChosenAugment.ID == "STAT_15")
+        {
+            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_16");
+            if (oppositeAugment != null)
+            {
+                RemoveAugment(oppositeAugment);
+            }
+        }
+        else if (ChosenAugment.ID == "STAT_16")
+        {
+            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_15");
+            if (oppositeAugment != null)
+            {
+                RemoveAugment(oppositeAugment);
+            }
+        }
     }
 }

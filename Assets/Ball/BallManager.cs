@@ -3,14 +3,12 @@ using Redcode.Pools;
 public class BallManager : MonoBehaviour
 {
     public static BallManager Instance;
-    [SerializeField]
-    public Persistent_Stat Persistent_Stat;
+    public float maxSpeed = 15f;
     private PoolManager PoolManager;
-    void Start()
+    void Awake()
     {
         Instance = this;
         PoolManager = GetComponent<PoolManager>();
-        Persistent_Stat = StatManager.instance.LoadPersistentStats();
     }
 
     public void CreateBall(int Num)

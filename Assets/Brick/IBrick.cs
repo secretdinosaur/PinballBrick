@@ -16,6 +16,7 @@ public partial class IBrick : MonoBehaviour
     private Canvas canvas;
     private Camera camera;
     public float HpTemp;
+    public float BallSpeed;
 
     public float TotalMultiple;
 

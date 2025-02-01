@@ -6,6 +6,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 {
     public static AugmentManager instance;
     public List<IAugment> augmentsSet;
+
+    public List<IAugment> RouletteAugmentsSet;
     //private List<int> usedIndexes;
     public List<StatAugment> activeStatAugments = new List<StatAugment>();
     public List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
@@ -31,6 +33,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<BossDamageUp>(),
             gameObject.AddComponent<AtkUpWhenCritical>(),
             gameObject.AddComponent<EffectCritical>(),
+            gameObject.AddComponent<PowerButSlow>(),
+            gameObject.AddComponent<WeakButFast>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             ///////////////////////// Field
@@ -49,7 +53,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            
+            //gameObject.GetComponent<WeakButFast>(),
         };
 
         foreach(IAugment augment in TestAugments)
