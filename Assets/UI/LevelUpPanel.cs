@@ -129,11 +129,14 @@ public class LevelUpPanel : MonoBehaviour
         {
             if (optionIndex == -1)
             {
-                AugmentManager.instance.AddAugment(augmentsSet[Random.Range(0, 3)]);
+                int RandomNumber = Random.Range(0, 3);
+                AugmentManager.instance.AddAugment(augmentsSet[RandomNumber]);
+                AugmentManager.instance.RemoveAugment(augmentsSet[RandomNumber]);
             }
             else
             {
                 AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
+                AugmentManager.instance.RemoveAugment(augmentsSet[optionIndex]);
             }
         }
         Time.timeScale = 1f;

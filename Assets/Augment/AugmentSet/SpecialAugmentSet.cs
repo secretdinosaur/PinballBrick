@@ -84,8 +84,8 @@ public class BouncePower: SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Ball.BounceTime * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-        Ball.BounceTime = 1;
+        Brick.TotalMultiple = Brick.Ball.BounceTime * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        Brick.Ball.BounceTime = 1;
     }
 }
 

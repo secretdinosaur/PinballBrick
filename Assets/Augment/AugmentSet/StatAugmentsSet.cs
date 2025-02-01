@@ -35,7 +35,7 @@ public class Atk30Up : StatAugment
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.3f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.3f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
@@ -55,7 +55,7 @@ public class Atk50Up : StatAugment
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.5f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
@@ -199,7 +199,7 @@ public class Atk10Up : StatAugment
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.1f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
@@ -300,6 +300,50 @@ public class GoldGain50Up : StatAugment
     public override void Remove()
     {
         StatManager.instance.Temporary_stat.CriticalChance -= 0.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class PowerButSlow : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_15", "PowerButSlow", "Atk Up Max Speed Decrease", 4);
+    }
+
+    public override void Apply()
+    {
+        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 10f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class WeakButFast : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_16", "WeakButFast", "Atk Down Max Speed Increase", 4);
+    }
+
+    public override void Apply()
+    {
+        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 20f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 0.7f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 0.7f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
