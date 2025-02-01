@@ -51,7 +51,11 @@ public partial class AugmentManager //Utility
             {
                 IAugment ChosenAugment = availableAugments[i];
                 alreadyChosenAugments.Add(ChosenAugment);
-                DeleteOppositeAugment(ChosenAugment);
+                IAugment OppositeAugment = GetOppositeAugment(ChosenAugment);
+                if (OppositeAugment != null)
+                {
+                    alreadyChosenAugments.Add(OppositeAugment);
+                }
                 return ChosenAugment;
             }
         }
@@ -123,15 +127,16 @@ public partial class AugmentManager
         activeFieldAugments.Clear();
         activeSpecialAugments.Clear();
     }
-    IAugment oppositeAugment;
-    private void DeleteOppositeAugment(IAugment ChosenAugment)
+    
+    private IAugment GetOppositeAugment(IAugment ChosenAugment)
     {
+        IAugment oppositeAugment;
         if (ChosenAugment.ID == "STAT_15")
         {
             oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_16");
             if (oppositeAugment != null)
             {
-                RemoveAugment(oppositeAugment);
+                return oppositeAugment;
             }
         }
         else if (ChosenAugment.ID == "STAT_16")
@@ -139,8 +144,10 @@ public partial class AugmentManager
             oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_15");
             if (oppositeAugment != null)
             {
-                RemoveAugment(oppositeAugment);
+                return oppositeAugment;
             }
         }
+
+        return null;
     }
 }
