@@ -49,7 +49,7 @@ public class FireBall : SpecialAugment
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 
-    public override void AfterAttackEffect(IBrick Brick)
+    public override void AfterMainAttackEffect(IBrick Brick)
     {
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
@@ -100,7 +100,7 @@ public class AdditionalThreeAttack: SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterAttackEffect(IBrick Brick)
+    public override void AfterMainAttackEffect(IBrick Brick)
     {
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
@@ -172,7 +172,7 @@ public class EffectStackBlast : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterAttackEffect(IBrick Brick)
+    public override void AfterMainAttackEffect(IBrick Brick)
     {
         if (Brick.EffectStack >= 5)
         {
@@ -197,8 +197,10 @@ public class ChainLightning : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterAttackEffect(IBrick Brick)
+    public override void AfterMainAttackEffect(IBrick Brick)
     {
+        List<IBrick> OrderedTargetBricks = new List<IBrick>();
+
         IBrick targetBrick = Brick;
         if (Brick.NearbyBricks.Count == 0)
         {
@@ -207,6 +209,8 @@ public class ChainLightning : SpecialAugment
         for (int i = 0; i < 4; i++)
         {
             List<IBrick> BrickToBrick = targetBrick.NearbyBricks;
+            OrderedTargetBricks.Add(targetBrick);
+
             if (BrickToBrick.Count == 0)
             {
                 break;
@@ -215,8 +219,11 @@ public class ChainLightning : SpecialAugment
             BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 * StatManager.instance.statMultiplier.EffectDamageMultiplier, 
                 false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"));
             BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
+
             targetBrick = BrickToBrick[RandomNumber];
+
         }
+        VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks);
     }
 }
 
@@ -251,5 +258,25 @@ public class DeathGold : SpecialAugment
     public override void AfterDeathEffect()
     {
         StatManager.instance.Persistent_stat.Gold += 18 + (18 * StatManager.instance.Temporary_stat.GoldGain);
+    }
+}
+
+public class Lightning : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_12", "Lightning", "Lightning", "Lightning", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterAttackEffect(IBrick brick)
+    {
+        brick.ArbitraryDamageAttack(1 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
+                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"));
+        VisualEffectManager.Instance.SpawnParticle("Lightning", brick.transform.position, 1);
+
     }
 }

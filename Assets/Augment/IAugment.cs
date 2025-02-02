@@ -12,11 +12,22 @@ public abstract class IAugment : MonoBehaviour
 
     public virtual void Remove() { }
     public virtual void BeforeAttackEffect(IBrick Brick) { }
-    public virtual void AfterAttackEffect(IBrick Brick) { }
+
+    /// <summary>
+    /// Called Once When Ball Hits Brick.
+    /// </summary>
+    /// <param name="Brick"></param>
+    public virtual void AfterMainAttackEffect(IBrick Brick) { }
 
     public virtual void CriticalAttackEffect(IBrick Brick) { }
     
     public virtual void AfterDeathEffect() { }
+
+    /// <summary>
+    /// Called Every Attack Except Dot(Effect) Damage.
+    /// </summary>
+    /// <param name="Brick"></param>
+    public virtual void AfterAttackEffect(IBrick Brick) { }
 }
 
 public abstract class StatAugment : IAugment

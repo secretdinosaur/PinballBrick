@@ -291,7 +291,7 @@ MonoBehaviour:
   EffectStack: 0
   isEffectActive: 0
   NearbyBricks: []
-  boxSize: {x: 5, y: 5}
+  boxSize: {x: 6, y: 4}
   isTouchedBlackHole: 0
   TouchedObject: {fileID: 0}
 --- !u!61 &8065087008795427907
