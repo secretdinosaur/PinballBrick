@@ -154,7 +154,14 @@ MonoBehaviour:
   HPText: {fileID: 0}
   BrickType: 
   BrickTransform: {fileID: 0}
+  HpTemp: 0
+  TotalMultiple: 0
+  EffectStack: 0
   isEffectActive: 0
+  NearbyBricks: []
+  boxSize: {x: 6, y: 4}
+  isTouchedBlackHole: 0
+  TouchedObject: {fileID: 0}
 --- !u!1 &8848865011141748354
 GameObject:
   m_ObjectHideFlags: 0

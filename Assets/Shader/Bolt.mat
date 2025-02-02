@@ -74,7 +74,7 @@ Material:
     - _QueueOffset: 0
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 51.37788, g: 51.37788, b: 51.37788, a: 1}
+    - _Color: {r: 0.6582111, g: 1.3041192, b: 1.1619675, a: 1}
     - _Distortion_Speed: {r: 0, g: 1, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

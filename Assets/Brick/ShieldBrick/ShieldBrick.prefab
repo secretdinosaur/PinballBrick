@@ -152,9 +152,21 @@ MonoBehaviour:
   BasicHP: 10
   IsBoss: 0
   HPText: {fileID: 0}
-  Type: 
+  BrickType: 
+  BrickTransform: {fileID: 0}
+  HpTemp: 0
+  TotalMultiple: 0
+  EffectStack: 0
+  isEffectActive: 0
+  NearbyBricks: []
+  boxSize: {x: 6, y: 4}
+  isTouchedBlackHole: 0
+  TouchedObject: {fileID: 0}
   BasicShieldCount: 5
   ShieldCount: 5
+  IsShieldDestroyed: 0
+  HPMultiplier: 0
+  FirstShieldSpawn: 1
 --- !u!1 &605556270459215625
 GameObject:
   m_ObjectHideFlags: 0

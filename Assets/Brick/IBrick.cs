@@ -142,6 +142,7 @@ public partial class IBrick
 
         foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
         {
+            Augment.AfterMainAttackEffect(this);
             Augment.AfterAttackEffect(this);
         }
     }
@@ -233,6 +234,10 @@ public partial class IBrick
             if(BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
             HP -= FinalAdditionalAttackDamage;
             ShowText(FinalAdditionalAttackDamage.ToString("F1"), "Additional", CriticalHit);
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.AfterAttackEffect(this);
+            }
             if (!gameObject.activeSelf)
             {
                 yield break;
