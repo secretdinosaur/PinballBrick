@@ -3220,7 +3220,7 @@ Transform:
   m_GameObject: {fileID: 998555651}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -961.8361, y: -980.86127, z: -7.4558506}
+  m_LocalPosition: {x: -960.2886, y: -980.98, z: -7.4558506}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3239,6 +3239,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 15
+  InGameBall: []
+  boxSize: {x: 5, y: 10}
 --- !u!114 &998555654
 MonoBehaviour:
   m_ObjectHideFlags: 0

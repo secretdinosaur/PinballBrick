@@ -37,6 +37,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButFast>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
+            gameObject.AddComponent<AngryBall>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -53,7 +54,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DeathExp>(),
+            gameObject.GetComponent<AngryBall>(),
         };
 
         foreach(IAugment augment in TestAugments)

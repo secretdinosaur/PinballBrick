@@ -58,3 +58,42 @@ public class AllDamage : FieldAugment
         }
     }
 }
+
+public class AngryBall : FieldAugment
+{
+    Coroutine Routine = null;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_2", "AngryBall", "AngryBall", 4);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(StartAngryBall(3f, 50f));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator StartAngryBall(float period, float Power)
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(period);
+
+            foreach (Ball ball in BallManager.Instance.InGameBall)
+            {
+                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                Vector3 forceDirection = rb.linearVelocity.normalized;
+                rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
+            }
+        }
+    }
+}
