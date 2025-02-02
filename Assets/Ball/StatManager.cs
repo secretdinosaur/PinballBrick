@@ -18,7 +18,6 @@ public class StatManager : MonoBehaviour
         persistent_stat_filePath = Application.persistentDataPath + "/PinballBrick_persistentData.json";
         temporary_stat_filePath = Application.persistentDataPath + "/PinballBrick_temporaryData.json";
         stat_Multiplier_filePath = Application.persistentDataPath + "/PinballBrick_multiplierData.json";
-        
         if (!File.Exists(persistent_stat_filePath))
         {
             InitializePersistentStats();
