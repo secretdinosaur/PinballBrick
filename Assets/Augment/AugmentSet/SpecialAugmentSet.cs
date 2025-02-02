@@ -270,3 +270,20 @@ public class SpeedPower : SpecialAugment
         Brick.TotalMultiple = Brick.Ball.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
     }
 }
+
+public class SpeedCritical : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_13", "Speed = Critical Chance", "Speed = Critical Chance", "Speed", 4);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        Brick.TotalMultiple = Brick.Ball.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+    }
+}

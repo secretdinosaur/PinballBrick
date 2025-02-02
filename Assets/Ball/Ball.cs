@@ -39,14 +39,28 @@ public partial class Ball : MonoBehaviour
         TrailRenderer.startColor = spriteRenderer.color;
         CurrentSpeed = rb.linearVelocity.magnitude;
         
-        if (CurrentSpeed > 8 && AugmentManager.instance.determineAugmentID("SPECIAL_12")) //Speed = Power
+        if (CurrentSpeed > 8 && (AugmentManager.instance.determineAugmentID("SPECIAL_12") || AugmentManager.instance.determineAugmentID("SPECIAL_13"))) //Speed Augment
         {
-            TransformationMultiple = 1f + ((CurrentSpeed / 100f) * 2.5f);
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
+            {
+                SpecialCriticalChance = ((CurrentSpeed / 100f) * 1.5f);
+            }
+            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
+            {
+                TransformationMultiple = 1f + ((CurrentSpeed / 100f) * 2.5f);
+            }
             TrailRenderer.time = 1;
         }
         else
         {
-            TransformationMultiple = 1f;
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
+            {
+                SpecialCriticalChance = 0f;
+            }
+            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
+            {
+                TransformationMultiple = 1f;
+            }
             TrailRenderer.time -= TrailRenderer.time != 0 ? 0.005f : 0f;
         }
         
@@ -219,4 +233,9 @@ public partial class Ball //Speed = Power
 {
     private TrailRenderer TrailRenderer;
     public float TransformationMultiple = 1f;
+}
+
+public partial class Ball
+{
+    public float SpecialCriticalChance = 0f;
 }
