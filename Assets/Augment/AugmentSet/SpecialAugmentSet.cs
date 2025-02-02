@@ -253,3 +253,20 @@ public class DeathGold : SpecialAugment
         StatManager.instance.Persistent_stat.Gold += 18 + (18 * StatManager.instance.Temporary_stat.GoldGain);
     }
 }
+
+public class SpeedPower : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_12", "Speed = Power", "Speed = Power", "Speed", 4);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        Brick.TotalMultiple = Brick.Ball.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+    }
+}

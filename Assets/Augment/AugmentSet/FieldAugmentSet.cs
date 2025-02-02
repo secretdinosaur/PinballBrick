@@ -65,7 +65,7 @@ public class AngryBall : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_2", "AngryBall", "AngryBall", 4);
+        SetAugment("FIELD_2", "AngryBall", "AngryBall", 3);
     }
 
     public override void Apply()

@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using Random = UnityEngine.Random;
 using TMPro;
+using TrailRenderer = UnityEngine.TrailRenderer;
 
 public partial class Ball : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public partial class Ball : MonoBehaviour
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
         StartCoroutine(EnableCollider());
         spriteRenderer.color = new Color(1f, 1f, 1f);
+        TrailRenderer = gameObject.GetComponent<TrailRenderer>();
         BounceTime = 1f;
         MaxBounce = 0;
         targets.Clear();
@@ -34,7 +36,20 @@ public partial class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        TrailRenderer.startColor = spriteRenderer.color;
         CurrentSpeed = rb.linearVelocity.magnitude;
+        
+        if (CurrentSpeed > 8 && AugmentManager.instance.determineAugmentID("SPECIAL_12")) //Speed = Power
+        {
+            TransformationMultiple = 1f + ((CurrentSpeed / 100f) * 2.5f);
+            TrailRenderer.time = 1;
+        }
+        else
+        {
+            TransformationMultiple = 1f;
+            TrailRenderer.time -= TrailRenderer.time != 0 ? 0.005f : 0f;
+        }
+        
         if(transform.position.y <= -10)
         {
             foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
@@ -198,4 +213,10 @@ public partial class Ball //Bounce = Power
     public float BounceTime { get; set; } = 1f;
     private int MaxBounce = 0;
     private SpriteRenderer spriteRenderer;
+}
+
+public partial class Ball //Speed = Power
+{
+    private TrailRenderer TrailRenderer;
+    public float TransformationMultiple = 1f;
 }

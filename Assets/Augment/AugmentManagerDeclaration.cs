@@ -50,11 +50,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ChainLightning>(),
             gameObject.AddComponent<DeathExp>(),
             gameObject.AddComponent<DeathGold>(),
+            gameObject.AddComponent<SpeedPower>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<AngryBall>(),
+            gameObject.GetComponent<SpeedPower>(),
+            //gameObject.GetComponent<BouncePower>()
         };
 
         foreach(IAugment augment in TestAugments)
