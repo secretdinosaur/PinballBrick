@@ -124,12 +124,14 @@ public partial class IBrick : MonoBehaviour
 public partial class IBrick
 {
     public Ball Ball;
+    private float SpecialCriticalChance; // CriticalChance that Increased by Augment
     public int EffectStack;
     public bool isEffectActive = false;
     public void TakeDamage(Ball ball)
     {
         Ball = ball;
         TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        SpecialCriticalChance = ball.SpecialCriticalChance;
 
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
         {
@@ -168,8 +170,8 @@ public partial class IBrick
     private bool IsCriticalHit()
     {
         return (Random.value < (StatManager.instance.Persistent_stat.CriticalChance != 0.0f
-            ? StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance
-            : StatManager.instance.Temporary_stat.CriticalChance));
+            ? StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance + SpecialCriticalChance
+            : StatManager.instance.Temporary_stat.CriticalChance + SpecialCriticalChance));
     }
     private float CriticalDamage()
     {

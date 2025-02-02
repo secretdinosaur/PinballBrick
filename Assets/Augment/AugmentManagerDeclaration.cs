@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 public partial class AugmentManager : MonoBehaviour //Declaration
 {
@@ -37,6 +38,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButFast>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
+            gameObject.AddComponent<AngryBall>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -49,11 +51,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ChainLightning>(),
             gameObject.AddComponent<DeathExp>(),
             gameObject.AddComponent<DeathGold>(),
+            gameObject.AddComponent<SpeedPower>(),
+            gameObject.AddComponent<SpeedCritical>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DeathExp>(),
+            gameObject.AddComponent<SpeedCritical>(),
         };
 
         foreach(IAugment augment in TestAugments)
