@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 public partial class AugmentManager : MonoBehaviour //Declaration
 {
     public static AugmentManager instance;
     public List<IAugment> augmentsSet;
+
+    public List<IAugment> RouletteAugmentsSet;
     //private List<int> usedIndexes;
     public List<StatAugment> activeStatAugments = new List<StatAugment>();
     public List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
@@ -31,8 +34,11 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<BossDamageUp>(),
             gameObject.AddComponent<AtkUpWhenCritical>(),
             gameObject.AddComponent<EffectCritical>(),
+            gameObject.AddComponent<PowerButSlow>(),
+            gameObject.AddComponent<WeakButFast>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
+            gameObject.AddComponent<AngryBall>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -45,14 +51,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ChainLightning>(),
             gameObject.AddComponent<DeathExp>(),
             gameObject.AddComponent<DeathGold>(),
-            gameObject.AddComponent<Lightning>(),
+            gameObject.AddComponent<SpeedPower>(),
+            gameObject.AddComponent<SpeedCritical>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Lightning>(),
-
-            gameObject.AddComponent<ChainLightning>(),
+            gameObject.AddComponent<SpeedCritical>(),
         };
 
         foreach(IAugment augment in TestAugments)

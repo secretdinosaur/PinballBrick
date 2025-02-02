@@ -4,10 +4,11 @@ using UnityEngine;
 using System.Collections;
 using Random = UnityEngine.Random;
 using TMPro;
+using TrailRenderer = UnityEngine.TrailRenderer;
 
 public partial class Ball : MonoBehaviour
 {
-    public float maxSpeed = 15f;
+    public float CurrentSpeed;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {
@@ -18,7 +19,10 @@ public partial class Ball : MonoBehaviour
         gameObject.GetComponent<Rigidbody2D>().linearVelocityY = 10;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
         StartCoroutine(EnableCollider());
-        
+        spriteRenderer.color = new Color(1f, 1f, 1f);
+        TrailRenderer = gameObject.GetComponent<TrailRenderer>();
+        BounceTime = 1f;
+        MaxBounce = 0;
         targets.Clear();
         currentTarget = null;
     }
@@ -32,6 +36,34 @@ public partial class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        TrailRenderer.startColor = spriteRenderer.color;
+        CurrentSpeed = rb.linearVelocity.magnitude;
+        
+        if (CurrentSpeed > 8 && (AugmentManager.instance.determineAugmentID("SPECIAL_12") || AugmentManager.instance.determineAugmentID("SPECIAL_13"))) //Speed Augment
+        {
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
+            {
+                SpecialCriticalChance = ((CurrentSpeed / 100f) * 1.5f);
+            }
+            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
+            {
+                TransformationMultiple = 1f + ((CurrentSpeed / 100f) * 2.5f);
+            }
+            TrailRenderer.time = 1;
+        }
+        else
+        {
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
+            {
+                SpecialCriticalChance = 0f;
+            }
+            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
+            {
+                TransformationMultiple = 1f;
+            }
+            TrailRenderer.time -= TrailRenderer.time != 0 ? 0.005f : 0f;
+        }
+        
         if(transform.position.y <= -10)
         {
             foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
@@ -41,12 +73,10 @@ public partial class Ball : MonoBehaviour
             BallManager.Instance.TakeBall(this);
         }
 
-        if (rb.linearVelocity.magnitude > maxSpeed)
+        if (rb.linearVelocity.magnitude > BallManager.Instance.maxSpeed)
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
-        } 
-
-
+            rb.linearVelocity = rb.linearVelocity.normalized * BallManager.Instance.maxSpeed;
+        }
     }
     
     private void FixedUpdate()
@@ -71,9 +101,9 @@ public partial class Ball : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Wall"))
             {
-                if (MaxBounce < 3)
+                if (MaxBounce < 6)
                 {
-                    BounceTime += 0.2f;
+                    BounceTime += 0.1f;
                     MaxBounce++;
                     spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
                 }
@@ -83,6 +113,10 @@ public partial class Ball : MonoBehaviour
                 MaxBounce = 0;
                 spriteRenderer.color = new Color(1f, 1f, 1f);
             }
+        }
+        if (collision.gameObject.CompareTag("Brick") && gameObject.activeSelf)
+        {
+            collision.gameObject.GetComponent<IBrick>().BallSpeed = CurrentSpeed;
         }
     }
 
@@ -190,7 +224,18 @@ public partial class Ball //Homing
 
 public partial class Ball //Bounce = Power
 {
-    public static float BounceTime { get; set; } = 1f;
+    public float BounceTime { get; set; } = 1f;
     private int MaxBounce = 0;
     private SpriteRenderer spriteRenderer;
+}
+
+public partial class Ball //Speed = Power
+{
+    private TrailRenderer TrailRenderer;
+    public float TransformationMultiple = 1f;
+}
+
+public partial class Ball
+{
+    public float SpecialCriticalChance = 0f;
 }

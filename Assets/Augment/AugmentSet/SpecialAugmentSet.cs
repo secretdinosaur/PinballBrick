@@ -84,8 +84,8 @@ public class BouncePower: SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Ball.BounceTime * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-        Ball.BounceTime = 1;
+        Brick.TotalMultiple = Brick.Ball.BounceTime * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        Brick.Ball.BounceTime = 1;
     }
 }
 
@@ -261,11 +261,46 @@ public class DeathGold : SpecialAugment
     }
 }
 
+public class SpeedPower : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_12", "Speed = Power", "Speed = Power", "Speed", 4);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        Brick.TotalMultiple = Brick.Ball.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+    }
+}
+
+public class SpeedCritical : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_13", "Speed = Critical Chance", "Speed = Critical Chance", "Speed", 4);
+    }
+
+    public override void Apply(){ }
+
+    public override void Remove(){ }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        Brick.TotalMultiple = Brick.Ball.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+
+    }
+}
+
 public class Lightning : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_12", "Lightning", "Lightning", "Lightning", 5);
+        SetAugment("SPECIAL_14", "Lightning", "Lightning", "Lightning", 5);
     }
 
     public override void Apply() { }
