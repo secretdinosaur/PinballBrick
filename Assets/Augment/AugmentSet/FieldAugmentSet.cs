@@ -111,7 +111,7 @@ public class PhoenixBall : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(ChoosingPhoenixBall(10f, 30f));
+        Routine = StartCoroutine(ChoosingPhoenixBall(20f, 30f));
     }
 
     public override void Remove()

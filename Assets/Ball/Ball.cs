@@ -82,12 +82,8 @@ public partial class Ball : MonoBehaviour
 
             if (isPhoenix)
             {
-                GetComponent<Collider2D>().enabled = false;
-                transform.position = new Vector2(0, -5);
-                rb.linearVelocityY = 10;
-                rb.linearVelocityX = Random.Range(-5f, 5f);
-                StartCoroutine(EnableCollider());
-                isPhoenix = false;
+                gameObject.SetActive(false);
+                gameObject.SetActive(true);
             }
             else
             {
