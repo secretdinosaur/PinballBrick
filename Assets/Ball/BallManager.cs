@@ -31,6 +31,7 @@ public class BallManager : MonoBehaviour
     }
     
     public List<Ball> InGameBall = new List<Ball>();
+    public bool thereISPhoenix = false;
     public Vector2 boxSize = new Vector2(5f, 10f);
 
     void FixedUpdate()

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using JetBrains.Annotations;
 using Random = UnityEngine.Random;
 using TMPro;
 using TrailRenderer = UnityEngine.TrailRenderer;
@@ -9,7 +10,9 @@ using TrailRenderer = UnityEngine.TrailRenderer;
 public partial class Ball : MonoBehaviour
 {
     public float CurrentSpeed;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float SpecialCriticalChance = 0f;
+    public bool isPhoenix;
+    
     void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -25,6 +28,7 @@ public partial class Ball : MonoBehaviour
         MaxBounce = 0;
         targets.Clear();
         currentTarget = null;
+        isPhoenix = false;
     }
 
     private IEnumerator EnableCollider()
@@ -33,11 +37,16 @@ public partial class Ball : MonoBehaviour
         GetComponent<Collider2D>().enabled = true;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         TrailRenderer.startColor = spriteRenderer.color;
         CurrentSpeed = rb.linearVelocity.magnitude;
+        if (isPhoenix)
+        {
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 0f);
+        }
+        
         
         if (CurrentSpeed > 8 && (AugmentManager.instance.determineAugmentID("SPECIAL_12") || AugmentManager.instance.determineAugmentID("SPECIAL_13"))) //Speed Augment
         {
@@ -70,7 +79,16 @@ public partial class Ball : MonoBehaviour
             {
                 Augment.AfterDeathEffect();
             }
-            BallManager.Instance.TakeBall(this);
+
+            if (isPhoenix)
+            {
+                gameObject.SetActive(false);
+                gameObject.SetActive(true);
+            }
+            else
+            {
+                BallManager.Instance.TakeBall(this);
+            }
         }
 
         if (rb.linearVelocity.magnitude > BallManager.Instance.maxSpeed)
@@ -233,9 +251,4 @@ public partial class Ball //Speed = Power
 {
     private TrailRenderer TrailRenderer;
     public float TransformationMultiple = 1f;
-}
-
-public partial class Ball
-{
-    public float SpecialCriticalChance = 0f;
 }

@@ -545,6 +545,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 218456167}
+  - component: {fileID: 218456172}
   - component: {fileID: 218456165}
   - component: {fileID: 218456164}
   - component: {fileID: 218456168}
@@ -691,6 +692,18 @@ MonoBehaviour:
   activeStatAugments: []
   activeFieldAugments: []
   activeSpecialAugments: []
+--- !u!114 &218456172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218456163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3cc994f95e342f45a4617997c0d5fbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &248038763
 GameObject:
   m_ObjectHideFlags: 0
@@ -3240,6 +3253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 15
   InGameBall: []
+  thereISPhoenix: 0
   boxSize: {x: 5, y: 10}
 --- !u!114 &998555654
 MonoBehaviour:
@@ -4490,7 +4504,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 5
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

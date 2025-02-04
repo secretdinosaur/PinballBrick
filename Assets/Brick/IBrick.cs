@@ -156,7 +156,6 @@ public partial class IBrick
         {
             CriticalHit = true;
             TotalMultiple *= CriticalDamage();
-
             foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
             {
                 Augment.CriticalAttackEffect(this);
