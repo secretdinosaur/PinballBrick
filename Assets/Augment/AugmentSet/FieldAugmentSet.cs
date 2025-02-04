@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using Random = UnityEngine.Random;
+
 /*
 public class Example : FieldAugment
 {
@@ -93,6 +95,47 @@ public class AngryBall : FieldAugment
                 Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
                 Vector3 forceDirection = rb.linearVelocity.normalized;
                 rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
+            }
+        }
+    }
+}
+
+public class PhoenixBall : FieldAugment
+{
+    Coroutine Routine = null;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_3", "PhoenixBall", "PhoenixBall", 4);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(ChoosingPhoenixBall(10f, 30f));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator ChoosingPhoenixBall(float period, float Cooldown)
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null && !BallManager.Instance.thereISPhoenix)
+            {
+                Ball ball = BallManager.Instance.InGameBall[Random.Range(0, BallManager.Instance.InGameBall.Count)];
+                ball.isPhoenix = true;
+                BallManager.Instance.thereISPhoenix = true;
+                yield return new WaitForSeconds(period);
+                ball.isPhoenix = false;
+                BallManager.Instance.thereISPhoenix = false;
             }
         }
     }
