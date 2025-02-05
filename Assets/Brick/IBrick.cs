@@ -220,6 +220,7 @@ public partial class IBrick
     {
         if (EffectStatusSet["Poison"].IsActive) yield break;
         EffectStatusSet["Poison"].IsActive = true;
+        float effectDurationTemp = effectDuration;
         effectDuration = 0.8f * (effectDuration * 0.5f);
         float interval = 0.7f;
         while (effectDuration > 0)
@@ -240,12 +241,40 @@ public partial class IBrick
             float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
             HP -= FinalEffectAttackDamage;
             ShowText((FinalEffectAttackDamage / (HP + FinalEffectAttackDamage)).ToString("0.###")+ "%", "Poison", isCritical);
-            effectDuration -= interval;
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_16"))
+            {
+                if (EffectStatusSet["Poison"].EffectStack == 3)
+                {
+                    foreach (IBrick brick in NearbyBricks)
+                    {
+                        brick.EffectStatusSet["Poison"].EffectStack += (brick.EffectStatusSet["Poison"].EffectStack != 3) ? 1 : 0;
+                        if (!brick.EffectStatusSet["Poison"].IsActive)
+                        {
+                            brick.StartCoroutine(brick.DamageByPoisonEffect(effectDurationTemp));
+                        }
+                    }
+                }
+                else
+                {
+                    if (Random.value < AugmentManager.instance.effectChance.PoisonChance)
+                    {
+                        EffectStatusSet["Poison"].EffectStack++;
+                    }
+                    else
+                    {
+                        effectDuration -= interval;
+                    }
+                }
+            }
+            else
+            {
+                effectDuration -= interval;
+            }
             if (!gameObject.activeSelf)
             {
                 yield break;
             }
-            yield return new WaitForSeconds(interval);
+            yield return new WaitForSeconds(1f);
         }
         EffectStatusSet["Poison"].EffectStack = 0;
         EffectStatusSet["Poison"].IsActive = false;

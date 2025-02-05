@@ -2,6 +2,7 @@ using System.Threading;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 /*
 public class Example : SpecialAugment
@@ -341,4 +342,17 @@ public class PoisonBall : SpecialAugment
             StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration));
         }
     }
+}
+
+public class InfinitePoison : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_16", "InfinitePoison", "InfinitePoison", "Effect", 2);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+    
 }

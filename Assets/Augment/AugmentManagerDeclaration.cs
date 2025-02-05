@@ -19,7 +19,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 1f);
+        effectChance = new EffectChance(0.3f, 0.3f);
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -58,11 +58,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SpeedPower>(),
             gameObject.AddComponent<SpeedCritical>(),
             gameObject.AddComponent<PoisonBall>(),
+            gameObject.AddComponent<InfinitePoison>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
             gameObject.GetComponent<PoisonBall>(),
+            gameObject.GetComponent<InfinitePoison>(),
         };
 
         foreach(IAugment augment in TestAugments)
