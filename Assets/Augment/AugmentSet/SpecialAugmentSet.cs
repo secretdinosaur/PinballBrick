@@ -319,6 +319,10 @@ public class Lightning : SpecialAugment
 
     }
 }
+
+/*
+ * Deals damage based on a percentage of current health N times per second.
+ */
 public class PoisonBall : SpecialAugment
 {
     private float PoisonDuration;
@@ -344,6 +348,10 @@ public class PoisonBall : SpecialAugment
     }
 }
 
+/*
+ * When poisoned, there is a certain chance to increase the Poison Effect stack by 1 and refresh its duration.
+ * If the stack reaches 3, the poison spreads to nearby blocks.
+ */
 public class InfinitePoison : SpecialAugment
 {
     private void OnEnable()
