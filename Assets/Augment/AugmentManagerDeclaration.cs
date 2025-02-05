@@ -14,9 +14,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
     public List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
     
+    public EffectChance effectChance;
+    
     void Awake()
     {
         instance = this;
+        effectChance = new EffectChance(0.3f, 0.3f);
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -48,22 +51,51 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<CriticalAdditionalAttack>(),
             gameObject.AddComponent<Execution>(),
             gameObject.AddComponent<PercentDamage>(),
-            gameObject.AddComponent<EffectStackBlast>(),
+            gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<ChainLightning>(),
             gameObject.AddComponent<DeathExp>(),
             gameObject.AddComponent<DeathGold>(),
             gameObject.AddComponent<SpeedPower>(),
             gameObject.AddComponent<SpeedCritical>(),
+            gameObject.AddComponent<PoisonBall>(),
+            gameObject.AddComponent<InfinitePoison>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<PhoenixBall>(),
+            gameObject.GetComponent<PoisonBall>(),
+            gameObject.GetComponent<InfinitePoison>(),
         };
 
         foreach(IAugment augment in TestAugments)
         {
             AddAugment(augment);
         }
+    }
+}
+
+public class EffectStatus
+{
+    public string Name;
+    public bool IsActive;
+    public int EffectStack;
+
+    public EffectStatus(string name, bool isActive, int effectStack)
+    {
+        Name = name;
+        IsActive = isActive;
+        EffectStack = effectStack;
+    }
+}
+
+public class EffectChance
+{
+    public float FireChance;
+    public float PoisonChance;
+
+    public EffectChance(float fireChance, float poisonChance)
+    {
+        FireChance = fireChance;
+        PoisonChance = poisonChance;
     }
 }

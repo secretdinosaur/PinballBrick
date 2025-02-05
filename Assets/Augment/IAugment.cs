@@ -28,6 +28,7 @@ public abstract class IAugment : MonoBehaviour
     /// </summary>
     /// <param name="Brick"></param>
     public virtual void AfterAttackEffect(IBrick Brick) { }
+    
 }
 
 public abstract class StatAugment : IAugment
