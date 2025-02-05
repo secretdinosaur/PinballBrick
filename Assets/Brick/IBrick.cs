@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Random = UnityEngine.Random;
 
 public partial class IBrick : MonoBehaviour
@@ -19,7 +20,6 @@ public partial class IBrick : MonoBehaviour
     public float BallSpeed;
 
     public float TotalMultiple;
-
     public float HP
     {
         get { return hp; }
@@ -60,7 +60,6 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
-        isEffectActive = false;
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -125,8 +124,12 @@ public partial class IBrick
 {
     public Ball Ball;
     private float SpecialCriticalChance; // CriticalChance that Increased by Augment
-    public int EffectStack;
-    public bool isEffectActive = false;
+    
+    public Dictionary<string, EffectStatus> EffectStatusSet = new Dictionary<string, EffectStatus>()
+    {
+        { "Fire", new EffectStatus("Fire", false, 0) },
+        { "Poison", new EffectStatus("Poison", false, 0) }
+    };
     public void TakeDamage(Ball ball)
     {
         Ball = ball;
@@ -177,10 +180,10 @@ public partial class IBrick
     {
         return (StatManager.instance.Persistent_stat.CriticalDamage + StatManager.instance.Temporary_stat.CriticalDamage);
     }
-    public IEnumerator DamageByEffect(float effectDuration)
+    public IEnumerator DamageByFireEffect(float effectDuration)
     {
-        if (isEffectActive) yield break;
-        isEffectActive = true;
+        if (EffectStatusSet["Fire"].IsActive) yield break;
+        EffectStatusSet["Fire"].IsActive = true;
         float interval = 0.1f;
         while (effectDuration > 0)
         {
@@ -194,23 +197,58 @@ public partial class IBrick
             EffectAttackDamage = isCritical
                 ? (StatManager.instance.Temporary_stat.EffectDamage *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier)
-                  * EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage
+                  * EffectStatusSet["Fire"].EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage
                 : (StatManager.instance.Temporary_stat.EffectDamage *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier)
-                  * EffectStack;
+                  * EffectStatusSet["Fire"].EffectStack;
 
             float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
             HP -= FinalEffectAttackDamage;
-            ShowText(EffectAttackDamage.ToString("F1"), "Effect", isCritical);
+            ShowText(EffectAttackDamage.ToString("F1"), "Fire", isCritical);
             effectDuration -= interval;
             if (!gameObject.activeSelf)
             {
-                EffectStack = 0;
                 yield break;
             }
             yield return new WaitForSeconds(interval);
         }
-        isEffectActive = false;
+        EffectStatusSet["Fire"].EffectStack = 0;
+        EffectStatusSet["Fire"].IsActive = false;
+    }
+
+    public IEnumerator DamageByPoisonEffect(float effectDuration)
+    {
+        if (EffectStatusSet["Poison"].IsActive) yield break;
+        EffectStatusSet["Poison"].IsActive = true;
+        effectDuration = 0.8f * (effectDuration * 0.5f);
+        float interval = 0.7f;
+        while (effectDuration > 0)
+        {
+            bool isCritical = false;
+            float EffectAttackDamage;
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
+            {
+                isCritical = IsCriticalHit();
+            }
+
+            EffectAttackDamage = isCritical
+                ? (HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
+                         * EffectStatusSet["Poison"].EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage))
+                : (HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
+                         * EffectStatusSet["Poison"].EffectStack));
+
+            float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
+            HP -= FinalEffectAttackDamage;
+            ShowText((FinalEffectAttackDamage / (HP + FinalEffectAttackDamage)).ToString("0.###")+ "%", "Poison", isCritical);
+            effectDuration -= interval;
+            if (!gameObject.activeSelf)
+            {
+                yield break;
+            }
+            yield return new WaitForSeconds(interval);
+        }
+        EffectStatusSet["Poison"].EffectStack = 0;
+        EffectStatusSet["Poison"].IsActive = false;
     }
     
     public IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack Coroutine
