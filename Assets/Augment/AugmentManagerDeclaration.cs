@@ -39,6 +39,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<EffectCritical>(),
             gameObject.AddComponent<PowerButSlow>(),
             gameObject.AddComponent<WeakButFast>(),
+            gameObject.AddComponent<WeakButStrongEffect>(),
+            gameObject.AddComponent<WeakButStrongAtk>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -59,6 +61,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SpeedCritical>(),
             gameObject.AddComponent<PoisonBall>(),
             gameObject.AddComponent<InfinitePoison>(),
+            gameObject.AddComponent<DeadlyPoison>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
