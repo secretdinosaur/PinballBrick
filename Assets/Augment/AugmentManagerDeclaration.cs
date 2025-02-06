@@ -79,12 +79,14 @@ public class EffectStatus
     public string Name;
     public bool IsActive;
     public int EffectStack;
+    public int EffectStackLimit;
 
-    public EffectStatus(string name, bool isActive, int effectStack)
+    public EffectStatus(string name, bool isActive, int effectStack, int effectStackLimit)
     {
         Name = name;
         IsActive = isActive;
         EffectStack = effectStack;
+        EffectStackLimit = effectStackLimit;
     }
 }
 
