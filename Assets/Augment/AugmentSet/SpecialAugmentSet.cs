@@ -146,7 +146,7 @@ public class PercentDamage : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_7", "Percent Damage", "Percent Damage", "Special", 2);
+        SetAugment("SPECIAL_7", "Percent Damage", "Percent Damage", "Special", 3);
     }
 
     public override void Apply(){ }
@@ -405,5 +405,31 @@ public class DeadlyPoison : SpecialAugment
             brick.EffectStatusSet["Poison"].EffectStackLimit = 3;
         }
         AugmentManager.instance.effectChance.PoisonChance -= 0.1f;
+    }
+}
+
+public class Chaos : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_18", "Chaos", "Chaos", "Special", 1);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.rarityWeights[1] = 20f;
+        AugmentManager.instance.rarityWeights[2] = 20f;
+        AugmentManager.instance.rarityWeights[3] = 20f;
+        AugmentManager.instance.rarityWeights[4] = 20f;
+        AugmentManager.instance.rarityWeights[5] = 20f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.rarityWeights[1] = 0.5f;
+        AugmentManager.instance.rarityWeights[2] = 3f;
+        AugmentManager.instance.rarityWeights[3] = 12.5f;
+        AugmentManager.instance.rarityWeights[4] = 32f;
+        AugmentManager.instance.rarityWeights[5] = 52f;
     }
 }
