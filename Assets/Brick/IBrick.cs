@@ -127,8 +127,8 @@ public partial class IBrick
     
     public Dictionary<string, EffectStatus> EffectStatusSet = new Dictionary<string, EffectStatus>()
     {
-        { "Fire", new EffectStatus("Fire", false, 0) },
-        { "Poison", new EffectStatus("Poison", false, 0) }
+        { "Fire", new EffectStatus("Fire", false, 0, 5) },
+        { "Poison", new EffectStatus("Poison", false, 0, 3) }
     };
     public void TakeDamage(Ball ball)
     {
@@ -240,14 +240,15 @@ public partial class IBrick
 
             float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
             HP -= FinalEffectAttackDamage;
-            ShowText((FinalEffectAttackDamage / (HP + FinalEffectAttackDamage)).ToString("0.###")+ "%", "Poison", isCritical);
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_16"))
+            ShowText(((FinalEffectAttackDamage / (HP + FinalEffectAttackDamage)) * 100f).ToString("0.###")+ "%", "Poison", isCritical);
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_16")) // Infinite Poison
             {
-                if (EffectStatusSet["Poison"].EffectStack == 3)
+                if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
                 {
                     foreach (IBrick brick in NearbyBricks)
                     {
-                        brick.EffectStatusSet["Poison"].EffectStack += (brick.EffectStatusSet["Poison"].EffectStack != 3) ? 1 : 0;
+                        brick.EffectStatusSet["Poison"].EffectStack += 
+                            (brick.EffectStatusSet["Poison"].EffectStack != EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
                         if (!brick.EffectStatusSet["Poison"].IsActive)
                         {
                             brick.StartCoroutine(brick.DamageByPoisonEffect(effectDurationTemp));
@@ -259,6 +260,7 @@ public partial class IBrick
                     if (Random.value < AugmentManager.instance.effectChance.PoisonChance)
                     {
                         EffectStatusSet["Poison"].EffectStack++;
+                        effectDuration = effectDurationTemp;
                     }
                     else
                     {
@@ -313,10 +315,10 @@ public partial class IBrick
         }
     }
 
-    public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText)
+    public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
     {
         HP -= damage;
-        ShowText(damageText, null, isCritical);
+        ShowText(damageText, DamageType, isCritical);
     }
 }
 

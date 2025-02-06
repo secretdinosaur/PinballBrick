@@ -2,6 +2,7 @@ using System.Threading;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Redcode.Pools;
 using Unity.VisualScripting;
 
 /*
@@ -145,7 +146,7 @@ public class PercentDamage : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_7", "Percent Damage", "Percent Damage", "Special", 2);
+        SetAugment("SPECIAL_7", "Percent Damage", "Percent Damage", "Special", 3);
     }
 
     public override void Apply(){ }
@@ -156,7 +157,7 @@ public class PercentDamage : SpecialAugment
     {
         if (Brick.gameObject.activeSelf)
         { 
-            Brick.ArbitraryDamageAttack(Brick.HpTemp * 0.01f, false, "1%");
+            Brick.ArbitraryDamageAttack(Brick.HpTemp * 0.01f, false, "1%", null);
         }
     }
 }
@@ -178,12 +179,18 @@ public class FireEffectStackBlast : SpecialAugment
 
     public override void AfterMainAttackEffect(IBrick Brick)
     {
-        if (Brick.EffectStatusSet["Fire"].EffectStack >= 5)
+        if (Brick.EffectStatusSet["Fire"].EffectStack == Brick.EffectStatusSet["Fire"].EffectStackLimit)
         {
-            Brick.EffectStatusSet["Fire"].EffectStack -= 3;
+            Brick.EffectStatusSet["Fire"].EffectStack = (int)(Brick.EffectStatusSet["Fire"].EffectStack * 0.3);
             foreach (IBrick nearbyBrick in Brick.NearbyBricks)
             {
-                nearbyBrick.EffectStatusSet["Fire"].EffectStack += (nearbyBrick.EffectStatusSet["Fire"].EffectStack != 5) ? 2 : 0;
+                nearbyBrick.EffectStatusSet["Fire"].EffectStack += 
+                    (nearbyBrick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 2 : 0;
+                nearbyBrick.ArbitraryDamageAttack(
+                    StatManager.instance.Temporary_stat.EffectDamage,
+                    false, 
+                    StatManager.instance.Temporary_stat.EffectDamage.ToString("F1"), 
+                    "Fire");
                 StartCoroutine(nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
             }
         }
@@ -221,7 +228,7 @@ public class ChainLightning : SpecialAugment
             }
             int RandomNumber = Random.Range(0, BrickToBrick.Count);
             BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 * StatManager.instance.statMultiplier.EffectDamageMultiplier, 
-                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"));
+                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"), null);
             BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
 
             targetBrick = BrickToBrick[RandomNumber];
@@ -314,7 +321,7 @@ public class Lightning : SpecialAugment
     public override void AfterAttackEffect(IBrick brick)
     {
         brick.ArbitraryDamageAttack(1 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"));
+                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"), null);
         VisualEffectManager.Instance.SpawnParticle("Lightning", brick.transform.position, 1);
 
     }
@@ -330,7 +337,7 @@ public class PoisonBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_15", "PoisonBall", "PoisonBall", "Effect", 4);
-        PoisonDuration = 5f;
+        PoisonDuration = 1f;
     }
 
     public override void Apply() { }
@@ -342,8 +349,11 @@ public class PoisonBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.PoisonChance)
         {
-            Brick.EffectStatusSet["Poison"].EffectStack += (Brick.EffectStatusSet["Poison"].EffectStack != 3) ? 1 : 0;
-            StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration));
+            Brick.EffectStatusSet["Poison"].EffectStack += (Brick.EffectStatusSet["Poison"].EffectStack != Brick.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
+            if (!Brick.EffectStatusSet["Poison"].IsActive)
+            {
+                StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration));
+            }
         }
     }
 }
@@ -359,8 +369,67 @@ public class InfinitePoison : SpecialAugment
         SetAugment("SPECIAL_16", "InfinitePoison", "InfinitePoison", "Effect", 2);
     }
 
-    public override void Apply() { }
+    public override void Apply()
+    {
+        AugmentManager.instance.effectChance.PoisonChance += 0.1f;
+    }
 
-    public override void Remove() { }
-    
+    public override void Remove() 
+    {
+        AugmentManager.instance.effectChance.PoisonChance -= 0.1f;
+    }
+}
+
+public class DeadlyPoison : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_17", "DeadlyPoison", "DeadlyPoison", "Effect", 3);
+    }
+
+    public override void Apply()
+    {
+        BrickInfo brickInfo = BrickManager.Instance.BrickInfo;
+        foreach (IBrick brick in brickInfo.Bricks)
+        {
+            brick.EffectStatusSet["Poison"].EffectStackLimit = 5;
+        }
+        AugmentManager.instance.effectChance.PoisonChance += 0.1f;
+    }
+
+    public override void Remove()
+    {
+        BrickInfo brickInfo = BrickManager.Instance.BrickInfo;
+        foreach (IBrick brick in brickInfo.Bricks)
+        {
+            brick.EffectStatusSet["Poison"].EffectStackLimit = 3;
+        }
+        AugmentManager.instance.effectChance.PoisonChance -= 0.1f;
+    }
+}
+
+public class Chaos : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_18", "Chaos", "Chaos", "Special", 1);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.rarityWeights[1] = 20f;
+        AugmentManager.instance.rarityWeights[2] = 20f;
+        AugmentManager.instance.rarityWeights[3] = 20f;
+        AugmentManager.instance.rarityWeights[4] = 20f;
+        AugmentManager.instance.rarityWeights[5] = 20f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.rarityWeights[1] = 0.5f;
+        AugmentManager.instance.rarityWeights[2] = 3f;
+        AugmentManager.instance.rarityWeights[3] = 12.5f;
+        AugmentManager.instance.rarityWeights[4] = 32f;
+        AugmentManager.instance.rarityWeights[5] = 52f;
+    }
 }

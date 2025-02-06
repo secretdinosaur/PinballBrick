@@ -16,6 +16,15 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     
     public EffectChance effectChance;
     
+    public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
+    {
+        { 1, 0.5f },
+        { 2, 3f },
+        { 3, 12.5f },
+        { 4, 32f },
+        { 5, 52f }
+    };
+    
     void Awake()
     {
         instance = this;
@@ -39,6 +48,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<EffectCritical>(),
             gameObject.AddComponent<PowerButSlow>(),
             gameObject.AddComponent<WeakButFast>(),
+            gameObject.AddComponent<WeakButStrongEffect>(),
+            gameObject.AddComponent<WeakButStrongAtk>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -59,6 +70,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SpeedCritical>(),
             gameObject.AddComponent<PoisonBall>(),
             gameObject.AddComponent<InfinitePoison>(),
+            gameObject.AddComponent<DeadlyPoison>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
@@ -79,12 +91,14 @@ public class EffectStatus
     public string Name;
     public bool IsActive;
     public int EffectStack;
+    public int EffectStackLimit;
 
-    public EffectStatus(string name, bool isActive, int effectStack)
+    public EffectStatus(string name, bool isActive, int effectStack, int effectStackLimit)
     {
         Name = name;
         IsActive = isActive;
         EffectStack = effectStack;
+        EffectStackLimit = effectStackLimit;
     }
 }
 

@@ -348,3 +348,47 @@ public class WeakButFast : StatAugment
     }
 }
 
+public class WeakButStrongEffect : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_17", "WeakButStrongEffect", "Atk Down Effect Damage Increase", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 0.33f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.6f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 0.33f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.6f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+}
+
+public class WeakButStrongAtk : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_18", "WeakButStrongAtk", "Atk Up Effect Damage decrease", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.6f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 0.33f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.6f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 0.33f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+}
+
