@@ -18,22 +18,16 @@ public partial class AugmentManager //Utility
             activeFieldAugments.Any(a => a.ID == ID) || 
             activeSpecialAugments.Any(a => a.ID == ID);
     }
-    
+    private List<IAugment> exceptionAugments = new List<IAugment>();
     private List<IAugment> alreadyChosenAugments = new List<IAugment>();
     public IAugment GetRandomAugment()
     {
         if (augmentsSet == null || augmentsSet.Count == 0) return null;
-        var availableAugments = augmentsSet.Where(a => !alreadyChosenAugments.Contains(a)).ToList();
+        var availableAugments = augmentsSet
+            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a))
+            .ToList();
         if (availableAugments.Count == 0) return null;
         
-        Dictionary<int, float> rarityWeights = new Dictionary<int, float>
-        {
-            { 1, 2f },
-            { 2, 5f },
-            { 3, 13f },
-            { 4, 26f },
-            { 5, 54f }
-        };
         float totalWeight = 0f;
         float[] Weights = new float[availableAugments.Count];
         
@@ -62,7 +56,8 @@ public partial class AugmentManager
 {
     public void AddAugment(IAugment augment)
     {
-        alreadyChosenAugments.Add(augment);
+        alreadyChosenAugments.Clear();
+        exceptionAugments.Add(augment);
         if (augment is StatAugment statAugment)
         {
             augment.Apply();
@@ -81,7 +76,7 @@ public partial class AugmentManager
         IAugment OppositeAugment = GetOppositeAugment(augment);
         if (OppositeAugment != null)
         {
-            alreadyChosenAugments.Add(OppositeAugment);
+            exceptionAugments.Add(OppositeAugment);
         }
     }
 

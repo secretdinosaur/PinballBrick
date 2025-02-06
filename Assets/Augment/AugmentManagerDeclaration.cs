@@ -16,6 +16,15 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     
     public EffectChance effectChance;
     
+    public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
+    {
+        { 1, 0.5f },
+        { 2, 3f },
+        { 3, 12.5f },
+        { 4, 32f },
+        { 5, 52f }
+    };
+    
     void Awake()
     {
         instance = this;
