@@ -60,6 +60,13 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_20"))
+        {
+            if (EffectStatusSet["Decay"].EffectStack == EffectStatusSet["Decay"].EffectStackLimit)
+            {
+                DecayExplosion();
+            }
+        }
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -128,7 +135,8 @@ public partial class IBrick
     public Dictionary<string, EffectStatus> EffectStatusSet = new Dictionary<string, EffectStatus>()
     {
         { "Fire", new EffectStatus("Fire", false, 0, 5) },
-        { "Poison", new EffectStatus("Poison", false, 0, 3) }
+        { "Poison", new EffectStatus("Poison", false, 0, 3) },
+        { "Decay", new EffectStatus("Decay", false, 0, 3)}
     };
     public void TakeDamage(Ball ball)
     {
@@ -165,7 +173,9 @@ public partial class IBrick
             }
         }
 
-        float FinalDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : TotalAttackStat * TotalMultiple;
+        float FinalDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
+            ? 1 
+            : DecayDamageCalculate(TotalAttackStat * TotalMultiple);
         if (BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
         ShowText(FinalDamage.ToString("F1"), "Normal", CriticalHit);
         return FinalDamage;
@@ -202,7 +212,9 @@ public partial class IBrick
                    StatManager.instance.statMultiplier.EffectDamageMultiplier)
                   * EffectStatusSet["Fire"].EffectStack;
 
-            float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
+            float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
+                ? 1 
+                : DecayDamageCalculate(EffectAttackDamage);
             HP -= FinalEffectAttackDamage;
             ShowText(EffectAttackDamage.ToString("F1"), "Fire", isCritical);
             effectDuration -= interval;
@@ -238,7 +250,9 @@ public partial class IBrick
                 : (HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
                          * EffectStatusSet["Poison"].EffectStack));
 
-            float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : EffectAttackDamage;
+            float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
+                ? 1 
+                : DecayDamageCalculate(EffectAttackDamage);
             HP -= FinalEffectAttackDamage;
             ShowText(((FinalEffectAttackDamage / (HP + FinalEffectAttackDamage)) * 100f).ToString("0.###")+ "%", "Poison", isCritical);
             if (AugmentManager.instance.determineAugmentID("SPECIAL_16")) // Infinite Poison
@@ -281,6 +295,52 @@ public partial class IBrick
         EffectStatusSet["Poison"].EffectStack = 0;
         EffectStatusSet["Poison"].IsActive = false;
     }
+    public IEnumerator DecayEffect(float effectDuration)
+    {
+        if (EffectStatusSet["Decay"].IsActive) yield break;
+        EffectStatusSet["Decay"].IsActive = true;
+        float interval = 0.1f;
+        while (effectDuration > 0)
+        {
+            effectDuration -= interval;
+            if (!gameObject.activeSelf)
+            {
+                yield break;
+            }
+            yield return new WaitForSeconds(interval);
+        }
+        EffectStatusSet["Decay"].EffectStack = 0;
+        EffectStatusSet["Decay"].IsActive = false;
+    }
+
+    public float DecayDamageMultiple = 1.1f;
+    public float DecayDamageCalculate(float Damage)
+    {
+        Damage *= Mathf.Pow(DecayDamageMultiple, EffectStatusSet["Decay"].EffectStack);
+        return Damage;
+    }
+    
+    public void DecayExplosion()
+    {
+        float explosionRadius = 3f;
+        LayerMask explosionLayer = LayerMask.GetMask("Ball");
+        
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayer);
+        
+        foreach (Collider2D ball in colliders)
+        {
+            Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
+
+            if (rb != null)
+            {
+                Vector2 explosionDirection = (rb.position - (Vector2)transform.position).normalized;
+                float distance = Vector2.Distance(rb.position, transform.position);
+                float forceMultiplier = Mathf.Clamp01(1 - (distance / explosionRadius));
+                
+                rb.AddForce(explosionDirection * 5f * forceMultiplier, ForceMode2D.Impulse);
+            }
+        }
+    }
     
     public IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack Coroutine
     {
@@ -297,7 +357,9 @@ public partial class IBrick
                        StatManager.instance.Temporary_stat.AttackDamage)
                       * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
-            float FinalAdditionalAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) ? 1 : AdditionalAttackDamage;
+            float FinalAdditionalAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
+                ? 1 
+                : DecayDamageCalculate(AdditionalAttackDamage);
             
             if(BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
             HP -= FinalAdditionalAttackDamage;
@@ -317,6 +379,7 @@ public partial class IBrick
 
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
     {
+        damage = DecayDamageCalculate(damage);
         HP -= damage;
         ShowText(damageText, DamageType, isCritical);
     }

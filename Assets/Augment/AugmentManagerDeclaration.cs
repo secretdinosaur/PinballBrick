@@ -28,7 +28,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -71,12 +71,16 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<PoisonBall>(),
             gameObject.AddComponent<InfinitePoison>(),
             gameObject.AddComponent<DeadlyPoison>(),
+            gameObject.AddComponent<Chaos>(),
+            gameObject.AddComponent<DecayBall>(),
+            gameObject.AddComponent<PowerfulDecay>(),
+            gameObject.AddComponent<DecayExplosion>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<PoisonBall>(),
-            gameObject.GetComponent<InfinitePoison>(),
+            gameObject.GetComponent<DecayBall>(),
+            gameObject.GetComponent<DecayExplosion>(),
         };
 
         foreach(IAugment augment in TestAugments)
@@ -106,10 +110,12 @@ public class EffectChance
 {
     public float FireChance;
     public float PoisonChance;
+    public float DecayChance;
 
-    public EffectChance(float fireChance, float poisonChance)
+    public EffectChance(float fireChance, float poisonChance, float decayChance)
     {
         FireChance = fireChance;
         PoisonChance = poisonChance;
+        DecayChance = decayChance;
     }
 }

@@ -350,10 +350,7 @@ public class PoisonBall : SpecialAugment
             Random.value < AugmentManager.instance.effectChance.PoisonChance)
         {
             Brick.EffectStatusSet["Poison"].EffectStack += (Brick.EffectStatusSet["Poison"].EffectStack != Brick.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
-            if (!Brick.EffectStatusSet["Poison"].IsActive)
-            {
-                StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration));
-            }
+            StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration));
         }
     }
 }
@@ -394,6 +391,11 @@ public class DeadlyPoison : SpecialAugment
         {
             brick.EffectStatusSet["Poison"].EffectStackLimit = 5;
         }
+
+        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
+        {
+            brick.EffectStatusSet["Poison"].EffectStackLimit = 5;
+        }
         AugmentManager.instance.effectChance.PoisonChance += 0.1f;
     }
 
@@ -401,6 +403,10 @@ public class DeadlyPoison : SpecialAugment
     {
         BrickInfo brickInfo = BrickManager.Instance.BrickInfo;
         foreach (IBrick brick in brickInfo.Bricks)
+        {
+            brick.EffectStatusSet["Poison"].EffectStackLimit = 3;
+        }
+        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
         {
             brick.EffectStatusSet["Poison"].EffectStackLimit = 3;
         }
@@ -431,5 +437,84 @@ public class Chaos : SpecialAugment
         AugmentManager.instance.rarityWeights[3] = 12.5f;
         AugmentManager.instance.rarityWeights[4] = 32f;
         AugmentManager.instance.rarityWeights[5] = 52f;
+    }
+}
+
+public class DecayBall : SpecialAugment
+{
+    private float DecayDuration;
+
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_18", "DecayBall", "DecayBall", "Effect", 4);
+        DecayDuration = 1f;
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
+            Random.value < AugmentManager.instance.effectChance.DecayChance)
+        {
+            Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0; 
+            StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
+        }
+    }
+}
+
+public class PowerfulDecay : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_19", "PowerfulDecay", "PowerfulDecay", "Effect", 3);
+    }
+
+    public override void Apply()
+    {
+        BrickInfo brickInfo = BrickManager.Instance.BrickInfo;
+        foreach (IBrick brick in brickInfo.Bricks)
+        {
+            brick.DecayDamageMultiple = 1.15f;
+        }
+        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
+        {
+            brick.DecayDamageMultiple = 1.15f;
+        }
+        AugmentManager.instance.effectChance.DecayChance += 0.1f;
+    }
+
+    public override void Remove()
+    {
+        BrickInfo brickInfo = BrickManager.Instance.BrickInfo;
+        foreach (IBrick brick in brickInfo.Bricks)
+        {
+            brick.DecayDamageMultiple = 1.1f;
+        }
+        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
+        {
+            brick.DecayDamageMultiple = 1.1f;
+        }
+        AugmentManager.instance.effectChance.DecayChance -= 0.1f;
+    }
+}
+
+public class DecayExplosion : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_20", "DecayExplosion", "DecayExplosion", "Effect", 2);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.effectChance.DecayChance += 0.1f;
+    }
+
+    public override void Remove() 
+    {
+        AugmentManager.instance.effectChance.DecayChance += 0.1f;
     }
 }
