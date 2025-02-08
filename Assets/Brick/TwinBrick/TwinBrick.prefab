@@ -53,9 +53,11 @@ MonoBehaviour:
   BrickType: 
   BrickTransform: {fileID: 0}
   HpTemp: 0
+  BallSpeed: 0
+  PoisonEffect: {fileID: 1535557652517047639}
   TotalMultiple: 0
-  EffectStack: 0
-  isEffectActive: 0
+  Ball: {fileID: 0}
+  DecayDamageMultiple: 1.1
   NearbyBricks: []
   boxSize: {x: 6, y: 4}
   isTouchedBlackHole: 0
@@ -168,6 +170,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
   m_PrefabInstance: {fileID: 1237100546383254655}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4295867658635931762 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3077907449073165325, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  m_PrefabInstance: {fileID: 1237100546383254655}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6568544447581752893 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5333168213614402114, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
@@ -192,9 +199,11 @@ MonoBehaviour:
   BrickType: 
   BrickTransform: {fileID: 0}
   HpTemp: 0
+  BallSpeed: 0
+  PoisonEffect: {fileID: 4295867658635931762}
   TotalMultiple: 0
-  EffectStack: 0
-  isEffectActive: 0
+  Ball: {fileID: 0}
+  DecayDamageMultiple: 1.1
   NearbyBricks: []
   boxSize: {x: 0, y: 0}
   isTouchedBlackHole: 0
@@ -285,6 +294,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
   m_PrefabInstance: {fileID: 4609866364866373978}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1535557652517047639 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3077907449073165325, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  m_PrefabInstance: {fileID: 4609866364866373978}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8501302079217054488 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5333168213614402114, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
@@ -309,9 +323,11 @@ MonoBehaviour:
   BrickType: 
   BrickTransform: {fileID: 0}
   HpTemp: 0
+  BallSpeed: 0
+  PoisonEffect: {fileID: 1535557652517047639}
   TotalMultiple: 0
-  EffectStack: 0
-  isEffectActive: 0
+  Ball: {fileID: 0}
+  DecayDamageMultiple: 1.1
   NearbyBricks: []
   boxSize: {x: 0, y: 0}
   isTouchedBlackHole: 0

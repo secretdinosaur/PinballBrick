@@ -75,12 +75,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DecayBall>(),
             gameObject.AddComponent<PowerfulDecay>(),
             gameObject.AddComponent<DecayExplosion>(),
+            gameObject.AddComponent<Lightning>(),
+
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DecayBall>(),
-            gameObject.GetComponent<DecayExplosion>(),
+            gameObject.GetComponent<PoisonBall>(),
         };
 
         foreach(IAugment augment in TestAugments)

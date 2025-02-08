@@ -19,6 +19,10 @@ public partial class IBrick : MonoBehaviour
     public float HpTemp;
     public float BallSpeed;
 
+    private SpriteRenderer spriteRenderer;
+    private LineRenderer lineRenderer;
+
+    public GameObject PoisonEffect;
     public float TotalMultiple;
     public float HP
     {
@@ -115,6 +119,7 @@ public partial class IBrick : MonoBehaviour
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
         boxSize = new Vector2(2f, 2f);
+        
         GetComponents();
     }
 
@@ -123,6 +128,36 @@ public partial class IBrick : MonoBehaviour
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
         camera = Camera.main;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
+        PoisonEffect.SetActive(false);
+        UpdateOutline();
+    }
+    public void UpdateOutline()
+    {
+        Vector2 size = spriteRenderer.bounds.size;
+        Vector3[] corners = new Vector3[4];
+        float outlineThickness = 0.15f;
+        lineRenderer.startWidth = outlineThickness;
+        lineRenderer.endWidth = outlineThickness;
+        lineRenderer.loop = true;
+        lineRenderer.useWorldSpace = false;
+
+        corners[0] = new Vector3(-size.x / 2 - 0.15f, -size.y / 2 - 0.3f, 0);
+        corners[1] = new Vector3(size.x / 2 + 0.15f, -size.y / 2 - 0.3f, 0);
+        corners[2] = new Vector3(size.x / 2 + 0.15f, size.y / 2 + 0.3f, 0);
+        corners[3] = new Vector3(-size.x / 2 - 0.15f, size.y / 2 + 0.3f, 0);
+
+        lineRenderer.positionCount = 5;
+        lineRenderer.SetPositions(new Vector3[]
+        {
+            corners[0],
+            corners[1],
+            corners[2],
+            corners[3],
+            corners[0]
+        });
+        lineRenderer.enabled = false;
     }
 }
 
@@ -194,6 +229,7 @@ public partial class IBrick
     {
         if (EffectStatusSet["Fire"].IsActive) yield break;
         EffectStatusSet["Fire"].IsActive = true;
+        lineRenderer.enabled = true;
         float interval = 0.1f;
         while (effectDuration > 0)
         {
@@ -226,12 +262,14 @@ public partial class IBrick
         }
         EffectStatusSet["Fire"].EffectStack = 0;
         EffectStatusSet["Fire"].IsActive = false;
+        lineRenderer.enabled = false;
     }
 
     public IEnumerator DamageByPoisonEffect(float effectDuration)
     {
         if (EffectStatusSet["Poison"].IsActive) yield break;
         EffectStatusSet["Poison"].IsActive = true;
+        PoisonEffect.SetActive(true);
         float effectDurationTemp = effectDuration;
         effectDuration = 0.8f * (effectDuration * 0.5f);
         float interval = 0.7f;
@@ -294,6 +332,7 @@ public partial class IBrick
         }
         EffectStatusSet["Poison"].EffectStack = 0;
         EffectStatusSet["Poison"].IsActive = false;
+        PoisonEffect.SetActive(false);
     }
     public IEnumerator DecayEffect(float effectDuration)
     {
