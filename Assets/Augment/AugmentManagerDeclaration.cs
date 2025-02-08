@@ -18,9 +18,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
-        { 1, 0.5f },
-        { 2, 3f },
-        { 3, 12.5f },
+        { 0, 0.01f },
+        { 1, 0.59f },
+        { 2, 3.9f },
+        { 3, 11.5f },
         { 4, 32f },
         { 5, 52f }
     };
@@ -28,7 +29,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(1f, 0.3f, 0.3f);
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -50,6 +51,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButFast>(),
             gameObject.AddComponent<WeakButStrongEffect>(),
             gameObject.AddComponent<WeakButStrongAtk>(),
+            gameObject.AddComponent<GrowBall>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -75,12 +77,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DecayBall>(),
             gameObject.AddComponent<PowerfulDecay>(),
             gameObject.AddComponent<DecayExplosion>(),
+            gameObject.AddComponent<ExplosionWithBall>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DecayBall>(),
-            gameObject.GetComponent<DecayExplosion>(),
+            gameObject.GetComponent<FireBall>(),
         };
 
         foreach(IAugment augment in TestAugments)
