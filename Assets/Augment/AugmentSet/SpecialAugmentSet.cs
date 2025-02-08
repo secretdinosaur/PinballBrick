@@ -461,17 +461,20 @@ public class DeadlyPoison : SpecialAugment
     }
 }
 
-
+/*
+ * 모든 증강 확률 동일하게 만듦(0티어는 대격변급이어서 걍 여전히 줄임)
+ */
 public class Chaos : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_18", "Chaos", "Chaos", "Special", 1);
+        SetAugment("SPECIAL_18", "Chaos", "Chaos", "Special", 0);
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.rarityWeights[1] = 20f;
+        AugmentManager.instance.rarityWeights[0] = 0.1f;
+        AugmentManager.instance.rarityWeights[1] = 19.9f;
         AugmentManager.instance.rarityWeights[2] = 20f;
         AugmentManager.instance.rarityWeights[3] = 20f;
         AugmentManager.instance.rarityWeights[4] = 20f;
@@ -480,9 +483,10 @@ public class Chaos : SpecialAugment
 
     public override void Remove()
     {
-        AugmentManager.instance.rarityWeights[1] = 0.5f;
-        AugmentManager.instance.rarityWeights[2] = 3f;
-        AugmentManager.instance.rarityWeights[3] = 12.5f;
+        AugmentManager.instance.rarityWeights[0] = 0.01f;
+        AugmentManager.instance.rarityWeights[1] = 0.59f;
+        AugmentManager.instance.rarityWeights[2] = 3.9f;
+        AugmentManager.instance.rarityWeights[3] = 11.5f;
         AugmentManager.instance.rarityWeights[4] = 32f;
         AugmentManager.instance.rarityWeights[5] = 52f;
     }
