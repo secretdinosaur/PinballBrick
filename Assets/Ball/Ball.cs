@@ -252,3 +252,25 @@ public partial class Ball //Speed = Power
     private TrailRenderer TrailRenderer;
     public float TransformationMultiple = 1f;
 }
+
+public partial class Ball //GrowBall
+{
+    private float GrowthAttackDamage;
+
+    public void Grow(IBrick brick)
+    {
+        if (BallManager.Instance.isGrowing)
+        {
+            if (brick.IsBoss)
+            {
+                GrowthAttackDamage += 0.2f;
+            }
+            else
+            {
+                GrowthAttackDamage += 0.04f;
+            }
+        }
+    }
+
+    public float GetGrowthAttackDamage() { return GrowthAttackDamage; }
+}

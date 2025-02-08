@@ -67,6 +67,7 @@ public partial class IBrick : MonoBehaviour
                 DecayExplosion();
             }
         }
+        RecentlyBall.Grow(this);
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -129,7 +130,7 @@ public partial class IBrick : MonoBehaviour
 
 public partial class IBrick
 {
-    public Ball Ball;
+    public Ball RecentlyBall;
     private float SpecialCriticalChance; // CriticalChance that Increased by Augment
     
     public Dictionary<string, EffectStatus> EffectStatusSet = new Dictionary<string, EffectStatus>()
@@ -140,7 +141,7 @@ public partial class IBrick
     };
     public void TakeDamage(Ball ball)
     {
-        Ball = ball;
+        RecentlyBall = ball;
         TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
         SpecialCriticalChance = ball.SpecialCriticalChance;
 
@@ -161,7 +162,8 @@ public partial class IBrick
     {
         bool CriticalHit = false;
         float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
-                                StatManager.instance.Temporary_stat.AttackDamage;
+                                StatManager.instance.Temporary_stat.AttackDamage +
+                                RecentlyBall.GetGrowthAttackDamage();
 
         if (IsCriticalHit())
         {
