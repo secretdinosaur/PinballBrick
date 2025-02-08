@@ -50,6 +50,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButFast>(),
             gameObject.AddComponent<WeakButStrongEffect>(),
             gameObject.AddComponent<WeakButStrongAtk>(),
+            gameObject.AddComponent<GrowBall>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -79,8 +80,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DecayBall>(),
-            gameObject.GetComponent<DecayExplosion>(),
+            gameObject.GetComponent<GrowBall>(),
         };
 
         foreach(IAugment augment in TestAugments)

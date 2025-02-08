@@ -87,6 +87,7 @@ public partial class Ball : MonoBehaviour
             }
             else
             {
+                GrowthAttackDamage = 0f;
                 BallManager.Instance.TakeBall(this);
             }
         }
@@ -255,8 +256,8 @@ public partial class Ball //Speed = Power
 
 public partial class Ball //GrowBall
 {
+    [SerializeField]
     private float GrowthAttackDamage;
-
     public void Grow(IBrick brick)
     {
         if (BallManager.Instance.isGrowing)
