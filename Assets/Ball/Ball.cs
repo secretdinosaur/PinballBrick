@@ -118,11 +118,11 @@ public partial class Ball : MonoBehaviour
     {
         if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
         {
-            if (collision.gameObject.CompareTag("Wall"))
+            if (collision.gameObject.CompareTag("Wall") || (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball")))
             {
                 if (MaxBounce < 6)
                 {
-                    BounceTime += 0.1f;
+                    BounceTime += 0.05f;
                     MaxBounce++;
                     spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
                 }
@@ -132,6 +132,12 @@ public partial class Ball : MonoBehaviour
                 MaxBounce = 0;
                 spriteRenderer.color = new Color(1f, 1f, 1f);
             }
+        }
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball"))
+        {
+            Rigidbody2D TartgetRigidBody = collision.gameObject.GetComponent<Rigidbody2D>();
+            Vector2 TargetDirection = (TartgetRigidBody.position - (Vector2)transform.position).normalized;
+            rb.AddForce(RotateVector(TargetDirection, Random.Range(-30f, 30f)) * Random.Range(5f, 11f), ForceMode2D.Impulse);
         }
         if (collision.gameObject.CompareTag("Brick") && gameObject.activeSelf)
         {
@@ -169,6 +175,18 @@ public partial class Ball : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
             brick.TakeDamage(this);
         }
+    }
+
+    Vector2 RotateVector(Vector2 vector, float angle)
+    {
+        float radian = angle * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(radian);
+        float sin = Mathf.Sin(radian);
+
+        return new Vector2(
+            vector.x * cos - vector.y * sin,
+            vector.x * sin + vector.y * cos
+        );
     }
 }
 

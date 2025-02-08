@@ -518,3 +518,15 @@ public class DecayExplosion : SpecialAugment
         AugmentManager.instance.effectChance.DecayChance += 0.1f;
     }
 }
+
+public class ExplosionWithBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_21", "ExplosionWithBall", "ExplosionWithBall", "Bounce", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+}
