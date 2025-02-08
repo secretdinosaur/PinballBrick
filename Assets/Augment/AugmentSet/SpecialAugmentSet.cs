@@ -57,7 +57,7 @@ public class FireBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.FireChance)
         {
-            Brick.EffectStatusSet["Fire"].EffectStack += (Brick.EffectStatusSet["Fire"].EffectStack != 5) ? 1 : 0;
+            Brick.EffectStatusSet["Fire"].EffectStack += (Brick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
             StartCoroutine(Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
         }
     }
@@ -510,7 +510,7 @@ public class DecayBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
-            Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0; 
+            Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
             StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
         }
     }
