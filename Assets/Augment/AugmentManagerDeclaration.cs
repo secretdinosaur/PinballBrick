@@ -70,6 +70,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DeathGold>(),
             gameObject.AddComponent<SpeedPower>(),
             gameObject.AddComponent<SpeedCritical>(),
+            gameObject.AddComponent<Lightning>(),
             gameObject.AddComponent<PoisonBall>(),
             gameObject.AddComponent<InfinitePoison>(),
             gameObject.AddComponent<DeadlyPoison>(),
@@ -78,11 +79,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<PowerfulDecay>(),
             gameObject.AddComponent<DecayExplosion>(),
             gameObject.AddComponent<ExplosionWithBall>(),
+
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<FireBall>(),
+
         };
 
         foreach(IAugment augment in TestAugments)
