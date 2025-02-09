@@ -73,8 +73,8 @@ public class StatManager : MonoBehaviour
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
             BallSpeed = 0.0f,
-            EffectDamage = 0.0f,
-            EffectDuration = 0.0f,
+            EffectDamage = 0.5f,
+            EffectDuration = 0.5f,
             EffectCriticalDamage = 1.0f,
             GoldGain = 0.0f
         };

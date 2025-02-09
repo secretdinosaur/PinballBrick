@@ -18,9 +18,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
-        { 1, 0.5f },
-        { 2, 3f },
-        { 3, 12.5f },
+        { 0, 0.01f },
+        { 1, 0.59f },
+        { 2, 3.9f },
+        { 3, 11.5f },
         { 4, 32f },
         { 5, 52f }
     };
@@ -50,10 +51,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButFast>(),
             gameObject.AddComponent<WeakButStrongEffect>(),
             gameObject.AddComponent<WeakButStrongAtk>(),
+            gameObject.AddComponent<GrowBall>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
             gameObject.AddComponent<PhoenixBall>(),
+            gameObject.AddComponent<TargetMark>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -68,6 +71,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DeathGold>(),
             gameObject.AddComponent<SpeedPower>(),
             gameObject.AddComponent<SpeedCritical>(),
+            gameObject.AddComponent<Lightning>(),
             gameObject.AddComponent<PoisonBall>(),
             gameObject.AddComponent<InfinitePoison>(),
             gameObject.AddComponent<DeadlyPoison>(),
@@ -75,14 +79,18 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DecayBall>(),
             gameObject.AddComponent<PowerfulDecay>(),
             gameObject.AddComponent<DecayExplosion>(),
-            gameObject.AddComponent<Lightning>(),
+            gameObject.AddComponent<ExplosionWithBall>(),
 
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
             gameObject.GetComponent<PoisonBall>(),
+<<<<<<< HEAD
             gameObject.GetComponent<FireEffectStackBlast>(),
+=======
+            gameObject.GetComponent<TargetMark>(),
+>>>>>>> 4eaf0751e2c5bfe91ed7912ade4ddc9dc055df17
         };
 
         foreach(IAugment augment in TestAugments)
