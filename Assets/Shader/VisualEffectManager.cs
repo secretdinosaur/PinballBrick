@@ -72,17 +72,6 @@ public class VisualEffectManager : MonoBehaviour
 
             particles[i].startSize3D = size;
             particles[i].position = StartPosition;
-
-            print("--------------");
-            print(StartPosition +
-                " " +
-                EndPosition +
-                " " +
-                Direction +
-                " " +
-                Direction.magnitude +
-                " " +
-                Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg);
             
             particles[i].rotation3D = new Vector3(0, 0, Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90);
 

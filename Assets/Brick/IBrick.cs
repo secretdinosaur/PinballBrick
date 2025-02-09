@@ -131,7 +131,8 @@ public partial class IBrick : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         lineRenderer = GetComponent<LineRenderer>();
         PoisonEffect.SetActive(false);
-        UpdateOutline();
+        if(spriteRenderer != null)
+            UpdateOutline();
     }
     public void UpdateOutline()
     {
@@ -267,12 +268,15 @@ public partial class IBrick
 
     public IEnumerator DamageByPoisonEffect(float effectDuration)
     {
+        
         if (EffectStatusSet["Poison"].IsActive) yield break;
         EffectStatusSet["Poison"].IsActive = true;
         PoisonEffect.SetActive(true);
+        Color PoisonColor = PoisonEffect.GetComponent<SpriteRenderer>().material.color;
+        Renderer renderer = PoisonEffect.GetComponent<SpriteRenderer>();
+        renderer.material.SetFloat("_AlphaSubtract", 0);
         float effectDurationTemp = effectDuration;
-        effectDuration = 0.8f * (effectDuration * 0.5f);
-        float interval = 0.7f;
+        float interval = 0.1f;
         while (effectDuration > 0)
         {
             bool isCritical = false;
@@ -323,7 +327,11 @@ public partial class IBrick
             else
             {
                 effectDuration -= interval;
+                
             }
+            float alpha = Mathf.Lerp(0.5f, 0, effectDuration / effectDurationTemp);
+            renderer.material.SetFloat("_AlphaSubtract", alpha);
+            yield return null;
             if (!gameObject.activeSelf)
             {
                 yield break;
@@ -332,6 +340,18 @@ public partial class IBrick
         }
         EffectStatusSet["Poison"].EffectStack = 0;
         EffectStatusSet["Poison"].IsActive = false;
+
+
+        float startAlpha = renderer.material.color.a;
+        float elapsedTime = 0f;
+        float StartAlpha = renderer.material.GetFloat("_AlphaSubtract");
+        while (elapsedTime < 1)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, 1, elapsedTime / 1);
+            renderer.material.SetFloat("_AlphaSubtract", alpha);
+        }
+
         PoisonEffect.SetActive(false);
     }
     public IEnumerator DecayEffect(float effectDuration)
