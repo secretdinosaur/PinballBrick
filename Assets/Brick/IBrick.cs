@@ -170,7 +170,7 @@ public partial class IBrick
     
     public Dictionary<string, EffectStatus> EffectStatusSet = new Dictionary<string, EffectStatus>()
     {
-        { "Fire", new EffectStatus("Fire", false, 0, 2) },
+        { "Fire", new EffectStatus("Fire", false, 0, 5) },
         { "Poison", new EffectStatus("Poison", false, 0, 3) },
         { "Decay", new EffectStatus("Decay", false, 0, 3)}
     };
@@ -288,7 +288,7 @@ public partial class IBrick
         PoisonEffectDuration = 0.8f * (effectDuration * 0.5f);
         float effectDurationTemp = PoisonEffectDuration;
         float interval = 0.7f;
-        while (effectDuration > 0)
+        while (PoisonEffectDuration > 0)
         {
             bool isCritical = false;
             float EffectAttackDamage;
