@@ -71,6 +71,7 @@ public partial class IBrick : MonoBehaviour
                 DecayExplosion();
             }
         }
+        RecentlyBall.Grow(this);
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -119,7 +120,15 @@ public partial class IBrick : MonoBehaviour
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
         boxSize = new Vector2(2f, 2f);
-        
+        FireEffectDuration = 0f;
+        PoisonEffectDuration = 0f;
+        DecayEffectDuration = 0f;
+        EffectStatusSet["Fire"].IsActive = false;
+        EffectStatusSet["Poison"].IsActive = false;
+        EffectStatusSet["Decay"].IsActive = false;
+        EffectStatusSet["Fire"].EffectStack = 0;
+        EffectStatusSet["Poison"].EffectStack = 0;
+        EffectStatusSet["Fire"].EffectStack = 0;
         GetComponents();
     }
 
@@ -165,7 +174,7 @@ public partial class IBrick : MonoBehaviour
 
 public partial class IBrick
 {
-    public Ball Ball;
+    public Ball RecentlyBall;
     private float SpecialCriticalChance; // CriticalChance that Increased by Augment
     
     public Dictionary<string, EffectStatus> EffectStatusSet = new Dictionary<string, EffectStatus>()
@@ -176,7 +185,7 @@ public partial class IBrick
     };
     public void TakeDamage(Ball ball)
     {
-        Ball = ball;
+        RecentlyBall = ball;
         TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
         SpecialCriticalChance = ball.SpecialCriticalChance;
 
@@ -197,7 +206,8 @@ public partial class IBrick
     {
         bool CriticalHit = false;
         float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
-                                StatManager.instance.Temporary_stat.AttackDamage;
+                                StatManager.instance.Temporary_stat.AttackDamage +
+                                RecentlyBall.GetGrowthAttackDamage();
 
         if (IsCriticalHit())
         {
@@ -226,13 +236,22 @@ public partial class IBrick
     {
         return (StatManager.instance.Persistent_stat.CriticalDamage + StatManager.instance.Temporary_stat.CriticalDamage);
     }
+
+    public float FireEffectDuration;
+    public float PoisonEffectDuration;
+    public float DecayEffectDuration;
     public IEnumerator DamageByFireEffect(float effectDuration)
     {
-        if (EffectStatusSet["Fire"].IsActive) yield break;
+        if (EffectStatusSet["Fire"].IsActive) 
+        {
+            FireEffectDuration = effectDuration;
+            yield break; 
+        }
         EffectStatusSet["Fire"].IsActive = true;
         lineRenderer.enabled = true;
-        float interval = 0.1f;
-        while (effectDuration > 0)
+        FireEffectDuration = effectDuration;
+        float interval = 0.2f;
+        while (FireEffectDuration > 0)
         {
             bool isCritical = false;
             float EffectAttackDamage;
@@ -254,30 +273,35 @@ public partial class IBrick
                 : DecayDamageCalculate(EffectAttackDamage);
             HP -= FinalEffectAttackDamage;
             ShowText(EffectAttackDamage.ToString("F1"), "Fire", isCritical);
-            effectDuration -= interval;
+            FireEffectDuration -= interval;
             if (!gameObject.activeSelf)
             {
                 yield break;
             }
             yield return new WaitForSeconds(interval);
         }
-        EffectStatusSet["Fire"].EffectStack = 0;
         EffectStatusSet["Fire"].IsActive = false;
         lineRenderer.enabled = false;
+        EffectStatusSet["Fire"].EffectStack = 0;
     }
 
     public IEnumerator DamageByPoisonEffect(float effectDuration)
     {
-        
-        if (EffectStatusSet["Poison"].IsActive) yield break;
+        if (EffectStatusSet["Poison"].IsActive) 
+        {
+            PoisonEffectDuration = 0.8f * (effectDuration * 0.5f);
+            yield break; 
+        }
         EffectStatusSet["Poison"].IsActive = true;
         PoisonEffect.SetActive(true);
+        PoisonEffectDuration = 0.8f * (effectDuration * 0.5f);
+        float effectDurationTemp = PoisonEffectDuration;
+        float interval = 0.7f;
+      
         Color PoisonColor = PoisonEffect.GetComponent<SpriteRenderer>().material.color;
         Renderer renderer = PoisonEffect.GetComponent<SpriteRenderer>();
         renderer.material.SetFloat("_AlphaSubtract", 0);
-        float effectDurationTemp = effectDuration;
-        float interval = 0.1f;
-        while (effectDuration > 0)
+        while (PoisonEffectDuration > 0)
         {
             bool isCritical = false;
             float EffectAttackDamage;
@@ -305,10 +329,7 @@ public partial class IBrick
                     {
                         brick.EffectStatusSet["Poison"].EffectStack += 
                             (brick.EffectStatusSet["Poison"].EffectStack != EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
-                        if (!brick.EffectStatusSet["Poison"].IsActive)
-                        {
-                            brick.StartCoroutine(brick.DamageByPoisonEffect(effectDurationTemp));
-                        }
+                        StartCoroutine(brick.DamageByPoisonEffect(effectDurationTemp));
                     }
                 }
                 else
@@ -316,18 +337,13 @@ public partial class IBrick
                     if (Random.value < AugmentManager.instance.effectChance.PoisonChance)
                     {
                         EffectStatusSet["Poison"].EffectStack++;
-                        effectDuration = effectDurationTemp;
-                    }
-                    else
-                    {
-                        effectDuration -= interval;
+                        PoisonEffectDuration = effectDurationTemp;
                     }
                 }
             }
             else
             {
-                effectDuration -= interval;
-                
+                PoisonEffectDuration -= interval;
             }
             float alpha = Mathf.Lerp(0.5f, 0, effectDuration / effectDurationTemp);
             renderer.material.SetFloat("_AlphaSubtract", alpha);
@@ -338,7 +354,6 @@ public partial class IBrick
             }
             yield return new WaitForSeconds(1f);
         }
-        EffectStatusSet["Poison"].EffectStack = 0;
         EffectStatusSet["Poison"].IsActive = false;
 
 
@@ -353,23 +368,30 @@ public partial class IBrick
         }
 
         PoisonEffect.SetActive(false);
+        EffectStatusSet["Poison"].EffectStack = 0;
     }
     public IEnumerator DecayEffect(float effectDuration)
     {
-        if (EffectStatusSet["Decay"].IsActive) yield break;
+        if (EffectStatusSet["Decay"].IsActive)
+        {
+            DecayEffectDuration = effectDuration;
+            yield break;
+        }
         EffectStatusSet["Decay"].IsActive = true;
+        DecayEffectDuration = effectDuration;
+        int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
         float interval = 0.1f;
         while (effectDuration > 0)
         {
-            effectDuration -= interval;
+            DecayEffectDuration -= interval;
             if (!gameObject.activeSelf)
             {
                 yield break;
             }
             yield return new WaitForSeconds(interval);
         }
-        EffectStatusSet["Decay"].EffectStack = 0;
         EffectStatusSet["Decay"].IsActive = false;
+        EffectStatusSet["Decay"].EffectStack = 0;
     }
 
     public float DecayDamageMultiple = 1.1f;

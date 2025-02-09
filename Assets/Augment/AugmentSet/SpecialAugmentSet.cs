@@ -25,6 +25,9 @@ public class Example : SpecialAugment
 }
  */
 
+/**
+ * 확률로 블럭에 불 이펙트 효과 적용, 해당 블럭의 불 이펙트 스택이 최대치가 아니라면 +1
+ */
 public class FireBall : SpecialAugment
 {
     private float FireDamage; //EffectDamage
@@ -54,11 +57,15 @@ public class FireBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.FireChance)
         {
-            Brick.EffectStatusSet["Fire"].EffectStack += (Brick.EffectStatusSet["Fire"].EffectStack != 5) ? 1 : 0;
+            Brick.EffectStatusSet["Fire"].EffectStack += (Brick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
             StartCoroutine(Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
         }
     }
 }
+
+/**
+ * 공이 주변 블럭을 찾아서 유도
+ */
 public class Homing : SpecialAugment
 {
     private void OnEnable()
@@ -72,6 +79,10 @@ public class Homing : SpecialAugment
 
     public override void Remove(){  }
 }
+
+/**
+ * 벽에 튕길때마다 바운스 횟수 증가(데미지 증가)
+ */
 public class BouncePower: SpecialAugment
 {
     private void OnEnable()
@@ -85,11 +96,14 @@ public class BouncePower: SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Brick.Ball.BounceTime * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-        Brick.Ball.BounceTime = 1;
+        Brick.TotalMultiple = Brick.RecentlyBall.BounceTime * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        Brick.RecentlyBall.BounceTime = 1;
     }
 }
 
+/**
+ * 공격 이후에 3회 추가타발생
+ */
 public class AdditionalThreeAttack: SpecialAugment
 {
     private void OnEnable()
@@ -110,6 +124,10 @@ public class AdditionalThreeAttack: SpecialAugment
     }
 }
 
+
+/**
+ * 크리티컬 공격 이후에 추가타 1회 발생
+ */
 public class CriticalAdditionalAttack : SpecialAugment
 {
     private void OnEnable()
@@ -130,6 +148,10 @@ public class CriticalAdditionalAttack : SpecialAugment
     }
 }
 
+/**
+ * 일정 체력 이하 블럭 처형
+ */
+
 public class Execution : SpecialAugment
 {
     private void OnEnable()
@@ -142,6 +164,9 @@ public class Execution : SpecialAugment
     public override void Remove(){ }
 }
 
+/**
+ * 블럭 최대체력 퍼센트 데미지
+ */
 public class PercentDamage : SpecialAugment
 {
     private void OnEnable()
@@ -162,6 +187,9 @@ public class PercentDamage : SpecialAugment
     }
 }
 
+/**
+ * 블럭의 불 이펙트 스택이 최대라면 폭발하며 이후 주변 블럭에 (불 최대스택 * 3) 만큼의 스택을 전이시키고 불 이펙트 효과 발동
+ */
 public class FireEffectStackBlast : SpecialAugment
 {
     private float FireDuration;
@@ -198,6 +226,9 @@ public class FireEffectStackBlast : SpecialAugment
     }
 }
 
+/**
+ * 공격받은 블럭을 제외한 주변 4개의 블럭으로 전이되는 번개
+ */
 public class ChainLightning : SpecialAugment
 {
     private void OnEnable()
@@ -239,6 +270,9 @@ public class ChainLightning : SpecialAugment
     }
 }
 
+/**
+ * 공이 죽으면 경험치 획득
+ */
 public class DeathExp : SpecialAugment
 {
     private void OnEnable()
@@ -256,6 +290,9 @@ public class DeathExp : SpecialAugment
     }
 }
 
+/**
+ * 공이 죽으면 골드 획득
+ */
 public class DeathGold : SpecialAugment
 {
     private void OnEnable()
@@ -273,6 +310,9 @@ public class DeathGold : SpecialAugment
     }
 }
 
+/**
+ * 속도가 빠를 수록 공격력 증가
+ */
 public class SpeedPower : SpecialAugment
 {
     private void OnEnable()
@@ -286,10 +326,13 @@ public class SpeedPower : SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Brick.Ball.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
     }
 }
 
+/**
+ * 속도가 빠를 수록 크리티컬 확률 증가
+ */
 public class SpeedCritical : SpecialAugment
 {
     private void OnEnable()
@@ -303,10 +346,14 @@ public class SpeedCritical : SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Brick.Ball.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
     }
 }
+
+/**
+ * 타격시 번개 생성
+ */
 
 public class Lightning : SpecialAugment
 {
@@ -329,7 +376,7 @@ public class Lightning : SpecialAugment
 }
 
 /*
- * Deals damage based on a percentage of current health N times per second.
+ * N초동안 M초 주기로 블럭 현재체력 비례 데미지
  */
 public class PoisonBall : SpecialAugment
 {
@@ -338,7 +385,7 @@ public class PoisonBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_15", "PoisonBall", "PoisonBall", "Effect", 4);
-        PoisonDuration = 1f;
+        PoisonDuration = 4.5f;
     }
 
     public override void Apply() { }
@@ -415,16 +462,20 @@ public class DeadlyPoison : SpecialAugment
     }
 }
 
+/*
+ * 모든 증강 확률 동일하게 만듦(0티어는 대격변급이어서 걍 여전히 줄임)
+ */
 public class Chaos : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_18", "Chaos", "Chaos", "Special", 1);
+        SetAugment("SPECIAL_18", "Chaos", "Chaos", "Special", 0);
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.rarityWeights[1] = 20f;
+        AugmentManager.instance.rarityWeights[0] = 0.1f;
+        AugmentManager.instance.rarityWeights[1] = 19.9f;
         AugmentManager.instance.rarityWeights[2] = 20f;
         AugmentManager.instance.rarityWeights[3] = 20f;
         AugmentManager.instance.rarityWeights[4] = 20f;
@@ -433,14 +484,18 @@ public class Chaos : SpecialAugment
 
     public override void Remove()
     {
-        AugmentManager.instance.rarityWeights[1] = 0.5f;
-        AugmentManager.instance.rarityWeights[2] = 3f;
-        AugmentManager.instance.rarityWeights[3] = 12.5f;
+        AugmentManager.instance.rarityWeights[0] = 0.01f;
+        AugmentManager.instance.rarityWeights[1] = 0.59f;
+        AugmentManager.instance.rarityWeights[2] = 3.9f;
+        AugmentManager.instance.rarityWeights[3] = 11.5f;
         AugmentManager.instance.rarityWeights[4] = 32f;
         AugmentManager.instance.rarityWeights[5] = 52f;
     }
 }
 
+/*
+ * 블럭이 받는 데미지 (1.1^부식 스택) 만큼 증가
+ */
 public class DecayBall : SpecialAugment
 {
     private float DecayDuration;
@@ -460,7 +515,7 @@ public class DecayBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
-            Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0; 
+            Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
             StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
         }
     }
@@ -502,6 +557,9 @@ public class PowerfulDecay : SpecialAugment
     }
 }
 
+/*
+ * 부식 스택이 최대인 상태로 블럭이 깨지면 폭발함
+ */
 public class DecayExplosion : SpecialAugment
 {
     private void OnEnable()
@@ -518,4 +576,19 @@ public class DecayExplosion : SpecialAugment
     {
         AugmentManager.instance.effectChance.DecayChance += 0.1f;
     }
+}
+
+/*
+ * 블럭과 블럭이 맞닿으면 서로 반대방향으로 힘을 받음. 추가로 이 증강이랑 바운스=파워 증강 같이 먹으면 벽이 아니라 공이랑 부딪혀도 바운스스택 올라가게 함
+ */
+public class ExplosionWithBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_21", "ExplosionWithBall", "ExplosionWithBall", "Bounce", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
 }
