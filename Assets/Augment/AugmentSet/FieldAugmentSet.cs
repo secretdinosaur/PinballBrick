@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using Random = UnityEngine.Random;
+using static UnityEngine.GraphicsBuffer;
+using System.Collections.Generic;
 
 /*
 public class Example : FieldAugment
@@ -136,6 +138,58 @@ public class PhoenixBall : FieldAugment
                 yield return new WaitForSeconds(period);
                 ball.isPhoenix = false;
                 BallManager.Instance.thereISPhoenix = false;
+            }
+        }
+    }
+}
+
+public class TargetMark : FieldAugment
+{
+    Coroutine Routine = null;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_4", "TargetMark", "TargetMark", 1);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(TargetMarking(10f));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator TargetMarking(float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null)
+            {
+                List<Rigidbody2D> BallRigidBody2D = new List<Rigidbody2D>();
+                foreach(Ball ball in BallManager.Instance.InGameBall)
+                {
+                    Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
+                    BallRigidBody2D.Add(rb);
+                    rb.gravityScale = Random.Range(0.01f, 0.03f);
+                    rb.linearVelocity = Vector2.zero;
+                }
+                yield return new WaitForSeconds(1.5f);
+                IBrick brick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+                foreach (Rigidbody2D ball in BallRigidBody2D)
+                {
+                    Vector2 TargetDirection = (brick.transform.position - ball.transform.position).normalized;
+                    ball.AddForce(TargetDirection * 50f, ForceMode2D.Impulse);
+                    yield return null;
+                    ball.gravityScale = 0.5f;
+                }
             }
         }
     }

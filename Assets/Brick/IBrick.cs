@@ -120,7 +120,15 @@ public partial class IBrick : MonoBehaviour
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
         boxSize = new Vector2(2f, 2f);
-        
+        FireEffectDuration = 0f;
+        PoisonEffectDuration = 0f;
+        DecayEffectDuration = 0f;
+        EffectStatusSet["Fire"].IsActive = false;
+        EffectStatusSet["Poison"].IsActive = false;
+        EffectStatusSet["Decay"].IsActive = false;
+        EffectStatusSet["Fire"].EffectStack = 0;
+        EffectStatusSet["Poison"].EffectStack = 0;
+        EffectStatusSet["Fire"].EffectStack = 0;
         GetComponents();
     }
 
@@ -170,7 +178,7 @@ public partial class IBrick
     
     public Dictionary<string, EffectStatus> EffectStatusSet = new Dictionary<string, EffectStatus>()
     {
-        { "Fire", new EffectStatus("Fire", false, 0, 2) },
+        { "Fire", new EffectStatus("Fire", false, 0, 5) },
         { "Poison", new EffectStatus("Poison", false, 0, 3) },
         { "Decay", new EffectStatus("Decay", false, 0, 3)}
     };
@@ -228,9 +236,9 @@ public partial class IBrick
         return (StatManager.instance.Persistent_stat.CriticalDamage + StatManager.instance.Temporary_stat.CriticalDamage);
     }
 
-    public float FireEffectDuration = 0f;
-    public float PoisonEffectDuration = 0f;
-    public float DecayEffectDuration = 0f;
+    public float FireEffectDuration;
+    public float PoisonEffectDuration;
+    public float DecayEffectDuration;
     public IEnumerator DamageByFireEffect(float effectDuration)
     {
         if (EffectStatusSet["Fire"].IsActive) 
@@ -288,7 +296,7 @@ public partial class IBrick
         PoisonEffectDuration = 0.8f * (effectDuration * 0.5f);
         float effectDurationTemp = PoisonEffectDuration;
         float interval = 0.7f;
-        while (effectDuration > 0)
+        while (PoisonEffectDuration > 0)
         {
             bool isCritical = false;
             float EffectAttackDamage;
