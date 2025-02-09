@@ -32,6 +32,8 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  - 0
+
   BrickTypes:
   - Brick
   - HardBrick

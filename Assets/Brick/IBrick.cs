@@ -287,6 +287,18 @@ public partial class IBrick
 
     public IEnumerator DamageByPoisonEffect(float effectDuration)
     {
+<<<<<<< HEAD
+        
+        if (EffectStatusSet["Poison"].IsActive) yield break;
+        EffectStatusSet["Poison"].IsActive = true;
+        PoisonEffect.SetActive(true);
+        Color PoisonColor = PoisonEffect.GetComponent<SpriteRenderer>().material.color;
+        Renderer renderer = PoisonEffect.GetComponent<SpriteRenderer>();
+        renderer.material.SetFloat("_AlphaSubtract", 0);
+        float effectDurationTemp = effectDuration;
+        float interval = 0.1f;
+        while (effectDuration > 0)
+=======
         if (EffectStatusSet["Poison"].IsActive) 
         {
             PoisonEffectDuration = 0.8f * (effectDuration * 0.5f);
@@ -302,6 +314,7 @@ public partial class IBrick
         Renderer renderer = PoisonEffect.GetComponent<SpriteRenderer>();
         renderer.material.SetFloat("_AlphaSubtract", 0);
         while (PoisonEffectDuration > 0)
+>>>>>>> 4eaf0751e2c5bfe91ed7912ade4ddc9dc055df17
         {
             bool isCritical = false;
             float EffectAttackDamage;
@@ -343,7 +356,12 @@ public partial class IBrick
             }
             else
             {
+<<<<<<< HEAD
+                effectDuration -= interval;
+                
+=======
                 PoisonEffectDuration -= interval;
+>>>>>>> 4eaf0751e2c5bfe91ed7912ade4ddc9dc055df17
             }
             float alpha = Mathf.Lerp(0.5f, 0, effectDuration / effectDurationTemp);
             renderer.material.SetFloat("_AlphaSubtract", alpha);
