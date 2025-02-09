@@ -140,7 +140,8 @@ public partial class IBrick : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         lineRenderer = GetComponent<LineRenderer>();
         PoisonEffect.SetActive(false);
-        UpdateOutline();
+        if(spriteRenderer != null)
+            UpdateOutline();
     }
     public void UpdateOutline()
     {
@@ -296,6 +297,10 @@ public partial class IBrick
         PoisonEffectDuration = 0.8f * (effectDuration * 0.5f);
         float effectDurationTemp = PoisonEffectDuration;
         float interval = 0.7f;
+      
+        Color PoisonColor = PoisonEffect.GetComponent<SpriteRenderer>().material.color;
+        Renderer renderer = PoisonEffect.GetComponent<SpriteRenderer>();
+        renderer.material.SetFloat("_AlphaSubtract", 0);
         while (PoisonEffectDuration > 0)
         {
             bool isCritical = false;
@@ -340,6 +345,9 @@ public partial class IBrick
             {
                 PoisonEffectDuration -= interval;
             }
+            float alpha = Mathf.Lerp(0.5f, 0, effectDuration / effectDurationTemp);
+            renderer.material.SetFloat("_AlphaSubtract", alpha);
+            yield return null;
             if (!gameObject.activeSelf)
             {
                 yield break;
@@ -347,6 +355,18 @@ public partial class IBrick
             yield return new WaitForSeconds(1f);
         }
         EffectStatusSet["Poison"].IsActive = false;
+
+
+        float startAlpha = renderer.material.color.a;
+        float elapsedTime = 0f;
+        float StartAlpha = renderer.material.GetFloat("_AlphaSubtract");
+        while (elapsedTime < 1)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, 1, elapsedTime / 1);
+            renderer.material.SetFloat("_AlphaSubtract", alpha);
+        }
+
         PoisonEffect.SetActive(false);
         EffectStatusSet["Poison"].EffectStack = 0;
     }

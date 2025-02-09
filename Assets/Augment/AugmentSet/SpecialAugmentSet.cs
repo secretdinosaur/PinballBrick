@@ -37,7 +37,7 @@ public class FireBall : SpecialAugment
     {
         SetAugment("SPECIAL_1", "FireBall", "Time to Cast Magic", "Effect", 4);
         FireDamage = 0.3f;
-        FireDuration = 0.5f;
+        FireDuration = 3f;
     }
 
     public override void Apply()
@@ -207,6 +207,7 @@ public class FireEffectStackBlast : SpecialAugment
 
     public override void AfterMainAttackEffect(IBrick Brick)
     {
+        float BlastDamage = StatManager.instance.Temporary_stat.EffectDamage * 20;
         if (Brick.EffectStatusSet["Fire"].EffectStack == Brick.EffectStatusSet["Fire"].EffectStackLimit)
         {
             Brick.EffectStatusSet["Fire"].EffectStack = (int)(Brick.EffectStatusSet["Fire"].EffectStack * 0.3);
@@ -214,10 +215,10 @@ public class FireEffectStackBlast : SpecialAugment
             {
                 nearbyBrick.EffectStatusSet["Fire"].EffectStack += 
                     (nearbyBrick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 2 : 0;
-                nearbyBrick.ArbitraryDamageAttack(
-                    StatManager.instance.Temporary_stat.EffectDamage,
-                    false, 
-                    StatManager.instance.Temporary_stat.EffectDamage.ToString("F1"), 
+                nearbyBrick.ArbitraryDamageAttack(BlastDamage
+                    ,
+                    false,
+                    BlastDamage.ToString("F1"), 
                     "Fire");
                 StartCoroutine(nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
             }

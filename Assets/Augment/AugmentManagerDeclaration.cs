@@ -29,7 +29,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(1.3f, 0.3f, 0.3f);
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -86,7 +86,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         List<IAugment> TestAugments = new List<IAugment>
         {
             gameObject.GetComponent<PoisonBall>(),
-            gameObject.GetComponent<TargetMark>(),
+            gameObject.GetComponent<FireEffectStackBlast>(),
         };
 
         foreach(IAugment augment in TestAugments)
