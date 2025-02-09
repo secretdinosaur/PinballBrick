@@ -10,7 +10,7 @@ public class BrickManager : MonoBehaviour
     private int GameTick = 1;
 
     public static BrickManager Instance;
-    public IBrick[] CurrentBricks;
+    public List<IBrick> CurrentBricks = new List<IBrick>();
     private PoolManager PoolManager;
 
     private float ScreenWidth;
@@ -44,7 +44,7 @@ public class BrickManager : MonoBehaviour
 
     public void UpdateCurrentBricks()
     {
-        CurrentBricks = GetComponentsInChildren<IBrick>();
+        CurrentBricks.AddRange(GetComponentsInChildren<IBrick>());
     }
     void InitializeGrid()
     {
