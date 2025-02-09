@@ -154,7 +154,7 @@ public class TargetMark : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(TargetMarking(8f));
+        Routine = StartCoroutine(TargetMarking(10f));
     }
 
     public override void Remove()
