@@ -392,3 +392,21 @@ public class WeakButStrongAtk : StatAugment
     }
 }
 
+public class GrowBall : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_19", "GrowBall", "GrowBall", 5);
+    }
+
+    public override void Apply()
+    {
+        BallManager.Instance.isGrowing = true;
+    }
+
+    public override void Remove()
+    {
+        BallManager.Instance.isGrowing = false;
+    }
+}
+
