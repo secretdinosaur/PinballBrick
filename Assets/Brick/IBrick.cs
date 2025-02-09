@@ -309,6 +309,10 @@ public partial class IBrick
         PoisonEffectDuration = 0.8f * (effectDuration * 0.5f);
         float effectDurationTemp = PoisonEffectDuration;
         float interval = 0.7f;
+      
+        Color PoisonColor = PoisonEffect.GetComponent<SpriteRenderer>().material.color;
+        Renderer renderer = PoisonEffect.GetComponent<SpriteRenderer>();
+        renderer.material.SetFloat("_AlphaSubtract", 0);
         while (PoisonEffectDuration > 0)
 >>>>>>> 4eaf0751e2c5bfe91ed7912ade4ddc9dc055df17
         {
