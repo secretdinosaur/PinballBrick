@@ -1,15 +1,18 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.ParticleSystem;
 
 public class VisualEffectManager : MonoBehaviour
 {
     public static VisualEffectManager Instance;
-    public ParticleSystem LightningParticleSystem;
-    public ParticleSystem LightningHitParticleSystem;
-    public ParticleSystem ChainLightningParticleSystem;
+    public ParticleSystem LightningPS;
+    public ParticleSystem LightningHitPS;
+    public ParticleSystem ChainLightningPS;
+
+    public ParticleSystem FireBlastPS;
     void Start()
     {
         Instance = this;
@@ -31,13 +34,13 @@ public class VisualEffectManager : MonoBehaviour
         switch (ParticleName)
         {
             case "Lightning":
-                LightningParticleSystem.transform.position = ParticlePosition + new Vector2(0, 10f);
-                LightningParticleSystem.Emit(ParticleCount);
+                LightningPS.transform.position = ParticlePosition + new Vector2(0, 10f);
+                LightningPS.Emit(ParticleCount);
 
-                LightningHitParticleSystem.transform.position = ParticlePosition;
-                LightningHitParticleSystem.Emit(5);
-                ParticleSystem.Particle[] particles = new ParticleSystem.Particle[LightningHitParticleSystem.particleCount];
-                LightningHitParticleSystem.GetParticles(particles);
+                LightningHitPS.transform.position = ParticlePosition;
+                LightningHitPS.Emit(5);
+                ParticleSystem.Particle[] particles = new ParticleSystem.Particle[LightningHitPS.particleCount];
+                LightningHitPS.GetParticles(particles);
 
                 for (int i = 0; i < particles.Length; i++)
                 {
@@ -47,17 +50,48 @@ public class VisualEffectManager : MonoBehaviour
                     particles[i].rotation = angle;
                 }
                 break;
+            case "FireBlast":
+                FireBlastPS.transform.position = ParticlePosition;
+                FireBlastPS.Emit(ParticleCount);
+                ParticleSystemRenderer PSRenderer = FireBlastPS.GetComponent<ParticleSystemRenderer>();
+                //StartCoroutine(ChangeFireBlastEffect(PSRenderer));
+                break;
             default:
                 Debug.Log("Invalid ParticleName");
                 break;
         }
     }
 
+    private IEnumerator ChangeFireBlastEffect(ParticleSystemRenderer PSRenderer)
+    {
+        float elapsedTime = 0f;
+        float EffectDuration = 0.5f;
+        Particle[] particles = new ParticleSystem.Particle[FireBlastPS.particleCount];
+        List<Vector4> customData = new List<Vector4>();
+        FireBlastPS.GetParticles(particles);
+
+        while (elapsedTime < EffectDuration)
+        {
+            int particleCount = FireBlastPS.GetParticles(particles);
+
+            customData.Clear();
+
+            elapsedTime += Time.deltaTime;
+            for (int i = 0; i < particles.Length; i++)
+            {
+                float innerPower = Mathf.Lerp(0.5f, 5f, particles[i].remainingLifetime / particles[i].startLifetime);
+                customData.Add(new Vector4(innerPower, 0, 0, 0));
+            }
+            FireBlastPS.SetCustomParticleData(customData, ParticleSystemCustomData.Custom1);
+            yield return null;
+        }
+    }
+
     public void SpawnChainLightning(List<IBrick> Bricks)
     {
-        ChainLightningParticleSystem.Emit(Bricks.Count - 1);
-        ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ChainLightningParticleSystem.particleCount];
-        ChainLightningParticleSystem.GetParticles(particles);
+        ChainLightningPS.Emit(Bricks.Count - 1);
+        ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ChainLightningPS.particleCount];
+        ChainLightningPS.GetParticles(particles);
         for (int i = 0; i < Bricks.Count - 1; i++)
         {
             Vector2 StartPosition = Bricks[i].transform.position;
@@ -75,7 +109,7 @@ public class VisualEffectManager : MonoBehaviour
             
             particles[i].rotation3D = new Vector3(0, 0, Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90);
 
-            ChainLightningParticleSystem.SetParticles(particles);
+            ChainLightningPS.SetParticles(particles);
         }
 
         

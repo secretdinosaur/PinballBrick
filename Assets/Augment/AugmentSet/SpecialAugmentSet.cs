@@ -222,6 +222,7 @@ public class FireEffectStackBlast : SpecialAugment
                     "Fire");
                 StartCoroutine(nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
             }
+            VisualEffectManager.Instance.SpawnParticle("FireBlast", Brick.transform.position, 30);
         }
     }
 }
