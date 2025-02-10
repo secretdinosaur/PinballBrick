@@ -85,12 +85,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<FireBall>(),
-            gameObject.GetComponent<FireEffectStackBlast>(),
-
+            gameObject.GetComponent<PoisonBall>(),
+            gameObject.GetComponent<InfinitePoison>(),
+            gameObject.GetComponent<DeadlyPoison>(),
         };
 
-        foreach(IAugment augment in TestAugments)
+        foreach (IAugment augment in TestAugments)
         {
             AddAugment(augment);
         }

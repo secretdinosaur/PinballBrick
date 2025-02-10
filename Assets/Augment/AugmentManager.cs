@@ -126,6 +126,7 @@ public partial class AugmentManager
     
     private IAugment GetOppositeAugment(IAugment ChosenAugment)
     {
+
         IAugment oppositeAugment;
         if (ChosenAugment.ID == "STAT_15")
         {

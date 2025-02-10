@@ -54,36 +54,10 @@ public class VisualEffectManager : MonoBehaviour
                 FireBlastPS.transform.position = ParticlePosition;
                 FireBlastPS.Emit(ParticleCount);
                 ParticleSystemRenderer PSRenderer = FireBlastPS.GetComponent<ParticleSystemRenderer>();
-                //StartCoroutine(ChangeFireBlastEffect(PSRenderer));
                 break;
             default:
                 Debug.Log("Invalid ParticleName");
                 break;
-        }
-    }
-
-    private IEnumerator ChangeFireBlastEffect(ParticleSystemRenderer PSRenderer)
-    {
-        float elapsedTime = 0f;
-        float EffectDuration = 0.5f;
-        Particle[] particles = new ParticleSystem.Particle[FireBlastPS.particleCount];
-        List<Vector4> customData = new List<Vector4>();
-        FireBlastPS.GetParticles(particles);
-
-        while (elapsedTime < EffectDuration)
-        {
-            int particleCount = FireBlastPS.GetParticles(particles);
-
-            customData.Clear();
-
-            elapsedTime += Time.deltaTime;
-            for (int i = 0; i < particles.Length; i++)
-            {
-                float innerPower = Mathf.Lerp(0.5f, 5f, particles[i].remainingLifetime / particles[i].startLifetime);
-                customData.Add(new Vector4(innerPower, 0, 0, 0));
-            }
-            FireBlastPS.SetCustomParticleData(customData, ParticleSystemCustomData.Custom1);
-            yield return null;
         }
     }
 

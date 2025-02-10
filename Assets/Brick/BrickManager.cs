@@ -26,7 +26,7 @@ public class BrickManager : MonoBehaviour
     public List<Vector2> availablePositions = new List<Vector2>();
     public List<Vector2> usingPositions = new List<Vector2>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         Instance = this;
         ScreenWidth = Screen.width;
