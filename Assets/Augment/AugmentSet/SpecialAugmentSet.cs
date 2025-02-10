@@ -435,32 +435,13 @@ public class DeadlyPoison : SpecialAugment
 
     public override void Apply()
     {
-        BrickInfo brickInfo = BrickManager.Instance.BrickInfo;
-        foreach (IBrick brick in brickInfo.Bricks)
-        {
-            brick.EffectStatusSet["Poison"].EffectStackLimit = 5;
-            print(brick.EffectStatusSet["Poison"].EffectStackLimit);
-        }
-
-        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
-        {
-            brick.EffectStatusSet["Poison"].EffectStackLimit = 5;
-            print(brick.EffectStatusSet["Poison"].EffectStackLimit);
-        }
+        AugmentManager.instance.PoisonEffectStatus.EffectStackLimit = 5;
         AugmentManager.instance.effectChance.PoisonChance += 0.1f;
     }
 
     public override void Remove()
     {
-        BrickInfo brickInfo = BrickManager.Instance.BrickInfo;
-        foreach (IBrick brick in brickInfo.Bricks)
-        {
-            brick.EffectStatusSet["Poison"].EffectStackLimit = 3;
-        }
-        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
-        {
-            brick.EffectStatusSet["Poison"].EffectStackLimit = 3;
-        }
+        AugmentManager.instance.PoisonEffectStatus.EffectStackLimit = 3;
         AugmentManager.instance.effectChance.PoisonChance -= 0.1f;
     }
 }
@@ -533,29 +514,13 @@ public class PowerfulDecay : SpecialAugment
 
     public override void Apply()
     {
-        BrickInfo brickInfo = BrickManager.Instance.BrickInfo;
-        foreach (IBrick brick in brickInfo.Bricks)
-        {
-            brick.DecayDamageMultiple = 1.15f;
-        }
-        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
-        {
-            brick.DecayDamageMultiple = 1.15f;
-        }
+        AugmentManager.instance.DecayDamageMultiple = 1.15f;
         AugmentManager.instance.effectChance.DecayChance += 0.1f;
     }
 
     public override void Remove()
     {
-        BrickInfo brickInfo = BrickManager.Instance.BrickInfo;
-        foreach (IBrick brick in brickInfo.Bricks)
-        {
-            brick.DecayDamageMultiple = 1.1f;
-        }
-        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
-        {
-            brick.DecayDamageMultiple = 1.1f;
-        }
+        AugmentManager.instance.DecayDamageMultiple = 1.1f;
         AugmentManager.instance.effectChance.DecayChance -= 0.1f;
     }
 }

@@ -24,6 +24,8 @@ public partial class IBrick : MonoBehaviour
 
     public GameObject PoisonEffect;
     public float TotalMultiple;
+
+    public Dictionary<string, EffectStatus> EffectStatusSet;
     public float HP
     {
         get { return hp; }
@@ -128,6 +130,12 @@ public partial class IBrick : MonoBehaviour
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
         boxSize = new Vector2(2f, 2f);
+        EffectStatusSet = new Dictionary<string, EffectStatus>()
+        {
+            { "Fire", AugmentManager.instance.FireEffectStatus },
+            { "Poison", AugmentManager.instance.PoisonEffectStatus },
+            { "Decay", AugmentManager.instance.DecayEffectStatus }
+        };
         FireEffectDuration = 0f;
         PoisonEffectDuration = 0f;
         DecayEffectDuration = 0f;
@@ -187,12 +195,6 @@ public partial class IBrick
     public Ball RecentlyBall;
     private float SpecialCriticalChance; // CriticalChance that Increased by Augment
     
-    public Dictionary<string, EffectStatus> EffectStatusSet = new Dictionary<string, EffectStatus>()
-    {
-        { "Fire", new EffectStatus("Fire", false, 0, 5) },
-        { "Poison", new EffectStatus("Poison", false, 0, 3) },
-        { "Decay", new EffectStatus("Decay", false, 0, 3)}
-    };
     public void TakeDamage(Ball ball)
     {
         RecentlyBall = ball;
@@ -447,10 +449,9 @@ public partial class IBrick
         EffectStatusSet["Decay"].EffectStack = 0;
     }
 
-    public float DecayDamageMultiple = 1.1f;
     public float DecayDamageCalculate(float Damage)
     {
-        Damage *= Mathf.Pow(DecayDamageMultiple, EffectStatusSet["Decay"].EffectStack);
+        Damage *= Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, EffectStatusSet["Decay"].EffectStack);
         return Damage;
     }
     
