@@ -386,7 +386,7 @@ public class PoisonBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_15", "PoisonBall", "PoisonBall", "Effect", 4);
-        PoisonDuration = 4.5f;
+        PoisonDuration = 1.5f;
     }
 
     public override void Apply() { }
