@@ -148,5 +148,4 @@ public class StatManager : MonoBehaviour
         statMultiplier.AttackDamageMultiplier -= AttackUpValue;
         SaveStatMultiplier(statMultiplier);
     }
-
 }

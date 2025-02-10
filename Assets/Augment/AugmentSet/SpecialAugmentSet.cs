@@ -560,3 +560,25 @@ public class ExplosionWithBall : SpecialAugment
 
     public override void Remove() { }
 }
+
+public class TheFlamethrower : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_22", "TheFlamethrower", "TheFlamethrower", "Effect", 2);
+    }
+
+    public override void Apply() 
+    {
+        foreach (Ball ball in BallManager.Instance.InGameBall)
+        {
+            ball.flamethrower.FlamethrowerOn();
+        }
+        BallManager.Instance.isOnFlamerower = true;
+    }
+
+    public override void Remove() 
+    {
+        BallManager.Instance.isOnFlamerower = false;
+    }
+}

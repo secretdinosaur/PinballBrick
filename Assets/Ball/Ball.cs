@@ -12,7 +12,7 @@ public partial class Ball : MonoBehaviour
     public float CurrentSpeed;
     public float SpecialCriticalChance = 0f;
     public bool isPhoenix;
-    
+    public Flamethrower flamethrower;
     void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -28,7 +28,14 @@ public partial class Ball : MonoBehaviour
         MaxBounce = 0;
         targets.Clear();
         currentTarget = null;
+
         isPhoenix = false;
+
+        flamethrower = GetComponentInChildren<Flamethrower>(true);
+        if (BallManager.Instance.isOnFlamerower)
+        {
+            flamethrower.FlamethrowerOn();
+        }
     }
 
     private IEnumerator EnableCollider()
