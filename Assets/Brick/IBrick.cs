@@ -130,6 +130,8 @@ public partial class IBrick : MonoBehaviour
         EffectStatusSet["Poison"].EffectStack = 0;
         EffectStatusSet["Fire"].EffectStack = 0;
         GetComponents();
+
+        print(EffectStatusSet["Poison"].EffectStackLimit);
     }
 
     public void GetComponents()
@@ -297,9 +299,21 @@ public partial class IBrick
         float interval = 0.5f;
         PoisonEffectDuration = effectDuration;
         effectDurationTemp = PoisonEffectDuration;
-;
+        
         while (PoisonEffectDuration > 0)
         {
+            //Deadly Poison Effect
+            if (EffectStatusSet["Poison"].EffectStack > 3)
+            {
+                PoisonEffect.GetComponent<Renderer>().material.SetColor("_Color", new Color(13 / 255, 103 / 255, 0));
+                PoisonEffect.GetComponent<Renderer>().material.SetColor("_InnerColor", new Color(130 / 255, 0, 7 / 255));
+            }
+            else
+            {
+                PoisonEffect.GetComponent<Renderer>().material.SetColor("_Color", new Color(45 / 255, 255 / 255, 62 / 255));
+                PoisonEffect.GetComponent<Renderer>().material.SetColor("_InnerColor", new Color(255 / 255, 33 / 255, 0));
+            }
+
             bool isCritical = false;
             float EffectAttackDamage;
             if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))

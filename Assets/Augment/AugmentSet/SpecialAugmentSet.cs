@@ -439,11 +439,13 @@ public class DeadlyPoison : SpecialAugment
         foreach (IBrick brick in brickInfo.Bricks)
         {
             brick.EffectStatusSet["Poison"].EffectStackLimit = 5;
+            print(brick.EffectStatusSet["Poison"].EffectStackLimit);
         }
 
         foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
         {
             brick.EffectStatusSet["Poison"].EffectStackLimit = 5;
+            print(brick.EffectStatusSet["Poison"].EffectStackLimit);
         }
         AugmentManager.instance.effectChance.PoisonChance += 0.1f;
     }
