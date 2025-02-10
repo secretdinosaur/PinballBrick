@@ -13,6 +13,7 @@ public class VisualEffectManager : MonoBehaviour
     public ParticleSystem ChainLightningPS;
 
     public ParticleSystem FireBlastPS;
+    public ParticleSystem InfinityPoisonPS;
     void Start()
     {
         Instance = this;
@@ -53,7 +54,11 @@ public class VisualEffectManager : MonoBehaviour
             case "FireBlast":
                 FireBlastPS.transform.position = ParticlePosition;
                 FireBlastPS.Emit(ParticleCount);
-                ParticleSystemRenderer PSRenderer = FireBlastPS.GetComponent<ParticleSystemRenderer>();
+                break;
+
+            case "InfinityPoison":
+                InfinityPoisonPS.transform.position = ParticlePosition;
+                InfinityPoisonPS.Emit(ParticleCount);
                 break;
             default:
                 Debug.Log("Invalid ParticleName");

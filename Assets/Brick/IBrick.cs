@@ -334,13 +334,19 @@ public partial class IBrick
             ShowText(((FinalEffectAttackDamage / (HP + FinalEffectAttackDamage)) * 100f).ToString("0.###")+ "%", "Poison", isCritical);
             if (AugmentManager.instance.determineAugmentID("SPECIAL_16")) // Infinite Poison
             {
-                if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
+                if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit && NearbyBricks != null)
                 {
-                    foreach (IBrick brick in NearbyBricks)
+                    for(int i = 0; i < NearbyBricks.Count; i++)
                     {
-                        brick.EffectStatusSet["Poison"].EffectStack += 
-                            (brick.EffectStatusSet["Poison"].EffectStack != EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
-                        StartCoroutine(brick.DamageByPoisonEffect(effectDurationTemp));
+                        IBrick brick = NearbyBricks[i];
+                        if (brick.gameObject.activeSelf)
+                        {
+                            VisualEffectManager.Instance.SpawnParticle("InfinityPoison", transform.position, 1);
+                            brick.EffectStatusSet["Poison"].EffectStack +=
+                                (brick.EffectStatusSet["Poison"].EffectStack != EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
+                            StartCoroutine(brick.DamageByPoisonEffect(effectDurationTemp));
+                        }
+                       
                     }
                 }
                 else
