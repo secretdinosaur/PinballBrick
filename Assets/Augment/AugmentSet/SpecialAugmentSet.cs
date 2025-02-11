@@ -58,7 +58,7 @@ public class FireBall : SpecialAugment
             Random.value < AugmentManager.instance.effectChance.FireChance)
         {
             Brick.EffectStatusSet["Fire"].EffectStack += (Brick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
-            StartCoroutine(Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
+            Brick.Fire = StartCoroutine(Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
         }
     }
 }
@@ -220,7 +220,7 @@ public class FireEffectStackBlast : SpecialAugment
                     false,
                     BlastDamage.ToString("F1"), 
                     "Fire");
-                StartCoroutine(nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
+                nearbyBrick.Fire = StartCoroutine(nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
             }
             VisualEffectManager.Instance.SpawnParticle("FireBlast", Brick.transform.position, 30);
         }
@@ -386,7 +386,7 @@ public class PoisonBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_15", "PoisonBall", "PoisonBall", "Effect", 4);
-        PoisonDuration = 1.5f;
+        PoisonDuration = 1.4f;
     }
 
     public override void Apply() { }
@@ -398,8 +398,8 @@ public class PoisonBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.PoisonChance)
         {
-            Brick.EffectStatusSet["Poison"].EffectStack += (Brick.EffectStatusSet["Poison"].EffectStack != Brick.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
-            StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration));
+            Brick.EffectStatusSet["Poison"].EffectStack += (Brick.EffectStatusSet["Poison"].EffectStack < Brick.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
+            Brick.Poison = StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration));
         }
     }
 }
@@ -500,7 +500,7 @@ public class DecayBall : SpecialAugment
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
             Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
-            StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
+            Brick.Decay = StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
         }
     }
 }

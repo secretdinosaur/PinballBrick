@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,45 +8,58 @@ public class Flamethrower : MonoBehaviour
     public float FlameDamage = 0.3f;
     private float timer = 0f;
     private float interval = 0.2f;
-    private float damage;
+
+    // 트리거 영역 내의 Brick들을 저장할 리스트
+    private List<IBrick> bricksInRange = new List<IBrick>();
 
     public void Update()
     {
         timer += Time.deltaTime;
-    }
-    private void Start()
-    {
-        damage = (FlameDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier;
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Brick") && collision.gameObject.activeInHierarchy)
+        if (timer >= interval)
         {
-            if (timer >= interval)
+            for (int i = bricksInRange.Count - 1; i >= 0; i--)
             {
-                collision.gameObject.GetComponent<IBrick>().ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Fire");
-                timer = 0f;
+                IBrick brick = bricksInRange[i];
+
+                if (brick == null || !((MonoBehaviour)brick).gameObject.activeInHierarchy)
+                {
+                    bricksInRange.RemoveAt(i);
+                    continue;
+                }
+
+                float damage = (FlameDamage + StatManager.instance.Temporary_stat.EffectDamage) * 
+                    StatManager.instance.statMultiplier.EffectDamageMultiplier;
+                brick.ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Fire");
+
+                if (Random.value < 0.1f)
+                {
+                    brick.StartCoroutine(brick.DamageByFireEffect(1f));
+                }
             }
+            timer = 0f;
         }
     }
 
-
-    private IEnumerator FlametrowerEffect(IBrick brick)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        while (true)
+        if (collision.gameObject.CompareTag("Brick") && collision.gameObject.activeInHierarchy)
         {
-            if(brick == null || !brick.gameObject.activeInHierarchy)
+            IBrick brick = collision.gameObject.GetComponent<IBrick>();
+            if (brick != null && !bricksInRange.Contains(brick))
             {
-                yield break;
+                bricksInRange.Add(brick);
             }
-            brick.ArbitraryDamageAttack(FlameDamage, false, FlameDamage.ToString("F1"), "Fire");
-
-            if (Random.value < 0.1f)
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Brick"))
+        {
+            IBrick brick = collision.gameObject.GetComponent<IBrick>();
+            if (brick != null && bricksInRange.Contains(brick))
             {
-                brick.StartCoroutine(brick.DamageByFireEffect(1f));
+                bricksInRange.Remove(brick);
             }
-            yield return new WaitForSeconds(0.1f);
         }
     }
 
