@@ -26,6 +26,8 @@ public partial class IBrick : MonoBehaviour
     public float TotalMultiple;
 
     public Dictionary<string, EffectStatus> EffectStatusSet;
+
+    public Coroutine FlamethrowerEffect;
     public float HP
     {
         get { return hp; }
@@ -77,6 +79,7 @@ public partial class IBrick : MonoBehaviour
         {
             RecentlyBall.Grow(this);
         }
+        FlamethrowerEffect = null;
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -145,6 +148,7 @@ public partial class IBrick : MonoBehaviour
         EffectStatusSet["Fire"].EffectStack = 0;
         EffectStatusSet["Poison"].EffectStack = 0;
         EffectStatusSet["Fire"].EffectStack = 0;
+        FlamethrowerEffect = null;
         GetComponents();
 
         print(EffectStatusSet["Poison"].EffectStackLimit);

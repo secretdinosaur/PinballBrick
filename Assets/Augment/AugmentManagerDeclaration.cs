@@ -96,6 +96,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
+            //gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<TheFlamethrower>(),
         };
 

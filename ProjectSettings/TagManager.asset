@@ -8,6 +8,7 @@ TagManager:
   - DicePlane
   - Wall
   - Brick
+  - Flamethrower
   layers:
   - Default
   - TransparentFX
