@@ -37,7 +37,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(1f, 0.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
         FireEffectStatus = new EffectStatus("Fire", false, 0, 5);
         PoisonEffectStatus = new EffectStatus("Poison", false, 0, 3);
         DecayEffectStatus = new EffectStatus("Decay", false, 0, 3);
@@ -99,8 +99,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            //gameObject.AddComponent<FireBall>(),
-            gameObject.AddComponent<TheFlamethrower>(),
+            gameObject.GetComponent<PoisonBall>(),
+            gameObject.GetComponent<InfinitePoison>(),
+            gameObject.GetComponent<DeadlyPoison>(),
         };
 
         foreach (IAugment augment in TestAugments)
