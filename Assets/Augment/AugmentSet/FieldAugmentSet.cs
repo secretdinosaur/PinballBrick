@@ -208,7 +208,7 @@ public class SatelliteBeam : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(FireSatelliteBeam(15f));
+        Routine = StartCoroutine(FireSatelliteBeam(120f));
         SatelliteBeamObj = Instantiate(AugmentManager.instance.SatelliteBeamObj, new Vector2(1000, 1000), Quaternion.identity);
     }
 

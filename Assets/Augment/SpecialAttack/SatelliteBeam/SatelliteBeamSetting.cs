@@ -18,7 +18,7 @@ public class SatelliteBeamSetting : MonoBehaviour
             {
                 if (brick != null)
                 {
-                    EffectDamage = (0.1f + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier;
+                    EffectDamage = (2f + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier;
                     brick.ArbitraryDamageAttack(EffectDamage, false, EffectDamage.ToString("F1"), "Fire");
                 }
             }
@@ -37,7 +37,7 @@ public class SatelliteBeamSetting : MonoBehaviour
                 bricksInRange.Add(brick);
             }
 
-            TouchDamage = (50 + StatManager.instance.Temporary_stat.AttackDamage) * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+            TouchDamage = (500 + StatManager.instance.Temporary_stat.AttackDamage) * StatManager.instance.statMultiplier.AttackDamageMultiplier;
             brick.ArbitraryDamageAttack(TouchDamage, false, TouchDamage.ToString("F1"), "Normal");
         }
     }

@@ -75,9 +75,15 @@ public partial class IBrick : MonoBehaviour
                 DecayExplosion();
             }
         }
-        if (RecentlyBall.gameObject.activeSelf)
+        if (BallManager.Instance.isGrowing)
         {
-            RecentlyBall.Grow(this);
+            if (RecentlyBall != null)
+            {
+                if (RecentlyBall.gameObject.activeInHierarchy)
+                {
+                    RecentlyBall.Grow(this);
+                }
+            }
         }
         FlamethrowerEffect = null;
         Fever.StartFever = true;
