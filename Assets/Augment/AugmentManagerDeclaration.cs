@@ -15,7 +15,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
     
     public EffectChance effectChance;
-    
+
+    public EffectStatus FireEffectStatus;
+    public EffectStatus PoisonEffectStatus;
+    public EffectStatus DecayEffectStatus;
+
+    public float DecayDamageMultiple;
+
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
         { 0, 0.01f },
@@ -29,7 +35,11 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(1.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(1f, 0.3f, 0.3f);
+        FireEffectStatus = new EffectStatus("Fire", false, 0, 5);
+        PoisonEffectStatus = new EffectStatus("Poison", false, 0, 3);
+        DecayEffectStatus = new EffectStatus("Decay", false, 0, 3);
+        DecayDamageMultiple = 1.1f;
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -80,19 +90,14 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<PowerfulDecay>(),
             gameObject.AddComponent<DecayExplosion>(),
             gameObject.AddComponent<ExplosionWithBall>(),
+            gameObject.AddComponent<TheFlamethrower>(),
 
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.AddComponent<FireEffectStackBlast>(),
-            gameObject.GetComponent<PoisonBall>(),
-            gameObject.AddComponent<AdditionalThreeAttack>(),
-            gameObject.GetComponent<InfinitePoison>(),
-            gameObject.AddComponent<FireBall>(),
-            gameObject.GetComponent<DeadlyPoison>(),
-            gameObject.AddComponent<Lightning>(),
-            gameObject.AddComponent<ChainLightning>(),
+            //gameObject.AddComponent<FireBall>(),
+            gameObject.AddComponent<TheFlamethrower>(),
         };
 
         foreach (IAugment augment in TestAugments)

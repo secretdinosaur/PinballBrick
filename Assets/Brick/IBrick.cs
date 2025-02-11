@@ -24,6 +24,10 @@ public partial class IBrick : MonoBehaviour
 
     public GameObject PoisonEffect;
     public float TotalMultiple;
+
+    public Dictionary<string, EffectStatus> EffectStatusSet;
+
+    public Coroutine FlamethrowerEffect;
     public float HP
     {
         get { return hp; }
@@ -71,13 +75,22 @@ public partial class IBrick : MonoBehaviour
                 DecayExplosion();
             }
         }
-        RecentlyBall.Grow(this);
+        if (RecentlyBall.gameObject.activeSelf)
+        {
+            RecentlyBall.Grow(this);
+        }
+        FlamethrowerEffect = null;
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
         LevelManager.Instance.Exp += 20 * StatManager.instance.Persistent_stat.BonusExp;
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 
     private void ShowText(string Text, string DamageType, bool isCritical)
@@ -120,6 +133,12 @@ public partial class IBrick : MonoBehaviour
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
         boxSize = new Vector2(2f, 2f);
+        EffectStatusSet = new Dictionary<string, EffectStatus>()
+        {
+            { "Fire", AugmentManager.instance.FireEffectStatus },
+            { "Poison", AugmentManager.instance.PoisonEffectStatus },
+            { "Decay", AugmentManager.instance.DecayEffectStatus }
+        };
         FireEffectDuration = 0f;
         PoisonEffectDuration = 0f;
         DecayEffectDuration = 0f;
@@ -129,6 +148,7 @@ public partial class IBrick : MonoBehaviour
         EffectStatusSet["Fire"].EffectStack = 0;
         EffectStatusSet["Poison"].EffectStack = 0;
         EffectStatusSet["Fire"].EffectStack = 0;
+        FlamethrowerEffect = null;
         GetComponents();
 
         print(EffectStatusSet["Poison"].EffectStackLimit);
@@ -179,12 +199,6 @@ public partial class IBrick
     public Ball RecentlyBall;
     private float SpecialCriticalChance; // CriticalChance that Increased by Augment
     
-    public Dictionary<string, EffectStatus> EffectStatusSet = new Dictionary<string, EffectStatus>()
-    {
-        { "Fire", new EffectStatus("Fire", false, 0, 5) },
-        { "Poison", new EffectStatus("Poison", false, 0, 3) },
-        { "Decay", new EffectStatus("Decay", false, 0, 3)}
-    };
     public void TakeDamage(Ball ball)
     {
         RecentlyBall = ball;
@@ -274,7 +288,7 @@ public partial class IBrick
                 ? 1 
                 : DecayDamageCalculate(EffectAttackDamage);
             HP -= FinalEffectAttackDamage;
-            ShowText(EffectAttackDamage.ToString("F1"), "Fire", isCritical);
+            ShowText(FinalEffectAttackDamage.ToString("F1"), "Fire", isCritical);
             FireEffectDuration -= interval;
             if (!gameObject.activeSelf)
             {
@@ -289,7 +303,11 @@ public partial class IBrick
 
     public IEnumerator DamageByPoisonEffect(float effectDuration)
     {
-        if (EffectStatusSet["Poison"].IsActive) yield break;
+        if (EffectStatusSet["Poison"].IsActive)
+        {
+            PoisonEffectDuration = effectDuration;
+            yield break;
+        }
         EffectStatusSet["Poison"].IsActive = true;
         PoisonEffect.SetActive(true);
         Color PoisonColor = PoisonEffect.GetComponent<SpriteRenderer>().material.color;
@@ -334,34 +352,56 @@ public partial class IBrick
             ShowText(((FinalEffectAttackDamage / (HP + FinalEffectAttackDamage)) * 100f).ToString("0.###")+ "%", "Poison", isCritical);
             if (AugmentManager.instance.determineAugmentID("SPECIAL_16")) // Infinite Poison
             {
-                if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit && NearbyBricks != null)
+                if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit && (NearbyBricks != null && NearbyBricks.Count > 0))
                 {
-                    for(int i = 0; i < NearbyBricks.Count; i++)
+                    List<IBrick> ChosenBricks = new List<IBrick>();
+                    int candidateCount = NearbyBricks.Count;
+                    int infectionLimit = Random.Range(1, NearbyBricks.Count);
+                    infectionLimit = Mathf.Min(infectionLimit, candidateCount);
+
+                    while (ChosenBricks.Count < infectionLimit)
                     {
-                        IBrick brick = NearbyBricks[i];
-                        if (brick.gameObject.activeSelf)
+                        int randomBrickNumber = Random.Range(0, candidateCount);
+                        IBrick randomBrick = NearbyBricks[randomBrickNumber];
+
+                        if (!ChosenBricks.Contains(randomBrick))
+                        {
+                            ChosenBricks.Add(randomBrick);
+                        }
+                        if (ChosenBricks.Count == candidateCount)
+                        {
+                            break;
+                        }
+                    }
+                    foreach (IBrick brick in ChosenBricks)
+                    {
+                        if (brick.gameObject.activeInHierarchy && brick.gameObject.activeSelf && !brick.EffectStatusSet["Poison"].IsActive)
                         {
                             VisualEffectManager.Instance.SpawnParticle("InfinityPoison", transform.position, 1);
                             brick.EffectStatusSet["Poison"].EffectStack +=
                                 (brick.EffectStatusSet["Poison"].EffectStack != EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
                             StartCoroutine(brick.DamageByPoisonEffect(effectDurationTemp));
                         }
-                       
                     }
                 }
                 else
                 {
-                    if (Random.value < AugmentManager.instance.effectChance.PoisonChance)
+                    if (Random.value < AugmentManager.instance.effectChance.PoisonChance - 0.2f)
                     {
-                        EffectStatusSet["Poison"].EffectStack++;
+                        EffectStatusSet["Poison"].EffectStack += 
+                            (EffectStatusSet["Poison"].EffectStack != EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
                         PoisonEffectDuration = effectDurationTemp;
+                    }
+                    else
+                    {
+                        effectDuration -= interval;
+                        PoisonEffectDuration -= interval;
                     }
                 }
             }
             else
             {
                 effectDuration -= interval;
-                
                 PoisonEffectDuration -= interval;
             }
             float alpha = Mathf.Lerp(0.5f, 0, effectDuration / effectDurationTemp);
@@ -413,10 +453,9 @@ public partial class IBrick
         EffectStatusSet["Decay"].EffectStack = 0;
     }
 
-    public float DecayDamageMultiple = 1.1f;
     public float DecayDamageCalculate(float Damage)
     {
-        Damage *= Mathf.Pow(DecayDamageMultiple, EffectStatusSet["Decay"].EffectStack);
+        Damage *= Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, EffectStatusSet["Decay"].EffectStack);
         return Damage;
     }
     
@@ -490,7 +529,7 @@ public partial class IBrick //Detect Nearby Bricks
     public List<IBrick> NearbyBricks = new List<IBrick>();
     public Vector2 boxSize;
 
-    void FixedUpdate()
+    void Update()
     {
         CollectNearbyBricks();
         RemoveInactiveBricks();
