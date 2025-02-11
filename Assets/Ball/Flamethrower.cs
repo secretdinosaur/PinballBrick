@@ -14,10 +14,6 @@ public class Flamethrower : MonoBehaviour
     {
         timer += Time.deltaTime;
     }
-    private void Start()
-    {
-        damage = (FlameDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier;
-    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -25,28 +21,14 @@ public class Flamethrower : MonoBehaviour
         {
             if (timer >= interval)
             {
+                damage = (FlameDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier;
                 collision.gameObject.GetComponent<IBrick>().ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Fire");
+                if (Random.value < 0.1f)
+                {
+                    collision.gameObject.GetComponent<IBrick>().StartCoroutine(collision.gameObject.GetComponent<IBrick>().DamageByFireEffect(1f));
+                }
                 timer = 0f;
             }
-        }
-    }
-
-
-    private IEnumerator FlametrowerEffect(IBrick brick)
-    {
-        while (true)
-        {
-            if(brick == null || !brick.gameObject.activeInHierarchy)
-            {
-                yield break;
-            }
-            brick.ArbitraryDamageAttack(FlameDamage, false, FlameDamage.ToString("F1"), "Fire");
-
-            if (Random.value < 0.1f)
-            {
-                brick.StartCoroutine(brick.DamageByFireEffect(1f));
-            }
-            yield return new WaitForSeconds(0.1f);
         }
     }
 

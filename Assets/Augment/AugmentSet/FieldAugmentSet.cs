@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 using static UnityEngine.GraphicsBuffer;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 /*
 public class Example : FieldAugment
@@ -192,5 +193,80 @@ public class TargetMark : FieldAugment
                 }
             }
         }
+    }
+}
+
+public class SatelliteBeam : FieldAugment
+{
+    Coroutine Routine = null;
+    GameObject SatelliteBeamObj;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_5", "SatelliteBeam", "SatelliteBeam", 1);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(FireSatelliteBeam(15f));
+        SatelliteBeamObj = Instantiate(AugmentManager.instance.SatelliteBeamObj, new Vector2(1000, 1000), Quaternion.identity);
+    }
+
+    public override void Remove()
+    {
+        Destroy(SatelliteBeamObj);
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator FireSatelliteBeam(float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            Vector2 StartLocation = StartCoordinateSetting();
+            Vector2 FinishLocation = FinishCoordinateSetting(StartLocation);
+            SatelliteBeamObj.transform.position = StartLocation;
+            yield return StartCoroutine(MoveSatelliteBeam(StartLocation, FinishLocation));
+        }
+    }
+
+    private IEnumerator MoveSatelliteBeam(Vector2 StartLocation, Vector2 FinishLocation)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 12.5f)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / 12.5f;
+            t = Mathf.SmoothStep(0, 1, t);
+            SatelliteBeamObj.transform.position = Vector2.Lerp(StartLocation, FinishLocation, t);
+            yield return null;
+        }
+
+        SatelliteBeamObj.transform.position = FinishLocation;
+    }
+
+    private Vector2 StartCoordinateSetting()
+    {
+        float X, Y;
+        
+        X = Random.value < 0.5f ? 5f : -5f;
+        Y = Random.Range(-1.5f, 3.5f);
+
+        return new Vector2(X, Y);
+    }
+
+    private Vector2 FinishCoordinateSetting(Vector2 StartCoordinate)
+    {
+        float X, Y;
+
+        X = StartCoordinate.x == 5f ? -5f : 5f;
+        Y = Random.Range(-1f, 4f);
+
+        return new Vector2(X, Y);
     }
 }

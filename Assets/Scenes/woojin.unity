@@ -5525,6 +5525,8 @@ MonoBehaviour:
   activeStatAugments: []
   activeFieldAugments: []
   activeSpecialAugments: []
+  SatelliteBeamObj: {fileID: 8416854898795469513, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
+  DecayDamageMultiple: 0
 --- !u!114 &218456172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12937,6 +12939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 15
   isGrowing: 0
+  isOnFlamerower: 0
   InGameBall: []
   thereISPhoenix: 0
   boxSize: {x: 5, y: 10}

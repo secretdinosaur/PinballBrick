@@ -20,6 +20,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public EffectStatus PoisonEffectStatus;
     public EffectStatus DecayEffectStatus;
 
+    public GameObject SatelliteBeamObj;
+
     public float DecayDamageMultiple;
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
@@ -67,6 +69,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<AngryBall>(),
             gameObject.AddComponent<PhoenixBall>(),
             gameObject.AddComponent<TargetMark>(),
+            gameObject.AddComponent<SatelliteBeam>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -97,7 +100,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         List<IAugment> TestAugments = new List<IAugment>
         {
             //gameObject.AddComponent<FireBall>(),
-            gameObject.AddComponent<TheFlamethrower>(),
+            gameObject.AddComponent<SatelliteBeam>(),
         };
 
         foreach (IAugment augment in TestAugments)
