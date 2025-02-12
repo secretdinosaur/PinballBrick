@@ -287,7 +287,7 @@ public class DeathExp : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterDeathEffect()
+    public override void AfterDeathEffect(Ball ball)
     {
         LevelManager.Instance.Exp += 30 * StatManager.instance.Persistent_stat.BonusExp;
     }
@@ -307,7 +307,7 @@ public class DeathGold : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterDeathEffect()
+    public override void AfterDeathEffect(Ball ball)
     {
         StatManager.instance.Persistent_stat.Gold += 18 + (18 * StatManager.instance.Temporary_stat.GoldGain);
     }
@@ -735,7 +735,10 @@ public class InfiniteGrowBall : SpecialAugment
         SetAugment("SPECIAL_25", "InfiniteGrowBall", "InfiniteGrowBall", "Stat", 3);
     }
 
-    public override void Apply() { }
+    public override void Apply() 
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<ShareBallAtk>());
+    }
 
     public override void Remove() { }
 
@@ -761,7 +764,7 @@ public class SacrificeQuest1 : SpecialAugment
 
     public override void Remove() { }
 
-    public override void AfterDeathEffect()
+    public override void AfterDeathEffect(Ball ball)
     {
         SacrificeNumber++;
         if (SacrificeNumber >= 20 && !isCleared)
@@ -793,7 +796,7 @@ public class SacrificeQuest2 : SpecialAugment
 
     public override void Remove() { }
 
-    public override void AfterDeathEffect()
+    public override void AfterDeathEffect(Ball ball)
     {
         SacrificeNumber++;
         if (SacrificeNumber >= 50 && !isCleared)
@@ -826,7 +829,7 @@ public class SacrificeQuest3 : SpecialAugment
 
     public override void Remove() { }
 
-    public override void AfterDeathEffect()
+    public override void AfterDeathEffect(Ball ball)
     {
         SacrificeNumber++;
         if (SacrificeNumber >= 70 && !isCleared)
@@ -871,5 +874,25 @@ public class AttackAfterAdditionalBall : SpecialAugment
     public override void AfterAttackEffect(IBrick Brick)
     {
         AttackNumber++;
+    }
+}
+public class ShareBallAtk : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_30", "ShareBallAtk", "ShareBallAtk", "Ball", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(Ball ball)
+    {
+        float ShareAtk = ball.GrowthAttackDamage *= 0.7f;
+        foreach (Ball inGameBall in BallManager.Instance.InGameBall)
+        {
+            inGameBall.GrowthAttackDamage += ShareAtk / BallManager.Instance.InGameBall.Count;
+        }
     }
 }

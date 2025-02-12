@@ -11,7 +11,7 @@ public partial class IBrick : MonoBehaviour
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
-    private bool isDied = false;
+    public bool isDied = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -232,7 +232,7 @@ public partial class IBrick
         bool CriticalHit = false;
         float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
                                 StatManager.instance.Temporary_stat.AttackDamage +
-                                RecentlyBall.GetGrowthAttackDamage();
+                                RecentlyBall.GrowthAttackDamage;
 
         if (IsCriticalHit())
         {

@@ -21,7 +21,7 @@ public abstract class IAugment : MonoBehaviour
 
     public virtual void CriticalAttackEffect(IBrick Brick) { }
     
-    public virtual void AfterDeathEffect() { }
+    public virtual void AfterDeathEffect(Ball ball) { }
 
     /// <summary>
     /// Called Every Attack Except Dot(Effect) Damage.
