@@ -30,7 +30,7 @@ public class Example : FieldAugment
 public class AllDamage : FieldAugment
 {
     Coroutine Routine = null;
-    float Cooldown = AugmentManager.FieldGlobalCooldown;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
     float Damage = 10f;
 
     private void OnEnable()
@@ -110,7 +110,7 @@ public class AngryBall : FieldAugment
 public class PhoenixBall : FieldAugment
 {
     Coroutine Routine = null;
-    float Cooldown = AugmentManager.FieldGlobalCooldown * 2f;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 2f;
 
     private void OnEnable()
     {
@@ -152,7 +152,7 @@ public class PhoenixBall : FieldAugment
 public class TargetMark : FieldAugment
 {
     Coroutine Routine = null;
-    float Cooldown = AugmentManager.FieldGlobalCooldown;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
     private void OnEnable()
     {
         SetAugment("FIELD_4", "TargetMark", "TargetMark", 1);
@@ -205,7 +205,7 @@ public class SatelliteBeam : FieldAugment
 {
     Coroutine Routine = null;
     GameObject SatelliteBeamObj;
-    float Cooldown = AugmentManager.FieldGlobalCooldown * 10;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 10;
 
     private void OnEnable()
     {
@@ -280,7 +280,7 @@ public class SatelliteBeam : FieldAugment
 public class AutoGetExp : FieldAugment
 {
     Coroutine Routine = null;
-    float Cooldown = AugmentManager.FieldGlobalCooldown;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
 
     private void OnEnable()
     {

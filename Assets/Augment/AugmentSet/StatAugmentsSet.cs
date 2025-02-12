@@ -401,12 +401,12 @@ public class DecreaseFieldCooldown5 : StatAugment
 
     public override void Apply()
     {
-        AugmentManager.FieldGlobalCooldown *= 0.95f;
+        AugmentManager.instance.FieldGlobalCooldown *= 0.95f;
     }
 
     public override void Remove()
     {
-        AugmentManager.FieldGlobalCooldown /= 0.95f;
+        AugmentManager.instance.FieldGlobalCooldown /= 0.95f;
     }
 }
 
@@ -419,12 +419,12 @@ public class DecreaseFieldCooldown30 : StatAugment
 
     public override void Apply()
     {
-        AugmentManager.FieldGlobalCooldown *= 0.7f;
+        AugmentManager.instance.FieldGlobalCooldown *= 0.7f;
     }
 
     public override void Remove()
     {
-        AugmentManager.FieldGlobalCooldown /= 0.7f;
+        AugmentManager.instance.FieldGlobalCooldown /= 0.7f;
     }
 }
 

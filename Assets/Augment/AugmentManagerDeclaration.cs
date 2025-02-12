@@ -24,7 +24,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public float DecayDamageMultiple;
 
-    public static float FieldGlobalCooldown = 10f;
+    public float FieldGlobalCooldown = 10f;
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
@@ -106,9 +106,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<PoisonBall>(),
-            gameObject.GetComponent<InfinitePoison>(),
-            gameObject.GetComponent<DeadlyPoison>(),
+            gameObject.GetComponent<AdditionalThreeAttack>(),
+            gameObject.GetComponent<Homing>(),
+            gameObject.GetComponent<LevelUpQuest>(),
         };
 
         foreach (IAugment augment in TestAugments)

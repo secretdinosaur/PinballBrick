@@ -620,7 +620,9 @@ public class LevelUpQuest : SpecialAugment
 
     public override void Apply()
     {
+        Debug.Log(LevelManager.Instance.Exp);
         LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.5f;
+        Debug.Log(LevelManager.Instance.Exp);
     }
 
     public override void Remove(){ }
@@ -628,6 +630,7 @@ public class LevelUpQuest : SpecialAugment
     public override void AfterBrickDieEffect(IBrick Brick)
     {
         KilledEnemy++;
+        Debug.Log(KilledEnemy);
         if(KilledEnemy >= 20 && !isCleared)
         {
             isCleared = true;

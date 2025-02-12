@@ -11,6 +11,7 @@ public partial class IBrick : MonoBehaviour
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
+    private bool isDied = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -59,8 +60,9 @@ public partial class IBrick : MonoBehaviour
                 {
                     GetComponent<BlackBrick>().WhiteBrick.isBlackBrickDied();
                 }
-                else
+                else if(!isDied)
                 {
+                    isDied = true;
                     BrickDie();
                 }
             }
@@ -465,6 +467,10 @@ public partial class IBrick
         
         while (MaxAttackTime > 0f)
         {
+            if (!gameObject.activeSelf)
+            {
+                yield break;
+            }
             bool CriticalHit = IsCriticalHit();
             float AdditionalAttackDamage = CriticalHit
                     ? (StatManager.instance.Persistent_stat.AttackDamage +
@@ -484,10 +490,6 @@ public partial class IBrick
             foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
             {
                 Augment.AfterAttackEffect(this);
-            }
-            if (!gameObject.activeSelf)
-            {
-                yield break;
             }
             yield return new WaitForSeconds(TimeCount);
             MaxAttackTime -= TimeCount;
