@@ -44,6 +44,8 @@ public class FireBall : SpecialAugment
     {
         StatManager.instance.Temporary_stat.EffectDamage += FireDamage;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FireEffectStackBlast>());
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<TheFlamethrower>());
     }
 
     public override void Remove()
@@ -389,7 +391,11 @@ public class PoisonBall : SpecialAugment
         PoisonDuration = 1.4f;
     }
 
-    public override void Apply() { }
+    public override void Apply() 
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<InfinitePoison>());
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DeadlyPoison>());
+    }
 
     public override void Remove() { }
 
@@ -490,7 +496,11 @@ public class DecayBall : SpecialAugment
         DecayDuration = 1f;
     }
 
-    public override void Apply() { }
+    public override void Apply() 
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<PowerfulDecay>());
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayExplosion>());
+    }
 
     public override void Remove() { }
 
@@ -754,7 +764,6 @@ public class SacrificeQuest1 : SpecialAugment
     public override void AfterDeathEffect()
     {
         SacrificeNumber++;
-        Debug.Log(SacrificeNumber);
         if (SacrificeNumber >= 20 && !isCleared)
         {
             StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
@@ -787,7 +796,6 @@ public class SacrificeQuest2 : SpecialAugment
     public override void AfterDeathEffect()
     {
         SacrificeNumber++;
-        Debug.Log(SacrificeNumber);
         if (SacrificeNumber >= 50 && !isCleared)
         {
             StatManager.instance.Temporary_stat.AttackDamage += 10;
@@ -821,7 +829,6 @@ public class SacrificeQuest3 : SpecialAugment
     public override void AfterDeathEffect()
     {
         SacrificeNumber++;
-        Debug.Log(SacrificeNumber);
         if (SacrificeNumber >= 70 && !isCleared)
         {
             Debug.Log("SacrificeQuest3 Clear");
