@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class Persistent_Stat  //Out Game Stats(Upgradeable Stats Using Gold)
 {
-    public int AttackDamage;
+    public float AttackDamage;
     public int StartingBall;
     public float BonusExp;
     public float ItemDropChance;
@@ -16,7 +16,7 @@ public class Persistent_Stat  //Out Game Stats(Upgradeable Stats Using Gold)
 public class Temporary_Stat //In Game Stats(Upgradeable Stats Using Skill Points)
 {
     public int[] StatLevel;
-    public int AttackDamage;
+    public float AttackDamage;
     public float CriticalDamage;
     public float CriticalChance;
     public float BallSpeed;

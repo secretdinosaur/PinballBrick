@@ -70,23 +70,6 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_20"))
-        {
-            if (EffectStatusSet["Decay"].EffectStack == EffectStatusSet["Decay"].EffectStackLimit)
-            {
-                DecayExplosion();
-            }
-        }
-        if (BallManager.Instance.isGrowing)
-        {
-            if (RecentlyBall != null)
-            {
-                if (RecentlyBall.gameObject.activeInHierarchy)
-                {
-                    RecentlyBall.Grow(this);
-                }
-            }
-        }
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -474,28 +457,6 @@ public partial class IBrick
     {
         Damage *= Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, EffectStatusSet["Decay"].EffectStack);
         return Damage;
-    }
-    
-    public void DecayExplosion()
-    {
-        float explosionRadius = 3f;
-        LayerMask explosionLayer = LayerMask.GetMask("Ball");
-        
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayer);
-        
-        foreach (Collider2D ball in colliders)
-        {
-            Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
-
-            if (rb != null)
-            {
-                Vector2 explosionDirection = (rb.position - (Vector2)transform.position).normalized;
-                float distance = Vector2.Distance(rb.position, transform.position);
-                float forceMultiplier = Mathf.Clamp01(1 - (distance / explosionRadius));
-                
-                rb.AddForce(explosionDirection * 5f * forceMultiplier, ForceMode2D.Impulse);
-            }
-        }
     }
     
     public IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack Coroutine

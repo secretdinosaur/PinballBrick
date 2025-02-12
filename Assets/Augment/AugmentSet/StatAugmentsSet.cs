@@ -392,29 +392,11 @@ public class WeakButStrongAtk : StatAugment
     }
 }
 
-public class GrowBall : StatAugment
-{
-    private void OnEnable()
-    {
-        SetAugment("STAT_19", "GrowBall", "GrowBall", 5);
-    }
-
-    public override void Apply()
-    {
-        BallManager.Instance.isGrowing = true;
-    }
-
-    public override void Remove()
-    {
-        BallManager.Instance.isGrowing = false;
-    }
-}
-
 public class DecreaseFieldCooldown5 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_20", "DecreaseFieldCooldown", "DecreaseFieldCooldown", 5);
+        SetAugment("STAT_19", "DecreaseFieldCooldown", "DecreaseFieldCooldown", 5);
     }
 
     public override void Apply()
@@ -432,7 +414,7 @@ public class DecreaseFieldCooldown30 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_21", "DecreaseFieldCooldown30", "DecreaseFieldCooldown30", 3);
+        SetAugment("STAT_20", "DecreaseFieldCooldown30", "DecreaseFieldCooldown30", 3);
     }
 
     public override void Apply()

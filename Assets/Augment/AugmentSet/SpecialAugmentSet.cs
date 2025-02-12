@@ -544,6 +544,30 @@ public class DecayExplosion : SpecialAugment
     {
         AugmentManager.instance.effectChance.DecayChance += 0.1f;
     }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        if (Brick.EffectStatusSet["Decay"].EffectStack == Brick.EffectStatusSet["Decay"].EffectStackLimit)
+        {
+            float explosionRadius = 3f;
+            LayerMask explosionLayer = LayerMask.GetMask("Ball");
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayer);
+            foreach (Collider2D ball in colliders)
+            {
+                Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
+
+                if (rb != null)
+                {
+                    Vector2 explosionDirection = (rb.position - (Vector2)transform.position).normalized;
+                    float distance = Vector2.Distance(rb.position, transform.position);
+                    float forceMultiplier = Mathf.Clamp01(1 - (distance / explosionRadius));
+
+                    rb.AddForce(explosionDirection * 5f * forceMultiplier, ForceMode2D.Impulse);
+                }
+            }
+            Debug.Log("Decay Boom");
+        }
+    }
 }
 
 /*
@@ -583,7 +607,7 @@ public class TheFlamethrower : SpecialAugment
     }
 }
 /*
- * 즉시 경험치 50% 획득, 블럭 20개 격파하면 레벨업 (1회)
+ * 즉시 경험치 30% 획득, 블럭 20개 격파하면 레벨업 (1회)
  */
 public class LevelUpQuest : SpecialAugment
 {
@@ -591,7 +615,7 @@ public class LevelUpQuest : SpecialAugment
     private bool isCleared = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_23", "LevelUpQuest", "LevelUpQuest", "Effect", 5);
+        SetAugment("SPECIAL_23", "LevelUpQuest", "LevelUpQuest", "Quest", 5);
     }
 
     public override void Apply()
@@ -608,6 +632,88 @@ public class LevelUpQuest : SpecialAugment
         {
             isCleared = true;
             LevelManager.Instance.LevelUp();
+        }
+    }
+}
+
+/*
+ * 블럭 20개 격파할때까지 죽인 적 타입에 따라 float 누적, 클리어하면 누적치 +2 해서 공격력업
+ */
+public class GrowBallQuest : SpecialAugment
+{
+    private int KilledEnemy;
+    private float KeepAtk;
+    private bool isCleared = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_24", "GrowBall", "GrowBall", "Quest", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        KilledEnemy++;
+        if (Brick.RecentlyBall != null && !isCleared)
+        {
+            if (Brick.RecentlyBall.gameObject.activeInHierarchy)
+            {
+                Grow(Brick);
+            }
+            if(KilledEnemy > 20)
+            {
+                StatManager.instance.Temporary_stat.AttackDamage += KeepAtk + 2;
+                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                isCleared = true;
+            }
+        }
+    }
+
+    public void Grow(IBrick brick)
+    {
+        if (brick.IsBoss)
+        {
+            switch (brick.BrickType)
+            {
+                case "HardBrick":
+                    KeepAtk += 0.4f;
+                    break;
+                case "IgnoreBrick":
+                    KeepAtk += 0.45f;
+                    break;
+                case "Twinbrick":
+                    KeepAtk += 0.45f;
+                    break;
+                case "BlackBrick":
+                    KeepAtk += 0.125f;
+                    break;
+                default:
+                    KeepAtk += 0.1f;
+                    break;
+            }
+        }
+        else
+        {
+            switch (brick.BrickType)
+            {
+                case "HardBrick":
+                    KeepAtk += 0.05f;
+                    break;
+                case "IgnoreBrick":
+                    KeepAtk += 0.06f;
+                    break;
+                case "Twinbrick":
+                    KeepAtk += 0.06f;
+                    break;
+                case "BlackBrick":
+                    KeepAtk += 0.02f;
+                    break;
+                default:
+                    KeepAtk += 0.04f;
+                    break;
+            }
         }
     }
 }
