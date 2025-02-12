@@ -276,3 +276,37 @@ public class SatelliteBeam : FieldAugment
         return new Vector2(X, Y);
     }
 }
+
+public class AutoGetExp : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_6", "AutoGetExp", "AutoGetExp", 5);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetExp(5f + Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetExp(float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.01f;
+        }
+    }
+}

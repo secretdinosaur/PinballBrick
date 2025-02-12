@@ -582,3 +582,32 @@ public class TheFlamethrower : SpecialAugment
         BallManager.Instance.isOnFlamerower = false;
     }
 }
+/*
+ * 즉시 경험치 50% 획득, 블럭 20개 격파하면 레벨업 (1회)
+ */
+public class LevelUpQuest : SpecialAugment
+{
+    private int KilledEnemy;
+    private bool isCleared = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_23", "LevelUpQuest", "LevelUpQuest", "Effect", 5);
+    }
+
+    public override void Apply()
+    {
+        LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.5f;
+    }
+
+    public override void Remove(){ }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        KilledEnemy++;
+        if(KilledEnemy >= 20 && !isCleared)
+        {
+            isCleared = true;
+            LevelManager.Instance.LevelUp();
+        }
+    }
+}

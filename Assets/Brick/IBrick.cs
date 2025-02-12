@@ -92,6 +92,10 @@ public partial class IBrick : MonoBehaviour
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
         LevelManager.Instance.Exp += 20 * StatManager.instance.Persistent_stat.BonusExp;
+        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        {
+            Augment.AfterBrickDieEffect(this);
+        }
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
 
