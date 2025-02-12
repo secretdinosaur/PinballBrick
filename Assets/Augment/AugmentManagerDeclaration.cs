@@ -26,6 +26,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public float FieldGlobalCooldown = 10f;
 
+    public bool isSacrificeQuest3Cleared;
+
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
         { 0, 0.01f },
@@ -44,6 +46,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         PoisonEffectStatus = new EffectStatus("Poison", false, 0, 3);
         DecayEffectStatus = new EffectStatus("Decay", false, 0, 3);
         DecayDamageMultiple = 1.1f;
+        isSacrificeQuest3Cleared = false;
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -101,14 +104,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<LevelUpQuest>(),
             gameObject.AddComponent<GrowBallQuest>(),
             gameObject.AddComponent<InfiniteGrowBall>(),
+            gameObject.AddComponent<SacrificeQuest1>(),
 
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<AdditionalThreeAttack>(),
-            gameObject.GetComponent<Homing>(),
-            gameObject.GetComponent<GrowBallQuest>(),
+            gameObject.GetComponent<SacrificeQuest1>(),
         };
 
         foreach (IAugment augment in TestAugments)

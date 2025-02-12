@@ -734,3 +734,99 @@ public class InfiniteGrowBall : SpecialAugment
         Brick.RecentlyBall.Grow(Brick);
     }
 }
+
+/*
+ * 공 일정 희생시키면 미약한 버프, 증강 풀에 SacrificeQuest2 추가
+ */
+public class SacrificeQuest1 : SpecialAugment
+{
+    private int SacrificeNumber;
+    private bool isCleared;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_26", "SacrificeQuest1", "SacrificeQuest1", "Quest", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect()
+    {
+        SacrificeNumber++;
+        Debug.Log(SacrificeNumber);
+        if (SacrificeNumber >= 20 && !isCleared)
+        {
+            StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
+            StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.1f;
+            StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+
+            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest2>());
+            Debug.Log("SacrificeQuest1 Clear");
+            isCleared = true;
+        }
+    }
+}
+
+/*
+ * 공 일정 희생시키면 중간 버프, 증강 풀에 SacrificeQuest3 추가
+ */
+public class SacrificeQuest2 : SpecialAugment
+{
+    private int SacrificeNumber;
+    private bool isCleared;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_27", "SacrificeQuest2", "SacrificeQuest2", "Quest", 3);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect()
+    {
+        SacrificeNumber++;
+        Debug.Log(SacrificeNumber);
+        if (SacrificeNumber >= 50 && !isCleared)
+        {
+            StatManager.instance.Temporary_stat.AttackDamage += 10;
+            StatManager.instance.Temporary_stat.EffectDamage += 2;
+            StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            StatManager.instance.Persistent_stat.Gold += 50 * StatManager.instance.Temporary_stat.GoldGain;
+
+            Debug.Log("SacrificeQuest2 Clear");
+            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest3>());
+            isCleared = true;
+        }
+    }
+}
+
+/*
+ * 공 일정 희생시키면 이후 증강 먹는 타이밍에 1회 확정으로 1티어 증강 3개 등장
+ */
+public class SacrificeQuest3 : SpecialAugment
+{
+    private int SacrificeNumber;
+    private bool isCleared;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_28", "SacrificeQuest", "SacrificeQuest", "Quest", 2);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect()
+    {
+        SacrificeNumber++;
+        Debug.Log(SacrificeNumber);
+        if (SacrificeNumber >= 70 && !isCleared)
+        {
+            Debug.Log("SacrificeQuest3 Clear");
+            AugmentManager.instance.isSacrificeQuest3Cleared = true;
+            isCleared = true;
+        }
+    }
+}
