@@ -410,3 +410,39 @@ public class GrowBall : StatAugment
     }
 }
 
+public class DecreaseFieldCooldown5 : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_20", "DecreaseFieldCooldown", "DecreaseFieldCooldown", 5);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.FieldGlobalCooldown *= 0.95f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.FieldGlobalCooldown /= 0.95f;
+    }
+}
+
+public class DecreaseFieldCooldown30 : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_21", "DecreaseFieldCooldown30", "DecreaseFieldCooldown30", 3);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.FieldGlobalCooldown *= 0.7f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.FieldGlobalCooldown /= 0.7f;
+    }
+}
+

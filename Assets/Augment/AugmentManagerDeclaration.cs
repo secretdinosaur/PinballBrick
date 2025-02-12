@@ -24,6 +24,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public float DecayDamageMultiple;
 
+    public static float FieldGlobalCooldown = 10f;
+
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
         { 0, 0.01f },
