@@ -108,7 +108,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         {
             gameObject.GetComponent<AdditionalThreeAttack>(),
             gameObject.GetComponent<Homing>(),
-            gameObject.GetComponent<LevelUpQuest>(),
+            gameObject.GetComponent<GrowBallQuest>(),
         };
 
         foreach (IAugment augment in TestAugments)

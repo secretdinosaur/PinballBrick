@@ -200,7 +200,7 @@ public partial class Ball : MonoBehaviour
 public partial class Ball //Homing
 {
     private float homingThrust = 80f;
-    private float detectionRadius = 1.2f;
+    private float detectionRadius = 1.4f;
     private string targetLayerName = "Game";
     private float rotationSpeed = 20f;
 

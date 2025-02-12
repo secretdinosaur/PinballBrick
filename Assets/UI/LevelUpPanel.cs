@@ -79,6 +79,7 @@ public class LevelUpPanel : MonoBehaviour
                 {
                     augmentsSet.Add(AugmentManager.instance.GetRandomAugment());
                     OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity - 1];
+                    
                 }
                 Option_1_Name.text = augmentsSet[0].Name;
                 Option_1_Description.text = augmentsSet[0].Description;

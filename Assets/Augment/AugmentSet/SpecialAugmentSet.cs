@@ -649,7 +649,7 @@ public class GrowBallQuest : SpecialAugment
     private bool isCleared = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_24", "GrowBall", "GrowBall", "Quest", 5);
+        SetAugment("SPECIAL_24", "GrowBallQuest", "GrowBallQuest", "Quest", 5);
     }
 
     public override void Apply() { }
@@ -662,9 +662,9 @@ public class GrowBallQuest : SpecialAugment
         if (Brick.RecentlyBall != null && !isCleared)
         {
             QuestProgressing(Brick);
-            if(KilledEnemy > 20)
+            if(KilledEnemy >= 20)
             {
-                StatManager.instance.Temporary_stat.AttackDamage += KeepAtk + 2;
+                StatManager.instance.Temporary_stat.AttackDamage += (KeepAtk + 2);
                 StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
                 isCleared = true;
             }
