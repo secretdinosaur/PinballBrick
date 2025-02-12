@@ -5527,6 +5527,8 @@ MonoBehaviour:
   activeSpecialAugments: []
   SatelliteBeamObj: {fileID: 8416854898795469513, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
   DecayDamageMultiple: 0
+  FieldGlobalCooldown: 10
+  isSacrificeQuest3Cleared: 0
 --- !u!114 &218456172
 MonoBehaviour:
   m_ObjectHideFlags: 0

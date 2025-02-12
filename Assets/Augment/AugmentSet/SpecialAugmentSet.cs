@@ -837,3 +837,39 @@ public class SacrificeQuest3 : SpecialAugment
         }
     }
 }
+/*
+ * 50회 타격시 추가 공 하나
+ */
+public class AttackAfterAdditionalBall : SpecialAugment
+{
+    private int attackNumber;
+    private int AttackNumber
+    {
+        get
+        {
+            return attackNumber;
+        }
+        set
+        {
+            attackNumber = value;
+            if(attackNumber >= 50)
+            {
+                BallManager.Instance.CreateBall(1);
+                attackNumber = 0;
+            }
+        }
+    }
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_29", "AttackAfterAdditionalBall", "AttackAfterAdditionalBall", "Ball", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        AttackNumber++;
+    }
+}

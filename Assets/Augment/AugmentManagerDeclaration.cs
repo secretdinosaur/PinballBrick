@@ -99,12 +99,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<GrowBallQuest>(),
             gameObject.AddComponent<InfiniteGrowBall>(),
             gameObject.AddComponent<SacrificeQuest1>(),
+            gameObject.AddComponent<AttackAfterAdditionalBall>(),
 
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<SacrificeQuest1>(),
+            gameObject.GetComponent<AttackAfterAdditionalBall>(),
         };
 
         foreach (IAugment augment in TestAugments)
