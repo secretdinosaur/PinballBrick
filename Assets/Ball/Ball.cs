@@ -285,16 +285,13 @@ public partial class Ball //GrowBall
     private float GrowthAttackDamage;
     public void Grow(IBrick brick)
     {
-        if (BallManager.Instance.isGrowing)
+        if (brick.IsBoss)
         {
-            if (brick.IsBoss)
-            {
-                GrowthAttackDamage += 0.2f;
-            }
-            else
-            {
-                GrowthAttackDamage += 0.04f;
-            }
+            GrowthAttackDamage += 0.2f;
+        }
+        else
+        {
+            GrowthAttackDamage += 0.04f;
         }
     }
 

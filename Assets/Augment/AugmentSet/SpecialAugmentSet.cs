@@ -658,10 +658,7 @@ public class GrowBallQuest : SpecialAugment
         KilledEnemy++;
         if (Brick.RecentlyBall != null && !isCleared)
         {
-            if (Brick.RecentlyBall.gameObject.activeInHierarchy)
-            {
-                Grow(Brick);
-            }
+            QuestProgressing(Brick);
             if(KilledEnemy > 20)
             {
                 StatManager.instance.Temporary_stat.AttackDamage += KeepAtk + 2;
@@ -671,7 +668,7 @@ public class GrowBallQuest : SpecialAugment
         }
     }
 
-    public void Grow(IBrick brick)
+    public void QuestProgressing(IBrick brick)
     {
         if (brick.IsBoss)
         {
@@ -715,5 +712,22 @@ public class GrowBallQuest : SpecialAugment
                     break;
             }
         }
+    }
+}
+
+public class InfiniteGrowBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_25", "InfiniteGrowBall", "InfiniteGrowBall", "Stat", 3);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        Brick.RecentlyBall.Grow(Brick);
     }
 }

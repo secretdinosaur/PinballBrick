@@ -65,13 +65,15 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButFast>(),
             gameObject.AddComponent<WeakButStrongEffect>(),
             gameObject.AddComponent<WeakButStrongAtk>(),
-            gameObject.AddComponent<GrowBall>(),
+            gameObject.AddComponent<DecreaseFieldCooldown5>(),
+            gameObject.AddComponent<DecreaseFieldCooldown30>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
             gameObject.AddComponent<PhoenixBall>(),
             gameObject.AddComponent<TargetMark>(),
             gameObject.AddComponent<SatelliteBeam>(),
+            gameObject.AddComponent<AutoGetExp>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -96,6 +98,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DecayExplosion>(),
             gameObject.AddComponent<ExplosionWithBall>(),
             gameObject.AddComponent<TheFlamethrower>(),
+            gameObject.AddComponent<LevelUpQuest>(),
+            gameObject.AddComponent<GrowBallQuest>(),
+            gameObject.AddComponent<InfiniteGrowBall>(),
 
         };
 
