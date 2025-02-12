@@ -11,6 +11,7 @@ public partial class IBrick : MonoBehaviour
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
+    public bool isDied = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -59,8 +60,9 @@ public partial class IBrick : MonoBehaviour
                 {
                     GetComponent<BlackBrick>().WhiteBrick.isBlackBrickDied();
                 }
-                else
+                else if(!isDied)
                 {
+                    isDied = true;
                     BrickDie();
                 }
             }
@@ -70,29 +72,17 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_20"))
-        {
-            if (EffectStatusSet["Decay"].EffectStack == EffectStatusSet["Decay"].EffectStackLimit)
-            {
-                DecayExplosion();
-            }
-        }
-        if (BallManager.Instance.isGrowing)
-        {
-            if (RecentlyBall != null)
-            {
-                if (RecentlyBall.gameObject.activeInHierarchy)
-                {
-                    RecentlyBall.Grow(this);
-                }
-            }
-        }
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
         LevelManager.Instance.Exp += 20 * StatManager.instance.Persistent_stat.BonusExp;
+        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        {
+            Augment.AfterBrickDieEffect(this);
+        }
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
+        isDied = false;
     }
 
     private void ShowText(string Text, string DamageType, bool isCritical)
@@ -242,7 +232,7 @@ public partial class IBrick
         bool CriticalHit = false;
         float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
                                 StatManager.instance.Temporary_stat.AttackDamage +
-                                RecentlyBall.GetGrowthAttackDamage();
+                                RecentlyBall.GrowthAttackDamage;
 
         if (IsCriticalHit())
         {
@@ -472,34 +462,16 @@ public partial class IBrick
         return Damage;
     }
     
-    public void DecayExplosion()
-    {
-        float explosionRadius = 3f;
-        LayerMask explosionLayer = LayerMask.GetMask("Ball");
-        
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayer);
-        
-        foreach (Collider2D ball in colliders)
-        {
-            Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
-
-            if (rb != null)
-            {
-                Vector2 explosionDirection = (rb.position - (Vector2)transform.position).normalized;
-                float distance = Vector2.Distance(rb.position, transform.position);
-                float forceMultiplier = Mathf.Clamp01(1 - (distance / explosionRadius));
-                
-                rb.AddForce(explosionDirection * 5f * forceMultiplier, ForceMode2D.Impulse);
-            }
-        }
-    }
-    
     public IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack Coroutine
     {
         yield return new WaitForSeconds(0.5f);
         
         while (MaxAttackTime > 0f)
         {
+            if (!gameObject.activeSelf)
+            {
+                yield break;
+            }
             bool CriticalHit = IsCriticalHit();
             float AdditionalAttackDamage = CriticalHit
                     ? (StatManager.instance.Persistent_stat.AttackDamage +
@@ -519,10 +491,6 @@ public partial class IBrick
             foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
             {
                 Augment.AfterAttackEffect(this);
-            }
-            if (!gameObject.activeSelf)
-            {
-                yield break;
             }
             yield return new WaitForSeconds(TimeCount);
             MaxAttackTime -= TimeCount;

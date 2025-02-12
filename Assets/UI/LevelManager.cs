@@ -20,6 +20,10 @@ public class LevelManager : MonoBehaviour
         set
         {
             exp = value;
+            if(exp < 0)
+            {
+                exp = 0;
+            }
             if (exp >= LevelBar.maxValue)
             {
                 LevelUp();
@@ -43,7 +47,7 @@ public class LevelManager : MonoBehaviour
         LevelBar.value = Exp;
     }
 
-    private void LevelUp()
+    public void LevelUp()
     {
         Exp -= LevelBar.maxValue;
         Level++;

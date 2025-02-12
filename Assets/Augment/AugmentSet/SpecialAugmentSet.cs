@@ -44,6 +44,8 @@ public class FireBall : SpecialAugment
     {
         StatManager.instance.Temporary_stat.EffectDamage += FireDamage;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FireEffectStackBlast>());
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<TheFlamethrower>());
     }
 
     public override void Remove()
@@ -285,7 +287,7 @@ public class DeathExp : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterDeathEffect()
+    public override void AfterDeathEffect(Ball ball)
     {
         LevelManager.Instance.Exp += 30 * StatManager.instance.Persistent_stat.BonusExp;
     }
@@ -305,7 +307,7 @@ public class DeathGold : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterDeathEffect()
+    public override void AfterDeathEffect(Ball ball)
     {
         StatManager.instance.Persistent_stat.Gold += 18 + (18 * StatManager.instance.Temporary_stat.GoldGain);
     }
@@ -389,7 +391,11 @@ public class PoisonBall : SpecialAugment
         PoisonDuration = 1.4f;
     }
 
-    public override void Apply() { }
+    public override void Apply() 
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<InfinitePoison>());
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DeadlyPoison>());
+    }
 
     public override void Remove() { }
 
@@ -490,7 +496,11 @@ public class DecayBall : SpecialAugment
         DecayDuration = 1f;
     }
 
-    public override void Apply() { }
+    public override void Apply() 
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<PowerfulDecay>());
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayExplosion>());
+    }
 
     public override void Remove() { }
 
@@ -544,6 +554,30 @@ public class DecayExplosion : SpecialAugment
     {
         AugmentManager.instance.effectChance.DecayChance += 0.1f;
     }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        if (Brick.EffectStatusSet["Decay"].EffectStack == Brick.EffectStatusSet["Decay"].EffectStackLimit)
+        {
+            float explosionRadius = 3f;
+            LayerMask explosionLayer = LayerMask.GetMask("Ball");
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayer);
+            foreach (Collider2D ball in colliders)
+            {
+                Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
+
+                if (rb != null)
+                {
+                    Vector2 explosionDirection = (rb.position - (Vector2)transform.position).normalized;
+                    float distance = Vector2.Distance(rb.position, transform.position);
+                    float forceMultiplier = Mathf.Clamp01(1 - (distance / explosionRadius));
+
+                    rb.AddForce(explosionDirection * 5f * forceMultiplier, ForceMode2D.Impulse);
+                }
+            }
+            Debug.Log("Decay Boom");
+        }
+    }
 }
 
 /*
@@ -580,5 +614,285 @@ public class TheFlamethrower : SpecialAugment
     public override void Remove() 
     {
         BallManager.Instance.isOnFlamerower = false;
+    }
+}
+/*
+ * 즉시 경험치 30% 획득, 블럭 20개 격파하면 레벨업 (1회)
+ */
+public class LevelUpQuest : SpecialAugment
+{
+    private int KilledEnemy;
+    private bool isCleared = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_23", "LevelUpQuest", "LevelUpQuest", "Quest", 5);
+    }
+
+    public override void Apply()
+    {
+        Debug.Log(LevelManager.Instance.Exp);
+        LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.5f;
+        Debug.Log(LevelManager.Instance.Exp);
+    }
+
+    public override void Remove(){ }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        KilledEnemy++;
+        Debug.Log(KilledEnemy);
+        if(KilledEnemy >= 20 && !isCleared)
+        {
+            isCleared = true;
+            LevelManager.Instance.LevelUp();
+        }
+    }
+}
+
+/*
+ * 블럭 20개 격파할때까지 죽인 적 타입에 따라 float 누적, 클리어하면 누적치 +2 해서 공격력업
+ */
+public class GrowBallQuest : SpecialAugment
+{
+    private int KilledEnemy;
+    private float KeepAtk;
+    private bool isCleared = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_24", "GrowBallQuest", "GrowBallQuest", "Quest", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        KilledEnemy++;
+        if (Brick.RecentlyBall != null && !isCleared)
+        {
+            QuestProgressing(Brick);
+            if(KilledEnemy >= 20)
+            {
+                StatManager.instance.Temporary_stat.AttackDamage += (KeepAtk + 2);
+                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                isCleared = true;
+            }
+        }
+    }
+
+    public void QuestProgressing(IBrick brick)
+    {
+        if (brick.IsBoss)
+        {
+            switch (brick.BrickType)
+            {
+                case "HardBrick":
+                    KeepAtk += 0.4f;
+                    break;
+                case "IgnoreBrick":
+                    KeepAtk += 0.45f;
+                    break;
+                case "Twinbrick":
+                    KeepAtk += 0.45f;
+                    break;
+                case "BlackBrick":
+                    KeepAtk += 0.125f;
+                    break;
+                default:
+                    KeepAtk += 0.1f;
+                    break;
+            }
+        }
+        else
+        {
+            switch (brick.BrickType)
+            {
+                case "HardBrick":
+                    KeepAtk += 0.05f;
+                    break;
+                case "IgnoreBrick":
+                    KeepAtk += 0.06f;
+                    break;
+                case "Twinbrick":
+                    KeepAtk += 0.06f;
+                    break;
+                case "BlackBrick":
+                    KeepAtk += 0.02f;
+                    break;
+                default:
+                    KeepAtk += 0.04f;
+                    break;
+            }
+        }
+    }
+}
+
+public class InfiniteGrowBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_25", "InfiniteGrowBall", "InfiniteGrowBall", "Stat", 3);
+    }
+
+    public override void Apply() 
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<ShareBallAtk>());
+    }
+
+    public override void Remove() { }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        Brick.RecentlyBall.Grow(Brick);
+    }
+}
+
+/*
+ * 공 일정 희생시키면 미약한 버프, 증강 풀에 SacrificeQuest2 추가
+ */
+public class SacrificeQuest1 : SpecialAugment
+{
+    private int SacrificeNumber;
+    private bool isCleared;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_26", "SacrificeQuest1", "SacrificeQuest1", "Quest", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(Ball ball)
+    {
+        SacrificeNumber++;
+        if (SacrificeNumber >= 20 && !isCleared)
+        {
+            StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
+            StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.1f;
+            StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+
+            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest2>());
+            Debug.Log("SacrificeQuest1 Clear");
+            isCleared = true;
+        }
+    }
+}
+
+/*
+ * 공 일정 희생시키면 중간 버프, 증강 풀에 SacrificeQuest3 추가
+ */
+public class SacrificeQuest2 : SpecialAugment
+{
+    private int SacrificeNumber;
+    private bool isCleared;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_27", "SacrificeQuest2", "SacrificeQuest2", "Quest", 3);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(Ball ball)
+    {
+        SacrificeNumber++;
+        if (SacrificeNumber >= 50 && !isCleared)
+        {
+            StatManager.instance.Temporary_stat.AttackDamage += 10;
+            StatManager.instance.Temporary_stat.EffectDamage += 2;
+            StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            StatManager.instance.Persistent_stat.Gold += 50 * StatManager.instance.Temporary_stat.GoldGain;
+
+            Debug.Log("SacrificeQuest2 Clear");
+            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest3>());
+            isCleared = true;
+        }
+    }
+}
+
+/*
+ * 공 일정 희생시키면 이후 증강 먹는 타이밍에 1회 확정으로 1티어 증강 3개 등장
+ */
+public class SacrificeQuest3 : SpecialAugment
+{
+    private int SacrificeNumber;
+    private bool isCleared;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_28", "SacrificeQuest", "SacrificeQuest", "Quest", 2);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(Ball ball)
+    {
+        SacrificeNumber++;
+        if (SacrificeNumber >= 70 && !isCleared)
+        {
+            Debug.Log("SacrificeQuest3 Clear");
+            AugmentManager.instance.isSacrificeQuest3Cleared = true;
+            isCleared = true;
+        }
+    }
+}
+/*
+ * 50회 타격시 추가 공 하나
+ */
+public class AttackAfterAdditionalBall : SpecialAugment
+{
+    private int attackNumber;
+    private int AttackNumber
+    {
+        get
+        {
+            return attackNumber;
+        }
+        set
+        {
+            attackNumber = value;
+            if(attackNumber >= 50)
+            {
+                BallManager.Instance.CreateBall(1);
+                attackNumber = 0;
+            }
+        }
+    }
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_29", "AttackAfterAdditionalBall", "AttackAfterAdditionalBall", "Ball", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        AttackNumber++;
+    }
+}
+public class ShareBallAtk : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_30", "ShareBallAtk", "ShareBallAtk", "Ball", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(Ball ball)
+    {
+        float ShareAtk = ball.GrowthAttackDamage *= 0.7f;
+        foreach (Ball inGameBall in BallManager.Instance.InGameBall)
+        {
+            inGameBall.GrowthAttackDamage += ShareAtk / BallManager.Instance.InGameBall.Count;
+        }
     }
 }

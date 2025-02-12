@@ -30,6 +30,8 @@ public class Example : FieldAugment
 public class AllDamage : FieldAugment
 {
     Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+    float Damage = 10f;
 
     private void OnEnable()
     {
@@ -38,7 +40,7 @@ public class AllDamage : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(StartAllDamage(5f, 10f));
+        Routine = StartCoroutine(StartAllDamage(10f + Cooldown, Damage));
     }
 
     public override void Remove()
@@ -67,6 +69,8 @@ public class AllDamage : FieldAugment
 public class AngryBall : FieldAugment
 {
     Coroutine Routine = null;
+    float Cooldown = 3f;
+    float Power = 10f;
 
     private void OnEnable()
     {
@@ -75,7 +79,7 @@ public class AngryBall : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(StartAngryBall(3f, 50f));
+        Routine = StartCoroutine(StartAngryBall(Cooldown, Power));
     }
 
     public override void Remove()
@@ -106,6 +110,7 @@ public class AngryBall : FieldAugment
 public class PhoenixBall : FieldAugment
 {
     Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 2f;
 
     private void OnEnable()
     {
@@ -114,7 +119,7 @@ public class PhoenixBall : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(ChoosingPhoenixBall(20f, 30f));
+        Routine = StartCoroutine(ChoosingPhoenixBall(20f, 20f + Cooldown));
     }
 
     public override void Remove()
@@ -147,7 +152,7 @@ public class PhoenixBall : FieldAugment
 public class TargetMark : FieldAugment
 {
     Coroutine Routine = null;
-
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
     private void OnEnable()
     {
         SetAugment("FIELD_4", "TargetMark", "TargetMark", 1);
@@ -155,7 +160,7 @@ public class TargetMark : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(TargetMarking(10f));
+        Routine = StartCoroutine(TargetMarking(5f + Cooldown));
     }
 
     public override void Remove()
@@ -200,6 +205,7 @@ public class SatelliteBeam : FieldAugment
 {
     Coroutine Routine = null;
     GameObject SatelliteBeamObj;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 10;
 
     private void OnEnable()
     {
@@ -208,7 +214,7 @@ public class SatelliteBeam : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(FireSatelliteBeam(120f));
+        Routine = StartCoroutine(FireSatelliteBeam(20f + Cooldown));
         SatelliteBeamObj = Instantiate(AugmentManager.instance.SatelliteBeamObj, new Vector2(1000, 1000), Quaternion.identity);
     }
 
@@ -268,5 +274,39 @@ public class SatelliteBeam : FieldAugment
         Y = Random.Range(-1f, 4f);
 
         return new Vector2(X, Y);
+    }
+}
+
+public class AutoGetExp : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_6", "AutoGetExp", "AutoGetExp", 5);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetExp(5f + Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetExp(float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.01f;
+        }
     }
 }

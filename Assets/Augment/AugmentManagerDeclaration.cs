@@ -24,6 +24,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public float DecayDamageMultiple;
 
+    public float FieldGlobalCooldown = 10f;
+
+    public bool isSacrificeQuest3Cleared;
+
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
         { 0, 0.01f },
@@ -42,6 +46,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         PoisonEffectStatus = new EffectStatus("Poison", false, 0, 3);
         DecayEffectStatus = new EffectStatus("Decay", false, 0, 3);
         DecayDamageMultiple = 1.1f;
+        isSacrificeQuest3Cleared = false;
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -63,13 +68,15 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButFast>(),
             gameObject.AddComponent<WeakButStrongEffect>(),
             gameObject.AddComponent<WeakButStrongAtk>(),
-            gameObject.AddComponent<GrowBall>(),
+            gameObject.AddComponent<DecreaseFieldCooldown5>(),
+            gameObject.AddComponent<DecreaseFieldCooldown30>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
             gameObject.AddComponent<PhoenixBall>(),
             gameObject.AddComponent<TargetMark>(),
             gameObject.AddComponent<SatelliteBeam>(),
+            gameObject.AddComponent<AutoGetExp>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -78,7 +85,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<CriticalAdditionalAttack>(),
             gameObject.AddComponent<Execution>(),
             gameObject.AddComponent<PercentDamage>(),
-            gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<ChainLightning>(),
             gameObject.AddComponent<DeathExp>(),
             gameObject.AddComponent<DeathGold>(),
@@ -86,22 +92,22 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SpeedCritical>(),
             gameObject.AddComponent<Lightning>(),
             gameObject.AddComponent<PoisonBall>(),
-            gameObject.AddComponent<InfinitePoison>(),
-            gameObject.AddComponent<DeadlyPoison>(),
             gameObject.AddComponent<Chaos>(),
             gameObject.AddComponent<DecayBall>(),
-            gameObject.AddComponent<PowerfulDecay>(),
-            gameObject.AddComponent<DecayExplosion>(),
             gameObject.AddComponent<ExplosionWithBall>(),
-            gameObject.AddComponent<TheFlamethrower>(),
+            gameObject.AddComponent<LevelUpQuest>(),
+            gameObject.AddComponent<GrowBallQuest>(),
+            gameObject.AddComponent<InfiniteGrowBall>(),
+            gameObject.AddComponent<SacrificeQuest1>(),
+            gameObject.AddComponent<AttackAfterAdditionalBall>(),
+            gameObject.AddComponent<ShareBallAtk>(),
 
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<PoisonBall>(),
-            gameObject.GetComponent<InfinitePoison>(),
-            gameObject.GetComponent<DeadlyPoison>(),
+            gameObject.GetComponent<InfiniteGrowBall>(),
+            gameObject.GetComponent<ShareBallAtk>(),
         };
 
         foreach (IAugment augment in TestAugments)

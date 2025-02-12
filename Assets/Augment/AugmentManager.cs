@@ -50,6 +50,40 @@ public partial class AugmentManager //Utility
         }
         return availableAugments[0];
     }
+
+    public IAugment GetRandomAugmentByRarity(int targetRarity)
+    {
+        if (augmentsSet == null || augmentsSet.Count == 0) return null;
+
+        var availableAugments = augmentsSet
+            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == targetRarity)
+            .ToList();
+
+        if (availableAugments.Count == 0) return null;
+
+        float totalWeight = 0f;
+        float[] Weights = new float[availableAugments.Count];
+
+        for (int i = 0; i < availableAugments.Count; i++)
+        {
+            totalWeight += rarityWeights[availableAugments[i].Rarity];
+            Weights[i] = totalWeight;
+        }
+
+        float randomValue = Random.Range(0f, totalWeight);
+
+        for (int i = 0; i < availableAugments.Count; i++)
+        {
+            if (randomValue <= Weights[i])
+            {
+                IAugment ChosenAugment = availableAugments[i];
+                alreadyChosenAugments.Add(ChosenAugment);
+                return ChosenAugment;
+            }
+        }
+
+        return availableAugments[0];
+    }
 }
 
 public partial class AugmentManager

@@ -30,7 +30,6 @@ public partial class Ball : MonoBehaviour
         currentTarget = null;
 
         isPhoenix = false;
-
         flamethrower = GetComponentInChildren<Flamethrower>(true);
         if (BallManager.Instance.isOnFlamerower)
         {
@@ -47,6 +46,7 @@ public partial class Ball : MonoBehaviour
     
     void Update()
     {
+        GrowthAttackDamageObserve = GrowthAttackDamage;
         TrailRenderer.startColor = spriteRenderer.color;
         CurrentSpeed = rb.linearVelocity.magnitude;
         if (isPhoenix)
@@ -84,7 +84,7 @@ public partial class Ball : MonoBehaviour
         {
             foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
             {
-                Augment.AfterDeathEffect();
+                Augment.AfterDeathEffect(this);
             }
 
             if (isPhoenix)
@@ -200,7 +200,7 @@ public partial class Ball : MonoBehaviour
 public partial class Ball //Homing
 {
     private float homingThrust = 80f;
-    private float detectionRadius = 1.2f;
+    private float detectionRadius = 1.4f;
     private string targetLayerName = "Game";
     private float rotationSpeed = 20f;
 
@@ -282,21 +282,17 @@ public partial class Ball //Speed = Power
 public partial class Ball //GrowBall
 {
     [SerializeField]
-    private float GrowthAttackDamage;
+    public float GrowthAttackDamage { get; set; } = 0;
+    public float GrowthAttackDamageObserve;
     public void Grow(IBrick brick)
     {
-        if (BallManager.Instance.isGrowing)
+        if (brick.IsBoss)
         {
-            if (brick.IsBoss)
-            {
-                GrowthAttackDamage += 0.2f;
-            }
-            else
-            {
-                GrowthAttackDamage += 0.04f;
-            }
+            GrowthAttackDamage += 0.2f;
+        }
+        else
+        {
+            GrowthAttackDamage += 0.04f;
         }
     }
-
-    public float GetGrowthAttackDamage() { return GrowthAttackDamage; }
 }

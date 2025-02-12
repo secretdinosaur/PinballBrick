@@ -5110,7 +5110,7 @@ GameObject:
   - component: {fileID: 177869545}
   - component: {fileID: 177869547}
   - component: {fileID: 177869546}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Square (2)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -5527,6 +5527,8 @@ MonoBehaviour:
   activeSpecialAugments: []
   SatelliteBeamObj: {fileID: 8416854898795469513, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
   DecayDamageMultiple: 0
+  FieldGlobalCooldown: 10
+  isSacrificeQuest3Cleared: 0
 --- !u!114 &218456172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7582,7 +7584,7 @@ GameObject:
   - component: {fileID: 859326321}
   - component: {fileID: 859326323}
   - component: {fileID: 859326322}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Square
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -12938,7 +12940,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 15
-  isGrowing: 0
   isOnFlamerower: 0
   InGameBall: []
   thereISPhoenix: 0
@@ -30503,7 +30504,7 @@ GameObject:
   - component: {fileID: 2100810085}
   - component: {fileID: 2100810087}
   - component: {fileID: 2100810086}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Square (1)
   m_TagString: Wall
   m_Icon: {fileID: 0}

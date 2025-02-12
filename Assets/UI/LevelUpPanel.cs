@@ -75,10 +75,22 @@ public class LevelUpPanel : MonoBehaviour
             else
             {
                 augmentsSet = new List<IAugment>();
-                for (int i = 0; i < 3; i++)
+                if (AugmentManager.instance.isSacrificeQuest3Cleared)
                 {
-                    augmentsSet.Add(AugmentManager.instance.GetRandomAugment());
-                    OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity - 1];
+                    for (int i = 0; i < 3; i++)
+                    {
+                        augmentsSet.Add(AugmentManager.instance.GetRandomAugmentByRarity(1));
+                        OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity - 1];
+                    }
+                    AugmentManager.instance.isSacrificeQuest3Cleared = false;
+                }
+                else
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        augmentsSet.Add(AugmentManager.instance.GetRandomAugment());
+                        OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity - 1];
+                    }
                 }
                 Option_1_Name.text = augmentsSet[0].Name;
                 Option_1_Description.text = augmentsSet[0].Description;
