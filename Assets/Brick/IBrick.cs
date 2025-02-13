@@ -127,19 +127,13 @@ public partial class IBrick : MonoBehaviour
         boxSize = new Vector2(2f, 2f);
         EffectStatusSet = new Dictionary<string, EffectStatus>()
         {
-            { "Fire", AugmentManager.instance.FireEffectStatus },
-            { "Poison", AugmentManager.instance.PoisonEffectStatus },
-            { "Decay", AugmentManager.instance.DecayEffectStatus }
+            { "Fire", new EffectStatus("Fire", false, 0, AugmentManager.instance.FireStackLimit) },
+            { "Poison", new EffectStatus("Poison", false, 0, AugmentManager.instance.PoisonStackLimit) },
+            { "Decay", new EffectStatus("Decay", false, 0, AugmentManager.instance.DecayStackLimit) }
         };
         FireEffectDuration = 0f;
         PoisonEffectDuration = 0f;
         DecayEffectDuration = 0f;
-        EffectStatusSet["Fire"].IsActive = false;
-        EffectStatusSet["Poison"].IsActive = false;
-        EffectStatusSet["Decay"].IsActive = false;
-        EffectStatusSet["Fire"].EffectStack = 0;
-        EffectStatusSet["Poison"].EffectStack = 0;
-        EffectStatusSet["Fire"].EffectStack = 0;
         GetComponents();
     }
 
@@ -440,7 +434,7 @@ public partial class IBrick
             yield break;
         }
         EffectStatusSet["Decay"].IsActive = true;
-        DecayEffectDuration = effectDuration;
+        DecayEffectDuration = effectDuration + 99f;
         int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
         float interval = 0.1f;
         while (effectDuration > 0)

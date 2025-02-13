@@ -15,10 +15,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
     
     public EffectChance effectChance;
-
-    public EffectStatus FireEffectStatus;
-    public EffectStatus PoisonEffectStatus;
-    public EffectStatus DecayEffectStatus;
+    public int FireStackLimit;
+    public int PoisonStackLimit;
+    public int DecayStackLimit;
 
     public GameObject SatelliteBeamObj;
 
@@ -41,10 +40,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
-        FireEffectStatus = new EffectStatus("Fire", false, 0, 5);
-        PoisonEffectStatus = new EffectStatus("Poison", false, 0, 3);
-        DecayEffectStatus = new EffectStatus("Decay", false, 0, 3);
+        effectChance = new EffectChance(0.3f, 0.3f, 1f);
+        FireStackLimit = 5;
+        PoisonStackLimit = 3;
+        DecayStackLimit = 3;
         DecayDamageMultiple = 1.1f;
         isSacrificeQuest3Cleared = false;
         ClearAllAugments();
@@ -108,7 +107,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<RandomEffect>(),
+            gameObject.GetComponent<DecayBall>(),
 
         };
 
