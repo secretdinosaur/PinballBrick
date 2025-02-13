@@ -102,12 +102,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<AttackAfterAdditionalBall>(),
             gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
+            gameObject.AddComponent<RandomEffect>(),
 
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<StrongAdditionalAttack>(),
+            gameObject.GetComponent<RandomEffect>(),
 
         };
 

@@ -904,7 +904,7 @@ public class StrongAdditionalAttack : SpecialAugment
     float SuperUltraStrongAttackChance = 0.001f;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_31", "Strong Add Atack", "Strong Add Atack", "AdditionalAttack", 1);
+        SetAugment("SPECIAL_31", "Strong Add Atack", "Strong Add Atack", "AdditionalAttack", 2);
     }
 
     public override void Apply() { }
@@ -917,11 +917,121 @@ public class StrongAdditionalAttack : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             if (RandomValue < SuperUltraStrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 1000f));
+                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 500f));
             else if (RandomValue < SuperStrongAttackChance)
                 StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 100f));
             else if (RandomValue < StrongAttackChance)
                 StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 10f));
+        }
+    }
+}
+
+public class RandomEffect : SpecialAugment
+{
+    private Dictionary<string, float> ProbabilitySet = new Dictionary<string, float>()
+    {
+        { "WeakAdditionalDamage", 0.7f },
+        { "AdditionalDamage",  0.1f},
+        { "Nothing", 0.1f },
+        { "RandomEffect", 0.04f },
+        { "FullHealth", 0.02f },
+        { "BrickSpawn", 0.02f },
+        { "BossSpawn", 0.01f },
+        { "Execution", 0.01f },
+    };
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_31", "RandomEffect", "RandomEffect", "AdditionalAttack", 1);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterMainAttackEffect(IBrick Brick)
+    {
+        float RandomValue = Random.value;
+        if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
+        {
+            float accumulatedProbability = 0;
+
+            accumulatedProbability += ProbabilitySet["WeakAdditionalDamage"];
+            if (RandomValue < accumulatedProbability)
+            {
+                Debug.Log("WeakAdditionalDamage");
+                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 0.5f));
+                return;
+            }
+
+            accumulatedProbability += ProbabilitySet["AdditionalDamage"];
+            if (RandomValue < accumulatedProbability)
+            {
+                Debug.Log("AdditionalDamage");
+                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 0.8f));
+                return;
+            }
+
+            accumulatedProbability += ProbabilitySet["Nothing"];
+            if (RandomValue < accumulatedProbability)
+            {
+                Debug.Log("Nothing");
+                return;
+            }
+
+            accumulatedProbability += ProbabilitySet["RandomEffect"];
+            if (RandomValue < accumulatedProbability)
+            {
+                Debug.Log("RandomEffect");
+                int Number = Random.Range(1, 4);
+                if (Number == 1)
+                {
+                    Brick.EffectStatusSet["Fire"].EffectStack += (Brick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
+                    Brick.Fire = StartCoroutine(Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f));
+                }
+                else if (Number == 2)
+                {
+                    Brick.EffectStatusSet["Poison"].EffectStack += (Brick.EffectStatusSet["Poison"].EffectStack < Brick.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
+                    Brick.Poison = StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f));
+                }
+                else if (Number == 3)
+                {
+                    Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
+                    Brick.Decay = StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f));
+                }
+                return;
+            }
+
+            accumulatedProbability += ProbabilitySet["FullHealth"];
+            if (RandomValue < accumulatedProbability)
+            {
+                Debug.Log("FullHealth");
+                Brick.HP = Brick.HpTemp;
+                return;
+            }
+
+            accumulatedProbability += ProbabilitySet["BrickSpawn"];
+            if (RandomValue < accumulatedProbability)
+            {
+                Debug.Log("BrickSpawn");
+                BrickManager.Instance.SpawnBrick();
+                return;
+            }
+
+            accumulatedProbability += ProbabilitySet["BossSpawn"];
+            if (RandomValue < accumulatedProbability)
+            {
+                Debug.Log("BossSpawn");
+                BrickManager.Instance.SpawnBoss();
+                return;
+            }
+
+            accumulatedProbability += ProbabilitySet["Execution"];
+            if (RandomValue < accumulatedProbability)
+            {
+                Debug.Log("Execution");
+                Brick.HP -= 999999 + Brick.HpTemp;
+                Brick.ShowText("EXECUTION", null, true);
+            }
         }
     }
 }

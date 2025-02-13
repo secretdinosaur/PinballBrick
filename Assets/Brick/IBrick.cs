@@ -85,7 +85,7 @@ public partial class IBrick : MonoBehaviour
         isDied = false;
     }
 
-    private void ShowText(string Text, string DamageType, bool isCritical)
+    public void ShowText(string Text, string DamageType, bool isCritical)
     {
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
         if(canvas == null)
