@@ -7,6 +7,8 @@ public class ScoreManager : MonoBehaviour
     public int TotalScore {  get; set; }
     public int ContinuousScore { get; set; }
 
+    public int KilledEnemy {  get; set; }
+
     public TMP_Text TotalText;
     public TMP_Text ContinuousText;
 

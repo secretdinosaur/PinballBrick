@@ -51,7 +51,7 @@ public class StatManager : MonoBehaviour
     {
         Persistent_Stat initialStats = new Persistent_Stat
         {
-            AttackDamage = 5,
+            AttackDamage = 5f,
             StartingBall = 1,
             BonusExp = 1f,
             ItemDropChance = 0.2f,
@@ -69,7 +69,7 @@ public class StatManager : MonoBehaviour
         Temporary_Stat initialStats = new Temporary_Stat
         {
             StatLevel = new []{1, 1, 1, 1, 1, 1, 1},
-            AttackDamage = 0,
+            AttackDamage = 0f,
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
             BallSpeed = 0.0f,
@@ -148,5 +148,4 @@ public class StatManager : MonoBehaviour
         statMultiplier.AttackDamageMultiplier -= AttackUpValue;
         SaveStatMultiplier(statMultiplier);
     }
-
 }

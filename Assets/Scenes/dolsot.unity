@@ -691,6 +691,10 @@ MonoBehaviour:
   activeStatAugments: []
   activeFieldAugments: []
   activeSpecialAugments: []
+  SatelliteBeamObj: {fileID: 0}
+  DecayDamageMultiple: 0
+  FieldGlobalCooldown: 10
+  isSacrificeQuest3Cleared: 0
 --- !u!1 &248038763
 GameObject:
   m_ObjectHideFlags: 0
@@ -8121,7 +8125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 15
-  isGrowing: 0
+  isOnFlamerower: 0
   InGameBall: []
   thereISPhoenix: 0
   boxSize: {x: 5, y: 10}
@@ -30137,7 +30141,7 @@ MonoBehaviour:
     _container: {fileID: 2033836775}
     _nonLazy: 0
   - _name: BangBang
-    _component: {fileID: 117655277687620841, guid: 37b42b64b0eeb2b4a998a3a89624dcef, type: 3}
+    _component: {fileID: 5236878404161150998, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
     _count: 0
     _container: {fileID: 2033836775}
     _nonLazy: 0
