@@ -15,10 +15,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
     
     public EffectChance effectChance;
-
-    public EffectStatus FireEffectStatus;
-    public EffectStatus PoisonEffectStatus;
-    public EffectStatus DecayEffectStatus;
+    public int FireStackLimit;
+    public int PoisonStackLimit;
+    public int DecayStackLimit;
 
     public GameObject SatelliteBeamObj;
 
@@ -42,9 +41,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     {
         instance = this;
         effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
-        FireEffectStatus = new EffectStatus("Fire", false, 0, 5);
-        PoisonEffectStatus = new EffectStatus("Poison", false, 0, 3);
-        DecayEffectStatus = new EffectStatus("Decay", false, 0, 3);
+        FireStackLimit = 5;
+        PoisonStackLimit = 3;
+        DecayStackLimit = 3;
         DecayDamageMultiple = 1.1f;
         isSacrificeQuest3Cleared = false;
         ClearAllAugments();
@@ -103,13 +102,25 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
             gameObject.AddComponent<RandomEffect>(),
+            /////////////////////////// Special
+            gameObject.AddComponent<FireEffectStackBlast>(),
+            gameObject.AddComponent<DeadlyPoison>(),
+            gameObject.AddComponent<InfinitePoison>(),
+            gameObject.AddComponent<PowerfulDecay>(),
+            gameObject.AddComponent<DecayExplosion>(),
+            gameObject.AddComponent<SacrificeQuest2>(),
+            gameObject.AddComponent<SacrificeQuest3>(),
+            gameObject.AddComponent<ShareBallAtk>(),
+            ////////////////////////// Delete These Before Build
+
 
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<RandomEffect>(),
-
+            gameObject.GetComponent<DecayBall>(),
+            gameObject.GetComponent<PoisonBall>(),
+            gameObject.GetComponent<FireBall>(),
         };
 
         foreach (IAugment augment in TestAugments)

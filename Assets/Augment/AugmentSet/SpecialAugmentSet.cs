@@ -441,13 +441,13 @@ public class DeadlyPoison : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.PoisonEffectStatus.EffectStackLimit = 5;
+        AugmentManager.instance.PoisonStackLimit = 5;
         AugmentManager.instance.effectChance.PoisonChance += 0.1f;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.PoisonEffectStatus.EffectStackLimit = 3;
+        AugmentManager.instance.PoisonStackLimit = 3;
         AugmentManager.instance.effectChance.PoisonChance -= 0.1f;
     }
 }
