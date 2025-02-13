@@ -434,7 +434,7 @@ public partial class IBrick
             yield break;
         }
         EffectStatusSet["Decay"].IsActive = true;
-        DecayEffectDuration = effectDuration + 99f;
+        DecayEffectDuration = effectDuration;
         int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
         float interval = 0.1f;
         while (effectDuration > 0)
