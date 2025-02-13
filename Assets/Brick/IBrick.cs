@@ -462,7 +462,7 @@ public partial class IBrick
         return Damage;
     }
     
-    public IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount) // AdditionalAttack Coroutine
+    public IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount, float DamageMultiflier) // AdditionalAttack Coroutine
     {
         yield return new WaitForSeconds(0.5f);
         
@@ -476,10 +476,10 @@ public partial class IBrick
             float AdditionalAttackDamage = CriticalHit
                     ? (StatManager.instance.Persistent_stat.AttackDamage +
                        StatManager.instance.Temporary_stat.AttackDamage)
-                      * StatManager.instance.statMultiplier.AttackDamageMultiplier * CriticalDamage()
+                      * StatManager.instance.statMultiplier.AttackDamageMultiplier * CriticalDamage() * DamageMultiflier
                     : (StatManager.instance.Persistent_stat.AttackDamage +
                        StatManager.instance.Temporary_stat.AttackDamage)
-                      * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+                      * StatManager.instance.statMultiplier.AttackDamageMultiplier * DamageMultiflier;
 
             float FinalAdditionalAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
                 ? 1 

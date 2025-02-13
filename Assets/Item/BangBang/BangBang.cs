@@ -7,7 +7,7 @@ public class BangBang : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 60));
+            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 600));
         }
     }
 
@@ -15,7 +15,7 @@ public class BangBang : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 60));
+            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 600));
         }
     }
 }

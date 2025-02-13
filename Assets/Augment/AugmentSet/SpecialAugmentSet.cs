@@ -121,7 +121,7 @@ public class AdditionalThreeAttack: SpecialAugment
     {
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
-            StartCoroutine(Brick.AdditionalAttack(0.3f, 0.1f));
+            StartCoroutine(Brick.AdditionalAttack(0.3f, 0.1f, 0.2f));
         }
     }
 }
@@ -145,7 +145,7 @@ public class CriticalAdditionalAttack : SpecialAugment
     {
         if (Brick.gameObject.activeSelf) //Critical Additional Attack
         {
-            Brick.AdditionalAttack(0.5f, 0.5f);
+            Brick.AdditionalAttack(0.5f, 0.5f, 1);
         }
     }
 }
@@ -893,6 +893,35 @@ public class ShareBallAtk : SpecialAugment
         foreach (Ball inGameBall in BallManager.Instance.InGameBall)
         {
             inGameBall.GrowthAttackDamage += ShareAtk / BallManager.Instance.InGameBall.Count;
+        }
+    }
+}
+// 확률에 따른 강한 추가타(어택데미지)
+public class StrongAdditionalAttack : SpecialAugment
+{
+    float StrongAttackChance = 0.1f;
+    float SuperStrongAttackChance = 0.01f;
+    float SuperUltraStrongAttackChance = 0.001f;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_31", "Strong Add Atack", "Strong Add Atack", "AdditionalAttack", 1);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterMainAttackEffect(IBrick Brick)
+    {
+        float RandomValue = Random.value;
+        if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
+        {
+            if (RandomValue < SuperUltraStrongAttackChance)
+                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 1000f));
+            else if (RandomValue < SuperStrongAttackChance)
+                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 100f));
+            else if (RandomValue < StrongAttackChance)
+                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 10f));
         }
     }
 }
