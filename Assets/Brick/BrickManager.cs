@@ -69,7 +69,6 @@ public class BrickManager : MonoBehaviour
 
         usingPositions.Add(selectedPosition);
         availablePositions.RemoveAt(randomIndex);
-
         return selectedPosition;
     }
 
