@@ -76,6 +76,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<TargetMark>(),
             gameObject.AddComponent<SatelliteBeam>(),
             gameObject.AddComponent<AutoGetExp>(),
+            gameObject.AddComponent<AntiGravity>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -118,9 +119,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DecayBall>(),
-            gameObject.GetComponent<PoisonBall>(),
-            gameObject.GetComponent<FireBall>(),
+            gameObject.GetComponent<AntiGravity>(),
         };
 
         foreach (IAugment augment in TestAugments)

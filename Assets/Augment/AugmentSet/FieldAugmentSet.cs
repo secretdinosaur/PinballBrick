@@ -310,3 +310,51 @@ public class AutoGetExp : FieldAugment
         }
     }
 }
+
+public class AntiGravity : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_7", "AntiGravity", "AntiGravity", 3);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetAntiGravity(12f + Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetAntiGravity(float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            BallManager.Instance.isAntiGravity = true;
+            foreach (Ball ball in BallManager.Instance.InGameBall)
+            {
+                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                rb.gravityScale = -1f;
+                Vector3 forceDirection = rb.linearVelocity.normalized;
+                rb.AddForce(forceDirection * 1f, ForceMode2D.Impulse);
+            }
+            yield return new WaitForSeconds(5f);
+            BallManager.Instance.isAntiGravity = false;
+            foreach (Ball ball in BallManager.Instance.InGameBall)
+            {
+                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                rb.gravityScale = 0.5f;
+            }
+        }
+    }
+}
