@@ -31,6 +31,14 @@ public partial class IBrick : MonoBehaviour
     public Coroutine Fire = null;
     public Coroutine Poison = null;
     public Coroutine Decay = null;
+    public Coroutine ExecutionCor = null;
+
+    public GameObject ExecutionObject1;
+    public GameObject ExecutionObject2;
+
+    private Collider2D Collider;
+
+    public bool IsNeedDelayedDIeForEffect = false;
     public float HP
     {
         get { return hp; }
@@ -39,17 +47,17 @@ public partial class IBrick : MonoBehaviour
             hp = value;
             if (AugmentManager.instance.determineAugmentID("SPECIAL_6"))
             {
-                if (hp <= HpTemp * 0.15)
-                { 
-                    hp -= 999999 + HpTemp;
-                    ShowText("EXECUTION", null , true);
+                if (hp <= HpTemp * 0.15 && hp > 0)
+                {
+                    isDied = true;
+                    ExecutionCor = StartCoroutine(Execution());
                 }
             }
             if (hp <= 0)
             {
+                hp = 0;
                 if (BrickType == "TwinBrick")
                 {
-                    hp = 0;
                     GetComponentInParent<TwinBrick>().CheckBothBrickDead();
                 }
                 else if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
@@ -72,6 +80,7 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
+
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -81,8 +90,7 @@ public partial class IBrick : MonoBehaviour
         {
             Augment.AfterBrickDieEffect(this);
         }
-        BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
-        isDied = false;
+        StartCoroutine(BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>()));
     }
 
     public void ShowText(string Text, string DamageType, bool isCritical)
@@ -124,6 +132,17 @@ public partial class IBrick : MonoBehaviour
     {
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
+        
+        GetComponents();
+        spriteRenderer.enabled = true;
+        HPText.enabled = true;
+        ExecutionObject1.transform.position = transform.position;
+        ExecutionObject2.transform.position = transform.position;
+    }
+
+    public void GetComponents()
+    {
+        Collider = GetComponent<Collider2D>();
         boxSize = new Vector2(2f, 2f);
         EffectStatusSet = new Dictionary<string, EffectStatus>()
         {
@@ -140,11 +159,6 @@ public partial class IBrick : MonoBehaviour
         EffectStatusSet["Fire"].EffectStack = 0;
         EffectStatusSet["Poison"].EffectStack = 0;
         EffectStatusSet["Fire"].EffectStack = 0;
-        GetComponents();
-    }
-
-    public void GetComponents()
-    {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
         camera = Camera.main;
@@ -187,16 +201,23 @@ public partial class IBrick : MonoBehaviour
         {
             StopCoroutine(Fire);
             Fire = null;
+            lineRenderer.enabled = false;
         }
         if (Poison != null)
         {
             StopCoroutine(Poison);
             Poison = null;
+            PoisonEffect.SetActive(false);
         }
         if(Decay != null)
         {
             StopCoroutine(Decay);
             Decay = null;
+            VisualEffectManager.Instance.UnSetDecayVisualEffect(this);
+        }
+        if(ExecutionCor != null)
+        {
+            StopCoroutine(ExecutionCor);
         }
     }
 
@@ -439,6 +460,7 @@ public partial class IBrick
             DecayEffectDuration = effectDuration;
             yield break;
         }
+        VisualEffectManager.Instance.SetDecayVisualEffect(this);
         EffectStatusSet["Decay"].IsActive = true;
         DecayEffectDuration = effectDuration;
         int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
@@ -454,6 +476,8 @@ public partial class IBrick
         }
         Decay = null;
         EffectStatusSet["Decay"].EffectStack = 0;
+        VisualEffectManager.Instance.UnSetDecayVisualEffect(this);
+
     }
 
     public float DecayDamageCalculate(float Damage)
@@ -472,6 +496,7 @@ public partial class IBrick
             {
                 yield break;
             }
+            VisualEffectManager.Instance.SpawnParticle("AdditionalAttack", transform.position, 1);
             bool CriticalHit = IsCriticalHit();
             float AdditionalAttackDamage = CriticalHit
                     ? (StatManager.instance.Persistent_stat.AttackDamage +
@@ -539,6 +564,51 @@ public partial class IBrick //Detect Nearby Bricks
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(transform.position, boxSize);
+    }
+
+    private IEnumerator Execution()
+    {
+        spriteRenderer.enabled = false;
+        HPText.enabled = false;
+        Collider.enabled = false;
+        float ElapsedTime = 0f;
+
+        float RandomRadian = Random.Range(0f, Mathf.PI);
+
+        float Execute1DirRad;
+        float Execute2DirRad;
+
+        Vector3 Execute1Dir;
+        Vector3 Execute2Dir;
+
+        ExecutionObject1.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
+        ExecutionObject2.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
+
+        float Speed = 0.012f;
+        if(Random.value < 0.5f)
+        {
+            Execute1DirRad = RandomRadian + Mathf.PI / 4 + Mathf.PI / 2;
+            Execute2DirRad = RandomRadian + Mathf.PI / 4 - Mathf.PI / 2;
+        }
+        else
+        {
+            Execute1DirRad = RandomRadian + Mathf.PI / 4 - Mathf.PI / 2;
+            Execute2DirRad = RandomRadian + Mathf.PI / 4 + Mathf.PI / 2;
+        }
+        Execute1Dir = new Vector3(Mathf.Cos(Execute1DirRad), Mathf.Sin(Execute1DirRad), 0);
+        Execute2Dir = new Vector3(Mathf.Cos(Execute2DirRad), Mathf.Sin(Execute2DirRad), 0);
+        while (ElapsedTime < 0.15f)
+        {
+            ExecutionObject1.transform.position += Execute1Dir * Speed;
+            ExecutionObject2.transform.position += Execute2Dir * Speed;
+            ElapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        hp -= 999999 + HpTemp;
+        ShowText("EXECUTION", null, true);
+        Collider.enabled = true;
+        BrickDie();
     }
 }
 

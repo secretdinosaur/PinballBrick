@@ -14,6 +14,14 @@ public class VisualEffectManager : MonoBehaviour
 
     public ParticleSystem FireBlastPS;
     public ParticleSystem InfinityPoisonPS;
+
+    public Material DecayMaterial;
+    public Material DefaultMaterial;
+
+    public ParticleSystem DecayPunchPS;
+    public ParticleSystem DecayExplosionPS;
+
+    public ParticleSystem AddAttack1PS;
     void Start()
     {
         Instance = this;
@@ -22,7 +30,7 @@ public class VisualEffectManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     /// <summary>
@@ -60,10 +68,29 @@ public class VisualEffectManager : MonoBehaviour
                 InfinityPoisonPS.transform.position = ParticlePosition;
                 InfinityPoisonPS.Emit(ParticleCount);
                 break;
+
+            case "DecayExplosion":
+                DecayPunchPS.transform.position = ParticlePosition;
+                DecayPunchPS.Emit(1);
+                StartCoroutine(SpawnDecayExplosion(ParticlePosition));
+                break;
+
+            case "AdditionalAttack":
+                AddAttack1PS.transform.position = ParticlePosition;
+                AddAttack1PS.Emit(1);
+            break;
+
             default:
                 Debug.Log("Invalid ParticleName");
                 break;
         }
+    }
+
+    private IEnumerator SpawnDecayExplosion(Vector2 ParticlePosition)
+    {
+        yield return new WaitForSeconds(0.2f);
+        DecayExplosionPS.transform.position = ParticlePosition;
+        DecayExplosionPS.Emit(30);
     }
 
     public void SpawnChainLightning(List<IBrick> Bricks)
@@ -90,7 +117,15 @@ public class VisualEffectManager : MonoBehaviour
 
             ChainLightningPS.SetParticles(particles);
         }
+    }
 
-        
+    public void SetDecayVisualEffect(IBrick brick)
+    {
+        brick.GetComponent<SpriteRenderer>().material = DecayMaterial;
+    }
+
+    public void UnSetDecayVisualEffect(IBrick brick)
+    {
+        brick.GetComponent<SpriteRenderer>().material = DefaultMaterial;
     }
 }
