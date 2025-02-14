@@ -148,4 +148,9 @@ public class StatManager : MonoBehaviour
         statMultiplier.AttackDamageMultiplier -= AttackUpValue;
         SaveStatMultiplier(statMultiplier);
     }
+
+    public void GetGold(int Value)
+    {
+        Persistent_stat.Gold += Value + (Value * Temporary_stat.GoldGain);
+    }
 }
