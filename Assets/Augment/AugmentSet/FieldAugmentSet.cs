@@ -366,7 +366,7 @@ public class BountyHunter: FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_7", "BountyHunter", "BountyHunter", 4);
+        SetAugment("FIELD_8", "BountyHunter", "BountyHunter", 4);
     }
 
     public override void Apply()
