@@ -358,3 +358,63 @@ public class AntiGravity : FieldAugment
         }
     }
 }
+
+public class BountyHunter: FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_7", "BountyHunter", "BountyHunter", 4);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetBountyHunter(Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetBountyHunter(float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            if(BrickManager.Instance.CurrentBricks.Count >= 1)
+            {
+                IBrick WantedBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+                bool isDestroy = false;
+                float timer = 20f;
+                while (timer > 0)
+                {
+                    if (WantedBrick == null || !WantedBrick.gameObject.activeInHierarchy)
+                    {
+                        isDestroy = true;
+                        break;
+                    }
+                    timer -= Time.deltaTime;
+                    yield return null;
+                }
+                if (isDestroy)
+                {
+                    StatManager.instance.GetGold(WantedBrick.IsBoss ? Random.Range(20, 101) : Random.Range(20, 61));
+                    LevelManager.Instance.GetExp(WantedBrick.IsBoss ?
+                        Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.1f, LevelManager.Instance.LevelBar.maxValue * 0.2f)
+                        : Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.05f, LevelManager.Instance.LevelBar.maxValue * 0.1f));
+                }
+                else
+                {
+                    WantedBrick.HP += WantedBrick.HpTemp * 0.1f;
+                }
+            }
+        }
+    }
+}

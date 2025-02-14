@@ -77,6 +77,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SatelliteBeam>(),
             gameObject.AddComponent<AutoGetExp>(),
             gameObject.AddComponent<AntiGravity>(),
+            gameObject.AddComponent<BountyHunter>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),

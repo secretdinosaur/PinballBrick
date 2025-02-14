@@ -85,6 +85,11 @@ public class LevelManager : MonoBehaviour
         return selectedStats;
     }
 
+    public void GetExp(float value)
+    {
+        Exp += value * StatManager.instance.Persistent_stat.BonusExp;
+    }
+
     public Temporary_Stat CalculateTemporaryStatWithLevel() // stat formula
     {
         Temporary_Stat stat = new Temporary_Stat();

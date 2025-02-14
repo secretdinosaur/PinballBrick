@@ -289,7 +289,7 @@ public class DeathExp : SpecialAugment
 
     public override void AfterDeathEffect(Ball ball)
     {
-        LevelManager.Instance.Exp += 30 * StatManager.instance.Persistent_stat.BonusExp;
+        LevelManager.Instance.GetExp(30f);
     }
 }
 

@@ -35,6 +35,10 @@ public partial class Ball : MonoBehaviour
         {
             flamethrower.FlamethrowerOn();
         }
+        if (BallManager.Instance.isAntiGravity)
+        {
+            rb.gravityScale = -1f;
+        }
     }
 
     private IEnumerator EnableCollider()
