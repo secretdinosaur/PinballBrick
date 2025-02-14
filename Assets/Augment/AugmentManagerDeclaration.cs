@@ -15,10 +15,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
     
     public EffectChance effectChance;
-
-    public EffectStatus FireEffectStatus;
-    public EffectStatus PoisonEffectStatus;
-    public EffectStatus DecayEffectStatus;
+    public int FireStackLimit;
+    public int PoisonStackLimit;
+    public int DecayStackLimit;
 
     public GameObject SatelliteBeamObj;
 
@@ -42,9 +41,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     {
         instance = this;
         effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
-        FireEffectStatus = new EffectStatus("Fire", false, 0, 5);
-        PoisonEffectStatus = new EffectStatus("Poison", false, 0, 3);
-        DecayEffectStatus = new EffectStatus("Decay", false, 0, 3);
+        FireStackLimit = 5;
+        PoisonStackLimit = 3;
+        DecayStackLimit = 3;
         DecayDamageMultiple = 1.1f;
         isSacrificeQuest3Cleared = false;
         ClearAllAugments();
@@ -77,6 +76,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<TargetMark>(),
             gameObject.AddComponent<SatelliteBeam>(),
             gameObject.AddComponent<AutoGetExp>(),
+            gameObject.AddComponent<AntiGravity>(),
+            gameObject.AddComponent<BountyHunter>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -103,11 +104,30 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
             gameObject.AddComponent<RandomEffect>(),
+<<<<<<< HEAD
+=======
+            /////////////////////////// Special
+            gameObject.AddComponent<FireEffectStackBlast>(),
+            gameObject.AddComponent<DeadlyPoison>(),
+            gameObject.AddComponent<InfinitePoison>(),
+            gameObject.AddComponent<PowerfulDecay>(),
+            gameObject.AddComponent<DecayExplosion>(),
+            gameObject.AddComponent<SacrificeQuest2>(),
+            gameObject.AddComponent<SacrificeQuest3>(),
+            gameObject.AddComponent<ShareBallAtk>(),
+            ////////////////////////// Delete These Before Build
+
+
+>>>>>>> 40c5f7721ee071ad5fb1146f71dd8fd92e008446
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
+<<<<<<< HEAD
             GetComponent<Execution>()
+=======
+            gameObject.GetComponent<AntiGravity>(),
+>>>>>>> 40c5f7721ee071ad5fb1146f71dd8fd92e008446
         };
 
         foreach (IAugment augment in TestAugments)

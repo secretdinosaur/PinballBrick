@@ -310,3 +310,111 @@ public class AutoGetExp : FieldAugment
         }
     }
 }
+
+public class AntiGravity : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_7", "AntiGravity", "AntiGravity", 3);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetAntiGravity(12f + Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetAntiGravity(float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            BallManager.Instance.isAntiGravity = true;
+            foreach (Ball ball in BallManager.Instance.InGameBall)
+            {
+                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                rb.gravityScale = -1f;
+                Vector3 forceDirection = rb.linearVelocity.normalized;
+                rb.AddForce(forceDirection * 1f, ForceMode2D.Impulse);
+            }
+            yield return new WaitForSeconds(5f);
+            BallManager.Instance.isAntiGravity = false;
+            foreach (Ball ball in BallManager.Instance.InGameBall)
+            {
+                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                rb.gravityScale = 0.5f;
+            }
+        }
+    }
+}
+
+public class BountyHunter: FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_7", "BountyHunter", "BountyHunter", 4);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetBountyHunter(Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetBountyHunter(float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            if(BrickManager.Instance.CurrentBricks.Count >= 1)
+            {
+                IBrick WantedBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+                bool isDestroy = false;
+                float timer = 20f;
+                while (timer > 0)
+                {
+                    if (WantedBrick == null || !WantedBrick.gameObject.activeInHierarchy)
+                    {
+                        isDestroy = true;
+                        break;
+                    }
+                    timer -= Time.deltaTime;
+                    yield return null;
+                }
+                if (isDestroy)
+                {
+                    StatManager.instance.GetGold(WantedBrick.IsBoss ? Random.Range(20, 101) : Random.Range(20, 61));
+                    LevelManager.Instance.GetExp(WantedBrick.IsBoss ?
+                        Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.1f, LevelManager.Instance.LevelBar.maxValue * 0.2f)
+                        : Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.05f, LevelManager.Instance.LevelBar.maxValue * 0.1f));
+                }
+                else
+                {
+                    WantedBrick.HP += WantedBrick.HpTemp * 0.1f;
+                }
+            }
+        }
+    }
+}

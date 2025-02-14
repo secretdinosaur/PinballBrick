@@ -289,7 +289,7 @@ public class DeathExp : SpecialAugment
 
     public override void AfterDeathEffect(Ball ball)
     {
-        LevelManager.Instance.Exp += 30 * StatManager.instance.Persistent_stat.BonusExp;
+        LevelManager.Instance.GetExp(30f);
     }
 }
 
@@ -309,7 +309,7 @@ public class DeathGold : SpecialAugment
 
     public override void AfterDeathEffect(Ball ball)
     {
-        StatManager.instance.Persistent_stat.Gold += 18 + (18 * StatManager.instance.Temporary_stat.GoldGain);
+        StatManager.instance.GetGold(18);
     }
 }
 
@@ -441,13 +441,13 @@ public class DeadlyPoison : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.PoisonEffectStatus.EffectStackLimit = 5;
+        AugmentManager.instance.PoisonStackLimit = 5;
         AugmentManager.instance.effectChance.PoisonChance += 0.1f;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.PoisonEffectStatus.EffectStackLimit = 3;
+        AugmentManager.instance.PoisonStackLimit = 3;
         AugmentManager.instance.effectChance.PoisonChance -= 0.1f;
     }
 }
@@ -933,9 +933,9 @@ public class RandomEffect : SpecialAugment
 {
     private Dictionary<string, float> ProbabilitySet = new Dictionary<string, float>()
     {
-        { "WeakAdditionalDamage", 0.7f },
+        { "WeakAdditionalDamage", 0.5f },
+        { "Nothing", 0.3f },
         { "AdditionalDamage",  0.1f},
-        { "Nothing", 0.1f },
         { "RandomEffect", 0.04f },
         { "FullHealth", 0.02f },
         { "BrickSpawn", 0.02f },
@@ -944,7 +944,7 @@ public class RandomEffect : SpecialAugment
     };
     private void OnEnable()
     {
-        SetAugment("SPECIAL_31", "RandomEffect", "RandomEffect", "AdditionalAttack", 1);
+        SetAugment("SPECIAL_31", "RandomEffect", "RandomEffect", "AdditionalAttack", 3);
     }
 
     public override void Apply() { }
