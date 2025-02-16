@@ -79,13 +79,10 @@ public class BrickManager : MonoBehaviour
         Vector2 RandomPosition = GenerateRandomPosition();
         brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(RandomPosition.x, RandomPosition.y, 35));
     }
-    public IEnumerator TakeBrick(IBrick brick)
+    public void TakeBrick(IBrick brick)
     {
         if(brick.gameObject.activeSelf)
         {
-            if(brick.IsNeedDelayedDIeForEffect)
-                yield return new WaitForSeconds(0.2f);
-
             ItemManager.Instance.SpawnItem(brick.transform.position);
 
             availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));

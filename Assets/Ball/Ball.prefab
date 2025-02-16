@@ -173,7 +173,7 @@ MonoBehaviour:
   flamethrower: {fileID: 0}
   targets: []
   TransformationMultiple: 1
-  GrowthAttackDamage: 0
+  GrowthAttackDamageObserve: 0
 --- !u!96 &5368739640230251868
 TrailRenderer:
   serializedVersion: 3
@@ -347,7 +347,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 6c294408392906b47a2d9bf2c90cdc7e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

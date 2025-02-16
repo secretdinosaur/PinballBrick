@@ -121,7 +121,7 @@ public class AdditionalThreeAttack: SpecialAugment
     {
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
-            StartCoroutine(Brick.AdditionalAttack(0.2f, 0.1f, 0.2f));
+            StartCoroutine(Brick.AdditionalAttack(0.25f, 0.1f, 0.2f));
         }
     }
 }

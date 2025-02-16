@@ -72,18 +72,18 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _FireHeight: 1.37
-    - _GradientNoiseScale: 1
-    - _NoiseSpeed: 3
+    - _FireHeight: 0.5
+    - _GradientNoiseScale: 2.73
+    - _NoiseSpeed: 1.5
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _VoronoiScale: 10
-    - _VoronoiSpeed: 3
+    - _VoronoiScale: 3
+    - _VoronoiSpeed: 2
     - _ZWrite: 0
     m_Colors:
     - _CenterFireColor: {r: 1.0592737, g: 1.0007125, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _OuterFireColor: {r: 9.734286, g: 0.38911524, b: 0, a: 0}
+    - _OuterFireColor: {r: 0.09362746, g: 0.003921569, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
