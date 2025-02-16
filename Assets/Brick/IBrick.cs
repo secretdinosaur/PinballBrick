@@ -90,7 +90,7 @@ public partial class IBrick : MonoBehaviour
         {
             Augment.AfterBrickDieEffect(this);
         }
-        StartCoroutine(BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>()));
+        BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
 
     public void ShowText(string Text, string DamageType, bool isCritical)
@@ -142,6 +142,17 @@ public partial class IBrick : MonoBehaviour
 
     public void GetComponents()
     {
+        Collider = GetComponent<Collider2D>();
+        boxSize = new Vector2(2f, 2f);
+        EffectStatusSet = new Dictionary<string, EffectStatus>()
+        {
+            { "Fire", new EffectStatus("Fire", false, 0, AugmentManager.instance.FireStackLimit) },
+            { "Poison", new EffectStatus("Poison", false, 0, AugmentManager.instance.PoisonStackLimit) },
+            { "Decay", new EffectStatus("Decay", false, 0, AugmentManager.instance.DecayStackLimit) }
+        };
+        FireEffectDuration = 0f;
+        PoisonEffectDuration = 0f;
+        DecayEffectDuration = 0f;
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
         camera = Camera.main;
@@ -155,18 +166,18 @@ public partial class IBrick : MonoBehaviour
     public void UpdateOutline()
     {
         Vector2 size = spriteRenderer.bounds.size;
-        Vector3[] corners = new Vector3[4];
+        Vector3[] corners = new Vector3[5];
         float outlineThickness = 0.15f;
         lineRenderer.startWidth = outlineThickness;
         lineRenderer.endWidth = outlineThickness;
         lineRenderer.loop = true;
         lineRenderer.useWorldSpace = false;
 
-        corners[0] = new Vector3(-size.x / 2 - 0.15f, -size.y / 2 - 0.3f, 0);
+        corners[0] = new Vector3(-size.x / 2 - 0.125f, -size.y / 2 - 0.3f, 0);
         corners[1] = new Vector3(size.x / 2 + 0.15f, -size.y / 2 - 0.3f, 0);
         corners[2] = new Vector3(size.x / 2 + 0.15f, size.y / 2 + 0.3f, 0);
         corners[3] = new Vector3(-size.x / 2 - 0.15f, size.y / 2 + 0.3f, 0);
-
+        corners[4] = new Vector3(-size.x / 2 - 0.15f, -size.y / 2 - 0.3f, 0);
         lineRenderer.positionCount = 5;
         lineRenderer.SetPositions(new Vector3[]
         {
@@ -174,7 +185,7 @@ public partial class IBrick : MonoBehaviour
             corners[1],
             corners[2],
             corners[3],
-            corners[0]
+            corners[4]
         });
         lineRenderer.enabled = false;
     }
@@ -272,8 +283,17 @@ public partial class IBrick
     public float DecayEffectDuration;
     public IEnumerator DamageByFireEffect(float effectDuration)
     {
-        Debug.Log("Activate");
-        if (Fire != null) 
+        if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
+        {
+            lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
+            lineRenderer.material.SetFloat("_FireHeight", 1f);
+        }
+        else
+        {
+            lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
+            lineRenderer.material.SetFloat("_FireHeight", 2f);
+        }
+        if (Fire != null)
         {
             FireEffectDuration = effectDuration;
             yield break; 
@@ -284,6 +304,16 @@ public partial class IBrick
         float interval = 0.2f;
         while (FireEffectDuration > 0)
         {
+            if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
+            {
+                lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
+                lineRenderer.material.SetFloat("_FireHeight", 1f);
+            }
+            else
+            {
+                lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
+                lineRenderer.material.SetFloat("_FireHeight", 2f);
+            }
             bool isCritical = false;
             float EffectAttackDamage;
             if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
@@ -320,15 +350,33 @@ public partial class IBrick
     public IEnumerator DamageByPoisonEffect(float effectDuration)
     {
         if (Poison != null)
-        { 
+        {
             yield break;
         }
-        EffectStatusSet["Poison"].IsActive = true;
+        Material PoisonMaterial = PoisonEffect.GetComponent<Renderer>().material;
+        if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
+        {
+            PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
+            PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
+            PoisonMaterial.SetFloat("_InnerPower", 1.75f);
+        }
+        else
+        {
+            PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
+            PoisonMaterial.SetColor("_InnerColor", new Color(176 / 255f, 180 / 255f, 0));
+            PoisonMaterial.SetFloat("_InnerPower", 1.5f);
+        }
+        float elapsedTime = 0f;
         PoisonEffect.SetActive(true);
+        EffectStatusSet["Poison"].IsActive = true;
 
-        Color PoisonColor = PoisonEffect.GetComponent<SpriteRenderer>().material.color;
-        Renderer renderer = PoisonEffect.GetComponent<SpriteRenderer>();
-        renderer.material.SetFloat("_AlphaSubtract", 0);
+        while (elapsedTime < 1)
+        {
+            PoisonMaterial.SetFloat("_Alpha", Mathf.Lerp(1.1f, 0, elapsedTime / 1));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
         
         float interval = 0.5f;
         initialDuration = effectDuration;
@@ -337,15 +385,17 @@ public partial class IBrick
         while (PoisonEffectDuration > 0)
         {
             //Deadly Poison Effect
-            if (EffectStatusSet["Poison"].EffectStack > 3)
+            if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
             {
-                PoisonEffect.GetComponent<Renderer>().material.SetColor("_Color", new Color(13 / 255, 103 / 255, 0));
-                PoisonEffect.GetComponent<Renderer>().material.SetColor("_InnerColor", new Color(130 / 255, 0, 7 / 255));
+                PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
+                PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
+                PoisonMaterial.SetFloat("_InnerPower", 1.75f);
             }
             else
             {
-                PoisonEffect.GetComponent<Renderer>().material.SetColor("_Color", new Color(45 / 255, 255 / 255, 62 / 255));
-                PoisonEffect.GetComponent<Renderer>().material.SetColor("_InnerColor", new Color(255 / 255, 33 / 255, 0));
+                PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
+                PoisonMaterial.SetColor("_InnerColor", new Color(176 / 255f, 180 / 255f, 0));
+                PoisonMaterial.SetFloat("_InnerPower", 1.5f);
             }
 
             bool isCritical = false;
@@ -379,11 +429,13 @@ public partial class IBrick
                     }
 
                     ChosenBricks = ChosenBricks.GetRange(0, infectionLimit);
+
                     foreach (IBrick brick in ChosenBricks)
                     {
                         if (brick.gameObject.activeInHierarchy && brick.Poison == null)
                         {
                             VisualEffectManager.Instance.SpawnParticle("InfinityPoison", transform.position, 1);
+
                             brick.EffectStatusSet["Poison"].EffectStack +=
                                 (brick.EffectStatusSet["Poison"].EffectStack != EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
                             brick.Poison = brick.StartCoroutine(brick.DamageByPoisonEffect(initialDuration));
@@ -394,6 +446,20 @@ public partial class IBrick
                 {
                     if (Random.value < AugmentManager.instance.effectChance.PoisonChance - 0.1f)
                     {
+                        elapsedTime = 0;
+                        while(elapsedTime < 0.25f)
+                        {
+                            PoisonMaterial.SetFloat("_InfinityPoison", Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f));
+                            elapsedTime += Time.deltaTime;
+                            yield return null;
+                        }
+                        elapsedTime = 0;
+                        while (elapsedTime < 0.25f)
+                        {
+                            PoisonMaterial.SetFloat("_InfinityPoison", Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f));
+                            elapsedTime += Time.deltaTime;
+                            yield return null;
+                        }
                         if (EffectStatusSet["Poison"].EffectStack < EffectStatusSet["Poison"].EffectStackLimit)
                         {
                             EffectStatusSet["Poison"].EffectStack++;
@@ -410,9 +476,6 @@ public partial class IBrick
             {
                 PoisonEffectDuration -= interval;
             }
-            float alpha = Mathf.Lerp(0.5f, 0f, (initialDuration - PoisonEffectDuration) / initialDuration);
-            renderer.material.SetFloat("_AlphaSubtract", alpha);
-            yield return null;
 
             yield return new WaitForSeconds(interval);
             if (!gameObject.activeInHierarchy)
@@ -420,19 +483,15 @@ public partial class IBrick
                 yield break;
             }
         }
-        EffectStatusSet["Poison"].IsActive = false;
 
-
-        float startAlpha = renderer.material.color.a;
-        float elapsedTime = 0f;
-        float StartAlpha = renderer.material.GetFloat("_AlphaSubtract");
+        elapsedTime = 0f;
         while (elapsedTime < 1)
         {
+            PoisonMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 1.1f, elapsedTime / 1));
             elapsedTime += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, 1, elapsedTime / 1);
-            renderer.material.SetFloat("_AlphaSubtract", alpha);
+            yield return null;
         }
-
+        EffectStatusSet["Poison"].IsActive = false;
         PoisonEffect.SetActive(false);
         EffectStatusSet["Poison"].EffectStack = 0;
         Poison = null;
@@ -568,7 +627,7 @@ public partial class IBrick //Detect Nearby Bricks
         ExecutionObject1.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
         ExecutionObject2.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
 
-        float Speed = 0.012f;
+        float Speed = 0.006f;
         if(Random.value < 0.5f)
         {
             Execute1DirRad = RandomRadian + Mathf.PI / 4 + Mathf.PI / 2;
@@ -581,14 +640,14 @@ public partial class IBrick //Detect Nearby Bricks
         }
         Execute1Dir = new Vector3(Mathf.Cos(Execute1DirRad), Mathf.Sin(Execute1DirRad), 0);
         Execute2Dir = new Vector3(Mathf.Cos(Execute2DirRad), Mathf.Sin(Execute2DirRad), 0);
-        while (ElapsedTime < 0.15f)
+        while (ElapsedTime < 0.1f)
         {
             ExecutionObject1.transform.position += Execute1Dir * Speed;
             ExecutionObject2.transform.position += Execute2Dir * Speed;
             ElapsedTime += Time.deltaTime;
             yield return null;
         }
-
+        yield return new WaitForSeconds(0.1f);
         hp -= 999999 + HpTemp;
         ShowText("EXECUTION", null, true);
         Collider.enabled = true;

@@ -104,7 +104,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
             gameObject.AddComponent<RandomEffect>(),
+<<<<<<< HEAD
             gameObject.AddComponent<OneLineBall>(),
+=======
+>>>>>>> ebf8f9751be909364ac808724ceec58e39df2640
             /////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<DeadlyPoison>(),
@@ -115,14 +118,17 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SacrificeQuest3>(),
             gameObject.AddComponent<ShareBallAtk>(),
             ////////////////////////// Delete These Before Build
-
-
->>>>>>> 40c5f7721ee071ad5fb1146f71dd8fd92e008446
+            gameObject.AddComponent<InfinitePoison>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
+<<<<<<< HEAD
             gameObject.GetComponent<OneLineBall>(),
+=======
+            gameObject.GetComponent<PoisonBall>(),
+            gameObject.GetComponent<InfinitePoison>(),
+>>>>>>> ebf8f9751be909364ac808724ceec58e39df2640
         };
 
         foreach (IAugment augment in TestAugments)

@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Poison
-  m_Shader: {fileID: -6465566751694194690, guid: 0fb3db075eefdd3419bf36b6cf3eb754, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: cac5cc79cc69f184ba0d982715f57eda, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
