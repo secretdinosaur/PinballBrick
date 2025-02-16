@@ -11,7 +11,6 @@ public partial class IBrick : MonoBehaviour
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
-    public bool isDied = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -21,7 +20,7 @@ public partial class IBrick : MonoBehaviour
     public float BallSpeed;
 
     private SpriteRenderer spriteRenderer;
-    private LineRenderer lineRenderer;
+    public LineRenderer lineRenderer;
 
     public GameObject PoisonEffect;
     public float TotalMultiple;
@@ -49,7 +48,6 @@ public partial class IBrick : MonoBehaviour
             {
                 if (hp <= HpTemp * 0.15 && hp > 0)
                 {
-                    isDied = true;
                     ExecutionCor = StartCoroutine(Execution());
                 }
             }
@@ -68,9 +66,8 @@ public partial class IBrick : MonoBehaviour
                 {
                     GetComponent<BlackBrick>().WhiteBrick.isBlackBrickDied();
                 }
-                else if(!isDied)
+                else
                 {
-                    isDied = true;
                     BrickDie();
                 }
             }
@@ -191,28 +188,7 @@ public partial class IBrick : MonoBehaviour
 
     private void OnDisable()
     {
-        if (Fire != null)
-        {
-            StopCoroutine(Fire);
-            Fire = null;
-            lineRenderer.enabled = false;
-        }
-        if (Poison != null)
-        {
-            StopCoroutine(Poison);
-            Poison = null;
-            PoisonEffect.SetActive(false);
-        }
-        if(Decay != null)
-        {
-            StopCoroutine(Decay);
-            Decay = null;
-            VisualEffectManager.Instance.UnSetDecayVisualEffect(this);
-        }
-        if(ExecutionCor != null)
-        {
-            StopCoroutine(ExecutionCor);
-        }
+        
     }
 
 }
@@ -327,7 +303,6 @@ public partial class IBrick
                 : (StatManager.instance.Temporary_stat.EffectDamage *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier)
                   * EffectStatusSet["Fire"].EffectStack;
-
             float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
                 ? 1 
                 : DecayDamageCalculate(EffectAttackDamage);
@@ -366,6 +341,7 @@ public partial class IBrick
             PoisonMaterial.SetFloat("_InnerPower", 1.5f);
         }
         float elapsedTime = 0f;
+
         PoisonEffect.SetActive(true);
         EffectStatusSet["Poison"].IsActive = true;
 
@@ -376,7 +352,6 @@ public partial class IBrick
             yield return null;
         }
 
-        
         float interval = 0.5f;
         initialDuration = effectDuration;
         PoisonEffectDuration = effectDuration;
@@ -490,10 +465,10 @@ public partial class IBrick
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        Poison = null;
         EffectStatusSet["Poison"].IsActive = false;
         PoisonEffect.SetActive(false);
         EffectStatusSet["Poison"].EffectStack = 0;
-        Poison = null;
     }
     public IEnumerator DecayEffect(float effectDuration)
     {

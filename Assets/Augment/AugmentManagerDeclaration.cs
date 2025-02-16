@@ -40,7 +40,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 1, 0.3f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
@@ -114,13 +114,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SacrificeQuest3>(),
             gameObject.AddComponent<ShareBallAtk>(),
             ////////////////////////// Delete These Before Build
-            gameObject.AddComponent<InfinitePoison>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<PoisonBall>(),
-            gameObject.GetComponent<InfinitePoison>(),
+            GetComponent<PoisonBall>(),
+
         };
 
         foreach (IAugment augment in TestAugments)
