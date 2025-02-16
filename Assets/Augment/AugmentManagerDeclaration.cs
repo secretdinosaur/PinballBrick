@@ -117,6 +117,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             ////////////////////////// Delete These Before Build
 
 
+>>>>>>> 40c5f7721ee071ad5fb1146f71dd8fd92e008446
         };
 
         List<IAugment> TestAugments = new List<IAugment>

@@ -122,7 +122,7 @@ public class AdditionalThreeAttack: SpecialAugment
     {
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
-            StartCoroutine(Brick.AdditionalAttack(0.3f, 0.1f, 0.2f));
+            StartCoroutine(Brick.AdditionalAttack(0.2f, 0.1f, 0.2f));
         }
     }
 }
@@ -510,6 +510,7 @@ public class DecayBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
+            print(Brick.EffectStatusSet["Decay"].EffectStack);
             Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
             Brick.Decay = StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
         }
@@ -560,9 +561,12 @@ public class DecayExplosion : SpecialAugment
     {
         if (Brick.EffectStatusSet["Decay"].EffectStack == Brick.EffectStatusSet["Decay"].EffectStackLimit)
         {
+            Brick.IsNeedDelayedDIeForEffect = true;
+            VisualEffectManager.Instance.SpawnParticle("DecayExplosion", Brick.transform.position, 1);
             float explosionRadius = 3f;
             LayerMask explosionLayer = LayerMask.GetMask("Ball");
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayer);
+
             foreach (Collider2D ball in colliders)
             {
                 Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
@@ -576,7 +580,6 @@ public class DecayExplosion : SpecialAugment
                     rb.AddForce(explosionDirection * 5f * forceMultiplier, ForceMode2D.Impulse);
                 }
             }
-            Debug.Log("Decay Boom");
         }
     }
 }
