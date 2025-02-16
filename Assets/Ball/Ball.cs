@@ -13,6 +13,7 @@ public partial class Ball : MonoBehaviour
     public float SpecialCriticalChance = 0f;
     public bool isPhoenix;
     public Flamethrower flamethrower;
+    public Queue<Vector2> PositionSet = new Queue<Vector2>();
     void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();

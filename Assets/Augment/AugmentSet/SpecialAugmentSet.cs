@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Redcode.Pools;
 using Unity.VisualScripting;
+using System.Linq;
 
 /*
 public class Example : SpecialAugment
@@ -941,7 +942,7 @@ public class RandomEffect : SpecialAugment
     };
     private void OnEnable()
     {
-        SetAugment("SPECIAL_31", "RandomEffect", "RandomEffect", "AdditionalAttack", 3);
+        SetAugment("SPECIAL_32", "RandomEffect", "RandomEffect", "AdditionalAttack", 3);
     }
 
     public override void Apply() { }
@@ -1031,6 +1032,73 @@ public class RandomEffect : SpecialAugment
                 Debug.Log("Execution");
                 Brick.HP -= 999999 + Brick.HpTemp;
                 Brick.ShowText("EXECUTION", null, true);
+            }
+        }
+    }
+}
+
+public class OneLineBall : SpecialAugment
+{
+    private List<List<Vector3>> PositionSet = new List<List<Vector3>>();
+    bool isGetThisAugment = false;
+    bool turnOn = false;
+
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_33", "OneLineBall", "OneLineBall", "Special", 2);
+    }
+
+    public override void Apply() 
+    {
+        int BallLayer = LayerMask.NameToLayer("Ball");
+        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, true);
+        isGetThisAugment = true;
+    }
+
+    public override void Remove() 
+    {
+        int BallLayer = LayerMask.NameToLayer("Ball");
+        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, false);
+    }
+
+    private void Update()
+    {
+        if (isGetThisAugment)
+        {
+            while (PositionSet.Count < BallManager.Instance.inGameBallPosition.Count)
+            {
+                PositionSet.Add(new List<Vector3>());
+            }
+            if (turnOn && BallManager.Instance.inGameBallPosition.Count >= 1)
+            {
+                BallManager.Instance.inGameBallPosition[0].GetComponent<SpriteRenderer>().color = Color.blue;
+                turnOn = false;
+            }
+            if (BallManager.Instance.inGameBallPosition.Count >= 2)
+            {
+                for (int i = 0; i < BallManager.Instance.inGameBallPosition.Count; i++)
+                {
+                    PositionSet[i].Add(BallManager.Instance.inGameBallPosition[i].position);
+                    if (PositionSet[i].Count > Mathf.RoundToInt(0.02f / Time.deltaTime))
+                    {
+                        PositionSet[i].RemoveAt(0);
+                    }
+                }
+
+                for (int i = 1; i < BallManager.Instance.inGameBallPosition.Count; i++)
+                {
+                    int previousIndex = i - 1;
+
+                    if (PositionSet[previousIndex].Count > 0)
+                    {
+                        Vector3 delayedPosition = PositionSet[previousIndex][0];
+                        BallManager.Instance.inGameBallPosition[i].position = delayedPosition;
+                    }
+                }
+            }
+            else
+            {
+                turnOn = true;
             }
         }
     }

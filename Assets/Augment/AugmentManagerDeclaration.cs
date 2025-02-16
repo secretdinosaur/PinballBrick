@@ -104,6 +104,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
             gameObject.AddComponent<RandomEffect>(),
+            gameObject.AddComponent<OneLineBall>(),
             /////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<DeadlyPoison>(),
@@ -120,7 +121,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<AntiGravity>(),
+            gameObject.GetComponent<OneLineBall>(),
         };
 
         foreach (IAugment augment in TestAugments)
