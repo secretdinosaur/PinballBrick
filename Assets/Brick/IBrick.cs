@@ -142,40 +142,16 @@ public partial class IBrick : MonoBehaviour
 
     public void GetComponents()
     {
-        Collider = GetComponent<Collider2D>();
-        boxSize = new Vector2(2f, 2f);
-        EffectStatusSet = new Dictionary<string, EffectStatus>()
-        {
-            { "Fire", new EffectStatus("Fire", false, 0, AugmentManager.instance.FireStackLimit) },
-            { "Poison", new EffectStatus("Poison", false, 0, AugmentManager.instance.PoisonStackLimit) },
-            { "Decay", new EffectStatus("Decay", false, 0, AugmentManager.instance.DecayStackLimit) }
-        };
-        FireEffectDuration = 0f;
-        PoisonEffectDuration = 0f;
-        DecayEffectDuration = 0f;
-<<<<<<< HEAD
-        EffectStatusSet["Fire"].IsActive = false;
-        EffectStatusSet["Poison"].IsActive = false;
-        EffectStatusSet["Decay"].IsActive = false;
-        EffectStatusSet["Fire"].EffectStack = 0;
-        EffectStatusSet["Poison"].EffectStack = 0;
-        EffectStatusSet["Fire"].EffectStack = 0;
-=======
-        GetComponents();
-    }
-
-    public void GetComponents()
-    {
->>>>>>> 40c5f7721ee071ad5fb1146f71dd8fd92e008446
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
         camera = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();
         lineRenderer = GetComponent<LineRenderer>();
         PoisonEffect.SetActive(false);
-        if(spriteRenderer != null)
+        if (spriteRenderer != null)
             UpdateOutline();
     }
+
     public void UpdateOutline()
     {
         Vector2 size = spriteRenderer.bounds.size;
