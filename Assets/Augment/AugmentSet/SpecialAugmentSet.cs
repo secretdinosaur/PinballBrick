@@ -1128,3 +1128,23 @@ public class RebirthBall : SpecialAugment
         }
     }
 }
+
+public class BossKillBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_35", "BossKillBall", "BossKillBall", "Ball", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        if (Brick.IsBoss)
+        {
+            BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+        }
+    }
+}
