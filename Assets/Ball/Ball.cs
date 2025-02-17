@@ -65,13 +65,11 @@ public partial class Ball : MonoBehaviour
 
     private IEnumerator EnableCollider()
     {
-        int BallLayer = LayerMask.NameToLayer("Ball");
-        int PinLayer = LayerMask.NameToLayer("Pin");
-        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, true);
-        Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, true);
-        yield return new WaitForSeconds(0.35f);
-        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, false);
-        Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, false);
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), true);
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), true);
+        yield return new WaitForSeconds(0.3f);
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), false);
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), false);
     }
 
     

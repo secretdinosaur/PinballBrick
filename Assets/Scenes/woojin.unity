@@ -5528,6 +5528,7 @@ MonoBehaviour:
   FireStackLimit: 0
   PoisonStackLimit: 0
   DecayStackLimit: 0
+  PoisonBrickSet: []
   SatelliteBeamObj: {fileID: 8416854898795469513, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
   DecayDamageMultiple: 0
   FieldGlobalCooldown: 10
@@ -18847,7 +18848,9 @@ PolygonCollider2D:
       - {x: 1.9154016, y: -0.1822441}
       - {x: 1.8440154, y: -0.0637485}
       - {x: 1.1543216, y: 0.15559028}
-      - {x: -0.09205747, y: 0.5531324}
+      - {x: 0.2824575, y: 0.40616414}
+      - {x: -0.12240297, y: 0.74767876}
+      - {x: -0.11987622, y: 0.67219317}
       - {x: -0.09406389, y: 0.43821064}
   m_UseDelaunayMesh: 0
 --- !u!114 &1510115437
@@ -24877,7 +24880,8 @@ PolygonCollider2D:
       - {x: 1.899778, y: -0.13680935}
       - {x: 1.8031368, y: -0.039556086}
       - {x: 1.2029878, y: 0.14746961}
-      - {x: -0.082773566, y: 0.5452181}
+      - {x: 0.29651916, y: 0.41597462}
+      - {x: -0.10167789, y: 0.73577297}
   m_UseDelaunayMesh: 0
 --- !u!114 &1783727145
 MonoBehaviour:
