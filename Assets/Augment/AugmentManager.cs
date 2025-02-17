@@ -24,31 +24,14 @@ public partial class AugmentManager //Utility
     {
         if (augmentsSet == null || augmentsSet.Count == 0) return null;
         var availableAugments = augmentsSet
-            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a))
+            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == GetTargetRarity())
             .ToList();
         if (availableAugments.Count == 0) return null;
-        
-        float totalWeight = 0f;
-        float[] Weights = new float[availableAugments.Count];
-        
-        for (int i = 0; i < availableAugments.Count; i++)
-        {
-            totalWeight += rarityWeights[availableAugments[i].Rarity];
-            Weights[i] = totalWeight;
-        }
-        
-        float randomValue = Random.Range(0f, totalWeight);
-        
-        for (int i = 0; i < availableAugments.Count; i++)
-        {
-            if (randomValue <= Weights[i])
-            {
-                IAugment ChosenAugment = availableAugments[i];
-                alreadyChosenAugments.Add(ChosenAugment);
-                return ChosenAugment;
-            }
-        }
-        return availableAugments[0];
+
+        int index = Random.Range(0, availableAugments.Count);
+        IAugment chosenAugment = availableAugments[index];
+        alreadyChosenAugments.Add(chosenAugment);
+        return chosenAugment;
     }
 
     public IAugment GetRandomAugmentByRarity(int targetRarity)
@@ -61,28 +44,30 @@ public partial class AugmentManager //Utility
 
         if (availableAugments.Count == 0) return null;
 
-        float totalWeight = 0f;
-        float[] Weights = new float[availableAugments.Count];
+        int index = Random.Range(0, availableAugments.Count);
+        IAugment chosenAugment = availableAugments[index];
+        alreadyChosenAugments.Add(chosenAugment);
+        return chosenAugment;
+    }
 
-        for (int i = 0; i < availableAugments.Count; i++)
-        {
-            totalWeight += rarityWeights[availableAugments[i].Rarity];
-            Weights[i] = totalWeight;
-        }
-
-        float randomValue = Random.Range(0f, totalWeight);
-
-        for (int i = 0; i < availableAugments.Count; i++)
-        {
-            if (randomValue <= Weights[i])
-            {
-                IAugment ChosenAugment = availableAugments[i];
-                alreadyChosenAugments.Add(ChosenAugment);
-                return ChosenAugment;
-            }
-        }
-
-        return availableAugments[0];
+    public int GetTargetRarity()
+    {
+        float chance = Random.value * 100f;
+        if (chance < rarityWeights[0])
+            return 0;
+        chance -= rarityWeights[0];
+        if (chance < rarityWeights[1])
+            return 1;
+        chance -= rarityWeights[1];
+        if (chance < rarityWeights[2])
+            return 2;
+        chance -= rarityWeights[2];
+        if (chance < rarityWeights[3])
+            return 3;
+        chance -= rarityWeights[3];
+        if (chance < rarityWeights[4])
+            return 4;
+        return 5;
     }
 }
 
