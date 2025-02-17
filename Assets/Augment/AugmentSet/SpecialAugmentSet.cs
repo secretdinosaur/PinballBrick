@@ -514,7 +514,6 @@ public class DecayBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
-            print(Brick.EffectStatusSet["Decay"].EffectStack);
             Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
             Brick.Decay = StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
         }

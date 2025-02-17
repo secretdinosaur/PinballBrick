@@ -83,11 +83,33 @@ public class BrickManager : MonoBehaviour
     {
         if(brick.gameObject.activeSelf)
         {
+            if (brick.Fire != null)
+            {
+                brick.StopCoroutine(brick.Fire);
+                brick.Fire = null;
+                brick.lineRenderer.enabled = false;
+            }
+            if (brick.Poison != null)
+            {
+                brick.StopCoroutine(brick.Poison);
+                brick.Poison = null;
+                brick.PoisonEffect.SetActive(false);
+            }
+            if (brick.Decay != null)
+            {
+                brick.StopCoroutine(brick.Decay);
+                brick.Decay = null;
+                VisualEffectManager.Instance.UnSetDecayVisualEffect(brick);
+            }
+            if (brick.ExecutionCor != null)
+            {
+                brick.StopCoroutine(brick.ExecutionCor);
+            }
+
             ItemManager.Instance.SpawnItem(brick.transform.position);
 
             availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
             usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
-            brick.isDied = false;
             Type brickType = Type.GetType(brick.BrickType);
             var method = typeof(PoolManager).GetMethod("TakeToPool");
             var genericMethod = method.MakeGenericMethod(brickType);

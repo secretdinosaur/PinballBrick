@@ -116,7 +116,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<LonelyBall>(),
             gameObject.AddComponent<SuicideBoomBall>(),
             gameObject.AddComponent<SplitBall>(),
-            ////////////////////////// Delete These Before Build
+            ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<DeadlyPoison>(),
             gameObject.AddComponent<InfinitePoison>(),
@@ -125,6 +125,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SacrificeQuest2>(),
             gameObject.AddComponent<SacrificeQuest3>(),
             gameObject.AddComponent<ShareBallAtk>(),
+            ////////////////////////// Delete These Before Build
         };
 
         List<IAugment> TestAugments = new List<IAugment>
