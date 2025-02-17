@@ -62,7 +62,10 @@ public class FireBall : SpecialAugment
             Random.value < AugmentManager.instance.effectChance.FireChance)
         {
             Brick.EffectStatusSet["Fire"].EffectStack += (Brick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
-            Brick.Fire = StartCoroutine(Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
+            if(Brick.Fire == null)
+            {
+                Brick.Fire = StartCoroutine(Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration)); 
+            }
         }
     }
 }
@@ -410,7 +413,10 @@ public class PoisonBall : SpecialAugment
             Random.value < AugmentManager.instance.effectChance.PoisonChance)
         {
             Brick.EffectStatusSet["Poison"].EffectStack += (Brick.EffectStatusSet["Poison"].EffectStack < Brick.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
-            Brick.Poison = StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration));
+            if(Brick.Poison == null)
+            {
+                Brick.Poison = StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration)); 
+            }
         }
     }
 }
@@ -421,6 +427,8 @@ public class PoisonBall : SpecialAugment
  */
 public class InfinitePoison : SpecialAugment
 {
+    bool isGetAugment = false;
+    Coroutine Routine = null;
     private void OnEnable()
     {
         SetAugment("SPECIAL_16", "InfinitePoison", "InfinitePoison", "Effect", 2);
@@ -428,12 +436,55 @@ public class InfinitePoison : SpecialAugment
 
     public override void Apply()
     {
+        isGetAugment = true;
         AugmentManager.instance.effectChance.PoisonChance += 0.1f;
+        Routine = StartCoroutine(GetInfinitePoison());
     }
 
     public override void Remove() 
     {
+        isGetAugment = false;
         AugmentManager.instance.effectChance.PoisonChance -= 0.1f;
+        StopCoroutine(Routine);
+        Routine = null;
+    }
+
+    IEnumerator GetInfinitePoison()
+    {
+        while (true)
+        {
+            if(AugmentManager.instance.PoisonBrickSet.Count > 0)
+            {
+                foreach (IBrick brick in AugmentManager.instance.PoisonBrickSet)
+                {
+                    if (brick.NearbyBricks.Count > 0 && Random.value < 0.25f)
+                    {
+                        List<IBrick> ChosenBricks = new List<IBrick>(brick.NearbyBricks);
+                        int infectionLimit = Random.Range(0, ChosenBricks.Count > 2 ? 2 : ChosenBricks.Count);
+                        for (int i = 0; i < ChosenBricks.Count; i++)
+                        {
+                            int swapIndex = Random.Range(i, ChosenBricks.Count);
+                            (ChosenBricks[i], ChosenBricks[swapIndex]) = (ChosenBricks[swapIndex], ChosenBricks[i]);
+                        }
+
+                        ChosenBricks = ChosenBricks.GetRange(0, infectionLimit);
+
+                        foreach (IBrick Chosen in ChosenBricks)
+                        {
+                            if (Chosen.gameObject.activeInHierarchy && Chosen.Poison == null)
+                            {
+                                VisualEffectManager.Instance.SpawnParticle("InfinityPoison", transform.position, 1);
+
+                                Chosen.EffectStatusSet["Poison"].EffectStack +=
+                                    (Chosen.EffectStatusSet["Poison"].EffectStack != Chosen.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
+                                Chosen.Poison = Chosen.StartCoroutine(Chosen.DamageByPoisonEffect(brick.initialDuration));
+                            }
+                        }
+                    }
+                }
+            }
+            yield return new WaitForSeconds(1f);
+        }
     }
 }
 
@@ -515,7 +566,10 @@ public class DecayBall : SpecialAugment
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
             Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
-            Brick.Decay = StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
+            if(Brick.Decay == null)
+            { 
+                Brick.Decay = StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
+            }
         }
     }
 }
@@ -1337,6 +1391,14 @@ public class SplitBall : SpecialAugment
             ball.gameObject.SetActive(false);
             ball.StartPosition = RecentlyBall.gameObject.transform.position;
             ball.linearVelocityYValue = Random.Range(-5f, 5f);
+            if(ball.linearVelocityYValue >= 0)
+            {
+                ball.linearVelocityYValue += 3f;
+            }
+            else
+            {
+                ball.linearVelocityYValue -= 3f;
+            }
             ball.gameObject.SetActive(true);
         }
     }

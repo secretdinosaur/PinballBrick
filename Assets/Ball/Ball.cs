@@ -67,14 +67,11 @@ public partial class Ball : MonoBehaviour
     {
         int BallLayer = LayerMask.NameToLayer("Ball");
         int PinLayer = LayerMask.NameToLayer("Pin");
-        int BrickLayer = LayerMask.NameToLayer("Game");
         Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, true);
         Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, true);
-        Physics2D.IgnoreLayerCollision(BallLayer, BrickLayer, true);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.35f);
         Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, false);
         Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, false);
-        Physics2D.IgnoreLayerCollision(BallLayer, BrickLayer, false);
     }
 
     
