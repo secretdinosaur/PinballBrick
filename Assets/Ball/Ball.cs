@@ -15,14 +15,16 @@ public partial class Ball : MonoBehaviour
     public Flamethrower flamethrower;
     public bool isOverDeathLine;
     public Queue<Vector2> PositionSet = new Queue<Vector2>();
+    public Vector2 StartPosition = new Vector2(0f, -5f);
+    public float linearVelocityYValue = 10;
     void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        GetComponent<Collider2D>().enabled = false;
-        transform.position = new Vector2(0, -5);
-        gameObject.GetComponent<Rigidbody2D>().linearVelocityY = 10;
+        transform.position = StartPosition;
+        gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
+        linearVelocityYValue = 10;
         StartCoroutine(EnableCollider());
         spriteRenderer.color = new Color(1f, 1f, 1f);
         TrailRenderer = gameObject.GetComponent<TrailRenderer>();
@@ -63,8 +65,16 @@ public partial class Ball : MonoBehaviour
 
     private IEnumerator EnableCollider()
     {
-        yield return new WaitForSeconds(0.3f);
-        GetComponent<Collider2D>().enabled = true;
+        int BallLayer = LayerMask.NameToLayer("Ball");
+        int PinLayer = LayerMask.NameToLayer("Pin");
+        int BrickLayer = LayerMask.NameToLayer("Game");
+        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, true);
+        Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, true);
+        Physics2D.IgnoreLayerCollision(BallLayer, BrickLayer, true);
+        yield return new WaitForSeconds(0.5f);
+        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, false);
+        Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, false);
+        Physics2D.IgnoreLayerCollision(BallLayer, BrickLayer, false);
     }
 
     

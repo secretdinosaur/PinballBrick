@@ -115,6 +115,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<BallSwarm>(),
             gameObject.AddComponent<LonelyBall>(),
             gameObject.AddComponent<SuicideBoomBall>(),
+            gameObject.AddComponent<SplitBall>(),
             ////////////////////////// Delete These Before Build
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<DeadlyPoison>(),
@@ -128,8 +129,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<SuicideBoomBall>(),
-            gameObject.GetComponent<RebirthBall>(),
+            gameObject.GetComponent<SplitBall>(),
+            gameObject.GetComponent<SpawnBallAmountMultiple1>(),
+            gameObject.GetComponent<SpawnBallAmountMultiple2>(),
         };
 
         foreach (IAugment augment in TestAugments)

@@ -9,7 +9,7 @@ public class BallManager : MonoBehaviour
     public float maxSpeed = 15f;
     public bool isOnFlamerower;
     public bool isAntiGravity;
-    private PoolManager PoolManager;
+    public PoolManager PoolManager;
     void Awake()
     {
         Instance = this;

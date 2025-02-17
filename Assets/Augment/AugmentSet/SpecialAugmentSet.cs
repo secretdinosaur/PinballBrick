@@ -1193,7 +1193,7 @@ public class BallSwarm : SpecialAugment
     bool Upgrade = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_38", "BallSwarm", "BallSwarm", "Ball", 3);
+        SetAugment("SPECIAL_38", "BallSwarm", "BallSwarm", "Ball", 4);
     }
 
     public override void Apply()
@@ -1232,7 +1232,7 @@ public class LonelyBall : SpecialAugment
     bool Upgrade = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_39", "LonelyBall", "LonelyBall", "Ball", 3);
+        SetAugment("SPECIAL_39", "LonelyBall", "LonelyBall", "Ball", 4);
     }
 
     public override void Apply()
@@ -1300,6 +1300,45 @@ public class SuicideBoomBall : SpecialAugment
             {
                 BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
             }
+        }
+    }
+}
+
+public class SplitBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_41", "SplitBall", "SplitBall", "Ball", 3);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        if(Random.value < 0.01f)
+        {
+            Ball RecentlyBall = Brick.RecentlyBall;
+            CreateBall(AugmentManager.instance.SpawnBallAmount, RecentlyBall);
+        }
+    }
+
+    public void CreateBall(int Num, Ball RecentlyBall)
+    {
+        for (int i = 0; i < Num; i++)
+        {
+            Ball ball = BallManager.Instance.PoolManager.GetFromPool<Ball>();
+            ball.gameObject.SetActive(false);
+            ball.StartPosition = RecentlyBall.gameObject.transform.position;
+            ball.linearVelocityYValue = Random.Range(-5f, 5f);
+            ball.gameObject.SetActive(true);
         }
     }
 }
