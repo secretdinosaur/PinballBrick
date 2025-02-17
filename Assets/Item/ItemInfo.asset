@@ -20,8 +20,8 @@ MonoBehaviour:
   - {fileID: -6166823036124189305, guid: 3c3c40efe626b4d468a996641fef36f5, type: 3}
   ItemSpawnChance:
   - 0
-  - 1
   - 0
+  - 1
   - 0
   - 0
   ItemName:

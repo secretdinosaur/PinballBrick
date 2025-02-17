@@ -65,16 +65,11 @@ public partial class Ball : MonoBehaviour
 
     private IEnumerator EnableCollider()
     {
-        int BallLayer = LayerMask.NameToLayer("Ball");
-        int PinLayer = LayerMask.NameToLayer("Pin");
-        int BrickLayer = LayerMask.NameToLayer("Game");
-        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, true);
-        Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, true);
-        Physics2D.IgnoreLayerCollision(BallLayer, BrickLayer, true);
-        yield return new WaitForSeconds(0.5f);
-        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, false);
-        Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, false);
-        Physics2D.IgnoreLayerCollision(BallLayer, BrickLayer, false);
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), true);
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), true);
+        yield return new WaitForSeconds(0.3f);
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), false);
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), false);
     }
 
     
@@ -90,7 +85,6 @@ public partial class Ball : MonoBehaviour
         {
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 0f);
         }
-        
         
         if (CurrentSpeed > 8 && (AugmentManager.instance.determineAugmentID("SPECIAL_12") || AugmentManager.instance.determineAugmentID("SPECIAL_13"))) //Speed Augment
         {
@@ -125,17 +119,6 @@ public partial class Ball : MonoBehaviour
         if (rb.linearVelocity.magnitude > BallManager.Instance.maxSpeed)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * BallManager.Instance.maxSpeed;
-        }
-
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_2")) //Homing
-        {
-            if (currentTarget != null)
-            {
-                Vector2 directionToTarget = (currentTarget.position - transform.position).normalized;
-                float angle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
-                rb.rotation = Mathf.LerpAngle(rb.rotation, angle, rotationSpeed * Time.fixedDeltaTime);
-                rb.AddForce(directionToTarget * homingThrust);
-            }
         }
     }
     void OnCollisionEnter2D(Collision2D collision)
@@ -217,9 +200,9 @@ public partial class Ball : MonoBehaviour
 public partial class Ball //Homing
 {
     private float homingThrust = 80f;
-    private float detectionRadius = 1.4f;
+    private float detectionRadius = 1.6f;
     private string targetLayerName = "Game";
-    private float rotationSpeed = 20f;
+    private float rotationSpeed = 40f;
 
     private Rigidbody2D rb;
     private LayerMask targetLayer = new LayerMask();
@@ -228,8 +211,20 @@ public partial class Ball //Homing
     private Transform currentTarget = new RectTransform();
     private float lastDetectionTime;
 
-    public List<IBrick> NearbyBricks = new List<IBrick>();
-    
+    public void FixedUpdate()
+    {
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_2")) //Homing
+        {
+            if (currentTarget != null)
+            {
+                Vector2 directionToTarget = (currentTarget.position - transform.position).normalized;
+                float angle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
+                rb.rotation = Mathf.LerpAngle(rb.rotation, angle, rotationSpeed * Time.fixedDeltaTime);
+                rb.AddForce(directionToTarget * homingThrust);
+            }
+        }
+    }
+
     private void DetectTargets()
     {
         if (Time.time - lastDetectionTime < 1f) return;
@@ -244,7 +239,6 @@ public partial class Ball //Homing
             if (collider != null && collider.gameObject.activeInHierarchy && collider.transform != this.transform)
             {
                 targets.Add(collider.transform);
-                NearbyBricks.Add(collider.GetComponent<IBrick>());
             }
         }
     }
