@@ -43,11 +43,21 @@ public partial class Ball : MonoBehaviour
         }
     }
 
-    public void BallDied()
+    public void BallDied() 
     {
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        if (isPhoenix)
         {
-            Augment.AfterDeathEffect(this);
+            gameObject.SetActive(false);
+            gameObject.SetActive(true);
+        }
+        else
+        {
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.AfterDeathEffect(this);
+            }
+            GrowthAttackDamage = 0f;
+            BallManager.Instance.TakeBall(this);
         }
     }
 
@@ -96,23 +106,10 @@ public partial class Ball : MonoBehaviour
             }
             TrailRenderer.time -= TrailRenderer.time != 0 ? 0.005f : 0f;
         }
-        if (transform.position.y <= -6 && !isOverDeathLine)
+        if(transform.position.y <= -10 && !isOverDeathLine)
         {
             BallDied();
             isOverDeathLine = true;
-        }
-        if(transform.position.y <= -10)
-        {
-            if (isPhoenix)
-            {
-                gameObject.SetActive(false);
-                gameObject.SetActive(true);
-            }
-            else
-            {
-                GrowthAttackDamage = 0f;
-                BallManager.Instance.TakeBall(this);
-            }
         }
 
         if (rb.linearVelocity.magnitude > BallManager.Instance.maxSpeed)

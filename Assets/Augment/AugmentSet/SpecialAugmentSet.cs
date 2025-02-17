@@ -77,11 +77,14 @@ public class Homing : SpecialAugment
         SetAugment("SPECIAL_2", "Homing Ball", "Lock On!", "Homing", 1);
     }
     public override void Apply()
-    { 
-        
+    {
+
     }
 
-    public override void Remove(){  }
+    public override void Remove()
+    {
+
+    }
 }
 
 /**
@@ -1121,10 +1124,9 @@ public class RebirthBall : SpecialAugment
 
     public override void AfterDeathEffect(Ball ball)
     {
-        if (Random.value < 1f)
+        if (Random.value < 0.05f)
         {
-            ball.gameObject.SetActive(false);
-            ball.gameObject.SetActive(true);
+            BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
         }
     }
 }
@@ -1263,12 +1265,12 @@ public class LonelyBall : SpecialAugment
     }
 }
 
-public class SuisideBoomBall : SpecialAugment
+public class SuicideBoomBall : SpecialAugment
 {
     float damage = 50;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_40", "SuisideBoomBall", "SuisideBoomBall", "Ball", 1);
+        SetAugment("SPECIAL_40", "SuicideBoomBall", "SuicideBoomBall", "Ball", 1);
     }
 
     public override void Apply() { }
@@ -1278,7 +1280,7 @@ public class SuisideBoomBall : SpecialAugment
     public override void AfterMainAttackEffect(IBrick Brick)
     {
         Ball ball = Brick.RecentlyBall;
-        if(Random.value < 1f)
+        if(Random.value < 0.1f)
         {
             Brick.ArbitraryDamageAttack(
                     (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
@@ -1294,7 +1296,7 @@ public class SuisideBoomBall : SpecialAugment
                     null);
             }
             ball.BallDied();
-            if(Random.value < 1f)
+            if(Random.value < 0.4f)
             {
                 BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
             }
