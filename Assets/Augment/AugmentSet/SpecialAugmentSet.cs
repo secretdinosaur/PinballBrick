@@ -1121,7 +1121,7 @@ public class RebirthBall : SpecialAugment
 
     public override void AfterDeathEffect(Ball ball)
     {
-        if (Random.value < 0.05f)
+        if (Random.value < 1f)
         {
             ball.gameObject.SetActive(false);
             ball.gameObject.SetActive(true);
@@ -1145,6 +1145,159 @@ public class BossKillBall : SpecialAugment
         if (Brick.IsBoss)
         {
             BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+        }
+    }
+}
+
+public class SpawnBallAmountMultiple1 : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_36", "SpawnBallAmountMultiple1", "SpawnBallAmountMultiple1", "Ball", 2);
+    }
+
+    public override void Apply() 
+    {
+        AugmentManager.instance.SpawnBallAmount *= 2;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.SpawnBallAmount /= 2;
+    }
+}
+
+public class SpawnBallAmountMultiple2 : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_37", "SpawnBallAmountMultiple2", "SpawnBallAmountMultiple2", "Ball", 1);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.SpawnBallAmount *= 3;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.SpawnBallAmount /= 3;
+    }
+}
+
+public class BallSwarm : SpecialAugment
+{
+    bool isGetAugment = false;
+    bool Upgrade = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_38", "BallSwarm", "BallSwarm", "Ball", 3);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+    }
+
+    public override void Remove()
+    {
+        isGetAugment = false;
+    }
+
+    private void Update()
+    {
+        if (isGetAugment)
+        {
+            if(BallManager.Instance.InGameBall.Count >= 30 && !Upgrade)
+            {
+                Upgrade = true;
+                StatManager.instance.Temporary_stat.AttackDamage += 2;
+                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            }
+            else if(BallManager.Instance.InGameBall.Count < 30 && Upgrade)
+            {
+                Upgrade = false;
+                StatManager.instance.Temporary_stat.AttackDamage -= 2;
+                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            }
+        }
+    }
+}
+
+public class LonelyBall : SpecialAugment
+{
+    bool isGetAugment = false;
+    bool Upgrade = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_39", "LonelyBall", "LonelyBall", "Ball", 3);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+    }
+
+    public override void Remove()
+    {
+        isGetAugment = false;
+    }
+
+    private void Update()
+    {
+        if (isGetAugment)
+        {
+            if (BallManager.Instance.InGameBall.Count <= 5 && !Upgrade)
+            {
+                Upgrade = true;
+                StatManager.instance.Temporary_stat.AttackDamage += 2;
+                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            }
+            else if (BallManager.Instance.InGameBall.Count > 5 && Upgrade)
+            {
+                Upgrade = false;
+                StatManager.instance.Temporary_stat.AttackDamage -= 2;
+                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            }
+        }
+    }
+}
+
+public class SuisideBoomBall : SpecialAugment
+{
+    float damage = 50;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_40", "SuisideBoomBall", "SuisideBoomBall", "Ball", 1);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterMainAttackEffect(IBrick Brick)
+    {
+        Ball ball = Brick.RecentlyBall;
+        if(Random.value < 1f)
+        {
+            Brick.ArbitraryDamageAttack(
+                    (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
+                    false,
+                    ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
+                    null);
+            foreach (IBrick brick in Brick.NearbyBricks)
+            {
+                brick.ArbitraryDamageAttack(
+                    (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
+                    false,
+                    ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
+                    null);
+            }
+            ball.BallDied();
+            if(Random.value < 1f)
+            {
+                BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+            }
         }
     }
 }

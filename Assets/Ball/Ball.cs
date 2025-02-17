@@ -43,6 +43,14 @@ public partial class Ball : MonoBehaviour
         }
     }
 
+    public void BallDied()
+    {
+        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        {
+            Augment.AfterDeathEffect(this);
+        }
+    }
+
     private IEnumerator EnableCollider()
     {
         yield return new WaitForSeconds(0.3f);
@@ -52,6 +60,9 @@ public partial class Ball : MonoBehaviour
     
     void Update()
     {
+        DetectTargets();
+        UpdateCurrentTarget();
+
         GrowthAttackDamageObserve = GrowthAttackDamage;
         TrailRenderer.startColor = spriteRenderer.color;
         CurrentSpeed = rb.linearVelocity.magnitude;
@@ -87,10 +98,7 @@ public partial class Ball : MonoBehaviour
         }
         if (transform.position.y <= -6 && !isOverDeathLine)
         {
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-            {
-                Augment.AfterDeathEffect(this);
-            }
+            BallDied();
             isOverDeathLine = true;
         }
         if(transform.position.y <= -10)
@@ -111,15 +119,9 @@ public partial class Ball : MonoBehaviour
         {
             rb.linearVelocity = rb.linearVelocity.normalized * BallManager.Instance.maxSpeed;
         }
-    }
-    
-    private void FixedUpdate()
-    {
+
         if (AugmentManager.instance.determineAugmentID("SPECIAL_2")) //Homing
         {
-            DetectTargets();
-            UpdateCurrentTarget();
-            
             if (currentTarget != null)
             {
                 Vector2 directionToTarget = (currentTarget.position - transform.position).normalized;
@@ -218,6 +220,8 @@ public partial class Ball //Homing
     private List<Transform> targets = new List<Transform>();
     private Transform currentTarget = new RectTransform();
     private float lastDetectionTime;
+
+    public List<IBrick> NearbyBricks = new List<IBrick>();
     
     private void DetectTargets()
     {
@@ -233,6 +237,7 @@ public partial class Ball //Homing
             if (collider != null && collider.gameObject.activeInHierarchy && collider.transform != this.transform)
             {
                 targets.Add(collider.transform);
+                NearbyBricks.Add(collider.GetComponent<IBrick>());
             }
         }
     }
