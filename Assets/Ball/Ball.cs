@@ -13,6 +13,7 @@ public partial class Ball : MonoBehaviour
     public float SpecialCriticalChance = 0f;
     public bool isPhoenix;
     public Flamethrower flamethrower;
+    public bool isOverDeathLine;
     public Queue<Vector2> PositionSet = new Queue<Vector2>();
     void OnEnable()
     {
@@ -29,7 +30,7 @@ public partial class Ball : MonoBehaviour
         MaxBounce = 0;
         targets.Clear();
         currentTarget = null;
-
+        isOverDeathLine = false;
         isPhoenix = false;
         flamethrower = GetComponentInChildren<Flamethrower>(true);
         if (BallManager.Instance.isOnFlamerower)
@@ -84,14 +85,16 @@ public partial class Ball : MonoBehaviour
             }
             TrailRenderer.time -= TrailRenderer.time != 0 ? 0.005f : 0f;
         }
-        
-        if(transform.position.y <= -10)
+        if (transform.position.y <= -6 && !isOverDeathLine)
         {
-            foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
             {
                 Augment.AfterDeathEffect(this);
             }
-
+            isOverDeathLine = true;
+        }
+        if(transform.position.y <= -10)
+        {
             if (isPhoenix)
             {
                 gameObject.SetActive(false);

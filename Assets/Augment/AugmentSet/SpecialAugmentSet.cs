@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Redcode.Pools;
 using Unity.VisualScripting;
 using System.Linq;
+using Random = UnityEngine.Random;
 
 /*
 public class Example : SpecialAugment
@@ -1103,6 +1104,27 @@ public class OneLineBall : SpecialAugment
             {
                 turnOn = true;
             }
+        }
+    }
+}
+
+public class RebirthBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_34", "RebirthBall", "RebirthBall", "Ball", 5);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(Ball ball)
+    {
+        if (Random.value < 0.05f)
+        {
+            ball.gameObject.SetActive(false);
+            ball.gameObject.SetActive(true);
         }
     }
 }

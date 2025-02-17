@@ -5525,6 +5525,9 @@ MonoBehaviour:
   activeStatAugments: []
   activeFieldAugments: []
   activeSpecialAugments: []
+  FireStackLimit: 0
+  PoisonStackLimit: 0
+  DecayStackLimit: 0
   SatelliteBeamObj: {fileID: 8416854898795469513, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
   DecayDamageMultiple: 0
   FieldGlobalCooldown: 10
@@ -12941,7 +12944,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 15
   isOnFlamerower: 0
+  isAntiGravity: 0
   InGameBall: []
+  inGameBallPosition: []
   thereISPhoenix: 0
   boxSize: {x: 5, y: 10}
 --- !u!114 &998555654
@@ -13760,6 +13765,11 @@ MonoBehaviour:
   ChainLightningPS: {fileID: 1499597294}
   FireBlastPS: {fileID: 136637401}
   InfinityPoisonPS: {fileID: 904192014}
+  DecayMaterial: {fileID: 0}
+  DefaultMaterial: {fileID: 0}
+  DecayPunchPS: {fileID: 0}
+  DecayExplosionPS: {fileID: 0}
+  AddAttack1PS: {fileID: 0}
 --- !u!4 &1385980985
 Transform:
   m_ObjectHideFlags: 0
@@ -19138,7 +19148,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -25201,6 +25211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PoolManager: {fileID: 0}
   ItemInfo: {fileID: 11400000, guid: ae23a3d2222f51e4da533cabb4858316, type: 2}
+  IsPowerUp: 0
 --- !u!114 &2033836777
 MonoBehaviour:
   m_ObjectHideFlags: 0

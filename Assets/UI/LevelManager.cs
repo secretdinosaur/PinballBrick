@@ -94,7 +94,8 @@ public class LevelManager : MonoBehaviour
     {
         Temporary_Stat stat = new Temporary_Stat();
         stat.StatLevel = Temporary_Stat.StatLevel;
-        stat.AttackDamage += Temporary_Stat.StatLevel[0] - 1;
+        stat.AttackDamage = Temporary_Stat.AttackDamage + Temporary_Stat.StatLevel[0] - 1;
+        stat.EffectDamage = Temporary_Stat.EffectDamage + Temporary_Stat.StatLevel[4] - 1;
         return stat;
     }
 }

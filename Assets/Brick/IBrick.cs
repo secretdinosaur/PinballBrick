@@ -80,7 +80,6 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
-
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -416,6 +415,10 @@ public partial class IBrick
                 : DecayDamageCalculate(EffectAttackDamage);
             HP -= FinalEffectAttackDamage;
             ShowText(FinalEffectAttackDamage.ToString("0.###"), "Poison", isCritical);
+            if (!gameObject.activeInHierarchy)
+            {
+                yield break;
+            }
             if (AugmentManager.instance.determineAugmentID("SPECIAL_16"))
             {
                 if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit && NearbyBricks.Count > 0 && Random.value < 0.25f)
@@ -477,11 +480,7 @@ public partial class IBrick
                 PoisonEffectDuration -= interval;
             }
 
-            yield return new WaitForSeconds(interval);
-            if (!gameObject.activeInHierarchy)
-            {
-                yield break;
-            }
+            yield return new WaitForSeconds(1f);
         }
 
         elapsedTime = 0f;
@@ -493,8 +492,8 @@ public partial class IBrick
         }
         EffectStatusSet["Poison"].IsActive = false;
         PoisonEffect.SetActive(false);
-        EffectStatusSet["Poison"].EffectStack = 0;
         Poison = null;
+        EffectStatusSet["Poison"].EffectStack = 0;
     }
     public IEnumerator DecayEffect(float effectDuration)
     {
@@ -520,7 +519,6 @@ public partial class IBrick
         Decay = null;
         EffectStatusSet["Decay"].EffectStack = 0;
         VisualEffectManager.Instance.UnSetDecayVisualEffect(this);
-
     }
 
     public float DecayDamageCalculate(float Damage)

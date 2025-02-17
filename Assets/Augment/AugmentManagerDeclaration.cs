@@ -40,7 +40,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 1f, 0.3f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
@@ -104,11 +104,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
             gameObject.AddComponent<RandomEffect>(),
-<<<<<<< HEAD
             gameObject.AddComponent<OneLineBall>(),
-=======
->>>>>>> ebf8f9751be909364ac808724ceec58e39df2640
-            /////////////////////////// Special
+            gameObject.AddComponent<RebirthBall>(),
+            ////////////////////////// Delete These Before Build
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<DeadlyPoison>(),
             gameObject.AddComponent<InfinitePoison>(),
@@ -117,18 +115,11 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SacrificeQuest2>(),
             gameObject.AddComponent<SacrificeQuest3>(),
             gameObject.AddComponent<ShareBallAtk>(),
-            ////////////////////////// Delete These Before Build
-            gameObject.AddComponent<InfinitePoison>(),
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-<<<<<<< HEAD
-            gameObject.GetComponent<OneLineBall>(),
-=======
-            gameObject.GetComponent<PoisonBall>(),
-            gameObject.GetComponent<InfinitePoison>(),
->>>>>>> ebf8f9751be909364ac808724ceec58e39df2640
+            gameObject.GetComponent<RebirthBall>(),
         };
 
         foreach (IAugment augment in TestAugments)

@@ -323,7 +323,8 @@ public class AntiGravity : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetAntiGravity(12f + Cooldown));
+        //12f + Cooldown
+        Routine = StartCoroutine(GetAntiGravity(7f));
     }
 
     public override void Remove()
