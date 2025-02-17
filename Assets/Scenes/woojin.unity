@@ -5525,10 +5525,14 @@ MonoBehaviour:
   activeStatAugments: []
   activeFieldAugments: []
   activeSpecialAugments: []
+  FireStackLimit: 0
+  PoisonStackLimit: 0
+  DecayStackLimit: 0
   SatelliteBeamObj: {fileID: 8416854898795469513, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
   DecayDamageMultiple: 0
   FieldGlobalCooldown: 10
   isSacrificeQuest3Cleared: 0
+  SpawnBallAmount: 0
 --- !u!114 &218456172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12941,7 +12945,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 15
   isOnFlamerower: 0
+  isAntiGravity: 0
+  PoolManager: {fileID: 0}
   InGameBall: []
+  inGameBallPosition: []
   thereISPhoenix: 0
   boxSize: {x: 5, y: 10}
 --- !u!114 &998555654
@@ -13760,6 +13767,11 @@ MonoBehaviour:
   ChainLightningPS: {fileID: 1499597294}
   FireBlastPS: {fileID: 136637401}
   InfinityPoisonPS: {fileID: 904192014}
+  DecayMaterial: {fileID: 0}
+  DefaultMaterial: {fileID: 0}
+  DecayPunchPS: {fileID: 0}
+  DecayExplosionPS: {fileID: 0}
+  AddAttack1PS: {fileID: 0}
 --- !u!4 &1385980985
 Transform:
   m_ObjectHideFlags: 0
@@ -18746,9 +18758,9 @@ GameObject:
   - component: {fileID: 1510115437}
   - component: {fileID: 1510115436}
   - component: {fileID: 1510115435}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LeftPin
-  m_TagString: Untagged
+  m_TagString: Pin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24777,9 +24789,9 @@ GameObject:
   - component: {fileID: 1783727145}
   - component: {fileID: 1783727144}
   - component: {fileID: 1783727143}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RightPin
-  m_TagString: Untagged
+  m_TagString: Pin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25201,6 +25213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PoolManager: {fileID: 0}
   ItemInfo: {fileID: 11400000, guid: ae23a3d2222f51e4da533cabb4858316, type: 2}
+  IsPowerUp: 0
 --- !u!114 &2033836777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30635,11 +30648,11 @@ SceneRoots:
   - {fileID: 1419739208}
   - {fileID: 374219221}
   - {fileID: 1510115439}
+  - {fileID: 1783727147}
   - {fileID: 920137817}
   - {fileID: 478152990}
   - {fileID: 1735489778}
   - {fileID: 485937302}
-  - {fileID: 1783727147}
   - {fileID: 153662570}
   - {fileID: 1385980985}
   - {fileID: 1534151895}

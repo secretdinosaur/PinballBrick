@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Brick
   - Flamethrower
+  - Pin
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Game
   - Wall
   - Ball
-  - 
+  - Pin
   - 
   - 
   - 

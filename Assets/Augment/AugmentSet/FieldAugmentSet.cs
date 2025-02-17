@@ -323,7 +323,8 @@ public class AntiGravity : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetAntiGravity(12f + Cooldown));
+        //12f + Cooldown
+        Routine = StartCoroutine(GetAntiGravity(7f));
     }
 
     public override void Remove()
@@ -366,7 +367,7 @@ public class BountyHunter: FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_7", "BountyHunter", "BountyHunter", 4);
+        SetAugment("FIELD_8", "BountyHunter", "BountyHunter", 4);
     }
 
     public override void Apply()

@@ -13,14 +13,18 @@ public partial class Ball : MonoBehaviour
     public float SpecialCriticalChance = 0f;
     public bool isPhoenix;
     public Flamethrower flamethrower;
+    public bool isOverDeathLine;
+    public Queue<Vector2> PositionSet = new Queue<Vector2>();
+    public Vector2 StartPosition = new Vector2(0f, -5f);
+    public float linearVelocityYValue = 10;
     void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        GetComponent<Collider2D>().enabled = false;
-        transform.position = new Vector2(0, -5);
-        gameObject.GetComponent<Rigidbody2D>().linearVelocityY = 10;
+        transform.position = StartPosition;
+        gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
+        linearVelocityYValue = 10;
         StartCoroutine(EnableCollider());
         spriteRenderer.color = new Color(1f, 1f, 1f);
         TrailRenderer = gameObject.GetComponent<TrailRenderer>();
@@ -28,7 +32,7 @@ public partial class Ball : MonoBehaviour
         MaxBounce = 0;
         targets.Clear();
         currentTarget = null;
-
+        isOverDeathLine = false;
         isPhoenix = false;
         flamethrower = GetComponentInChildren<Flamethrower>(true);
         if (BallManager.Instance.isOnFlamerower)
@@ -41,15 +45,44 @@ public partial class Ball : MonoBehaviour
         }
     }
 
+    public void BallDied() 
+    {
+        if (isPhoenix)
+        {
+            gameObject.SetActive(false);
+            gameObject.SetActive(true);
+        }
+        else
+        {
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.AfterDeathEffect(this);
+            }
+            GrowthAttackDamage = 0f;
+            BallManager.Instance.TakeBall(this);
+        }
+    }
+
     private IEnumerator EnableCollider()
     {
-        yield return new WaitForSeconds(0.3f);
-        GetComponent<Collider2D>().enabled = true;
+        int BallLayer = LayerMask.NameToLayer("Ball");
+        int PinLayer = LayerMask.NameToLayer("Pin");
+        int BrickLayer = LayerMask.NameToLayer("Game");
+        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, true);
+        Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, true);
+        Physics2D.IgnoreLayerCollision(BallLayer, BrickLayer, true);
+        yield return new WaitForSeconds(0.5f);
+        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, false);
+        Physics2D.IgnoreLayerCollision(BallLayer, PinLayer, false);
+        Physics2D.IgnoreLayerCollision(BallLayer, BrickLayer, false);
     }
 
     
     void Update()
     {
+        DetectTargets();
+        UpdateCurrentTarget();
+
         GrowthAttackDamageObserve = GrowthAttackDamage;
         TrailRenderer.startColor = spriteRenderer.color;
         CurrentSpeed = rb.linearVelocity.magnitude;
@@ -83,39 +116,19 @@ public partial class Ball : MonoBehaviour
             }
             TrailRenderer.time -= TrailRenderer.time != 0 ? 0.005f : 0f;
         }
-        
-        if(transform.position.y <= -10)
+        if(transform.position.y <= -10 && !isOverDeathLine)
         {
-            foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-            {
-                Augment.AfterDeathEffect(this);
-            }
-
-            if (isPhoenix)
-            {
-                gameObject.SetActive(false);
-                gameObject.SetActive(true);
-            }
-            else
-            {
-                GrowthAttackDamage = 0f;
-                BallManager.Instance.TakeBall(this);
-            }
+            BallDied();
+            isOverDeathLine = true;
         }
 
         if (rb.linearVelocity.magnitude > BallManager.Instance.maxSpeed)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * BallManager.Instance.maxSpeed;
         }
-    }
-    
-    private void FixedUpdate()
-    {
+
         if (AugmentManager.instance.determineAugmentID("SPECIAL_2")) //Homing
         {
-            DetectTargets();
-            UpdateCurrentTarget();
-            
             if (currentTarget != null)
             {
                 Vector2 directionToTarget = (currentTarget.position - transform.position).normalized;
@@ -214,6 +227,8 @@ public partial class Ball //Homing
     private List<Transform> targets = new List<Transform>();
     private Transform currentTarget = new RectTransform();
     private float lastDetectionTime;
+
+    public List<IBrick> NearbyBricks = new List<IBrick>();
     
     private void DetectTargets()
     {
@@ -229,6 +244,7 @@ public partial class Ball //Homing
             if (collider != null && collider.gameObject.activeInHierarchy && collider.transform != this.transform)
             {
                 targets.Add(collider.transform);
+                NearbyBricks.Add(collider.GetComponent<IBrick>());
             }
         }
     }

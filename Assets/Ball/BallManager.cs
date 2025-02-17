@@ -9,7 +9,7 @@ public class BallManager : MonoBehaviour
     public float maxSpeed = 15f;
     public bool isOnFlamerower;
     public bool isAntiGravity;
-    private PoolManager PoolManager;
+    public PoolManager PoolManager;
     void Awake()
     {
         Instance = this;
@@ -33,6 +33,7 @@ public class BallManager : MonoBehaviour
     }
     
     public List<Ball> InGameBall = new List<Ball>();
+    public List<Transform> inGameBallPosition = new List<Transform>();
     public bool thereISPhoenix = false;
     public Vector2 boxSize = new Vector2(5f, 10f);
 
@@ -52,6 +53,7 @@ public class BallManager : MonoBehaviour
             if (obj != null && collider.gameObject.activeInHierarchy && !InGameBall.Contains(obj) && obj != this)
             {
                 InGameBall.Add(obj);
+                inGameBallPosition.Add(obj.gameObject.GetComponent<Transform>());
             }
         }
     }
@@ -59,6 +61,7 @@ public class BallManager : MonoBehaviour
     void RemoveInactiveBricks()
     {
         InGameBall.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
+        inGameBallPosition.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
     }
     
     void OnDrawGizmos()

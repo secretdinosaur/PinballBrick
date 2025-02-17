@@ -27,6 +27,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public bool isSacrificeQuest3Cleared;
 
+    public int SpawnBallAmount;
+
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
         { 0, 0.01f },
@@ -40,12 +42,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 1, 0.3f);
+        effectChance = new EffectChance(0.3f, 1f, 0.3f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
         DecayDamageMultiple = 1.1f;
         isSacrificeQuest3Cleared = false;
+        SpawnBallAmount = 1;
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -104,7 +107,16 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
             gameObject.AddComponent<RandomEffect>(),
-            /////////////////////////// Special
+            gameObject.AddComponent<OneLineBall>(),
+            gameObject.AddComponent<RebirthBall>(),
+            gameObject.AddComponent<BossKillBall>(),
+            gameObject.AddComponent<SpawnBallAmountMultiple1>(),
+            gameObject.AddComponent<SpawnBallAmountMultiple2>(),
+            gameObject.AddComponent<BallSwarm>(),
+            gameObject.AddComponent<LonelyBall>(),
+            gameObject.AddComponent<SuicideBoomBall>(),
+            gameObject.AddComponent<SplitBall>(),
+            ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<DeadlyPoison>(),
             gameObject.AddComponent<InfinitePoison>(),
@@ -118,8 +130,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            GetComponent<PoisonBall>(),
-
+            gameObject.GetComponent<SplitBall>(),
+            gameObject.GetComponent<SpawnBallAmountMultiple1>(),
+            gameObject.GetComponent<SpawnBallAmountMultiple2>(),
         };
 
         foreach (IAugment augment in TestAugments)
