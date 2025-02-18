@@ -35,7 +35,8 @@ public class DamageText : MonoBehaviour
         damageText.color = (TextType == "Normal") ? Color.white
             : (TextType == "Additional") ? new Color(1f, 0.5f, 0f)
             : (TextType == "Fire") ? Color.red 
-            : (TextType == "Poison") ? Color.green : Color.blue;
+            : (TextType == "Poison") ? Color.green 
+            : (TextType == "Lightning") ? Color.cyan : Color.blue;
         damageText.text = isCritical ? "!" + Text : Text;
     }
     

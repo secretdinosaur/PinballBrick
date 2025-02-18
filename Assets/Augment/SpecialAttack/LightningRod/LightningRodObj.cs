@@ -30,7 +30,7 @@ public class LightningRodObj : MonoBehaviour
                     int index = Random.Range(0, NearbyBricks.Count);
                     if (NearbyBricks[index] != null && NearbyBricks[index].gameObject.activeInHierarchy)
                     {
-                        NearbyBricks[index].ArbitraryDamageAttack(1f, false, "1", null);
+                        NearbyBricks[index].DamageByLightningEffect(5f, 1);
                     }
                 }
             }
