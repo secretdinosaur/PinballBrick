@@ -28,7 +28,7 @@ public class Example : SpecialAugment
  */
 
 /**
- * È®·ü·Î ºí·°¿¡ ºÒ ÀÌÆåÆ® È¿°ú Àû¿ë, ÇØ´ç ºí·°ÀÇ ºÒ ÀÌÆåÆ® ½ºÅÃÀÌ ÃÖ´ëÄ¡°¡ ¾Æ´Ï¶ó¸é +1
+ * È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½Ä¡ï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ï¿½ +1
  */
 public class FireBall : SpecialAugment
 {
@@ -71,7 +71,7 @@ public class FireBall : SpecialAugment
 }
 
 /**
- * °øÀÌ ÁÖº¯ ºí·°À» Ã£¾Æ¼­ À¯µµ
+ * ï¿½ï¿½ï¿½ï¿½ ï¿½Öºï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 public class Homing : SpecialAugment
 {
@@ -91,7 +91,7 @@ public class Homing : SpecialAugment
 }
 
 /**
- * º®¿¡ Æ¨±æ¶§¸¶´Ù ¹Ù¿î½º È½¼ö Áõ°¡(µ¥¹ÌÁö Áõ°¡)
+ * ï¿½ï¿½ï¿½ï¿½ Æ¨ï¿½æ¶§ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¿î½º È½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
  */
 public class BouncePower: SpecialAugment
 {
@@ -112,7 +112,7 @@ public class BouncePower: SpecialAugment
 }
 
 /**
- * °ø°Ý ÀÌÈÄ¿¡ 3È¸ Ãß°¡Å¸¹ß»ý
+ * ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ä¿ï¿½ 3È¸ ï¿½ß°ï¿½Å¸ï¿½ß»ï¿½
  */
 public class AdditionalThreeAttack: SpecialAugment
 {
@@ -136,7 +136,7 @@ public class AdditionalThreeAttack: SpecialAugment
 
 
 /**
- * Å©¸®Æ¼ÄÃ °ø°Ý ÀÌÈÄ¿¡ Ãß°¡Å¸ 1È¸ ¹ß»ý
+ * Å©ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ä¿ï¿½ ï¿½ß°ï¿½Å¸ 1È¸ ï¿½ß»ï¿½
  */
 public class CriticalAdditionalAttack : SpecialAugment
 {
@@ -159,7 +159,7 @@ public class CriticalAdditionalAttack : SpecialAugment
 }
 
 /**
- * ÀÏÁ¤ Ã¼·Â ÀÌÇÏ ºí·° Ã³Çü
+ * ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã³ï¿½ï¿½
  */
 
 public class Execution : SpecialAugment
@@ -175,7 +175,7 @@ public class Execution : SpecialAugment
 }
 
 /**
- * ºí·° ÃÖ´ëÃ¼·Â ÆÛ¼¾Æ® µ¥¹ÌÁö
+ * ï¿½ï¿½ ï¿½Ö´ï¿½Ã¼ï¿½ï¿½ ï¿½Û¼ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 public class PercentDamage : SpecialAugment
 {
@@ -198,7 +198,7 @@ public class PercentDamage : SpecialAugment
 }
 
 /**
- * ºí·°ÀÇ ºÒ ÀÌÆåÆ® ½ºÅÃÀÌ ÃÖ´ë¶ó¸é Æø¹ßÇÏ¸ç ÀÌÈÄ ÁÖº¯ ºí·°¿¡ (ºÒ ÃÖ´ë½ºÅÃ * 3) ¸¸Å­ÀÇ ½ºÅÃÀ» ÀüÀÌ½ÃÅ°°í ºÒ ÀÌÆåÆ® È¿°ú ¹ßµ¿
+ * ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Öºï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ ï¿½Ö´ë½ºï¿½ï¿½ * 3) ï¿½ï¿½Å­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® È¿ï¿½ï¿½ ï¿½ßµï¿½
  */
 public class FireEffectStackBlast : SpecialAugment
 {
@@ -238,7 +238,7 @@ public class FireEffectStackBlast : SpecialAugment
 }
 
 /**
- * °ø°Ý¹ÞÀº ºí·°À» Á¦¿ÜÇÑ ÁÖº¯ 4°³ÀÇ ºí·°À¸·Î ÀüÀÌµÇ´Â ¹ø°³
+ * ï¿½ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Öºï¿½ 4ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÌµÇ´ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 public class ChainLightning : SpecialAugment
 {
@@ -270,8 +270,9 @@ public class ChainLightning : SpecialAugment
                 break;
             }
             int RandomNumber = Random.Range(0, BrickToBrick.Count);
-            BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 * StatManager.instance.statMultiplier.EffectDamageMultiplier, 
-                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"), null);
+            
+            BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 + (BrickToBrick[RandomNumber].HpTemp * Random.Range(0.01f, 0.02f)), 
+                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"), "Lightning");
             BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
 
             targetBrick = BrickToBrick[RandomNumber];
@@ -282,7 +283,7 @@ public class ChainLightning : SpecialAugment
 }
 
 /**
- * °øÀÌ Á×À¸¸é °æÇèÄ¡ È¹µæ
+ * ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ È¹ï¿½ï¿½
  */
 public class DeathExp : SpecialAugment
 {
@@ -302,7 +303,7 @@ public class DeathExp : SpecialAugment
 }
 
 /**
- * °øÀÌ Á×À¸¸é °ñµå È¹µæ
+ * ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È¹ï¿½ï¿½
  */
 public class DeathGold : SpecialAugment
 {
@@ -322,7 +323,7 @@ public class DeathGold : SpecialAugment
 }
 
 /**
- * ¼Óµµ°¡ ºü¸¦ ¼ö·Ï °ø°Ý·Â Áõ°¡
+ * ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 public class SpeedPower : SpecialAugment
 {
@@ -342,7 +343,7 @@ public class SpeedPower : SpecialAugment
 }
 
 /**
- * ¼Óµµ°¡ ºü¸¦ ¼ö·Ï Å©¸®Æ¼ÄÃ È®·ü Áõ°¡
+ * ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½Æ¼ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 public class SpeedCritical : SpecialAugment
 {
@@ -363,7 +364,7 @@ public class SpeedCritical : SpecialAugment
 }
 
 /**
- * Å¸°Ý½Ã ¹ø°³ »ý¼º
+ * Å¸ï¿½Ý½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 
 public class Lightning : SpecialAugment
@@ -379,15 +380,12 @@ public class Lightning : SpecialAugment
 
     public override void AfterAttackEffect(IBrick brick)
     {
-        brick.ArbitraryDamageAttack(1 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"), null);
-        VisualEffectManager.Instance.SpawnParticle("Lightning", brick.transform.position, 1);
-
+        brick.DamageByLightningEffect(1f, 1);
     }
 }
 
 /*
- * NÃÊµ¿¾È MÃÊ ÁÖ±â·Î ºí·° ÇöÀçÃ¼·Â ºñ·Ê µ¥¹ÌÁö
+ * Nï¿½Êµï¿½ï¿½ï¿½ Mï¿½ï¿½ ï¿½Ö±ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 public class PoisonBall : SpecialAugment
 {
@@ -509,7 +507,7 @@ public class DeadlyPoison : SpecialAugment
 }
 
 /*
- * ¸ðµç Áõ°­ È®·ü µ¿ÀÏÇÏ°Ô ¸¸µê(0Æ¼¾î´Â ´ë°Ýº¯±ÞÀÌ¾î¼­ °Á ¿©ÀüÈ÷ ÁÙÀÓ)
+ * ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½(0Æ¼ï¿½ï¿½ï¿½ ï¿½ï¿½Ýºï¿½ï¿½ï¿½ï¿½Ì¾î¼­ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
  */
 public class Chaos : SpecialAugment
 {
@@ -540,7 +538,7 @@ public class Chaos : SpecialAugment
 }
 
 /*
- * ºí·°ÀÌ ¹Þ´Â µ¥¹ÌÁö (1.1^ºÎ½Ä ½ºÅÃ) ¸¸Å­ Áõ°¡
+ * ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (1.1^ï¿½Î½ï¿½ ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½
  */
 public class DecayBall : SpecialAugment
 {
@@ -595,7 +593,7 @@ public class PowerfulDecay : SpecialAugment
 }
 
 /*
- * ºÎ½Ä ½ºÅÃÀÌ ÃÖ´ëÀÎ »óÅÂ·Î ºí·°ÀÌ ±úÁö¸é Æø¹ßÇÔ
+ * ï¿½Î½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 public class DecayExplosion : SpecialAugment
 {
@@ -642,7 +640,7 @@ public class DecayExplosion : SpecialAugment
 }
 
 /*
- * ºí·°°ú ºí·°ÀÌ ¸Â´êÀ¸¸é ¼­·Î ¹Ý´ë¹æÇâÀ¸·Î ÈûÀ» ¹ÞÀ½. Ãß°¡·Î ÀÌ Áõ°­ÀÌ¶û ¹Ù¿î½º=ÆÄ¿ö Áõ°­ °°ÀÌ ¸ÔÀ¸¸é º®ÀÌ ¾Æ´Ï¶ó °øÀÌ¶û ºÎµúÇôµµ ¹Ù¿î½º½ºÅÃ ¿Ã¶ó°¡°Ô ÇÔ
+ * ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ ï¿½Ù¿î½º=ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¿î½ºï¿½ï¿½ï¿½ï¿½ ï¿½Ã¶ó°¡°ï¿½ ï¿½ï¿½
  */
 public class ExplosionWithBall : SpecialAugment
 {
@@ -678,7 +676,7 @@ public class TheFlamethrower : SpecialAugment
     }
 }
 /*
- * Áï½Ã °æÇèÄ¡ 30% È¹µæ, ºí·° 20°³ °ÝÆÄÇÏ¸é ·¹º§¾÷ (1È¸)
+ * ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ 30% È¹ï¿½ï¿½, ï¿½ï¿½ 20ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (1È¸)
  */
 public class LevelUpQuest : SpecialAugment
 {
@@ -711,7 +709,7 @@ public class LevelUpQuest : SpecialAugment
 }
 
 /*
- * ºí·° 20°³ °ÝÆÄÇÒ¶§±îÁö Á×ÀÎ Àû Å¸ÀÔ¿¡ µû¶ó float ´©Àû, Å¬¸®¾îÇÏ¸é ´©ÀûÄ¡ +2 ÇØ¼­ °ø°Ý·Â¾÷
+ * ï¿½ï¿½ 20ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Å¸ï¿½Ô¿ï¿½ ï¿½ï¿½ï¿½ï¿½ float ï¿½ï¿½ï¿½ï¿½, Å¬ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ +2 ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½Ý·Â¾ï¿½
  */
 public class GrowBallQuest : SpecialAugment
 {
@@ -810,7 +808,7 @@ public class InfiniteGrowBall : SpecialAugment
 }
 
 /*
- * °ø ÀÏÁ¤ Èñ»ý½ÃÅ°¸é ¹Ì¾àÇÑ ¹öÇÁ, Áõ°­ Ç®¿¡ SacrificeQuest2 Ãß°¡
+ * ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ Ç®ï¿½ï¿½ SacrificeQuest2 ï¿½ß°ï¿½
  */
 public class SacrificeQuest1 : SpecialAugment
 {
@@ -842,7 +840,7 @@ public class SacrificeQuest1 : SpecialAugment
 }
 
 /*
- * °ø ÀÏÁ¤ Èñ»ý½ÃÅ°¸é Áß°£ ¹öÇÁ, Áõ°­ Ç®¿¡ SacrificeQuest3 Ãß°¡
+ * ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ Ç®ï¿½ï¿½ SacrificeQuest3 ï¿½ß°ï¿½
  */
 public class SacrificeQuest2 : SpecialAugment
 {
@@ -875,7 +873,7 @@ public class SacrificeQuest2 : SpecialAugment
 }
 
 /*
- * °ø ÀÏÁ¤ Èñ»ý½ÃÅ°¸é ÀÌÈÄ Áõ°­ ¸Ô´Â Å¸ÀÌ¹Ö¿¡ 1È¸ È®Á¤À¸·Î 1Æ¼¾î Áõ°­ 3°³ µîÀå
+ * ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô´ï¿½ Å¸ï¿½Ì¹Ö¿ï¿½ 1È¸ È®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
  */
 public class SacrificeQuest3 : SpecialAugment
 {
@@ -902,7 +900,7 @@ public class SacrificeQuest3 : SpecialAugment
     }
 }
 /*
- * 50È¸ Å¸°Ý½Ã Ãß°¡ °ø ÇÏ³ª
+ * 50È¸ Å¸ï¿½Ý½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ ï¿½Ï³ï¿½
  */
 public class AttackAfterAdditionalBall : SpecialAugment
 {
@@ -957,7 +955,7 @@ public class ShareBallAtk : SpecialAugment
         }
     }
 }
-// È®·ü¿¡ µû¸¥ °­ÇÑ Ãß°¡Å¸(¾îÅÃµ¥¹ÌÁö)
+// È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½Å¸(ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½)
 public class StrongAdditionalAttack : SpecialAugment
 {
     float StrongAttackChance = 0.1f;

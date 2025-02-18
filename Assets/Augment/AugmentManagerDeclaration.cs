@@ -22,6 +22,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public List<IBrick> PoisonBrickSet = new List<IBrick>();
 
     public GameObject SatelliteBeamObj;
+    public GameObject LightningRodObj;
 
     public float DecayDamageMultiple;
 
@@ -44,7 +45,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.5f, 0.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
@@ -83,6 +84,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<AutoGetExp>(),
             gameObject.AddComponent<AntiGravity>(),
             gameObject.AddComponent<BountyHunter>(),
+            gameObject.AddComponent<LightningRod>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -132,8 +134,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Homing>(),
-            gameObject.GetComponent<Atk50Up>(),
+            gameObject.GetComponent<SatelliteBeam>(),
         };
 
         foreach (IAugment augment in TestAugments)

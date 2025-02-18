@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SatelliteBeamSetting : MonoBehaviour
+public class SatelliteBeamObj : MonoBehaviour
 {
     private float TouchDamage;
     private float EffectDamage;

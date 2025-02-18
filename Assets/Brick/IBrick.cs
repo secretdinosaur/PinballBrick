@@ -485,6 +485,23 @@ public partial class IBrick
         EffectStatusSet["Decay"].EffectStack = 0;
         VisualEffectManager.Instance.UnSetDecayVisualEffect(this);
     }
+    
+    public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
+    {
+        bool isCritical = true;
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
+        {
+            isCritical = IsCriticalHit();
+        }
+        float Percent = isCritical ? Random.Range(0.01f, 0.02f) : Random.Range(0.015f, 0.03f);
+        float plusDamage = HpTemp * Percent;
+        
+        float FinalDamage = DecayDamageCalculate(plusDamage + DamageAmount);
+        HP -= FinalDamage;
+        
+        VisualEffectManager.Instance.SpawnParticle("Lightning", this.transform.position, isCritical ? ParticleCount + 4 : ParticleCount);
+        ShowText(FinalDamage.ToString("F1"), "Lightning", isCritical);
+    }
 
     public float DecayDamageCalculate(float Damage)
     {
