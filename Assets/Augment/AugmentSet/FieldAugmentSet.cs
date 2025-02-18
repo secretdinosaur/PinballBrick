@@ -419,3 +419,45 @@ public class BountyHunter: FieldAugment
         }
     }
 }
+
+public class LightningRod: FieldAugment
+{
+    Coroutine Routine = null;
+    GameObject LightningRodObj;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_9", "LightningRod", "LightningRod", 2);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetLightningRod(10f, 8f + Cooldown));
+        LightningRodObj = Instantiate(AugmentManager.instance.LightningRodObj, new Vector2(1000, 1000), Quaternion.identity);
+    }
+
+    public override void Remove()
+    {
+        Destroy(LightningRodObj);
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetLightningRod(float Period, float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            LightningRodObj.transform.position = new Vector2(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 4f));
+            LightningRodObj.SetActive(true);
+            yield return new WaitForSeconds(Period);
+            LightningRodObj.GetComponent<LightningRodObj>().StopCoroutine(LightningRodObj.GetComponent<LightningRodObj>().Routine);
+            LightningRodObj.GetComponent<LightningRodObj>().Routine = null;
+            LightningRodObj.SetActive(false);
+        }
+    }
+}

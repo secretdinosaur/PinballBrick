@@ -5530,6 +5530,7 @@ MonoBehaviour:
   DecayStackLimit: 0
   PoisonBrickSet: []
   SatelliteBeamObj: {fileID: 8416854898795469513, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
+  LightningRodObj: {fileID: 4753891230160916443, guid: bcdc1deb14c076642a75b1b4543e8d18, type: 3}
   DecayDamageMultiple: 0
   FieldGlobalCooldown: 10
   isSacrificeQuest3Cleared: 0
