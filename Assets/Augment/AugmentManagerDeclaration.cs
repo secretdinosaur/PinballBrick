@@ -45,7 +45,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.5f, 0.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
@@ -134,8 +134,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Lightning>(),
-            gameObject.GetComponent<LightningRod>(),
+            gameObject.GetComponent<SatelliteBeam>(),
         };
 
         foreach (IAugment augment in TestAugments)

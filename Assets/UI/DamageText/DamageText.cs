@@ -13,6 +13,8 @@ public class DamageText : MonoBehaviour
     private float lifetime = 0.9f;
 
     private TMP_Text damageText;
+
+    public Coroutine Routine = null;
     
     public void Awake()
     {
@@ -30,7 +32,7 @@ public class DamageText : MonoBehaviour
 
     public void SetText(string Text, string TextType, bool isCritical)
     {
-        StartCoroutine(ShowDamageText());
+        Routine = StartCoroutine(ShowDamageText());
 
         damageText.color = (TextType == "Normal") ? Color.white
             : (TextType == "Additional") ? new Color(1f, 0.5f, 0f)
@@ -50,6 +52,6 @@ public class DamageText : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
-        DamageTextManager.instance.TakeDamageText(this);
+        DamageTextManager.instance.TakeDamageText(DamageTextManager.instance.DamageTextQueue.Dequeue());
     }
 }
