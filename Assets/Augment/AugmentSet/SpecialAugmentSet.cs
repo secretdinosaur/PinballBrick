@@ -1401,3 +1401,46 @@ public class SplitBall : SpecialAugment
         }
     }
 }
+
+public class ThreeBrickCurseAttack : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_42", "ThreeBrickCurseAttack", "ThreeBrickCurseAttack", "Death", 3);
+    }
+
+    public override void Apply() {  }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(Ball ball)
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+            if(BrickManager.Instance.CurrentBricks[index].gameObject.activeInHierarchy)
+            {
+                BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+            }
+        }     
+    }
+}
+
+public class CurseTwice : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_43", "CurseTwice", "CurseTwice", "Death", 2);
+    }
+
+    public override void Apply() 
+    {
+        AugmentManager.instance.CurseActiveNumber = 2;
+    }
+
+    public override void Remove() 
+    {
+        AugmentManager.instance.CurseActiveNumber = 1;
+    }
+
+}

@@ -32,6 +32,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public int SpawnBallAmount;
 
+    public int CurseActiveNumber;
+
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
         { 0, 0.01f },
@@ -52,6 +54,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         DecayDamageMultiple = 1.1f;
         isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
+        CurseActiveNumber = 1;
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -120,6 +123,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<LonelyBall>(),
             gameObject.AddComponent<SuicideBoomBall>(),
             gameObject.AddComponent<SplitBall>(),
+            gameObject.AddComponent<ThreeBrickCurseAttack>(),
+            gameObject.AddComponent<CurseTwice>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<DeadlyPoison>(),
@@ -134,7 +139,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<LightningRod>(),
+            gameObject.GetComponent<ThreeBrickCurseAttack>(),
+            gameObject.GetComponent<CurseTwice>(),
         };
 
         foreach (IAugment augment in TestAugments)

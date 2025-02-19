@@ -503,6 +503,18 @@ public partial class IBrick
         ShowText(FinalDamage.ToString("F1"), "Lightning", isCritical);
     }
 
+    public void DamageByCurse()
+    {
+        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage);
+        for(int i = 0; i < AugmentManager.instance.CurseActiveNumber; i++)
+        {
+            float damage = Random.Range(baseDamage / 3, baseDamage * 2);
+            float FinalDamage = DecayDamageCalculate(damage);
+            HP -= FinalDamage;
+            ShowText(FinalDamage.ToString("F1"), "Curse", false);
+        }
+    }
+
     public float DecayDamageCalculate(float Damage)
     {
         Damage *= Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, EffectStatusSet["Decay"].EffectStack);
