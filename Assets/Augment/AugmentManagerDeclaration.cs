@@ -33,6 +33,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public int SpawnBallAmount;
 
     public int CurseActiveNumber;
+    public int AfterDeathActiveNumber;
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
@@ -47,7 +48,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
@@ -55,6 +56,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
         CurseActiveNumber = 1;
+        AfterDeathActiveNumber = 1;
         ClearAllAugments();
         augmentsSet = new List<IAugment>
         {
@@ -123,17 +125,24 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<LonelyBall>(),
             gameObject.AddComponent<SuicideBoomBall>(),
             gameObject.AddComponent<SplitBall>(),
-            gameObject.AddComponent<ThreeBrickCurseAttack>(),
-            gameObject.AddComponent<CurseTwice>(),
+            gameObject.AddComponent<CurseBall>(),
+            gameObject.AddComponent<DeathEffectTwice>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
+
             gameObject.AddComponent<DeadlyPoison>(),
             gameObject.AddComponent<InfinitePoison>(),
+
             gameObject.AddComponent<PowerfulDecay>(),
             gameObject.AddComponent<DecayExplosion>(),
+
             gameObject.AddComponent<SacrificeQuest2>(),
             gameObject.AddComponent<SacrificeQuest3>(),
+
             gameObject.AddComponent<ShareBallAtk>(),
+
+            gameObject.AddComponent<ThreeBrickCurseAttack>(),
+            gameObject.AddComponent<CurseTwice>(),
             ////////////////////////// Delete These Before Build
         };
 
@@ -141,6 +150,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         {
             gameObject.GetComponent<ThreeBrickCurseAttack>(),
             gameObject.GetComponent<CurseTwice>(),
+            gameObject.GetComponent<DeathEffectTwice>(),
         };
 
         foreach (IAugment augment in TestAugments)
@@ -171,11 +181,13 @@ public class EffectChance
     public float FireChance;
     public float PoisonChance;
     public float DecayChance;
+    public float CurseChance;
 
-    public EffectChance(float fireChance, float poisonChance, float decayChance)
+    public EffectChance(float fireChance, float poisonChance, float decayChance, float curseChance)
     {
         FireChance = fireChance;
         PoisonChance = poisonChance;
         DecayChance = decayChance;
+        CurseChance = curseChance;
     }
 }

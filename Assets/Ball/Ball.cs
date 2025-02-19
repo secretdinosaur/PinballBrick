@@ -54,9 +54,12 @@ public partial class Ball : MonoBehaviour
         }
         else
         {
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            for(int i = 0; i < AugmentManager.instance.AfterDeathActiveNumber; i++)
             {
-                Augment.AfterDeathEffect(this);
+                foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+                {
+                    Augment.AfterDeathEffect(this);
+                }
             }
             GrowthAttackDamage = 0f;
             BallManager.Instance.TakeBall(this);

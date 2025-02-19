@@ -505,14 +505,15 @@ public partial class IBrick
 
     public void DamageByCurse()
     {
-        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage);
-        for(int i = 0; i < AugmentManager.instance.CurseActiveNumber; i++)
-        {
-            float damage = Random.Range(baseDamage / 3, baseDamage * 2);
-            float FinalDamage = DecayDamageCalculate(damage);
-            HP -= FinalDamage;
-            ShowText(FinalDamage.ToString("F1"), "Curse", false);
-        }
+        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
+            + StatManager.instance.Temporary_stat.AttackDamage
+            + RecentlyBall.GrowthAttackDamage)
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+
+        float damage = Random.Range(baseDamage * 0.5f, baseDamage * 1.3f);
+        float FinalDamage = DecayDamageCalculate(damage);
+        HP -= FinalDamage;
+        ShowText(FinalDamage.ToString("F1"), "Curse", false);
     }
 
     public float DecayDamageCalculate(float Damage)
