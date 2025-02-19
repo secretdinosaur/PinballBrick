@@ -1418,7 +1418,7 @@ public class ThreeBrickCurseAttack : SpecialAugment
         for(int i = 0; i < 3; i++)
         {
             int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-            if(BrickManager.Instance.CurrentBricks[index].gameObject.activeInHierarchy)
+            if(BrickManager.Instance.CurrentBricks.Count != 0)
             {
                 BrickManager.Instance.CurrentBricks[index].DamageByCurse();
             }

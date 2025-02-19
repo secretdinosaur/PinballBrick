@@ -33,7 +33,6 @@ public class BrickManager : MonoBehaviour
         ScreenHeight = Screen.height;
         InitializeGrid();
         PoolManager = GetComponent<PoolManager>();
-        UpdateCurrentBricks();
         //StartCoroutine(SpawnBricks());
     }
     
@@ -42,9 +41,12 @@ public class BrickManager : MonoBehaviour
         
     }
 
-    public void UpdateCurrentBricks()
+    public void UpdateCurrentBricks(IBrick brick)
     {
-        CurrentBricks.AddRange(GetComponentsInChildren<IBrick>());
+        if(!CurrentBricks.Contains(brick))
+        {
+            CurrentBricks.Add(brick);
+        }
     }
     void InitializeGrid()
     {
@@ -114,8 +116,7 @@ public class BrickManager : MonoBehaviour
             var method = typeof(PoolManager).GetMethod("TakeToPool");
             var genericMethod = method.MakeGenericMethod(brickType);
             genericMethod.Invoke(PoolManager, new object[] { brick.GetComponent<IBrick>() });
-
-            UpdateCurrentBricks();
+            CurrentBricks.Remove(brick);
         }
 
     }
@@ -139,7 +140,7 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
-        UpdateCurrentBricks();
+        //UpdateCurrentBricks();
         return brick;
     }
     
@@ -151,7 +152,7 @@ public class BrickManager : MonoBehaviour
         var method = typeof(PoolManager).GetMethod("GetFromPool");
         var genericMethod = method.MakeGenericMethod(brickType);
         brick = (IBrick)genericMethod.Invoke(PoolManager, null);
-        UpdateCurrentBricks();
+        //UpdateCurrentBricks();
         return brick;
     }
 
@@ -197,6 +198,7 @@ public class BrickManager : MonoBehaviour
             Vector2 randomPosition = GenerateRandomPosition();
             IBrick brick = GetBrick();
             brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+            UpdateCurrentBricks(brick);
         }
     }
 
@@ -208,6 +210,7 @@ public class BrickManager : MonoBehaviour
         IBrick brick = GetBrick();
         brick.IsBoss = true;
         brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+        UpdateCurrentBricks(brick);
     }
 
     public IBrick SpawnSpecificBrick(string BrickType)
@@ -218,8 +221,8 @@ public class BrickManager : MonoBehaviour
             Vector2 randomPosition = GenerateRandomPosition();
             brick = GetSpecificBrick(BrickType);
             brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+            UpdateCurrentBricks(brick);
         }
-
         return brick;
     }
 }
