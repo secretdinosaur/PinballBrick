@@ -1401,3 +1401,105 @@ public class SplitBall : SpecialAugment
         }
     }
 }
+
+public class CurseBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_42", "CurseBall", "CurseBall", "Death", 4);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    public override void AfterDeathEffect(Ball ball)
+    {
+        if (Random.value < AugmentManager.instance.effectChance.CurseChance)
+        {
+            for (int i = 0; i < AugmentManager.instance.CurseActiveNumber; i++)
+            {
+                int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+                if (BrickManager.Instance.CurrentBricks.Count != 0)
+                {
+                    BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+                }
+            }
+        }
+    }
+}
+
+public class ThreeBrickCurseAttack : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_43", "ThreeBrickCurseAttack", "ThreeBrickCurseAttack", "Death", 3);
+    }
+
+    public override void Apply() 
+    {
+        AugmentManager.instance.effectChance.CurseChance += 0.1f;
+    }
+
+    public override void Remove() 
+    {
+        AugmentManager.instance.effectChance.CurseChance -= 0.1f;
+    }
+
+    public override void AfterDeathEffect(Ball ball)
+    {
+        if(Random.value < AugmentManager.instance.effectChance.CurseChance)
+        {
+            for (int i = 0; i < AugmentManager.instance.CurseActiveNumber * 3; i++)
+            {
+                int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+                if (BrickManager.Instance.CurrentBricks.Count != 0)
+                {
+                    BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+                }
+            }
+        }     
+    }
+}
+
+public class CurseTwice : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_44", "CurseTwice", "CurseTwice", "Death", 2);
+    }
+
+    public override void Apply() 
+    {
+        AugmentManager.instance.CurseActiveNumber = 2;
+    }
+
+    public override void Remove() 
+    {
+        AugmentManager.instance.CurseActiveNumber = 1;
+    }
+}
+
+public class DeathEffectTwice : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_45", "DeathEffectTwice", "DeathEffectTwice", "Death", 1);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.AfterDeathActiveNumber = 2;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.AfterDeathActiveNumber = 1;
+    }
+}
