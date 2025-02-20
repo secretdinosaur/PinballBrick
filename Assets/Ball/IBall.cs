@@ -7,17 +7,22 @@ using Random = UnityEngine.Random;
 using TMPro;
 using TrailRenderer = UnityEngine.TrailRenderer;
 
-public partial class Ball : MonoBehaviour
+public partial class IBall : MonoBehaviour
 {
+    public string BallType;
+    
     public float CurrentSpeed;
     public float SpecialCriticalChance = 0f;
     public bool isPhoenix;
     public Flamethrower flamethrower;
+    
     public bool isOverDeathLine;
+    
     public Queue<Vector2> PositionSet = new Queue<Vector2>();
     public Vector2 StartPosition = new Vector2(0f, -5f);
     public float linearVelocityYValue = 10;
-    void OnEnable()
+    
+    public void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -74,9 +79,8 @@ public partial class Ball : MonoBehaviour
         Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), false);
         Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), false);
     }
-
     
-    void Update()
+    public void Update()
     {
         DetectTargets();
         UpdateCurrentTarget();
@@ -124,7 +128,7 @@ public partial class Ball : MonoBehaviour
             rb.linearVelocity = rb.linearVelocity.normalized * BallManager.Instance.maxSpeed;
         }
     }
-    void OnCollisionEnter2D(Collision2D collision)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
         if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
         {
@@ -157,7 +161,7 @@ public partial class Ball : MonoBehaviour
 
     Coroutine BallStuckCoroutine = null;
     bool IsStucking = false;
-    private void OnCollisionExit2D(Collision2D collision)
+    public void OnCollisionExit2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Brick") && IsStucking && gameObject.activeSelf)
         {
@@ -168,7 +172,7 @@ public partial class Ball : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    public void OnCollisionStay2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Brick") && !IsStucking && gameObject.activeSelf)
         {
@@ -200,7 +204,7 @@ public partial class Ball : MonoBehaviour
     }
 }
 
-public partial class Ball //Homing
+public partial class IBall //Homing
 {
     private float homingThrust = 80f;
     private float detectionRadius = 1.6f;
@@ -283,20 +287,20 @@ public partial class Ball //Homing
     }
 }
 
-public partial class Ball //Bounce = Power
+public partial class IBall //Bounce = Power
 {
     public float BounceTime { get; set; } = 1f;
     private int MaxBounce = 0;
     private SpriteRenderer spriteRenderer;
 }
 
-public partial class Ball //Speed = Power
+public partial class IBall //Speed = Power
 {
     private TrailRenderer TrailRenderer;
     public float TransformationMultiple = 1f;
 }
 
-public partial class Ball //GrowBall
+public partial class IBall //GrowBall
 {
     [SerializeField]
     public float GrowthAttackDamage { get; set; } = 0;

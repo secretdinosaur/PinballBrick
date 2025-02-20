@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using UnityEngine;
 using System.Collections;
@@ -296,7 +297,7 @@ public class DeathExp : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterDeathEffect(Ball ball)
+    public override void AfterDeathEffect(IBall ball)
     {
         LevelManager.Instance.GetExp(30f);
     }
@@ -316,7 +317,7 @@ public class DeathGold : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterDeathEffect(Ball ball)
+    public override void AfterDeathEffect(IBall ball)
     {
         StatManager.instance.GetGold(18);
     }
@@ -663,7 +664,7 @@ public class TheFlamethrower : SpecialAugment
 
     public override void Apply() 
     {
-        foreach (Ball ball in BallManager.Instance.InGameBall)
+        foreach (IBall ball in BallManager.Instance.InGameBall)
         {
             ball.flamethrower.FlamethrowerOn();
         }
@@ -823,7 +824,7 @@ public class SacrificeQuest1 : SpecialAugment
 
     public override void Remove() { }
 
-    public override void AfterDeathEffect(Ball ball)
+    public override void AfterDeathEffect(IBall ball)
     {
         SacrificeNumber++;
         if (SacrificeNumber >= 20 && !isCleared)
@@ -855,7 +856,7 @@ public class SacrificeQuest2 : SpecialAugment
 
     public override void Remove() { }
 
-    public override void AfterDeathEffect(Ball ball)
+    public override void AfterDeathEffect(IBall ball)
     {
         SacrificeNumber++;
         if (SacrificeNumber >= 50 && !isCleared)
@@ -888,7 +889,7 @@ public class SacrificeQuest3 : SpecialAugment
 
     public override void Remove() { }
 
-    public override void AfterDeathEffect(Ball ball)
+    public override void AfterDeathEffect(IBall ball)
     {
         SacrificeNumber++;
         if (SacrificeNumber >= 70 && !isCleared)
@@ -946,10 +947,10 @@ public class ShareBallAtk : SpecialAugment
 
     public override void Remove() { }
 
-    public override void AfterDeathEffect(Ball ball)
+    public override void AfterDeathEffect(IBall ball)
     {
         float ShareAtk = ball.GrowthAttackDamage *= 0.7f;
-        foreach (Ball inGameBall in BallManager.Instance.InGameBall)
+        foreach (IBall inGameBall in BallManager.Instance.InGameBall)
         {
             inGameBall.GrowthAttackDamage += ShareAtk / BallManager.Instance.InGameBall.Count;
         }
@@ -1173,11 +1174,11 @@ public class RebirthBall : SpecialAugment
 
     public override void Remove() { }
 
-    public override void AfterDeathEffect(Ball ball)
+    public override void AfterDeathEffect(IBall ball)
     {
         if (Random.value < 0.05f)
         {
-            BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+            BallManager.Instance.CreateSpecificBall(AugmentManager.instance.SpawnBallAmount, ball.BallType);
         }
     }
 }
@@ -1330,7 +1331,7 @@ public class SuicideBoomBall : SpecialAugment
 
     public override void AfterMainAttackEffect(IBrick Brick)
     {
-        Ball ball = Brick.RecentlyBall;
+        IBall ball = Brick.RecentlyBall;
         if(Random.value < 0.1f)
         {
             Brick.ArbitraryDamageAttack(
@@ -1349,7 +1350,7 @@ public class SuicideBoomBall : SpecialAugment
             ball.BallDied();
             if(Random.value < 0.4f)
             {
-                BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+                BallManager.Instance.CreateSpecificBall(AugmentManager.instance.SpawnBallAmount, ball.BallType);
             }
         }
     }
@@ -1376,16 +1377,16 @@ public class SplitBall : SpecialAugment
     {
         if(Random.value < 0.01f)
         {
-            Ball RecentlyBall = Brick.RecentlyBall;
+            IBall RecentlyBall = Brick.RecentlyBall;
             CreateBall(AugmentManager.instance.SpawnBallAmount, RecentlyBall);
         }
     }
 
-    public void CreateBall(int Num, Ball RecentlyBall)
+    public void CreateBall(int Num, IBall RecentlyBall)
     {
         for (int i = 0; i < Num; i++)
         {
-            Ball ball = BallManager.Instance.PoolManager.GetFromPool<Ball>();
+            IBall ball = GetSpecificBall(RecentlyBall.BallType);
             ball.gameObject.SetActive(false);
             ball.StartPosition = RecentlyBall.gameObject.transform.position;
             ball.linearVelocityYValue = Random.Range(-5f, 5f);
@@ -1399,6 +1400,17 @@ public class SplitBall : SpecialAugment
             }
             ball.gameObject.SetActive(true);
         }
+    }
+    
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+        
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
     }
 }
 
@@ -1419,7 +1431,7 @@ public class CurseBall : SpecialAugment
 
     }
 
-    public override void AfterDeathEffect(Ball ball)
+    public override void AfterDeathEffect(IBall ball)
     {
         if (Random.value < AugmentManager.instance.effectChance.CurseChance)
         {
@@ -1452,7 +1464,7 @@ public class ThreeBrickCurseAttack : SpecialAugment
         AugmentManager.instance.effectChance.CurseChance -= 0.1f;
     }
 
-    public override void AfterDeathEffect(Ball ball)
+    public override void AfterDeathEffect(IBall ball)
     {
         if(Random.value < AugmentManager.instance.effectChance.CurseChance)
         {

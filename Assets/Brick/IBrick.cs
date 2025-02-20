@@ -204,10 +204,10 @@ public partial class IBrick : MonoBehaviour
 
 public partial class IBrick
 {
-    public Ball RecentlyBall;
+    public IBall RecentlyBall;
     private float SpecialCriticalChance; // CriticalChance that Increased by Augment
     
-    public void TakeDamage(Ball ball)
+    public void TakeDamage(IBall ball)
     {
         RecentlyBall = ball;
         TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
@@ -652,7 +652,7 @@ public partial class IBrick //BlackHole Brick
 {
     public bool isTouchedBlackHole = false;
     public GameObject TouchedObject;
-    public void TouchedBlackHole(Ball ball)
+    public void TouchedBlackHole(IBall ball)
     {
         isTouchedBlackHole = true;
         TouchedObject = ball.gameObject;
