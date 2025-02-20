@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7133679490016352498}
   - component: {fileID: 6749438708947133792}
   - component: {fileID: 8444083972494180989}
-  - component: {fileID: 1281705400875236739}
+  - component: {fileID: 5243072080288127139}
   - component: {fileID: 5368739640230251868}
   m_Layer: 8
   m_Name: Ball
@@ -155,7 +155,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &1281705400875236739
+--- !u!114 &5243072080288127139
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,13 +164,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 26260608329336785}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18a5bf9ff0f549349bc71231e8bae0db, type: 3}
+  m_Script: {fileID: 11500000, guid: cdda49ad52a024642a31de93ddd97822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BallType: 
   CurrentSpeed: 0
   SpecialCriticalChance: 0
   isPhoenix: 0
   flamethrower: {fileID: 0}
+  isOverDeathLine: 0
+  StartPosition: {x: 0, y: -5}
+  linearVelocityYValue: 10
   targets: []
   TransformationMultiple: 1
   GrowthAttackDamageObserve: 0

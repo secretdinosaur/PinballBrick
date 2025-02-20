@@ -22,7 +22,7 @@ public class ShieldBrick : IBrick
     {
         if(collision.gameObject.CompareTag("Ball"))
         {
-            TakeDamage(collision.gameObject.GetComponent<Ball>());
+            TakeDamage(collision.gameObject.GetComponent<IBall>());
         }
     }
 

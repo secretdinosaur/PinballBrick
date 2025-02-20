@@ -13,7 +13,7 @@ public class UpperBrick : IBrick
     {
         if (collision.gameObject.CompareTag("Ball") && HP > 0)
         {
-            TakeDamage(collision.gameObject.GetComponent<Ball>());
+            TakeDamage(collision.gameObject.GetComponent<IBall>());
         }
     }
 }

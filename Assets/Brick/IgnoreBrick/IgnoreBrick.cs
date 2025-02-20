@@ -17,7 +17,7 @@ public class IgnoreBrick : IBrick
     {
         if (collision.gameObject.CompareTag("Ball") && !Ignoring)
         {
-            TakeDamage(collision.gameObject.GetComponent<Ball>());
+            TakeDamage(collision.gameObject.GetComponent<IBall>());
             if (gameObject.activeInHierarchy)
             {
                 StartCoroutine(IgnoreDamage());

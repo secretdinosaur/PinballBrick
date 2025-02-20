@@ -138,7 +138,7 @@ public class PhoenixBall : FieldAugment
             yield return new WaitForSeconds(Cooldown);
             if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null && !BallManager.Instance.thereISPhoenix)
             {
-                Ball ball = BallManager.Instance.InGameBall[Random.Range(0, BallManager.Instance.InGameBall.Count)];
+                IBall ball = BallManager.Instance.InGameBall[Random.Range(0, BallManager.Instance.InGameBall.Count)];
                 ball.isPhoenix = true;
                 BallManager.Instance.thereISPhoenix = true;
                 yield return new WaitForSeconds(period);
