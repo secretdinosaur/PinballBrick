@@ -5536,6 +5536,7 @@ MonoBehaviour:
   isSacrificeQuest3Cleared: 0
   SpawnBallAmount: 0
   CurseActiveNumber: 0
+  AfterDeathActiveNumber: 0
 --- !u!114 &218456172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12950,6 +12951,8 @@ MonoBehaviour:
   isOnFlamerower: 0
   isAntiGravity: 0
   PoolManager: {fileID: 0}
+  NormalBall: 
+  BallInfo: {fileID: 0}
   InGameBall: []
   inGameBallPosition: []
   thereISPhoenix: 0
@@ -12968,7 +12971,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pools:
   - _name: Ball
-    _component: {fileID: 1281705400875236739, guid: 04ae2882a4240e14a822afdaa03babb6, type: 3}
+    _component: {fileID: 5243072080288127139, guid: 04ae2882a4240e14a822afdaa03babb6, type: 3}
+    _count: 0
+    _container: {fileID: 998555652}
+    _nonLazy: 0
+  - _name: BombBall
+    _component: {fileID: 2300587642188130041, guid: d1d99c40382eb7c41b78d4bd1659a2e5, type: 3}
     _count: 0
     _container: {fileID: 998555652}
     _nonLazy: 0

@@ -15,11 +15,17 @@ public class BallManager : MonoBehaviour
     public string NormalBall;
     
     public BallInfo BallInfo;
+    
+    private Canvas canvas;
+    private Camera camera;
     void Awake()
     {
         Instance = this;
         PoolManager = GetComponent<PoolManager>();
-        NormalBall = "Ball";
+        NormalBall = "BombBall";
+        
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        camera = Camera.main;
     }
 
     public void CreateBall(int Num)
@@ -54,7 +60,30 @@ public class BallManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().angularVelocity = 0;
         ball.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0, 0);
         ball.transform.position = new Vector2(0, -5);
-        PoolManager.TakeToPool<IBall>(ball);
+        
+        Type ballType = Type.GetType(ball.BallType);
+        var method = typeof(PoolManager).GetMethod("TakeToPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        genericMethod.Invoke(PoolManager, new object[] { ball.GetComponent<IBall>() });
+    }
+    
+    public void BallShowText(IBall ball, string Text, string DamageType, bool isCritical)
+    {
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(ball.gameObject.transform.position);
+        if(canvas == null)
+        {
+            canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        }
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        Vector2 TextPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPosition,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : camera,
+            out TextPosition
+        );
+     
+        DamageTextManager.instance.CreateDamageText(TextPosition, Text, DamageType, isCritical);
     }
     
     public List<IBall> InGameBall = new List<IBall>();

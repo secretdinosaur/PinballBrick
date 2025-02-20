@@ -67,7 +67,7 @@ public partial class IBall : MonoBehaviour
                 }
             }
             GrowthAttackDamage = 0f;
-            BallManager.Instance.TakeBall(this);
+            BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
         }
     }
 
@@ -128,7 +128,7 @@ public partial class IBall : MonoBehaviour
             rb.linearVelocity = rb.linearVelocity.normalized * BallManager.Instance.maxSpeed;
         }
     }
-    public void OnCollisionEnter2D(Collision2D collision)
+    public virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
         {
