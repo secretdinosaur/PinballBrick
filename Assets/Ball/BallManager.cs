@@ -3,6 +3,7 @@ using UnityEngine;
 using Redcode.Pools;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using Random = UnityEngine.Random;
 
 public class BallManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class BallManager : MonoBehaviour
     {
         Instance = this;
         PoolManager = GetComponent<PoolManager>();
-        NormalBall = "BombBall";
+        NormalBall = "Ball";
         
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         camera = Camera.main;
@@ -33,6 +34,10 @@ public class BallManager : MonoBehaviour
         for(int i = 0; i < Num; i++)
         {
             IBall ball = GetSpecificBall(NormalBall);
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 1f)
+            {
+                IBall BombBall = GetSpecificBall("BombBall");
+            }
         }
     }
 
@@ -41,6 +46,10 @@ public class BallManager : MonoBehaviour
         for (int i = 0; i < Num; i++)
         {
             IBall ball = GetSpecificBall(BallType);
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 1f)
+            {
+                IBall BombBall = GetSpecificBall("BombBall");
+            }
         }
     }
     
