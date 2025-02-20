@@ -28,8 +28,9 @@ public class BombBall : IBall
         BallManager.Instance.BallShowText(this, "Boom", null, false);
         if(detectArea.NearbyBricks != null)
         {
-            foreach (IBrick brick in detectArea.NearbyBricks)
+            foreach (IBrick brick in detectArea.NearbyBricks.ToArray())
             {
+                if(brick.gameObject.activeInHierarchy)
                 brick.ArbitraryDamageAttack(
                     100 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
                     false,

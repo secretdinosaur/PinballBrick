@@ -3,6 +3,7 @@ using UnityEngine;
 using Redcode.Pools;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using UnityEditor;
 using Random = UnityEngine.Random;
 
 public class BallManager : MonoBehaviour
@@ -97,6 +98,7 @@ public class BallManager : MonoBehaviour
     
     public List<IBall> InGameBall = new List<IBall>();
     public List<Transform> inGameBallPosition = new List<Transform>();
+    public List<Collider2D> inGameBallCollider = new List<Collider2D>();
     public bool thereISPhoenix = false;
     public Vector2 boxSize = new Vector2(5f, 10f);
 
@@ -117,6 +119,7 @@ public class BallManager : MonoBehaviour
             {
                 InGameBall.Add(obj);
                 inGameBallPosition.Add(obj.gameObject.GetComponent<Transform>());
+                inGameBallCollider.Add(obj.gameObject.GetComponent<Collider2D>());
             }
         }
     }
@@ -125,6 +128,7 @@ public class BallManager : MonoBehaviour
     {
         InGameBall.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
         inGameBallPosition.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
+        inGameBallCollider.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
     }
     
     void OnDrawGizmos()

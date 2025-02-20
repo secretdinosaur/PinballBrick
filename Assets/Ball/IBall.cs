@@ -75,9 +75,17 @@ public partial class IBall : MonoBehaviour
     {
         Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), true);
         Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), true);
+        foreach (Collider2D collider2D in BallManager.Instance.inGameBallCollider)
+        {
+            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collider2D, true);
+        }
         yield return new WaitForSeconds(0.3f);
         Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), false);
         Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), false);
+        foreach (Collider2D collider2D in BallManager.Instance.inGameBallCollider)
+        {
+            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collider2D, false);
+        }
     }
     
     public void Update()
