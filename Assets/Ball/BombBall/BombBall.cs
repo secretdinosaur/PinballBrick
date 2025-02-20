@@ -1,62 +1,42 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BombBall : IBall
 {
-    private int boomCount;
-    private int BoomCount
-    {
-        get
-        {
-            return boomCount;
-        }
-        set
-        {
-            boomCount = value;
-            if (boomCount < 0)
-            {
-                boomCount = 0;
-            }
-        }
-    }
-    private List<IBrick> NearbyBricks;
+    private int BoomCount;
+    private BombBallDetect detectArea;
     void OnEnable()
     {
         base.OnEnable();
-        BoomCount = 4;
-        NearbyBricks = new List<IBrick>();
+        BoomCount = 3;
         BallType = "BombBall";
+        detectArea = GetComponentInChildren<BombBallDetect>();
+        StartCoroutine(StartBombCount());
     }
 
-    public override void OnCollisionEnter2D(Collision2D collision)
+    IEnumerator StartBombCount()
     {
-        base.OnCollisionEnter2D(collision);
-        BoomCount--;
-        if (BoomCount == 0 && collision.gameObject.CompareTag("Brick"))
+        while (BoomCount > 0)
         {
-            NearbyBricks = collision.gameObject.GetComponent<IBrick>().NearbyBricks;
-            collision.gameObject.GetComponent<IBrick>().ArbitraryDamageAttack(
-                100 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                false,
-                (100 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
-                "Fire");
-            if(NearbyBricks != null)
-            {
-                foreach (IBrick brick in NearbyBricks)
-                {
-                    brick.ArbitraryDamageAttack(
-                        100 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                        false,
-                        (100 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
-                        "Fire");
-                }
-            }
-            BallDied();
-        }
-        else
-        {
+            yield return new WaitForSeconds(1f);
             BallManager.Instance.BallShowText(this, BoomCount.ToString(), null, false);
+            BoomCount--;
         }
+        yield return new WaitForSeconds(1f);
+        BallManager.Instance.BallShowText(this, "Boom", null, false);
+        if(detectArea.NearbyBricks != null)
+        {
+            foreach (IBrick brick in detectArea.NearbyBricks)
+            {
+                brick.ArbitraryDamageAttack(
+                    100 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
+                    false,
+                    (100 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
+                    "Fire");
+            }
+        }
+        BallDied();
     }
 }

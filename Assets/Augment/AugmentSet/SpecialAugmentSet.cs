@@ -1515,3 +1515,21 @@ public class DeathEffectTwice : SpecialAugment
         AugmentManager.instance.AfterDeathActiveNumber = 1;
     }
 }
+
+public class SpawnBombBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_46", "SpawnBombBall", "SpawnBombBall", "Ball", 3);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+        
+    }
+}

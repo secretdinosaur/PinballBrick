@@ -172,7 +172,7 @@ public partial class IBall : MonoBehaviour
         }
     }
 
-    public void OnCollisionStay2D(Collision2D collision)
+    public virtual void OnCollisionStay2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Brick") && !IsStucking && gameObject.activeSelf)
         {
