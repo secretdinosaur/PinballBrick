@@ -35,7 +35,7 @@ public class BallManager : MonoBehaviour
         for(int i = 0; i < Num; i++)
         {
             IBall ball = GetSpecificBall(NormalBall);
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 1f)
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
             {
                 IBall BombBall = GetSpecificBall("BombBall");
             }

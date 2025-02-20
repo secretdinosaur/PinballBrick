@@ -1387,6 +1387,10 @@ public class SplitBall : SpecialAugment
         for (int i = 0; i < Num; i++)
         {
             IBall ball = GetSpecificBall(RecentlyBall.BallType);
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+            {
+                IBall BombBall = GetSpecificBall("BombBall");
+            }
             ball.gameObject.SetActive(false);
             ball.StartPosition = RecentlyBall.gameObject.transform.position;
             ball.linearVelocityYValue = Random.Range(-5f, 5f);
