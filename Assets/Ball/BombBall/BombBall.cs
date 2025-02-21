@@ -12,6 +12,7 @@ public class BombBall : IBall
         base.OnEnable();
         BoomCount = 3;
         BallType = "BombBall";
+        BallBaseDamage = 0;
         detectArea = GetComponentInChildren<BombBallDetect>();
         StartCoroutine(StartBombCount());
     }

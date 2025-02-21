@@ -1537,3 +1537,25 @@ public class SpawnBombBall : SpecialAugment
         
     }
 }
+
+public class ChangeNormalToGlass : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_47", "ChangeNormalToGlass", "ChangeNormalToGlass", "Ball", 3);
+    }
+
+    public override void Apply()
+    {
+        BallManager.Instance.NormalBall = "GlassBall";
+        StatManager.instance.Temporary_stat.AttackDamage += 2f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        BallManager.Instance.NormalBall = "Ball";
+        StatManager.instance.Temporary_stat.AttackDamage -= 2f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
