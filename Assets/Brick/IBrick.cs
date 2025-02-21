@@ -231,7 +231,8 @@ public partial class IBrick
         bool CriticalHit = false;
         float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
                                 StatManager.instance.Temporary_stat.AttackDamage +
-                                RecentlyBall.GrowthAttackDamage;
+                                RecentlyBall.GrowthAttackDamage +
+                                RecentlyBall.BallBaseDamage;
 
         if (IsCriticalHit())
         {

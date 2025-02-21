@@ -12955,6 +12955,7 @@ MonoBehaviour:
   BallInfo: {fileID: 0}
   InGameBall: []
   inGameBallPosition: []
+  inGameBallCollider: []
   thereISPhoenix: 0
   boxSize: {x: 5, y: 10}
 --- !u!114 &998555654
@@ -12977,6 +12978,11 @@ MonoBehaviour:
     _nonLazy: 0
   - _name: BombBall
     _component: {fileID: 2300587642188130041, guid: d1d99c40382eb7c41b78d4bd1659a2e5, type: 3}
+    _count: 0
+    _container: {fileID: 998555652}
+    _nonLazy: 0
+  - _name: GlassBall
+    _component: {fileID: -6809703149241943414, guid: bbc14f136ca1a2e4490b58c7cd5707fe, type: 3}
     _count: 0
     _container: {fileID: 998555652}
     _nonLazy: 0

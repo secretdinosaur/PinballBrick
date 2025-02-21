@@ -10,6 +10,7 @@ using TrailRenderer = UnityEngine.TrailRenderer;
 public partial class IBall : MonoBehaviour
 {
     public string BallType;
+    public float BallBaseDamage;
     
     public float CurrentSpeed;
     public float SpecialCriticalChance = 0f;
