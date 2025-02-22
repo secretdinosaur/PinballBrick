@@ -1529,12 +1529,12 @@ public class SpawnBombBall : SpecialAugment
 
     public override void Apply()
     {
-
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<RebornBombBall>());
     }
 
     public override void Remove()
     {
-        
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").AddComponent<RebornBombBall>());
     }
 }
 
@@ -1558,4 +1558,16 @@ public class ChangeNormalToGlass : SpecialAugment
         StatManager.instance.Temporary_stat.AttackDamage -= 2f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
+}
+
+public class RebornBombBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_48", "RebornBombBall", "RebornBombBall", "Ball", 1);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
 }

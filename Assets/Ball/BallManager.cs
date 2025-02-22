@@ -24,7 +24,7 @@ public class BallManager : MonoBehaviour
     {
         Instance = this;
         PoolManager = GetComponent<PoolManager>();
-        NormalBall = "Ball";
+        NormalBall = "BombBall";
         
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         camera = Camera.main;
@@ -49,7 +49,7 @@ public class BallManager : MonoBehaviour
             IBall ball = GetSpecificBall(BallType);
             if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 1f)
             {
-                IBall BombBall = GetSpecificBall("BombBall");
+                IBall BombBall = GetSpecificBall("Ball");
             }
         }
     }

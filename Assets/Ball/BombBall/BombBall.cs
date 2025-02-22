@@ -2,22 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BombBall : IBall
 {
     private int BoomCount;
-    private BombBallDetect detectArea;
     void OnEnable()
     {
         base.OnEnable();
         BoomCount = 3;
         BallType = "BombBall";
         BallBaseDamage = 0;
-        detectArea = GetComponentInChildren<BombBallDetect>();
-        StartCoroutine(StartBombCount());
+        StartCoroutine(StartBoomCount());
     }
 
-    IEnumerator StartBombCount()
+    IEnumerator StartBoomCount()
     {
         while (BoomCount > 0)
         {
@@ -27,9 +26,9 @@ public class BombBall : IBall
         }
         yield return new WaitForSeconds(1f);
         BallManager.Instance.BallShowText(this, "Boom", null, false);
-        if(detectArea.NearbyBricks != null)
+        if(detectArea.BoomArea != null)
         {
-            foreach (IBrick brick in detectArea.NearbyBricks.ToArray())
+            foreach (IBrick brick in detectArea.BoomArea.ToArray())
             {
                 if(brick.gameObject.activeInHierarchy)
                 brick.ArbitraryDamageAttack(
@@ -37,6 +36,13 @@ public class BombBall : IBall
                     false,
                     (100 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
                     "Fire");
+            }
+        }
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_48"))
+        {
+            if(Random.value < 0.5f)
+            {
+                BallManager.Instance.CreateSpecificBall(1, "BombBall");
             }
         }
         BallDied();
