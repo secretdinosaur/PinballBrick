@@ -11,14 +11,15 @@ public partial class IBall : MonoBehaviour
 {
     public string BallType;
     public float BallBaseDamage;
-    
+    public BallDetect detectArea;
+
     public float CurrentSpeed;
     public float SpecialCriticalChance = 0f;
     public bool isPhoenix;
     public Flamethrower flamethrower;
     
     public bool isOverDeathLine;
-    
+
     public Queue<Vector2> PositionSet = new Queue<Vector2>();
     public Vector2 StartPosition = new Vector2(0f, -5f);
     public float linearVelocityYValue = 10;
@@ -36,7 +37,8 @@ public partial class IBall : MonoBehaviour
         TrailRenderer = gameObject.GetComponent<TrailRenderer>();
         BounceTime = 1f;
         MaxBounce = 0;
-        targets.Clear();
+        detectArea = GetComponentInChildren<BallDetect>();
+        detectArea.NearbyBricks.Clear();
         currentTarget = null;
         isOverDeathLine = false;
         isPhoenix = false;
@@ -91,7 +93,6 @@ public partial class IBall : MonoBehaviour
     
     public void Update()
     {
-        DetectTargets();
         UpdateCurrentTarget();
 
         GrowthAttackDamageObserve = GrowthAttackDamage;
@@ -165,6 +166,11 @@ public partial class IBall : MonoBehaviour
         if (collision.gameObject.CompareTag("Brick") && gameObject.activeSelf)
         {
             collision.gameObject.GetComponent<IBrick>().BallSpeed = CurrentSpeed;
+            currentTarget = null;
+            if (detectArea.NearbyBricks.Contains(collision.gameObject.GetComponent<IBrick>()))
+            {
+                detectArea.NearbyBricks.Remove(collision.gameObject.GetComponent<IBrick>());
+            }
         }
     }
 
@@ -217,15 +223,10 @@ public partial class IBall //Homing
 {
     private float homingThrust = 80f;
     private float detectionRadius = 1.6f;
-    private string targetLayerName = "Game";
     private float rotationSpeed = 40f;
 
     private Rigidbody2D rb;
-    private LayerMask targetLayer = new LayerMask();
-    [SerializeField]
-    private List<Transform> targets = new List<Transform>();
     private Transform currentTarget = new RectTransform();
-    private float lastDetectionTime;
 
     public void FixedUpdate()
     {
@@ -241,42 +242,20 @@ public partial class IBall //Homing
         }
     }
 
-    private void DetectTargets()
-    {
-        if (Time.time - lastDetectionTime < 1f) return;
-        lastDetectionTime = Time.time;
-
-        LayerMask targetLayer = LayerMask.GetMask(targetLayerName);
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius, targetLayer);
-
-        targets.Clear();
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider != null && collider.gameObject.activeInHierarchy && collider.transform != this.transform)
-            {
-                targets.Add(collider.transform);
-            }
-        }
-    }
-
     private void UpdateCurrentTarget()
     {
-        targets.RemoveAll(target => target == null 
-                                    || !target.gameObject.activeInHierarchy 
-                                    || Vector2.Distance(transform.position, target.position) > detectionRadius);
-
-        if (targets.Count > 0)
+        if (detectArea.NearbyBricks.Count > 0)
         {
             float closestDistance = float.MaxValue;
             Transform closestTarget = null;
 
-            foreach (Transform target in targets)
+            foreach (IBrick target in detectArea.NearbyBricks)
             {
-                float distance = Vector2.Distance(transform.position, target.position);
+                float distance = Vector2.Distance(transform.position, target.gameObject.transform.position);
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                    closestTarget = target;
+                    closestTarget = target.gameObject.transform;
                 }
             }
 
@@ -286,13 +265,6 @@ public partial class IBall //Homing
         {
             currentTarget = null;
         }
-    }
-    
-    private void OnDrawGizmos()
-    {
-        // 검은색으로 범위 표시 (원)
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }
 

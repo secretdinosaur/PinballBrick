@@ -150,7 +150,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<ChangeNormalToGlass>(),
+            gameObject.GetComponent<Homing>(),
         };
 
         foreach (IAugment augment in TestAugments)

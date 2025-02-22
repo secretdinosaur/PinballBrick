@@ -6,14 +6,12 @@ using UnityEngine;
 public class BombBall : IBall
 {
     private int BoomCount;
-    private BombBallDetect detectArea;
     void OnEnable()
     {
         base.OnEnable();
         BoomCount = 3;
         BallType = "BombBall";
         BallBaseDamage = 0;
-        detectArea = GetComponentInChildren<BombBallDetect>();
         StartCoroutine(StartBombCount());
     }
 
