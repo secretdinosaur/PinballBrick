@@ -145,12 +145,14 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
             gameObject.AddComponent<ThreeBrickCurseAttack>(),
             gameObject.AddComponent<CurseTwice>(),
+
+            gameObject.AddComponent<RebornBombBall>(),
             ////////////////////////// Delete These Before Build
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Homing>(),
+            gameObject.GetComponent<RebornBombBall>(),
         };
 
         foreach (IAugment augment in TestAugments)
