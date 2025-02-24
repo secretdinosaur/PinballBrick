@@ -21,9 +21,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public List<IBrick> PoisonBrickSet = new List<IBrick>();
 
-    public GameObject SatelliteBeamObj;
-    public GameObject LightningRodObj;
-
     public float DecayDamageMultiple;
 
     public float FieldGlobalCooldown = 10f;
@@ -152,7 +149,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<RebornBombBall>(),
+            gameObject.GetComponent<LightningRod>(),
+            gameObject.GetComponent<SatelliteBeam>(),
+            gameObject.GetComponent<SpawnBombBall>(),
         };
 
         foreach (IAugment augment in TestAugments)

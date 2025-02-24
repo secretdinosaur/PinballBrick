@@ -5097,6 +5097,7 @@ Transform:
   - {fileID: 2000923007}
   - {fileID: 2033836775}
   - {fileID: 137631891}
+  - {fileID: 334616435}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &177869544
@@ -5529,8 +5530,6 @@ MonoBehaviour:
   PoisonStackLimit: 0
   DecayStackLimit: 0
   PoisonBrickSet: []
-  SatelliteBeamObj: {fileID: 8416854898795469513, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
-  LightningRodObj: {fileID: 4753891230160916443, guid: bcdc1deb14c076642a75b1b4543e8d18, type: 3}
   DecayDamageMultiple: 0
   FieldGlobalCooldown: 10
   isSacrificeQuest3Cleared: 0
@@ -5821,6 +5820,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 264348866}
   m_CullTransparentMesh: 1
+--- !u!1 &334616434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 334616435}
+  - component: {fileID: 334616437}
+  - component: {fileID: 334616438}
+  m_Layer: 0
+  m_Name: SpecialSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &334616435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334616434}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 153662570}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &334616437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334616434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733f4e1ff483611408f4a8d4fc9202ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pools:
+  - _name: SatelliteBeam
+    _component: {fileID: 7326153111843879287, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
+    _count: 0
+    _container: {fileID: 334616435}
+    _nonLazy: 0
+  - _name: LightningRod
+    _component: {fileID: 1357072191999100221, guid: bcdc1deb14c076642a75b1b4543e8d18, type: 3}
+    _count: 0
+    _container: {fileID: 334616435}
+    _nonLazy: 0
+--- !u!114 &334616438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334616434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb87dc5c631c1a84cb14c315325ad746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PoolManager: {fileID: 0}
+  SpecialObjInfo: {fileID: 11400000, guid: e0d7b01b9185eb34aa2362270653723c, type: 2}
 --- !u!1 &339537033
 GameObject:
   m_ObjectHideFlags: 0
@@ -12952,7 +13021,7 @@ MonoBehaviour:
   isAntiGravity: 0
   PoolManager: {fileID: 0}
   NormalBall: 
-  BallInfo: {fileID: 0}
+  BallInfo: {fileID: 11400000, guid: afd326ac66493b34c9396ea59079a1d7, type: 2}
   InGameBall: []
   inGameBallPosition: []
   inGameBallCollider: []
