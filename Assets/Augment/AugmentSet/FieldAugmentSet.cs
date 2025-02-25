@@ -411,3 +411,44 @@ public class LightningRod: FieldAugment
         }
     }
 }
+
+public class Laser : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_10", "Laser", "Laser", 3);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetLaser(3f + Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetLaser(float Cooldown)
+    {
+        while (true)
+        {
+            //yield return new WaitForSeconds(Random.Range(Cooldown - 4f, Cooldown + 4f));
+            yield return new WaitForSeconds(3f);
+            if (BallManager.Instance.InGameBall.Count > 0)
+            {
+                for(int i = 0; i < Random.Range(1, BallManager.Instance.InGameBall.Count); i++)
+                {
+                    SpecialObjManager.Instance.CreateSpecialObj("LaserObj");
+                }
+            }
+        }
+    }
+}
