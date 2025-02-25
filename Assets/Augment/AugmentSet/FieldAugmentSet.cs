@@ -204,7 +204,6 @@ public class TargetMark : FieldAugment
 public class SatelliteBeam : FieldAugment
 {
     Coroutine Routine = null;
-    GameObject SatelliteBeamObj;
     float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 10;
 
     private void OnEnable()
@@ -215,12 +214,10 @@ public class SatelliteBeam : FieldAugment
     public override void Apply()
     {
         Routine = StartCoroutine(FireSatelliteBeam(20f + Cooldown));
-        SatelliteBeamObj = Instantiate(AugmentManager.instance.SatelliteBeamObj, new Vector2(1000, 1000), Quaternion.identity);
     }
 
     public override void Remove()
     {
-        Destroy(SatelliteBeamObj);
         if (Routine != null)
         {
             StopCoroutine(Routine);
@@ -233,47 +230,8 @@ public class SatelliteBeam : FieldAugment
         while (true)
         {
             yield return new WaitForSeconds(Cooldown);
-            Vector2 StartLocation = StartCoordinateSetting();
-            Vector2 FinishLocation = FinishCoordinateSetting(StartLocation);
-            SatelliteBeamObj.transform.position = StartLocation;
-            yield return StartCoroutine(MoveSatelliteBeam(StartLocation, FinishLocation));
+            SpecialObjManager.Instance.CreateSpecialObj("SatelliteBeamObj");
         }
-    }
-
-    private IEnumerator MoveSatelliteBeam(Vector2 StartLocation, Vector2 FinishLocation)
-    {
-        float elapsedTime = 0f;
-
-        while (elapsedTime < 12.5f)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / 12.5f;
-            t = Mathf.SmoothStep(0, 1, t);
-            SatelliteBeamObj.transform.position = Vector2.Lerp(StartLocation, FinishLocation, t);
-            yield return null;
-        }
-
-        SatelliteBeamObj.transform.position = FinishLocation;
-    }
-
-    private Vector2 StartCoordinateSetting()
-    {
-        float X, Y;
-        
-        X = Random.value < 0.5f ? 5f : -5f;
-        Y = Random.Range(-1.5f, 3.5f);
-
-        return new Vector2(X, Y);
-    }
-
-    private Vector2 FinishCoordinateSetting(Vector2 StartCoordinate)
-    {
-        float X, Y;
-
-        X = StartCoordinate.x == 5f ? -5f : 5f;
-        Y = Random.Range(-1f, 4f);
-
-        return new Vector2(X, Y);
     }
 }
 
@@ -423,7 +381,6 @@ public class BountyHunter: FieldAugment
 public class LightningRod: FieldAugment
 {
     Coroutine Routine = null;
-    GameObject LightningRodObj;
     float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
 
     private void OnEnable()
@@ -433,13 +390,11 @@ public class LightningRod: FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetLightningRod(10f, 8f + Cooldown));
-        LightningRodObj = Instantiate(AugmentManager.instance.LightningRodObj, new Vector2(1000, 1000), Quaternion.identity);
+        Routine = StartCoroutine(GetLightningRod(8f + Cooldown));
     }
 
     public override void Remove()
     {
-        Destroy(LightningRodObj);
         if (Routine != null)
         {
             StopCoroutine(Routine);
@@ -447,17 +402,53 @@ public class LightningRod: FieldAugment
         }
     }
 
-    private IEnumerator GetLightningRod(float Period, float Cooldown)
+    private IEnumerator GetLightningRod(float Cooldown)
     {
         while (true)
         {
             yield return new WaitForSeconds(Cooldown);
-            LightningRodObj.transform.position = new Vector2(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 4f));
-            LightningRodObj.SetActive(true);
-            yield return new WaitForSeconds(Period);
-            LightningRodObj.GetComponent<LightningRodObj>().StopCoroutine(LightningRodObj.GetComponent<LightningRodObj>().Routine);
-            LightningRodObj.GetComponent<LightningRodObj>().Routine = null;
-            LightningRodObj.SetActive(false);
+            SpecialObjManager.Instance.CreateSpecialObj("LightningRodObj");
+        }
+    }
+}
+
+public class Laser : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_10", "Laser", "Laser", 3);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetLaser(3f + Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetLaser(float Cooldown)
+    {
+        while (true)
+        {
+            //yield return new WaitForSeconds(Random.Range(Cooldown - 4f, Cooldown + 4f));
+            yield return new WaitForSeconds(3f);
+            if (BallManager.Instance.InGameBall.Count > 0)
+            {
+                for(int i = 0; i < Random.Range(1, BallManager.Instance.InGameBall.Count); i++)
+                {
+                    SpecialObjManager.Instance.CreateSpecialObj("LaserObj");
+                }
+            }
         }
     }
 }

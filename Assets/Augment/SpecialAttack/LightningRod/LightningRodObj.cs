@@ -5,67 +5,39 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
-public class LightningRodObj : MonoBehaviour
+public class LightningRodObj : SpecialObj
 {
-    private List<IBrick> NearbyBricks;
     public Coroutine Routine = null;
     void OnEnable()
     {
-        NearbyBricks = new List<IBrick>();
+        base.OnEnable();
+        SpecialObjType = "LightningRodObj";
+        transform.position = new Vector2(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 4f));
         Routine = StartCoroutine(LightningRod());
     }
 
     IEnumerator LightningRod()
     {
-        while (true)
+        int time = 0;
+        while (time < 10)
         {
-            yield return new WaitForSeconds(2f);
-            if (NearbyBricks.Count > 0)
+            if (detectArea.NearbyBricks.Count > 0)
             {
-                int DamageBricksNumber = Random.Range(1, NearbyBricks.Count % 2 == 0 ? NearbyBricks.Count / 2 : 
-                                                        NearbyBricks.Count != 1 ? (NearbyBricks.Count - 1) / 2 : 
-                                                        NearbyBricks.Count);
+                int DamageBricksNumber = Random.Range(1, detectArea.NearbyBricks.Count % 2 == 0 ? detectArea.NearbyBricks.Count / 2 :
+                                                        detectArea.NearbyBricks.Count != 1 ? (detectArea.NearbyBricks.Count - 1) / 2 :
+                                                        detectArea.NearbyBricks.Count);
                 for (int i = 0; i < DamageBricksNumber; i++)
                 {
-                    int index = Random.Range(0, NearbyBricks.Count);
-                    if (NearbyBricks[index] != null && NearbyBricks[index].gameObject.activeInHierarchy)
+                    int index = Random.Range(0, detectArea.NearbyBricks.Count);
+                    if (detectArea.NearbyBricks[index] != null && detectArea.NearbyBricks[index].gameObject.activeInHierarchy)
                     {
-                        NearbyBricks[index].DamageByLightningEffect(5f, 1);
+                        detectArea.NearbyBricks[index].DamageByLightningEffect(5f, 1);
                     }
                 }
             }
+            time += 1;
+            yield return new WaitForSeconds(1f);
         }
-    }
-
-    void Update()
-    {
-        CollectNearbyBricks();
-        RemoveInactiveBricks();
-    }
-
-    private float detectionRadius = 1.5f;
-    void CollectNearbyBricks()
-    {
-        LayerMask detectionLayer = LayerMask.GetMask("Game");
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius, detectionLayer);
-        foreach (Collider2D collider in colliders)
-        {
-            IBrick obj = collider.gameObject.GetComponent<IBrick>();
-            if (obj != null && collider.gameObject.activeInHierarchy && !NearbyBricks.Contains(obj) && obj != this)
-            {
-                NearbyBricks.Add(obj);
-            }
-        }
-    }
-
-    void RemoveInactiveBricks()
-    {
-        NearbyBricks.RemoveAll(brick => brick == null || !brick.gameObject.activeInHierarchy);
-    }
-    
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        SpecialObjManager.Instance.TakeSpecialObj(this);
     }
 }
