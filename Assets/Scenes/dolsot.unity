@@ -695,12 +695,12 @@ MonoBehaviour:
   PoisonStackLimit: 0
   DecayStackLimit: 0
   PoisonBrickSet: []
-  SatelliteBeamObj: {fileID: 0}
-  LightningRodObj: {fileID: 0}
   DecayDamageMultiple: 0
   FieldGlobalCooldown: 10
   isSacrificeQuest3Cleared: 0
   SpawnBallAmount: 0
+  CurseActiveNumber: 0
+  AfterDeathActiveNumber: 0
 --- !u!1 &248038763
 GameObject:
   m_ObjectHideFlags: 0
@@ -8134,8 +8134,11 @@ MonoBehaviour:
   isOnFlamerower: 0
   isAntiGravity: 0
   PoolManager: {fileID: 0}
+  NormalBall: 
+  BallInfo: {fileID: 0}
   InGameBall: []
   inGameBallPosition: []
+  inGameBallCollider: []
   thereISPhoenix: 0
   boxSize: {x: 5, y: 10}
 --- !u!114 &998555654
@@ -8152,7 +8155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pools:
   - _name: Ball
-    _component: {fileID: 1281705400875236739, guid: 04ae2882a4240e14a822afdaa03babb6, type: 3}
+    _component: {fileID: 5243072080288127139, guid: 04ae2882a4240e14a822afdaa03babb6, type: 3}
     _count: 0
     _container: {fileID: 998555652}
     _nonLazy: 0

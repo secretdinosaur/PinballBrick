@@ -52,13 +52,23 @@ public class StatManager : MonoBehaviour
         Persistent_Stat initialStats = new Persistent_Stat
         {
             AttackDamage = 5f,
+            EffectDamage = 5f,
             StartingBall = 1,
             BonusExp = 1f,
-            ItemDropChance = 0.2f,
             CriticalChance = 0.0f,
             CriticalDamage = 1.1f,
-            Gold = 0.0f
-        };
+            Gold = 0.0f,
+
+            AttackDamageMultiflier = 1f,
+            EffectDamageMultiflier = 1f,
+
+            AttackDamageLevel = 1,
+            EffectDamageLevel = 1,
+            BonusEXPLevel = 1,
+            CriChanceLevel = 1,
+            CriDamageLevel = 1,
+            StartingBallLevel = 1
+};
 
         string json = JsonUtility.ToJson(initialStats, true);
         File.WriteAllText(persistent_stat_filePath, json);

@@ -4,12 +4,21 @@ using UnityEngine;
 public class Persistent_Stat  //Out Game Stats(Upgradeable Stats Using Gold)
 {
     public float AttackDamage;
+    public float EffectDamage;
+    public float AttackDamageMultiflier;
+    public float EffectDamageMultiflier;
     public int StartingBall;
     public float BonusExp;
-    public float ItemDropChance;
     public float CriticalChance;
     public float CriticalDamage;
     public float Gold;
+
+    public int AttackDamageLevel;
+    public int EffectDamageLevel;
+    public int BonusEXPLevel;
+    public int CriChanceLevel;
+    public int CriDamageLevel;
+    public int StartingBallLevel;
 }
 
 [System.Serializable]
