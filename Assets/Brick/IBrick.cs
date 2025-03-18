@@ -31,6 +31,7 @@ public partial class IBrick : MonoBehaviour
     public Coroutine Poison = null;
     public Coroutine Decay = null;
     public Coroutine ExecutionCor = null;
+    public Coroutine BrickHealCoroutine = null;
 
     public GameObject ExecutionObject1;
     public GameObject ExecutionObject2;
@@ -44,6 +45,8 @@ public partial class IBrick : MonoBehaviour
         set
         {
             hp = value;
+            if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
+
             if (AugmentManager.instance.determineAugmentID("SPECIAL_6"))
             {
                 if (hp <= HpTemp * 0.15 && hp > 0)
@@ -68,6 +71,7 @@ public partial class IBrick : MonoBehaviour
                 }
                 else
                 {
+                    if (BrickType == "HealBrick") StopCoroutine(BrickHealCoroutine);
                     BrickDie();
                 }
             }
