@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 public class HealBrick : IBrick
 {
+    private int HealCount = 1;
     private void OnEnable()
     {
         base.OnEnable();
@@ -22,16 +23,18 @@ public class HealBrick : IBrick
     {
         while(true)
         {
-            yield return new WaitForSeconds(10f);
-            if(HP + HpTemp / 10 > HpTemp)
+            yield return new WaitForSeconds(10f - HealCount / 5);
+            if(HealCount <= 25)
+                HealCount += 1;
+            if (HP + HpTemp / 10 > HpTemp && HP != HpTemp)
             {
                 HP = HpTemp;
                 ShowText("+" + (HpTemp - HP).ToString(), "Heal", false);
             }
-            else if(HP != HpTemp)
+            else if (HP != HpTemp)
             {
-                HP += HpTemp / 10;
-                ShowText("+" + (HpTemp / 10).ToString(), "Heal", false);
+                HP += (int)(HpTemp / 10);
+                ShowText("+" + ((int)(HpTemp / 10)).ToString(), "Heal", false);
             }
         }
     }
