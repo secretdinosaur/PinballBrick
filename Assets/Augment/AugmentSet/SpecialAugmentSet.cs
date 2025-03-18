@@ -1443,9 +1443,11 @@ public class CurseBall : SpecialAugment
             {
                 int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
                 if (BrickManager.Instance.CurrentBricks.Count != 0)
-                {
-                    BrickManager.Instance.CurrentBricks[index].DamageByCurse();
-                }
+                    while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
+                    {
+                        index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+                    }
+                BrickManager.Instance.CurrentBricks[index].DamageByCurse();
             }
         }
     }
