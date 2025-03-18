@@ -39,7 +39,8 @@ public class DamageText : MonoBehaviour
             : (TextType == "Fire") ? Color.red 
             : (TextType == "Poison") ? Color.green 
             : (TextType == "Lightning") ? Color.cyan 
-            : (TextType == "Curse") ? new Color(1f, 0f, 1f) : Color.blue;
+            : (TextType == "Curse") ? Color.blue
+            : (TextType == "Heal") ? new Color(1f, 0f, 1f) : Color.magenta;
         damageText.text = isCritical ? "!" + Text : Text;
     }
     

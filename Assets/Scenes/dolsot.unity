@@ -231,6 +231,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
+  - _name: HealBrick
+    _component: {fileID: 1824619304834806856, guid: bf73b28786367574196390cd1711acd8, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
 --- !u!1 &153662569
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,12 +660,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Persistent_stat:
     AttackDamage: 0
+    EffectDamage: 0
+    AttackDamageMultiflier: 0
+    EffectDamageMultiflier: 0
     StartingBall: 0
     BonusExp: 0
-    ItemDropChance: 0
     CriticalChance: 0
     CriticalDamage: 0
     Gold: 0
+    AttackDamageLevel: 0
+    EffectDamageLevel: 0
+    BonusEXPLevel: 0
+    CriChanceLevel: 0
+    CriDamageLevel: 0
+    StartingBallLevel: 0
   Temporary_stat:
     StatLevel: 
     AttackDamage: 0
