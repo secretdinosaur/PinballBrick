@@ -23,15 +23,15 @@ public class HealBrick : IBrick
         while(true)
         {
             yield return new WaitForSeconds(10f);
-            if(HP + HpTemp / 10 > HpTemp)
+            if(HP + HpTemp / 10 > HpTemp && HP != HpTemp)
             {
                 HP = HpTemp;
                 ShowText("+" + (HpTemp - HP).ToString(), "Heal", false);
             }
-            else if(HP != HpTemp)
+            else if (HP != HpTemp)
             {
-                HP += HpTemp / 10;
-                ShowText("+" + (HpTemp / 10).ToString(), "Heal", false);
+                HP += (int)(HpTemp / 10);
+                ShowText("+" + ((int)(HpTemp / 10)).ToString(), "Heal", false);
             }
         }
     }

@@ -33,9 +33,13 @@ public class BrickManager : MonoBehaviour
         ScreenHeight = Screen.height;
         InitializeGrid();
         PoolManager = GetComponent<PoolManager>();
-        //StartCoroutine(SpawnBricks());
     }
-    
+
+    private void Start()
+    {
+        StartCoroutine(SpawnBricks());
+    }
+
     void Update()
     {
         
@@ -187,9 +191,9 @@ public class BrickManager : MonoBehaviour
     public void SpawnBrick()
     {
         HPPool = new List<float>();
-        int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f);
+        int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, UnityEngine.Random.Range(0.9f, 1.1f));
         //need to adjust
-        for (int j = HPBase; j < 3 + HPBase; j++)
+        for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
         {
             HPPool.Add(j);
         }
@@ -205,7 +209,7 @@ public class BrickManager : MonoBehaviour
     public void SpawnBoss()
     {
         HPPool = new List<float>();
-        HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * 10);
+        HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(8,12));
         Vector2 randomPosition = GenerateRandomPosition();
         IBrick brick = GetBrick();
         brick.IsBoss = true;
