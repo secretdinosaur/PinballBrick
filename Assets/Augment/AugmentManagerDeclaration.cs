@@ -77,6 +77,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButStrongAtk>(),
             gameObject.AddComponent<DecreaseFieldCooldown5>(),
             gameObject.AddComponent<DecreaseFieldCooldown30>(),
+            gameObject.AddComponent<CritChanceToAttackDamage>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -127,6 +128,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DeathEffectTwice>(),
             gameObject.AddComponent<SpawnBombBall>(),
             gameObject.AddComponent<ChangeNormalToGlass>(),
+            gameObject.AddComponent<OneMoreChance>(),
+            gameObject.AddComponent<Concentrate>(),
+            gameObject.AddComponent<GroupViolence>(),
+            gameObject.AddComponent<Oneness>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
 

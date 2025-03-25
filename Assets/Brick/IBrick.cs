@@ -222,7 +222,21 @@ public partial class IBrick
             Augment.BeforeAttackEffect(this);
         }
 
-        HP -= FinalDamage();
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_51"))
+        {
+            if(BrickManager.Instance.MainBrick != null)
+            {
+                BrickManager.Instance.MainBrick.HP -= FinalDamage();
+            }
+            else
+            {
+                HP -= FinalDamage();
+            }
+        }
+        else
+        {
+            HP -= FinalDamage();
+        }
 
         foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
         {

@@ -1573,3 +1573,121 @@ public class RebornBombBall : SpecialAugment
 
     public override void Remove() { }
 }
+
+public class OneMoreChance : SpecialAugment
+{
+    bool isRevived = true;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_49", "OneMoreChance", "OneMoreChance", "Ball", 2);
+    }
+
+    public override void Apply() 
+    {
+        isRevived = false;
+    }
+
+    public override void Remove() { }
+
+    public void Update()
+    {
+        if (!isRevived && BallManager.Instance.InGameBall.Count <= 0)
+        {
+            BallManager.Instance.CreateBall(5);
+            isRevived = true;
+        }
+    }
+}
+
+public class Concentrate : SpecialAugment
+{
+    int Count = 5;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_50", "Concentrate", "Concentrate", "Special", 0);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage *= 1.7f;
+        StatManager.instance.Temporary_stat.EffectDamage *= 1.4f;
+        StatManager.instance.Temporary_stat.EffectDuration *= 1.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(IBall ball)
+    {
+        Count--;
+        if (Count <= 0)
+        {
+            Debug.Log("Game Over");
+        }
+    }
+}
+
+public class GroupViolence: SpecialAugment
+{
+    bool isGetAugment = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_51", "GroupViolence", "GroupViolence", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+    }
+
+    public override void Remove() 
+    {
+        isGetAugment = false;
+    }
+
+    public void Update()
+    {
+        if (isGetAugment)
+        {
+            float maxHp = BrickManager.Instance.CurrentBricks.Max(b => b.HP);
+            BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp);
+        }
+    }
+}
+
+public class Oneness: SpecialAugment
+{
+    IBall MainBall;
+    bool isGetAugment = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_52", "Oneness", "Oneness", "Special", 2);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public void Update()
+    {
+        MainBall = BallManager.Instance.InGameBall[0];
+        if(BallManager.Instance.InGameBall.Count >= 2)
+        {
+            for(int i = 1; i < BallManager.Instance.InGameBall.Count; i++)
+            {
+                BallManager.Instance.InGameBall[i].FusionMoveRoutine = 
+                    StartCoroutine(MoveToPosition(BallManager.Instance.InGameBall[i].gameObject.transform, MainBall.transform.position, 15));
+            }
+        }
+    }
+
+    IEnumerator MoveToPosition(Transform obj, Vector3 targetPos, float moveSpeed)
+    {
+        while (Vector3.Distance(obj.position, targetPos) > 0.01f)
+        {
+            obj.position = Vector3.MoveTowards(obj.position, targetPos, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        obj.position = targetPos;
+    }
+}
