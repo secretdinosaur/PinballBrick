@@ -130,7 +130,7 @@ public class AdditionalThreeAttack: SpecialAugment
     {
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
-            StartCoroutine(Brick.AdditionalAttack(0.25f, 0.1f, 0.2f));
+            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.25f, 0.1f, 0.2f));
         }
     }
 }
@@ -977,11 +977,11 @@ public class StrongAdditionalAttack : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             if (RandomValue < SuperUltraStrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 500f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 500f));
             else if (RandomValue < SuperStrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 100f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f));
             else if (RandomValue < StrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 10f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 10f));
         }
     }
 }
@@ -1019,7 +1019,7 @@ public class RandomEffect : SpecialAugment
             if (RandomValue < accumulatedProbability)
             {
                 Debug.Log("WeakAdditionalDamage");
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 0.5f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.5f));
                 return;
             }
 
@@ -1027,7 +1027,7 @@ public class RandomEffect : SpecialAugment
             if (RandomValue < accumulatedProbability)
             {
                 Debug.Log("AdditionalDamage");
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 0.8f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.8f));
                 return;
             }
 
@@ -1447,7 +1447,14 @@ public class CurseBall : SpecialAugment
                     {
                         index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
                     }
-                BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+                try
+                {
+                    BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+                }
+                catch(ArgumentOutOfRangeException)
+                {
+                    Debug.Log("There are no Bricks");
+                }
             }
         }
     }
