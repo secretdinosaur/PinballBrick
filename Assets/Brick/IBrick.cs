@@ -217,33 +217,32 @@ public partial class IBrick
         TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
         SpecialCriticalChance = ball.SpecialCriticalChance;
 
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-        {
-            Augment.BeforeAttackEffect(this);
-        }
-
         if (AugmentManager.instance.determineAugmentID("SPECIAL_51"))
         {
-            if(BrickManager.Instance.MainBrick != null)
-            {
-                BrickManager.Instance.MainBrick.HP -= FinalDamage();
-            }
-            else
-            {
-                HP -= FinalDamage();
-            }
+            DamageProcess(BrickManager.Instance.MainBrick);
         }
         else
         {
-            HP -= FinalDamage();
-        }
-
-        foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-        {
-            Augment.AfterMainAttackEffect(this);
-            Augment.AfterAttackEffect(this);
+            DamageProcess(this);
         }
     }
+
+    private void DamageProcess(IBrick brick)
+    {
+        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        {
+            Augment.BeforeAttackEffect(brick);
+        }
+
+        brick.HP -= brick.FinalDamage();
+
+        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        {
+            Augment.AfterMainAttackEffect(brick);
+            Augment.AfterAttackEffect(brick);
+        }
+    }
+
     private float FinalDamage()
     {
         bool CriticalHit = false;

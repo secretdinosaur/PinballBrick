@@ -1647,7 +1647,7 @@ public class GroupViolence: SpecialAugment
 
     public void Update()
     {
-        if (isGetAugment)
+        if (isGetAugment && BrickManager.Instance.CurrentBricks.Count > 0)
         {
             float maxHp = BrickManager.Instance.CurrentBricks.Max(b => b.HP);
             BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp);
@@ -1664,30 +1664,42 @@ public class Oneness: SpecialAugment
         SetAugment("SPECIAL_52", "Oneness", "Oneness", "Special", 2);
     }
 
-    public override void Apply() { }
+    public override void Apply() 
+    {
+        isGetAugment = true;
+    }
 
-    public override void Remove() { }
+    public override void Remove()
+    {
+        isGetAugment = false;
+    }
 
     public void Update()
     {
-        MainBall = BallManager.Instance.InGameBall[0];
-        if(BallManager.Instance.InGameBall.Count >= 2)
+        if (BallManager.Instance.InGameBall.Count > 0 && isGetAugment)
         {
-            for(int i = 1; i < BallManager.Instance.InGameBall.Count; i++)
+            MainBall = BallManager.Instance.InGameBall[0];
+            if (BallManager.Instance.InGameBall.Count >= 2)
             {
-                BallManager.Instance.InGameBall[i].FusionMoveRoutine = 
-                    StartCoroutine(MoveToPosition(BallManager.Instance.InGameBall[i].gameObject.transform, MainBall.transform.position, 15));
+                for (int i = 1; i < BallManager.Instance.InGameBall.Count; i++)
+                {
+                    BallManager.Instance.InGameBall[i].FusionMoveRoutine =
+                        StartCoroutine(MoveToPosition(BallManager.Instance.InGameBall[i], MainBall, 15));
+                }
             }
         }
     }
 
-    IEnumerator MoveToPosition(Transform obj, Vector3 targetPos, float moveSpeed)
+    IEnumerator MoveToPosition(IBall obj, IBall target, float moveSpeed)
     {
-        while (Vector3.Distance(obj.position, targetPos) > 0.01f)
+        while (Vector2.Distance(obj.transform.position, target.transform.position) > 0.01f)
         {
-            obj.position = Vector3.MoveTowards(obj.position, targetPos, moveSpeed * Time.deltaTime);
+            obj.gameObject.transform.position = 
+                Vector2.MoveTowards(obj.gameObject.transform.position, target.transform.position, moveSpeed);
             yield return null;
         }
-        obj.position = targetPos;
+        obj.gameObject.transform.position = target.transform.position;
+        target.GrowthAttackDamage += 0.25f;
+        obj.gameObject.GetComponent<IBall>().BallDied();
     }
 }
