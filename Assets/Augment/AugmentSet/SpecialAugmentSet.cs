@@ -7,6 +7,8 @@ using Redcode.Pools;
 using Unity.VisualScripting;
 using System.Linq;
 using Random = UnityEngine.Random;
+using static UnityEngine.GraphicsBuffer;
+using System.Security.Cryptography.X509Certificates;
 
 /*
 public class Example : SpecialAugment
@@ -1664,7 +1666,7 @@ public class GroupViolence: SpecialAugment
 
 public class Oneness: SpecialAugment
 {
-    IBall MainBall;
+    IBall MainBall = null;
     bool isGetAugment = false;
     private void OnEnable()
     {
@@ -1685,28 +1687,51 @@ public class Oneness: SpecialAugment
     {
         if (BallManager.Instance.InGameBall.Count > 0 && isGetAugment)
         {
-            MainBall = BallManager.Instance.InGameBall[0];
-            if (BallManager.Instance.InGameBall.Count >= 2)
+            if (BallManager.Instance.InGameBall.Count == 1)
             {
+                MainBall = BallManager.Instance.InGameBall[0];
+            }
+            else if (BallManager.Instance.InGameBall.Count >= 2)
+            {
+                if (MainBall == null)
+                    MainBall = BallManager.Instance.InGameBall[0];
                 for (int i = 1; i < BallManager.Instance.InGameBall.Count; i++)
                 {
-                    BallManager.Instance.InGameBall[i].FusionMoveRoutine =
-                        StartCoroutine(MoveToPosition(BallManager.Instance.InGameBall[i], MainBall, 15));
+                    IBall ball = BallManager.Instance.InGameBall[i];
+                    if (ball.FusionMoveRoutine == null && MainBall != null)
+                    {
+                        ball.FusionMoveRoutine = StartCoroutine(MoveToPosition(ball, MainBall, 5f, 5f));
+                    }
                 }
+            }
+            else if(BallManager.Instance.InGameBall.Count <= 0)
+            {
+                MainBall = null;
             }
         }
     }
 
-    IEnumerator MoveToPosition(IBall obj, IBall target, float moveSpeed)
+    IEnumerator MoveToPosition(IBall obj, IBall target, float duration, float smoothTime)
     {
-        while (Vector2.Distance(obj.transform.position, target.transform.position) > 0.01f)
+        obj.gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        yield return new WaitForSeconds(1f);
+        while (Vector3.Distance(obj.transform.position, target.transform.position) > 0.28f)
         {
-            obj.gameObject.transform.position = 
-                Vector2.MoveTowards(obj.gameObject.transform.position, target.transform.position, moveSpeed);
+            if (target != null)
+            {
+                Vector3 direction = (target.transform.position - obj.transform.position).normalized;
+                obj.gameObject.GetComponent<Rigidbody2D>().linearVelocity = direction * 7.5f;
+            }
+            else
+            {
+                break;
+            }
             yield return null;
         }
-        obj.gameObject.transform.position = target.transform.position;
-        target.GrowthAttackDamage += 0.25f;
-        obj.gameObject.GetComponent<IBall>().BallDied();
+        obj.BallDied();
+        MainBall.GrowthAttackDamage += 0.25f;
+        MainBall.transform.localScale *= 1.001f;
+        obj.FusionMoveRoutine = null;
+        yield break;
     }
 }

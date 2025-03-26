@@ -155,11 +155,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Lightning>(),
-            gameObject.GetComponent<AdditionalThreeAttack>(),
-            gameObject.GetComponent<DecayBall>(),
-            gameObject.GetComponent<CurseBall>(),
-            gameObject.GetComponent<PercentDamage>(),
+            gameObject.GetComponent<Oneness>(),
 
         };
 

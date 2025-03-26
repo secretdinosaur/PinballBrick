@@ -28,6 +28,8 @@ public partial class IBall : MonoBehaviour
     
     public void OnEnable()
     {
+        gameObject.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+        GetComponent<CircleCollider2D>().enabled = true;
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.position = StartPosition;
@@ -72,6 +74,11 @@ public partial class IBall : MonoBehaviour
                 }
             }
             GrowthAttackDamage = 0f;
+            if(FusionMoveRoutine != null)
+            {
+                StopCoroutine(FusionMoveRoutine);
+                FusionMoveRoutine = null;
+            }
             BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
         }
     }
