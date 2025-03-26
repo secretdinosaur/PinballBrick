@@ -7,6 +7,8 @@ using Redcode.Pools;
 using Unity.VisualScripting;
 using System.Linq;
 using Random = UnityEngine.Random;
+using static UnityEngine.GraphicsBuffer;
+using System.Security.Cryptography.X509Certificates;
 
 /*
 public class Example : SpecialAugment
@@ -130,7 +132,7 @@ public class AdditionalThreeAttack: SpecialAugment
     {
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
-            StartCoroutine(Brick.AdditionalAttack(0.25f, 0.1f, 0.2f));
+            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.25f, 0.1f, 0.2f));
         }
     }
 }
@@ -977,11 +979,11 @@ public class StrongAdditionalAttack : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             if (RandomValue < SuperUltraStrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 500f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 500f));
             else if (RandomValue < SuperStrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 100f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f));
             else if (RandomValue < StrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 10f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 10f));
         }
     }
 }
@@ -1019,7 +1021,7 @@ public class RandomEffect : SpecialAugment
             if (RandomValue < accumulatedProbability)
             {
                 Debug.Log("WeakAdditionalDamage");
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 0.5f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.5f));
                 return;
             }
 
@@ -1027,7 +1029,7 @@ public class RandomEffect : SpecialAugment
             if (RandomValue < accumulatedProbability)
             {
                 Debug.Log("AdditionalDamage");
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 0.8f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.8f));
                 return;
             }
 
@@ -1447,7 +1449,14 @@ public class CurseBall : SpecialAugment
                     {
                         index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
                     }
-                BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+                try
+                {
+                    BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+                }
+                catch(ArgumentOutOfRangeException)
+                {
+                    Debug.Log("There are no Bricks");
+                }
             }
         }
     }
@@ -1572,4 +1581,157 @@ public class RebornBombBall : SpecialAugment
     public override void Apply() { }
 
     public override void Remove() { }
+}
+
+public class OneMoreChance : SpecialAugment
+{
+    bool isRevived = true;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_49", "OneMoreChance", "OneMoreChance", "Ball", 2);
+    }
+
+    public override void Apply() 
+    {
+        isRevived = false;
+    }
+
+    public override void Remove() { }
+
+    public void Update()
+    {
+        if (!isRevived && BallManager.Instance.InGameBall.Count <= 0)
+        {
+            BallManager.Instance.CreateBall(5);
+            isRevived = true;
+        }
+    }
+}
+
+public class Concentrate : SpecialAugment
+{
+    int Count = 5;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_50", "Concentrate", "Concentrate", "Special", 0);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage *= 1.7f;
+        StatManager.instance.Temporary_stat.EffectDamage *= 1.4f;
+        StatManager.instance.Temporary_stat.EffectDuration *= 1.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(IBall ball)
+    {
+        Count--;
+        if (Count <= 0)
+        {
+            Debug.Log("Game Over");
+        }
+    }
+}
+
+public class GroupViolence: SpecialAugment
+{
+    bool isGetAugment = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_51", "GroupViolence", "GroupViolence", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+    }
+
+    public override void Remove() 
+    {
+        isGetAugment = false;
+    }
+
+    public void Update()
+    {
+        if (isGetAugment && BrickManager.Instance.CurrentBricks.Count > 0)
+        {
+            float maxHp = BrickManager.Instance.CurrentBricks.Max(b => b.HP);
+            BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp);
+        }
+    }
+}
+
+public class Oneness: SpecialAugment
+{
+    IBall MainBall = null;
+    bool isGetAugment = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_52", "Oneness", "Oneness", "Special", 2);
+    }
+
+    public override void Apply() 
+    {
+        isGetAugment = true;
+    }
+
+    public override void Remove()
+    {
+        isGetAugment = false;
+    }
+
+    public void Update()
+    {
+        if (BallManager.Instance.InGameBall.Count > 0 && isGetAugment)
+        {
+            if (BallManager.Instance.InGameBall.Count == 1)
+            {
+                MainBall = BallManager.Instance.InGameBall[0];
+            }
+            else if (BallManager.Instance.InGameBall.Count >= 2)
+            {
+                if (MainBall == null)
+                    MainBall = BallManager.Instance.InGameBall[0];
+                for (int i = 1; i < BallManager.Instance.InGameBall.Count; i++)
+                {
+                    IBall ball = BallManager.Instance.InGameBall[i];
+                    if (ball.FusionMoveRoutine == null && MainBall != null)
+                    {
+                        ball.FusionMoveRoutine = StartCoroutine(MoveToPosition(ball, MainBall, 5f, 5f));
+                    }
+                }
+            }
+            else if(BallManager.Instance.InGameBall.Count <= 0)
+            {
+                MainBall = null;
+            }
+        }
+    }
+
+    IEnumerator MoveToPosition(IBall obj, IBall target, float duration, float smoothTime)
+    {
+        obj.gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        yield return new WaitForSeconds(1f);
+        while (Vector3.Distance(obj.transform.position, target.transform.position) > 0.28f)
+        {
+            if (target != null)
+            {
+                Vector3 direction = (target.transform.position - obj.transform.position).normalized;
+                obj.gameObject.GetComponent<Rigidbody2D>().linearVelocity = direction * 7.5f;
+            }
+            else
+            {
+                break;
+            }
+            yield return null;
+        }
+        obj.BallDied();
+        MainBall.GrowthAttackDamage += 0.25f;
+        MainBall.transform.localScale *= 1.001f;
+        obj.FusionMoveRoutine = null;
+        yield break;
+    }
 }

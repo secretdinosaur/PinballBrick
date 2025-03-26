@@ -209,61 +209,12 @@ public partial class IBrick : MonoBehaviour
 public partial class IBrick
 {
     public IBall RecentlyBall;
-    private float SpecialCriticalChance; // CriticalChance that Increased by Augment
-    
+    public float SpecialCriticalChance; // CriticalChance that Increased by Augment
+
     public void TakeDamage(IBall ball)
     {
         RecentlyBall = ball;
-        TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
-        SpecialCriticalChance = ball.SpecialCriticalChance;
-
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-        {
-            Augment.BeforeAttackEffect(this);
-        }
-
-        HP -= FinalDamage();
-
-        foreach(IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-        {
-            Augment.AfterMainAttackEffect(this);
-            Augment.AfterAttackEffect(this);
-        }
-    }
-    private float FinalDamage()
-    {
-        bool CriticalHit = false;
-        float TotalAttackStat = StatManager.instance.Persistent_stat.AttackDamage +
-                                StatManager.instance.Temporary_stat.AttackDamage +
-                                RecentlyBall.GrowthAttackDamage +
-                                RecentlyBall.BallBaseDamage;
-
-        if (IsCriticalHit())
-        {
-            CriticalHit = true;
-            TotalMultiple *= CriticalDamage();
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-            {
-                Augment.CriticalAttackEffect(this);
-            }
-        }
-
-        float FinalDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
-            ? 1 
-            : DecayDamageCalculate(TotalAttackStat * TotalMultiple);
-        if (BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
-        ShowText(FinalDamage.ToString("F1"), "Normal", CriticalHit);
-        return FinalDamage;
-    }
-    private bool IsCriticalHit()
-    {
-        return (Random.value < (StatManager.instance.Persistent_stat.CriticalChance != 0.0f
-            ? StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance + SpecialCriticalChance
-            : StatManager.instance.Temporary_stat.CriticalChance + SpecialCriticalChance));
-    }
-    private float CriticalDamage()
-    {
-        return (StatManager.instance.Persistent_stat.CriticalDamage + StatManager.instance.Temporary_stat.CriticalDamage);
+        DamageManager.TakeDamage(this, RecentlyBall);
     }
 
     public float FireEffectDuration;
@@ -306,7 +257,7 @@ public partial class IBrick
             float EffectAttackDamage;
             if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
             {
-                isCritical = IsCriticalHit();
+                isCritical = DamageManager.IsCriticalHit(this);
             }
             
             EffectAttackDamage = isCritical
@@ -393,7 +344,7 @@ public partial class IBrick
             float EffectAttackDamage;
             if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
             {
-                isCritical = IsCriticalHit();
+                isCritical = DamageManager.IsCriticalHit(this);
             }
 
             EffectAttackDamage = isCritical
@@ -493,81 +444,27 @@ public partial class IBrick
     
     public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
     {
-        bool isCritical = true;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
-        {
-            isCritical = IsCriticalHit();
-        }
-        float Percent = isCritical ? Random.Range(0.01f, 0.02f) : Random.Range(0.015f, 0.03f);
-        float plusDamage = HpTemp * Percent;
-        
-        float FinalDamage = DecayDamageCalculate(plusDamage + DamageAmount);
-        HP -= FinalDamage;
-        
-        VisualEffectManager.Instance.SpawnParticle("Lightning", this.transform.position, isCritical ? ParticleCount + 4 : ParticleCount);
-        ShowText(FinalDamage.ToString("F1"), "Lightning", isCritical);
+        DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
     }
 
     public void DamageByCurse()
     {
-        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
-            + StatManager.instance.Temporary_stat.AttackDamage
-            + RecentlyBall.GrowthAttackDamage)
-            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-
-        float damage = Random.Range(baseDamage * 0.5f, baseDamage * 1.3f);
-        float FinalDamage = DecayDamageCalculate(damage);
-        HP -= FinalDamage;
-        ShowText(FinalDamage.ToString("F1"), "Curse", false);
+        DamageManager.DamageByCurse(this);
     }
 
     public float DecayDamageCalculate(float Damage)
     {
-        Damage *= Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, EffectStatusSet["Decay"].EffectStack);
-        return Damage;
+        return DamageManager.DecayDamageCalculate(this, Damage);
     }
     
-    public IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount, float DamageMultiflier) // AdditionalAttack Coroutine
+    public void AdditionalAttack(float MaxAttackTime, float TimeCount, float DamageMultiflier)
     {
-        yield return new WaitForSeconds(0.5f);
-        
-        while (MaxAttackTime > 0f)
-        {
-            if (!gameObject.activeSelf)
-            {
-                yield break;
-            }
-            VisualEffectManager.Instance.SpawnParticle("AdditionalAttack", transform.position, 1);
-            bool CriticalHit = IsCriticalHit();
-            float AdditionalAttackDamage = CriticalHit
-                    ? (StatManager.instance.Persistent_stat.AttackDamage +
-                       StatManager.instance.Temporary_stat.AttackDamage)
-                      * StatManager.instance.statMultiplier.AttackDamageMultiplier * CriticalDamage() * DamageMultiflier
-                    : (StatManager.instance.Persistent_stat.AttackDamage +
-                       StatManager.instance.Temporary_stat.AttackDamage)
-                      * StatManager.instance.statMultiplier.AttackDamageMultiplier * DamageMultiflier;
-
-            float FinalAdditionalAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
-                ? 1 
-                : DecayDamageCalculate(AdditionalAttackDamage);
-            
-            if(BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
-            HP -= FinalAdditionalAttackDamage;
-            ShowText(FinalAdditionalAttackDamage.ToString("F1"), "Additional", CriticalHit);
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-            {
-                Augment.AfterAttackEffect(this);
-            }
-            yield return new WaitForSeconds(TimeCount);
-            MaxAttackTime -= TimeCount;
-        }
+        DamageManager.AdditionalAttack(this, MaxAttackTime, TimeCount, DamageMultiflier);
     }
 
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
     {
-        damage = DecayDamageCalculate(damage);
-        HP -= damage;
-        ShowText(damageText, DamageType, isCritical);
+        DamageManager.ArbitraryDamageAttack(this, damage, isCritical, damageText, DamageType);
     }
 }
 
