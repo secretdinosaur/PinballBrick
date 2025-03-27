@@ -45,7 +45,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(1f, 1f, 1f, 1f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
@@ -134,6 +134,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<Oneness>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
+            gameObject.AddComponent<TheFlamethrower>(),
 
             gameObject.AddComponent<DeadlyPoison>(),
             gameObject.AddComponent<InfinitePoison>(),
@@ -155,7 +156,15 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Oneness>(),
+            //gameObject.GetComponent<FireBall>(),
+            gameObject.GetComponent<PoisonBall>(),
+            //gameObject.GetComponent<DecayBall>(),
+            //gameObject.GetComponent<FireEffectStackBlast>(),
+            //gameObject.GetComponent<DeadlyPoison>(),
+            //gameObject.GetComponent<InfinitePoison>(),
+            //gameObject.GetComponent<PowerfulDecay>(),
+            //gameObject.GetComponent<DecayExplosion>(),
+            //gameObject.GetComponent<TheFlamethrower>(),
 
         };
 
