@@ -55,6 +55,7 @@ public partial class IBrick : MonoBehaviour
             if (hp <= 0)
             {
                 hp = 0;
+                HPText.enabled = false;
                 if (BrickType == "TwinBrick")
                 {
                     GetComponentInParent<TwinBrick>().CheckBothBrickDead();
@@ -79,6 +80,8 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
+        Collider.enabled = false;
+        
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;

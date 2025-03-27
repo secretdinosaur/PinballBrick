@@ -54,13 +54,13 @@ public class StatManager : MonoBehaviour
             AttackDamage = 5f,
             EffectDamage = 5f,
             StartingBall = 1,
-            BonusExp = 1f,
+            BonusExp = 0f,
             CriticalChance = 0.0f,
             CriticalDamage = 1.1f,
-            Gold = 0.0f,
+            Gold = 100000f,
 
-            AttackDamageMultiflier = 1f,
-            EffectDamageMultiflier = 1f,
+            AttackDamageMultiplier = 1f,
+            EffectDamageMultiplier = 1f,
 
             AttackDamageLevel = 1,
             EffectDamageLevel = 1,
@@ -113,6 +113,9 @@ public class StatManager : MonoBehaviour
     {
         string json = JsonUtility.ToJson(stats, true);
         File.WriteAllText(persistent_stat_filePath, json);
+
+        json = File.ReadAllText(persistent_stat_filePath);
+        Persistent_stat = JsonUtility.FromJson<Persistent_Stat>(json);
     }
 
     public Temporary_Stat LoadTemporaryStat() // Just Load

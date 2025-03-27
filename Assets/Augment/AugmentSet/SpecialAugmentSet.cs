@@ -105,7 +105,7 @@ public class BouncePower: SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Brick.RecentlyBall.BounceTime * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        Brick.TotalMultiple = Brick.RecentlyBall.BounceTime * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
         Brick.RecentlyBall.BounceTime = 1;
     }
 }
@@ -269,7 +269,7 @@ public class ChainLightning : SpecialAugment
             int RandomNumber = Random.Range(0, BrickToBrick.Count);
             
             BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 + (BrickToBrick[RandomNumber].HpTemp * Random.Range(0.01f, 0.02f)), 
-                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"), "Lightning");
+                false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier).ToString("F1"), "Lightning");
             BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
 
             targetBrick = BrickToBrick[RandomNumber];
@@ -335,7 +335,7 @@ public class SpeedPower : SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
     }
 }
 
@@ -355,7 +355,7 @@ public class SpeedCritical : SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
 
     }
 }
@@ -640,7 +640,9 @@ public class ExplosionWithBall : SpecialAugment
 
     public override void Remove() { }
 }
-
+/// <summary>
+/// Need visual effect from below
+/// </summary>
 public class TheFlamethrower : SpecialAugment
 {
     private void OnEnable()
@@ -1318,16 +1320,16 @@ public class SuicideBoomBall : SpecialAugment
         if(Random.value < 0.1f)
         {
             Brick.ArbitraryDamageAttack(
-                    (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
+                    (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier,
                     false,
-                    ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
+                    ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier).ToString("F1"),
                     null);
             foreach (IBrick brick in Brick.NearbyBricks)
             {
                 brick.ArbitraryDamageAttack(
-                    (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
+                    (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier,
                     false,
-                    ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
+                    ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier).ToString("F1"),
                     null);
             }
             ball.BallDied();

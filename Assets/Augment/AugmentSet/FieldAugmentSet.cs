@@ -62,7 +62,7 @@ public class AllDamage : FieldAugment
 
             foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
             {
-                brick.HP -= 10 * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+                brick.HP -= 10 * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
             }
         }
     }

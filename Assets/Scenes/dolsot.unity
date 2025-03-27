@@ -724,8 +724,8 @@ MonoBehaviour:
   Persistent_stat:
     AttackDamage: 0
     EffectDamage: 0
-    AttackDamageMultiflier: 0
-    EffectDamageMultiflier: 0
+    AttackDamageMultiplier: 0
+    EffectDamageMultiplier: 0
     StartingBall: 0
     BonusExp: 0
     CriticalChance: 0
@@ -44570,7 +44570,7 @@ Transform:
   m_GameObject: {fileID: 2023798924}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.8, y: 0.5321287, z: -5.0577307}
+  m_LocalPosition: {x: 3.07, y: 0.5321287, z: -5.0577307}
   m_LocalScale: {x: 0.75, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
