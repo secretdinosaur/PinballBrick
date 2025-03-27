@@ -207,6 +207,7 @@ public partial class IBrick
     public void TakeDamage(IBall ball)
     {
         RecentlyBall = ball;
+        ball.AttackDelayTime = 0f;
         DamageManager.TakeDamage(this, RecentlyBall);
     }
 

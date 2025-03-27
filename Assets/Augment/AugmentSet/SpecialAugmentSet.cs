@@ -1591,7 +1591,7 @@ public class OneMoreChance : SpecialAugment
 
 public class Concentrate : SpecialAugment
 {
-    int Count = 5;
+    int Count = 3;
     private void OnEnable()
     {
         SetAugment("SPECIAL_50", "Concentrate", "Concentrate", "Special", 0);
@@ -1599,7 +1599,7 @@ public class Concentrate : SpecialAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.AttackDamage *= 1.7f;
+        StatManager.instance.Temporary_stat.AttackDamage *= 1.6f;
         StatManager.instance.Temporary_stat.EffectDamage *= 1.4f;
         StatManager.instance.Temporary_stat.EffectDuration *= 1.3f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
@@ -1709,15 +1709,21 @@ public class Oneness: SpecialAugment
             }
             yield return null;
         }
-        obj.BallDied();
         MainBall.GrowthAttackDamage += 0.25f;
         MainBall.transform.localScale *= 1.001f;
-        obj.FusionMoveRoutine = null;
+        if (obj.AttackOrDieRoutine != null)
+        {
+            obj.FusionMoveRoutine = null;
+        }
+        if (!obj.gameObject.activeInHierarchy)
+        {
+            obj.BallDied();
+        }
         yield break;
     }
 }
 
-public class HappyBirthDay : SpecialAugment
+public class HappyBirthday : SpecialAugment
 {
     private void OnEnable()
     {

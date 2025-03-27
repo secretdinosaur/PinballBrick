@@ -13,6 +13,9 @@ public partial class IBall : MonoBehaviour
     public float BallBaseDamage;
     public BallDetect detectArea;
 
+    public float AttackDelayTime;
+    public Coroutine AttackOrDieRoutine;
+
     public float CurrentSpeed;
     public float SpecialCriticalChance = 0f;
     public bool isPhoenix;
@@ -59,6 +62,8 @@ public partial class IBall : MonoBehaviour
         {
             rb.gravityScale = -1f;
         }
+        AttackDelayTime = 0f;
+        StartCoroutine(CalAttackDelayTime());
     }
 
     public void BallDied()
@@ -104,6 +109,14 @@ public partial class IBall : MonoBehaviour
         }
     }
     
+    private IEnumerator CalAttackDelayTime()
+    {
+        while(true)
+        {
+            AttackDelayTime += 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
     public void Update()
     {
         UpdateCurrentTarget();
