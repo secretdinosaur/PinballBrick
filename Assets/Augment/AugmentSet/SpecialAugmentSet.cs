@@ -1716,3 +1716,26 @@ public class Oneness: SpecialAugment
         yield break;
     }
 }
+
+public class HappyBirthDay : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_53", "HappyBirthDay", "HappyBirthDay", "Special", 4);
+    }
+
+    public override void Apply() {    }
+
+    public override void Remove() {    }
+
+    public override void AfterBirthEffect(IBall ball)
+    {
+        ball.StartCoroutine(AtkUp(ball));
+    }
+    IEnumerator AtkUp(IBall ball)
+    {
+        ball.GrowthAttackDamage += 30;
+        yield return new WaitForSeconds(1f);
+        ball.GrowthAttackDamage -= 30;
+    }
+}

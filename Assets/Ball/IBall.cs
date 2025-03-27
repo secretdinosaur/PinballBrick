@@ -28,6 +28,10 @@ public partial class IBall : MonoBehaviour
     
     public void OnEnable()
     {
+        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        {
+            Augment.AfterBirthEffect(this);
+        }
         gameObject.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
         GetComponent<CircleCollider2D>().enabled = true;
         rb = GetComponent<Rigidbody2D>();
@@ -57,7 +61,7 @@ public partial class IBall : MonoBehaviour
         }
     }
 
-    public void BallDied() 
+    public void BallDied()
     {
         if (isPhoenix)
         {
