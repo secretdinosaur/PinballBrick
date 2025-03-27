@@ -724,13 +724,8 @@ MonoBehaviour:
   Persistent_stat:
     AttackDamage: 0
     EffectDamage: 0
-<<<<<<< HEAD
     AttackDamageMultiplier: 0
     EffectDamageMultiplier: 0
-=======
-    AttackDamageMultiflier: 0
-    EffectDamageMultiflier: 0
->>>>>>> 90519b47148960544080b74e86fed32225cfcfd7
     StartingBall: 0
     BonusExp: 0
     CriticalChance: 0
