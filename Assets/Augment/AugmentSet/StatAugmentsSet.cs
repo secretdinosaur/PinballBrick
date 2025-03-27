@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-
+﻿using System;
+using System.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
+using Random = UnityEngine.Random;
 /*
 public class Example : StatAugment
 {
@@ -462,3 +465,64 @@ public class CritChanceToAttackDamage : StatAugment
     }
 }
 
+public class RandomStatUpOrDown : StatAugment
+{
+    public float ChangeAttackDamage;
+    public float ChangeEffectDamage;
+    public float ChangeCritDamage;
+    public float ChangeCritChance;
+    private void OnEnable()
+    {
+        SetAugment("STAT_22", "RandomStatUpOrDown", "RandomStatUpOrDown", 4);
+    }
+
+    public override void Apply()
+    {
+        float attackDamageMin = -3f, attackDamageMax = 7f;
+        float effectDamageMin = -0.1f, effectDamageMax = 0.2f;
+        float critDamageMin = -0.1f, critDamageMax = 0.3f;
+        float critChanceMin = -0.05f, critChanceMax = 0.1f;
+
+        ChangeAttackDamage = Mathf.Round(Random.Range(attackDamageMin, attackDamageMax) * 100f) / 100f;
+        ChangeEffectDamage = Mathf.Round(Random.Range(effectDamageMin, effectDamageMax) * 100f) / 100f;
+        ChangeCritDamage = Mathf.Round(Random.Range(critDamageMin, critDamageMax) * 100f) / 100f;
+        ChangeCritChance = Mathf.Round(Random.Range(critChanceMin, critChanceMax) * 100f) / 100f;
+
+        bool hasPositiveValue = (ChangeAttackDamage > 0) || (ChangeEffectDamage > 0) || (ChangeCritDamage > 0) || (ChangeCritChance > 0);
+
+        if (!hasPositiveValue)
+        {
+            int index = Random.Range(0, 4);
+
+            switch (index)
+            {
+                case 0:
+                    ChangeAttackDamage = Random.Range(0.1f, attackDamageMax);
+                    break;
+                case 1:
+                    ChangeEffectDamage = Random.Range(0.1f, effectDamageMax);
+                    break;
+                case 2:
+                    ChangeCritDamage = Random.Range(0.1f, critDamageMax);
+                    break;
+                case 3:
+                    ChangeCritChance = Random.Range(0.01f, critChanceMax);
+                    break;
+            }
+        }
+        StatManager.instance.Temporary_stat.AttackDamage += ChangeAttackDamage;
+        StatManager.instance.Temporary_stat.EffectDamage += ChangeEffectDamage;
+        StatManager.instance.Temporary_stat.CriticalDamage += ChangeCritDamage;
+        StatManager.instance.Temporary_stat.CriticalChance += ChangeCritChance;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage -= ChangeAttackDamage;
+        StatManager.instance.Temporary_stat.EffectDamage -= ChangeEffectDamage;
+        StatManager.instance.Temporary_stat.CriticalDamage -= ChangeCritDamage;
+        StatManager.instance.Temporary_stat.CriticalChance -= ChangeCritChance;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}

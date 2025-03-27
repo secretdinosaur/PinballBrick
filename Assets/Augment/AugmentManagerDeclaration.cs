@@ -78,6 +78,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DecreaseFieldCooldown5>(),
             gameObject.AddComponent<DecreaseFieldCooldown30>(),
             gameObject.AddComponent<CritChanceToAttackDamage>(),
+            gameObject.AddComponent<RandomStatUpOrDown>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -158,7 +159,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<AttackOrDie>(),
+            gameObject.GetComponent<RandomStatUpOrDown>(),
         };
 
         foreach (IAugment augment in TestAugments)
