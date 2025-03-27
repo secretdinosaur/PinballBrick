@@ -465,8 +465,8 @@ public class InfinitePoison : SpecialAugment
                             if (Chosen.gameObject.activeInHierarchy && Chosen.Poison == null)
                             {
                                 VisualEffectManager.Instance.SpawnParticle("InfinityPoison", transform.position, 1);
-
-                                Chosen.BrickEffect.DamageByPoisonEffect(brick.BrickEffect.initialDuration);
+                                Chosen.ShowText("Infection!", null, false);
+                                Chosen.DamageByPoisonEffect(brick.BrickEffect.initialDuration);
                             }
                         }
                     }
@@ -554,7 +554,7 @@ public class DecayBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
-            Brick.BrickEffect.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration);
+            Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration);
         }
     }
 }
@@ -607,7 +607,7 @@ public class DecayExplosion : SpecialAugment
             VisualEffectManager.Instance.SpawnParticle("DecayExplosion", Brick.transform.position, 1);
             float explosionRadius = 3f;
             LayerMask explosionLayer = LayerMask.GetMask("Ball");
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayer);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(Brick.transform.position, explosionRadius, explosionLayer);
 
             foreach (Collider2D ball in colliders)
             {
@@ -615,8 +615,8 @@ public class DecayExplosion : SpecialAugment
 
                 if (rb != null)
                 {
-                    Vector2 explosionDirection = (rb.position - (Vector2)transform.position).normalized;
-                    float distance = Vector2.Distance(rb.position, transform.position);
+                    Vector2 explosionDirection = (rb.position - (Vector2)Brick.transform.position).normalized;
+                    float distance = Vector2.Distance(rb.position, Brick.transform.position);
                     float forceMultiplier = Mathf.Clamp01(1 - (distance / explosionRadius));
 
                     rb.AddForce(explosionDirection * 5f * forceMultiplier, ForceMode2D.Impulse);

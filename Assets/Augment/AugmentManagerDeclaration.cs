@@ -157,13 +157,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         List<IAugment> TestAugments = new List<IAugment>
         {
             //gameObject.GetComponent<FireBall>(),
-            gameObject.GetComponent<PoisonBall>(),
-            //gameObject.GetComponent<DecayBall>(),
+            //gameObject.GetComponent<PoisonBall>(),
+            gameObject.GetComponent<DecayBall>(),
             //gameObject.GetComponent<FireEffectStackBlast>(),
             //gameObject.GetComponent<DeadlyPoison>(),
             //gameObject.GetComponent<InfinitePoison>(),
-            //gameObject.GetComponent<PowerfulDecay>(),
-            //gameObject.GetComponent<DecayExplosion>(),
+            gameObject.GetComponent<PowerfulDecay>(),
+            gameObject.GetComponent<DecayExplosion>(),
             //gameObject.GetComponent<TheFlamethrower>(),
 
         };
