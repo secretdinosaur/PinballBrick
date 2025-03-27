@@ -32,7 +32,7 @@ public class BallManager : MonoBehaviour
 
     public void CreateBall(int Num)
     {
-        for(int i = 0; i < Num; i++)
+        for (int i = 0; i < Num; i++)
         {
             IBall ball = GetSpecificBall(NormalBall);
             if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)

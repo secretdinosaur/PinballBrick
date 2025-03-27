@@ -54,6 +54,7 @@ public partial class IBrick : MonoBehaviour
             if (hp <= 0)
             {
                 hp = 0;
+                HPText.enabled = false;
                 if (BrickType == "TwinBrick")
                 {
                     GetComponentInParent<TwinBrick>().CheckBothBrickDead();
@@ -68,15 +69,17 @@ public partial class IBrick : MonoBehaviour
                 }
                 else
                 {
-                    BrickDie();
+                    StartCoroutine(BrickDie());
                 }
             }
             UpdateHPtext();
         }
     }
 
-    public void BrickDie()
+    public IEnumerator BrickDie()
     {
+        Collider.enabled = false;
+        
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -86,7 +89,12 @@ public partial class IBrick : MonoBehaviour
         {
             Augment.AfterBrickDieEffect(this);
         }
+        if (IsNeedDelayedDIeForEffect)
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
         StopCoroutineAfterDie();
+        Collider.enabled = true;
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
 
@@ -210,7 +218,7 @@ public partial class IBrick
     public void TakeDamage(IBall ball)
     {
         RecentlyBall = ball;
-        TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
         SpecialCriticalChance = ball.SpecialCriticalChance;
 
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
@@ -307,10 +315,10 @@ public partial class IBrick
             
             EffectAttackDamage = isCritical
                 ? (StatManager.instance.Temporary_stat.EffectDamage *
-                   StatManager.instance.statMultiplier.EffectDamageMultiplier)
+                   StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier)
                   * EffectStatusSet["Fire"].EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage
                 : (StatManager.instance.Temporary_stat.EffectDamage *
-                   StatManager.instance.statMultiplier.EffectDamageMultiplier)
+                   StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier)
                   * EffectStatusSet["Fire"].EffectStack;
             float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
                 ? 1 
@@ -393,9 +401,9 @@ public partial class IBrick
             }
 
             EffectAttackDamage = isCritical
-                ? (HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
+                ? (HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f * StatManager.instance.Persistent_stat.EffectDamageMultiplier
                          * EffectStatusSet["Poison"].EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage))
-                : (HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
+                : (HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f * StatManager.instance.Persistent_stat.EffectDamageMultiplier
                          * EffectStatusSet["Poison"].EffectStack));
 
             float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
@@ -645,7 +653,7 @@ public partial class IBrick //Detect Nearby Bricks
         hp -= 999999 + HpTemp;
         ShowText("EXECUTION", null, true);
         Collider.enabled = true;
-        BrickDie();
+        StartCoroutine(BrickDie());
     }
 }
 

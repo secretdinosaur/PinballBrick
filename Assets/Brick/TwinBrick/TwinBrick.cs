@@ -19,7 +19,7 @@ public class TwinBrick : IBrick
         if(UpperBrick.HP <= 0 && LowerBrick.HP <= 0)
         {
             IsWaitingHeal = false;
-            BrickDie();
+            StartCoroutine(BrickDie());
         }
         else if (UpperBrick.HP <= 0 || LowerBrick.HP <= 0)
         {

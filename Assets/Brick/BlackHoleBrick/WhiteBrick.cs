@@ -38,8 +38,8 @@ public class WhiteBrick : IBrick
         }
         else
         {
-            GetBlackBrick.BrickDie();
-            this.BrickDie();
+            GetBlackBrick.StartCoroutine(BrickDie());
+            StartCoroutine(BrickDie());
         }
     }
 }
