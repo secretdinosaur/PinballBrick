@@ -428,3 +428,37 @@ public class DecreaseFieldCooldown30 : StatAugment
     }
 }
 
+public class CritChanceToAttackDamage : StatAugment
+{
+    bool isGetAugment = false;
+    private void OnEnable()
+    {
+        SetAugment("STAT_21", "CritChanceToAttackDamage", "CritChanceToAttackDamage", 4);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+    }
+
+    public override void Remove()
+    {
+        isGetAugment = false;
+    }
+
+    public void Update()
+    {
+        if (isGetAugment && (StatManager.instance.Persistent_stat.CriticalChance > 0 || StatManager.instance.Temporary_stat.CriticalChance > 0))
+        {
+            float TotalCritChance = StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance;
+            TransferToAttackDamage(TotalCritChance);
+        }
+    }
+
+    private void TransferToAttackDamage(float CritChance)
+    {
+        StatManager.instance.Temporary_stat.AttackDamage += CritChance * 0.4f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+

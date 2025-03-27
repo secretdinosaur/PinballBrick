@@ -7,6 +7,8 @@ using Redcode.Pools;
 using Unity.VisualScripting;
 using System.Linq;
 using Random = UnityEngine.Random;
+using static UnityEngine.GraphicsBuffer;
+using System.Security.Cryptography.X509Certificates;
 
 /*
 public class Example : SpecialAugment
@@ -62,11 +64,7 @@ public class FireBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.FireChance)
         {
-            Brick.EffectStatusSet["Fire"].EffectStack += (Brick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
-            if(Brick.Fire == null)
-            {
-                Brick.Fire = StartCoroutine(Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration)); 
-            }
+            Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration); 
         }
     }
 }
@@ -130,7 +128,7 @@ public class AdditionalThreeAttack: SpecialAugment
     {
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
-            StartCoroutine(Brick.AdditionalAttack(0.25f, 0.1f, 0.2f));
+            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.25f, 0.1f, 0.2f));
         }
     }
 }
@@ -219,19 +217,17 @@ public class FireEffectStackBlast : SpecialAugment
     public override void AfterMainAttackEffect(IBrick Brick)
     {
         float BlastDamage = StatManager.instance.Temporary_stat.EffectDamage * 20;
-        if (Brick.EffectStatusSet["Fire"].EffectStack == Brick.EffectStatusSet["Fire"].EffectStackLimit)
+        if (Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack == Brick.BrickEffect.EffectStatusSet["Fire"].EffectStackLimit)
         {
-            Brick.EffectStatusSet["Fire"].EffectStack = (int)(Brick.EffectStatusSet["Fire"].EffectStack * 0.3);
+            Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack = (int)(Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack * 0.3);
             foreach (IBrick nearbyBrick in Brick.NearbyBricks)
             {
-                nearbyBrick.EffectStatusSet["Fire"].EffectStack += 
-                    (nearbyBrick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 2 : 0;
                 nearbyBrick.ArbitraryDamageAttack(BlastDamage
                     ,
                     false,
                     BlastDamage.ToString("F1"), 
                     "Fire");
-                nearbyBrick.Fire = StartCoroutine(nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration));
+                nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration);
             }
             VisualEffectManager.Instance.SpawnParticle("FireBlast", Brick.transform.position, 30);
         }
@@ -411,11 +407,7 @@ public class PoisonBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.PoisonChance)
         {
-            Brick.EffectStatusSet["Poison"].EffectStack += (Brick.EffectStatusSet["Poison"].EffectStack < Brick.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
-            if(Brick.Poison == null)
-            {
-                Brick.Poison = StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration)); 
-            }
+            Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration); 
         }
     }
 }
@@ -473,10 +465,8 @@ public class InfinitePoison : SpecialAugment
                             if (Chosen.gameObject.activeInHierarchy && Chosen.Poison == null)
                             {
                                 VisualEffectManager.Instance.SpawnParticle("InfinityPoison", transform.position, 1);
-
-                                Chosen.EffectStatusSet["Poison"].EffectStack +=
-                                    (Chosen.EffectStatusSet["Poison"].EffectStack != Chosen.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
-                                Chosen.Poison = Chosen.StartCoroutine(Chosen.DamageByPoisonEffect(brick.initialDuration));
+                                Chosen.ShowText("Infection!", null, false);
+                                Chosen.DamageByPoisonEffect(brick.BrickEffect.initialDuration);
                             }
                         }
                     }
@@ -564,11 +554,7 @@ public class DecayBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
-            Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
-            if(Brick.Decay == null)
-            { 
-                Brick.Decay = StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration));
-            }
+            Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration);
         }
     }
 }
@@ -615,13 +601,13 @@ public class DecayExplosion : SpecialAugment
 
     public override void AfterBrickDieEffect(IBrick Brick)
     {
-        if (Brick.EffectStatusSet["Decay"].EffectStack == Brick.EffectStatusSet["Decay"].EffectStackLimit)
+        if (Brick.BrickEffect.EffectStatusSet["Decay"].EffectStack == Brick.BrickEffect.EffectStatusSet["Decay"].EffectStackLimit)
         {
             Brick.IsNeedDelayedDIeForEffect = true;
             VisualEffectManager.Instance.SpawnParticle("DecayExplosion", Brick.transform.position, 1);
             float explosionRadius = 3f;
             LayerMask explosionLayer = LayerMask.GetMask("Ball");
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayer);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(Brick.transform.position, explosionRadius, explosionLayer);
 
             foreach (Collider2D ball in colliders)
             {
@@ -629,8 +615,8 @@ public class DecayExplosion : SpecialAugment
 
                 if (rb != null)
                 {
-                    Vector2 explosionDirection = (rb.position - (Vector2)transform.position).normalized;
-                    float distance = Vector2.Distance(rb.position, transform.position);
+                    Vector2 explosionDirection = (rb.position - (Vector2)Brick.transform.position).normalized;
+                    float distance = Vector2.Distance(rb.position, Brick.transform.position);
                     float forceMultiplier = Mathf.Clamp01(1 - (distance / explosionRadius));
 
                     rb.AddForce(explosionDirection * 5f * forceMultiplier, ForceMode2D.Impulse);
@@ -979,11 +965,11 @@ public class StrongAdditionalAttack : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             if (RandomValue < SuperUltraStrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 500f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 500f));
             else if (RandomValue < SuperStrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 100f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f));
             else if (RandomValue < StrongAttackChance)
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 10f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 10f));
         }
     }
 }
@@ -1021,7 +1007,7 @@ public class RandomEffect : SpecialAugment
             if (RandomValue < accumulatedProbability)
             {
                 Debug.Log("WeakAdditionalDamage");
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 0.5f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.5f));
                 return;
             }
 
@@ -1029,7 +1015,7 @@ public class RandomEffect : SpecialAugment
             if (RandomValue < accumulatedProbability)
             {
                 Debug.Log("AdditionalDamage");
-                StartCoroutine(Brick.AdditionalAttack(0.1f, 0.1f, 0.8f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.8f));
                 return;
             }
 
@@ -1047,18 +1033,15 @@ public class RandomEffect : SpecialAugment
                 int Number = Random.Range(1, 4);
                 if (Number == 1)
                 {
-                    Brick.EffectStatusSet["Fire"].EffectStack += (Brick.EffectStatusSet["Fire"].EffectStack != Brick.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
-                    Brick.Fire = StartCoroutine(Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f));
+                    Brick.BrickEffect.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f);
                 }
                 else if (Number == 2)
                 {
-                    Brick.EffectStatusSet["Poison"].EffectStack += (Brick.EffectStatusSet["Poison"].EffectStack < Brick.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
-                    Brick.Poison = StartCoroutine(Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f));
+                    Brick.BrickEffect.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f);
                 }
                 else if (Number == 3)
                 {
-                    Brick.EffectStatusSet["Decay"].EffectStack += (Brick.EffectStatusSet["Decay"].EffectStack != Brick.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
-                    Brick.Decay = StartCoroutine(Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f));
+                    Brick.BrickEffect.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f);
                 }
                 return;
             }
@@ -1445,8 +1428,17 @@ public class CurseBall : SpecialAugment
             {
                 int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
                 if (BrickManager.Instance.CurrentBricks.Count != 0)
+                    while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
+                    {
+                        index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+                    }
+                try
                 {
                     BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+                }
+                catch(ArgumentOutOfRangeException)
+                {
+                    Debug.Log("There are no Bricks");
                 }
             }
         }
@@ -1572,4 +1564,157 @@ public class RebornBombBall : SpecialAugment
     public override void Apply() { }
 
     public override void Remove() { }
+}
+
+public class OneMoreChance : SpecialAugment
+{
+    bool isRevived = true;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_49", "OneMoreChance", "OneMoreChance", "Ball", 2);
+    }
+
+    public override void Apply() 
+    {
+        isRevived = false;
+    }
+
+    public override void Remove() { }
+
+    public void Update()
+    {
+        if (!isRevived && BallManager.Instance.InGameBall.Count <= 0)
+        {
+            BallManager.Instance.CreateBall(5);
+            isRevived = true;
+        }
+    }
+}
+
+public class Concentrate : SpecialAugment
+{
+    int Count = 5;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_50", "Concentrate", "Concentrate", "Special", 0);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage *= 1.7f;
+        StatManager.instance.Temporary_stat.EffectDamage *= 1.4f;
+        StatManager.instance.Temporary_stat.EffectDuration *= 1.3f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove() { }
+
+    public override void AfterDeathEffect(IBall ball)
+    {
+        Count--;
+        if (Count <= 0)
+        {
+            Debug.Log("Game Over");
+        }
+    }
+}
+
+public class GroupViolence: SpecialAugment
+{
+    bool isGetAugment = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_51", "GroupViolence", "GroupViolence", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+    }
+
+    public override void Remove() 
+    {
+        isGetAugment = false;
+    }
+
+    public void Update()
+    {
+        if (isGetAugment && BrickManager.Instance.CurrentBricks.Count > 0)
+        {
+            float maxHp = BrickManager.Instance.CurrentBricks.Max(b => b.HP);
+            BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp);
+        }
+    }
+}
+
+public class Oneness: SpecialAugment
+{
+    IBall MainBall = null;
+    bool isGetAugment = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_52", "Oneness", "Oneness", "Special", 2);
+    }
+
+    public override void Apply() 
+    {
+        isGetAugment = true;
+    }
+
+    public override void Remove()
+    {
+        isGetAugment = false;
+    }
+
+    public void Update()
+    {
+        if (BallManager.Instance.InGameBall.Count > 0 && isGetAugment)
+        {
+            if (BallManager.Instance.InGameBall.Count == 1)
+            {
+                MainBall = BallManager.Instance.InGameBall[0];
+            }
+            else if (BallManager.Instance.InGameBall.Count >= 2)
+            {
+                if (MainBall == null)
+                    MainBall = BallManager.Instance.InGameBall[0];
+                for (int i = 1; i < BallManager.Instance.InGameBall.Count; i++)
+                {
+                    IBall ball = BallManager.Instance.InGameBall[i];
+                    if (ball.FusionMoveRoutine == null && MainBall != null)
+                    {
+                        ball.FusionMoveRoutine = StartCoroutine(MoveToPosition(ball, MainBall, 5f, 5f));
+                    }
+                }
+            }
+            else if(BallManager.Instance.InGameBall.Count <= 0)
+            {
+                MainBall = null;
+            }
+        }
+    }
+
+    IEnumerator MoveToPosition(IBall obj, IBall target, float duration, float smoothTime)
+    {
+        obj.gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        yield return new WaitForSeconds(1f);
+        while (Vector3.Distance(obj.transform.position, target.transform.position) > 0.28f)
+        {
+            if (target != null)
+            {
+                Vector3 direction = (target.transform.position - obj.transform.position).normalized;
+                obj.gameObject.GetComponent<Rigidbody2D>().linearVelocity = direction * 7.5f;
+            }
+            else
+            {
+                break;
+            }
+            yield return null;
+        }
+        obj.BallDied();
+        MainBall.GrowthAttackDamage += 0.25f;
+        MainBall.transform.localScale *= 1.001f;
+        obj.FusionMoveRoutine = null;
+        yield break;
+    }
 }

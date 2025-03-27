@@ -25,12 +25,11 @@ public partial class IBrick : MonoBehaviour
     public GameObject PoisonEffect;
     public float TotalMultiple;
 
-    public Dictionary<string, EffectStatus> EffectStatusSet;
-
     public Coroutine Fire = null;
     public Coroutine Poison = null;
     public Coroutine Decay = null;
     public Coroutine ExecutionCor = null;
+    public Coroutine BrickHealCoroutine = null;
 
     public GameObject ExecutionObject1;
     public GameObject ExecutionObject2;
@@ -44,6 +43,8 @@ public partial class IBrick : MonoBehaviour
         set
         {
             hp = value;
+            if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
+
             if (AugmentManager.instance.determineAugmentID("SPECIAL_6"))
             {
                 if (hp <= HpTemp * 0.15 && hp > 0)
@@ -69,7 +70,12 @@ public partial class IBrick : MonoBehaviour
                 }
                 else
                 {
+<<<<<<< HEAD
                     StartCoroutine(BrickDie());
+=======
+                    if (BrickType == "HealBrick") StopCoroutine(BrickHealCoroutine);
+                    BrickDie();
+>>>>>>> 90519b47148960544080b74e86fed32225cfcfd7
                 }
             }
             UpdateHPtext();
@@ -89,21 +95,27 @@ public partial class IBrick : MonoBehaviour
         {
             Augment.AfterBrickDieEffect(this);
         }
+<<<<<<< HEAD
         if (IsNeedDelayedDIeForEffect)
         {
             yield return new WaitForSeconds(0.2f);
         }
         StopCoroutineAfterDie();
         Collider.enabled = true;
+=======
+        //StopCoroutineAfterDie();
+>>>>>>> 90519b47148960544080b74e86fed32225cfcfd7
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
 
+    /*
     private void StopCoroutineAfterDie()
     {
-        if(Fire != null) { StopCoroutine(Fire); }
-        if(Poison !=  null) { StopCoroutine(Poison); }
-        if(Decay != null) { StopCoroutine(Decay); }
+        if(Fire != null) { BrickEffect.StopFire(); }
+        if(Poison !=  null) { BrickEffect.StopPoison(); }
+        if(Decay != null) { BrickEffect.StopDecay(); }
     }
+    */
 
     public void ShowText(string Text, string DamageType, bool isCritical)
     {
@@ -156,15 +168,6 @@ public partial class IBrick : MonoBehaviour
     {
         Collider = GetComponent<Collider2D>();
         boxSize = new Vector2(2f, 2f);
-        EffectStatusSet = new Dictionary<string, EffectStatus>()
-        {
-            { "Fire", new EffectStatus("Fire", false, 0, AugmentManager.instance.FireStackLimit) },
-            { "Poison", new EffectStatus("Poison", false, 0, AugmentManager.instance.PoisonStackLimit) },
-            { "Decay", new EffectStatus("Decay", false, 0, AugmentManager.instance.DecayStackLimit) }
-        };
-        FireEffectDuration = 0f;
-        PoisonEffectDuration = 0f;
-        DecayEffectDuration = 0f;
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
         camera = Camera.main;
@@ -173,6 +176,7 @@ public partial class IBrick : MonoBehaviour
         PoisonEffect.SetActive(false);
         if (spriteRenderer != null)
             UpdateOutline();
+        BrickEffect = new BrickEffectManager(this);
     }
 
     public void UpdateOutline()
@@ -213,11 +217,13 @@ public partial class IBrick : MonoBehaviour
 public partial class IBrick
 {
     public IBall RecentlyBall;
-    private float SpecialCriticalChance; // CriticalChance that Increased by Augment
-    
+    public float SpecialCriticalChance; // CriticalChance that Increased by Augment
+    public BrickEffectManager BrickEffect;
+
     public void TakeDamage(IBall ball)
     {
         RecentlyBall = ball;
+<<<<<<< HEAD
         TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
         SpecialCriticalChance = ball.SpecialCriticalChance;
 
@@ -268,23 +274,24 @@ public partial class IBrick
     private float CriticalDamage()
     {
         return (StatManager.instance.Persistent_stat.CriticalDamage + StatManager.instance.Temporary_stat.CriticalDamage);
+=======
+        DamageManager.TakeDamage(this, RecentlyBall);
+>>>>>>> 90519b47148960544080b74e86fed32225cfcfd7
     }
 
-    public float FireEffectDuration;
-    public float PoisonEffectDuration;
-    public float DecayEffectDuration;
-    public IEnumerator DamageByFireEffect(float effectDuration)
+    public void DamageByFireEffect(float effectDuration)
     {
-        if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
+        BrickEffect.EffectStatusSet["Fire"].EffectStack +=
+                (BrickEffect.EffectStatusSet["Fire"].EffectStack != BrickEffect.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
+        if (Fire == null)
         {
-            lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
-            lineRenderer.material.SetFloat("_FireHeight", 1f);
+            Fire = StartCoroutine(BrickEffect.DamageByFireEffect(effectDuration));
         }
         else
         {
-            lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
-            lineRenderer.material.SetFloat("_FireHeight", 2f);
+            BrickEffect.FireTimeUpdate(effectDuration);
         }
+<<<<<<< HEAD
         if (Fire != null)
         {
             FireEffectDuration = effectDuration;
@@ -335,24 +342,20 @@ public partial class IBrick
         Fire = null;
         lineRenderer.enabled = false;
         EffectStatusSet["Fire"].EffectStack = 0;
+=======
+>>>>>>> 90519b47148960544080b74e86fed32225cfcfd7
     }
-
-    public float initialDuration;
-    public IEnumerator DamageByPoisonEffect(float effectDuration)
+    public void DamageByPoisonEffect(float effectDuration)
     {
-        if (Poison != null)
+        BrickEffect.EffectStatusSet["Poison"].EffectStack +=
+                (BrickEffect.EffectStatusSet["Poison"].EffectStack != BrickEffect.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
+        if (Poison == null)
         {
-            yield break;
-        }
-        Material PoisonMaterial = PoisonEffect.GetComponent<Renderer>().material;
-        if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
-        {
-            PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
-            PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
-            PoisonMaterial.SetFloat("_InnerPower", 1.75f);
+            Poison = StartCoroutine(BrickEffect.DamageByPoisonEffect(effectDuration));
         }
         else
         {
+<<<<<<< HEAD
             PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
             PoisonMaterial.SetColor("_InnerColor", new Color(176 / 255f, 180 / 255f, 0));
             PoisonMaterial.SetFloat("_InnerPower", 1.5f);
@@ -467,111 +470,48 @@ public partial class IBrick
         if (AugmentManager.instance.PoisonBrickSet.Contains(this))
         {
             AugmentManager.instance.PoisonBrickSet.Remove(this);
+=======
+            BrickEffect.PoisonTimeUpdate(effectDuration);
+>>>>>>> 90519b47148960544080b74e86fed32225cfcfd7
         }
     }
-    public IEnumerator DecayEffect(float effectDuration)
+    public void DecayEffect(float effectDuration)
     {
-        if (Decay != null)
+        BrickEffect.EffectStatusSet["Decay"].EffectStack +=
+                (BrickEffect.EffectStatusSet["Decay"].EffectStack != BrickEffect.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
+        if (Decay == null)
         {
-            DecayEffectDuration = effectDuration;
-            yield break;
+            Decay = StartCoroutine(BrickEffect.DecayEffect(effectDuration));
         }
-        VisualEffectManager.Instance.SetDecayVisualEffect(this);
-        EffectStatusSet["Decay"].IsActive = true;
-        DecayEffectDuration = effectDuration;
-        int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
-        float interval = 0.1f;
-        while (effectDuration > 0)
+        else
         {
-            DecayEffectDuration -= interval;
-            if (!gameObject.activeSelf)
-            {
-                yield break;
-            }
-            yield return new WaitForSeconds(interval);
+            BrickEffect.DecayTimeUpdate(effectDuration);
         }
-        Decay = null;
-        EffectStatusSet["Decay"].EffectStack = 0;
-        VisualEffectManager.Instance.UnSetDecayVisualEffect(this);
     }
     
     public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
     {
-        bool isCritical = true;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
-        {
-            isCritical = IsCriticalHit();
-        }
-        float Percent = isCritical ? Random.Range(0.01f, 0.02f) : Random.Range(0.015f, 0.03f);
-        float plusDamage = HpTemp * Percent;
-        
-        float FinalDamage = DecayDamageCalculate(plusDamage + DamageAmount);
-        HP -= FinalDamage;
-        
-        VisualEffectManager.Instance.SpawnParticle("Lightning", this.transform.position, isCritical ? ParticleCount + 4 : ParticleCount);
-        ShowText(FinalDamage.ToString("F1"), "Lightning", isCritical);
+        DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
     }
 
     public void DamageByCurse()
     {
-        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
-            + StatManager.instance.Temporary_stat.AttackDamage
-            + RecentlyBall.GrowthAttackDamage)
-            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-
-        float damage = Random.Range(baseDamage * 0.5f, baseDamage * 1.3f);
-        float FinalDamage = DecayDamageCalculate(damage);
-        HP -= FinalDamage;
-        ShowText(FinalDamage.ToString("F1"), "Curse", false);
+        DamageManager.DamageByCurse(this);
     }
 
     public float DecayDamageCalculate(float Damage)
     {
-        Damage *= Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, EffectStatusSet["Decay"].EffectStack);
-        return Damage;
+        return DamageManager.DecayDamageCalculate(this, Damage);
     }
     
-    public IEnumerator AdditionalAttack(float MaxAttackTime, float TimeCount, float DamageMultiflier) // AdditionalAttack Coroutine
+    public void AdditionalAttack(float MaxAttackTime, float TimeCount, float DamageMultiflier)
     {
-        yield return new WaitForSeconds(0.5f);
-        
-        while (MaxAttackTime > 0f)
-        {
-            if (!gameObject.activeSelf)
-            {
-                yield break;
-            }
-            VisualEffectManager.Instance.SpawnParticle("AdditionalAttack", transform.position, 1);
-            bool CriticalHit = IsCriticalHit();
-            float AdditionalAttackDamage = CriticalHit
-                    ? (StatManager.instance.Persistent_stat.AttackDamage +
-                       StatManager.instance.Temporary_stat.AttackDamage)
-                      * StatManager.instance.statMultiplier.AttackDamageMultiplier * CriticalDamage() * DamageMultiflier
-                    : (StatManager.instance.Persistent_stat.AttackDamage +
-                       StatManager.instance.Temporary_stat.AttackDamage)
-                      * StatManager.instance.statMultiplier.AttackDamageMultiplier * DamageMultiflier;
-
-            float FinalAdditionalAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed) 
-                ? 1 
-                : DecayDamageCalculate(AdditionalAttackDamage);
-            
-            if(BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(GetComponent<TeleportBrick>());
-            HP -= FinalAdditionalAttackDamage;
-            ShowText(FinalAdditionalAttackDamage.ToString("F1"), "Additional", CriticalHit);
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-            {
-                Augment.AfterAttackEffect(this);
-            }
-            yield return new WaitForSeconds(TimeCount);
-            MaxAttackTime -= TimeCount;
-        }
+        DamageManager.AdditionalAttack(this, MaxAttackTime, TimeCount, DamageMultiflier);
     }
 
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
     {
-        damage = DecayDamageCalculate(damage);
-        HP -= damage;
-        ShowText(damageText, DamageType, isCritical);
+        DamageManager.ArbitraryDamageAttack(this, damage, isCritical, damageText, DamageType);
     }
 }
 

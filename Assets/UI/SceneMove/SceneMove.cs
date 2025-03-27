@@ -17,4 +17,9 @@ public class SceneMove : MonoBehaviour
     {
         SceneManager.LoadScene("HighScore");
     }
+
+    public void GoToShop()
+    {
+        SceneManager.LoadScene("Shop");
+    }
 }

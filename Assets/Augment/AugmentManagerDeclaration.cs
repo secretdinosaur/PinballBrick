@@ -45,7 +45,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(1f, 1f, 1f, 1f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
@@ -77,6 +77,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButStrongAtk>(),
             gameObject.AddComponent<DecreaseFieldCooldown5>(),
             gameObject.AddComponent<DecreaseFieldCooldown30>(),
+            gameObject.AddComponent<CritChanceToAttackDamage>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -127,8 +128,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DeathEffectTwice>(),
             gameObject.AddComponent<SpawnBombBall>(),
             gameObject.AddComponent<ChangeNormalToGlass>(),
+            gameObject.AddComponent<OneMoreChance>(),
+            gameObject.AddComponent<Concentrate>(),
+            gameObject.AddComponent<GroupViolence>(),
+            gameObject.AddComponent<Oneness>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
+            gameObject.AddComponent<TheFlamethrower>(),
 
             gameObject.AddComponent<DeadlyPoison>(),
             gameObject.AddComponent<InfinitePoison>(),
@@ -150,7 +156,20 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
+<<<<<<< HEAD
             gameObject.GetComponent<TheFlamethrower>(),
+=======
+            //gameObject.GetComponent<FireBall>(),
+            //gameObject.GetComponent<PoisonBall>(),
+            gameObject.GetComponent<DecayBall>(),
+            //gameObject.GetComponent<FireEffectStackBlast>(),
+            //gameObject.GetComponent<DeadlyPoison>(),
+            //gameObject.GetComponent<InfinitePoison>(),
+            gameObject.GetComponent<PowerfulDecay>(),
+            gameObject.GetComponent<DecayExplosion>(),
+            //gameObject.GetComponent<TheFlamethrower>(),
+
+>>>>>>> 90519b47148960544080b74e86fed32225cfcfd7
         };
 
         foreach (IAugment augment in TestAugments)
