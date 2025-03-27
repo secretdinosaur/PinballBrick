@@ -31,7 +31,10 @@ public class DamageTextManager : MonoBehaviour
     
     public void TakeDamageText(DamageText damageText)
     {
-        instance.DamageTextQueue.Dequeue();
+        if(instance.DamageTextQueue.Count >= 1)
+        {
+            instance.DamageTextQueue.Dequeue();
+        }
         damageText.GetComponent<DamageText>().StopCoroutine(damageText.Routine);
         damageText.Routine = null;
         PoolManager.TakeToPool<DamageText>(damageText);

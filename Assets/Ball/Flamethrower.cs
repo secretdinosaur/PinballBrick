@@ -33,7 +33,7 @@ public class Flamethrower : MonoBehaviour
 
                 if (Random.value < 0.1f)
                 {
-                    brick.StartCoroutine(brick.DamageByFireEffect(1f));
+                    brick.DamageByFireEffect(1f);
                 }
             }
             timer = 0f;
