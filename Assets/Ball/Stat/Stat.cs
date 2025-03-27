@@ -5,8 +5,8 @@ public class Persistent_Stat  //Out Game Stats(Upgradeable Stats Using Gold)
 {
     public float AttackDamage;
     public float EffectDamage;
-    public float AttackDamageMultiflier;
-    public float EffectDamageMultiflier;
+    public float AttackDamageMultiplier;
+    public float EffectDamageMultiplier;
     public int StartingBall;
     public float BonusExp;
     public float CriticalChance;
