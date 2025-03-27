@@ -20,7 +20,8 @@ public abstract class IAugment : MonoBehaviour
     public virtual void AfterMainAttackEffect(IBrick Brick) { }
 
     public virtual void CriticalAttackEffect(IBrick Brick) { }
-    
+
+    public virtual void AfterBirthEffect(IBall ball) { }
     public virtual void AfterDeathEffect(IBall ball) { }
 
     /// <summary>

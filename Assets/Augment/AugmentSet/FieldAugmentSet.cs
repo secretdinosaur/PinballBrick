@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 using static UnityEngine.GraphicsBuffer;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Drawing;
+using Color = UnityEngine.Color;
 
 /*
 public class Example : FieldAugment
@@ -440,8 +442,7 @@ public class Laser : FieldAugment
     {
         while (true)
         {
-            //yield return new WaitForSeconds(Random.Range(Cooldown - 4f, Cooldown + 4f));
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(Random.Range(Cooldown - 4f, Cooldown + 4f));
             if (BallManager.Instance.InGameBall.Count > 0)
             {
                 for(int i = 0; i < Random.Range(1, BallManager.Instance.InGameBall.Count); i++)
@@ -449,6 +450,86 @@ public class Laser : FieldAugment
                     SpecialObjManager.Instance.CreateSpecialObj("LaserObj");
                 }
             }
+        }
+    }
+}
+
+public class AttackOrDie : FieldAugment
+{
+    Coroutine Routine = null;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_11", "AttackOrDie", "AttackOrDie", 2);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage *= 1.4f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        Routine = StartCoroutine(GetAttackOrDie());
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage /= 1.4f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetAttackOrDie()
+    {
+        while (true)
+        {
+            if (BallManager.Instance.InGameBall.Count > 0)
+            {
+                foreach (IBall ball in BallManager.Instance.InGameBall)
+                {
+                    if(ball.AttackDelayTime >= 2f && ball.AttackOrDieRoutine == null)
+                    {
+                        ball.AttackOrDieRoutine = StartCoroutine(GetDying(ball));
+                    }
+                }
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator GetDying(IBall ball)
+    {
+        float elapsedTime = 0f;
+        Color color = ball.GetComponent<SpriteRenderer>().color;
+
+        while (ball.AttackDelayTime < 7f)
+        {
+            if (ball.AttackDelayTime >= 2f)
+            {
+                elapsedTime += Time.deltaTime;
+                color.a = Mathf.Lerp(1f, 0f, elapsedTime / 5f);
+                ball.GetComponent<SpriteRenderer>().color = color;
+            }
+            else
+            {
+                color.a = 1f;
+                ball.GetComponent<SpriteRenderer>().color = color;
+                elapsedTime = 0f;
+            }
+            yield return null;
+        }
+
+        color.a = 0f;
+        ball.GetComponent<SpriteRenderer>().color = color;
+        if (ball.AttackOrDieRoutine != null)
+        {
+            ball.AttackOrDieRoutine = null;
+        }
+        if (ball.gameObject.activeInHierarchy)
+        {
+            ball.BallDied();
         }
     }
 }
