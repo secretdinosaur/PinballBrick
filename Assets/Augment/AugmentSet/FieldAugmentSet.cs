@@ -546,8 +546,7 @@ public class DecayZone : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetDecayZone(10f));
-        //Routine = StartCoroutine(GetDecayZone(8f + Cooldown));
+        Routine = StartCoroutine(GetDecayZone(7f + Cooldown));
     }
 
     public override void Remove()
