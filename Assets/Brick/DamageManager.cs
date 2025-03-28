@@ -186,10 +186,33 @@ public class BrickEffectManager : MonoBehaviour
         EffectStatusSet["Fire"].IsActive = true;
         FireEffectDuration = effectDuration;
         float interval = 0.2f;
+
+        if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
+        {
+            brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
+            brick.lineRenderer.material.SetFloat("_FireHeight", 1f);
+        }
+        else
+        {
+            brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
+            brick.lineRenderer.material.SetFloat("_FireHeight", 2f);
+        }
+        brick.lineRenderer.enabled = true;
+
         while (FireEffectDuration > 0)
         {
             bool isCritical = false;
             float EffectAttackDamage;
+            if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
+            {
+                brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
+                brick.lineRenderer.material.SetFloat("_FireHeight", 1f);
+            }
+            else
+            {
+                brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
+                brick.lineRenderer.material.SetFloat("_FireHeight", 2f);
+            }
             if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
             {
                 isCritical = DamageManager.IsCriticalHit(brick);
@@ -214,6 +237,7 @@ public class BrickEffectManager : MonoBehaviour
             }
             yield return new WaitForSeconds(interval);
         }
+        brick.lineRenderer.enabled = false;
         brick.Fire = null;
         EffectStatusSet["Fire"].EffectStack = 0;
     }
@@ -221,20 +245,44 @@ public class BrickEffectManager : MonoBehaviour
     public float initialDuration;
     public IEnumerator DamageByPoisonEffect(float effectDuration)   
     {
+        float elapsedTime = 0;
         brick.PoisonEffect.SetActive(true);
         EffectStatusSet["Poison"].IsActive = true;
 
         float interval = 0.5f;
         initialDuration = effectDuration;
         PoisonEffectDuration = effectDuration;
-
+        Material PoisonMaterial = brick.PoisonEffect.GetComponent<Renderer>().material;
+        if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
+        {
+            PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
+            PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
+            PoisonMaterial.SetFloat("_InnerPower", 1.75f);
+        }
+        else
+        {
+            PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
+            PoisonMaterial.SetColor("_InnerColor", new Color(176 / 255f, 180 / 255f, 0));
+            PoisonMaterial.SetFloat("_InnerPower", 1.5f);
+        }
         while (PoisonEffectDuration > 0)
         {
             if (EffectStatusSet["Poison"].EffectStack >= EffectStatusSet["Poison"].EffectStackLimit && !AugmentManager.instance.PoisonBrickSet.Contains(brick))
             {
                 AugmentManager.instance.PoisonBrickSet.Add(brick);
             }
-
+            if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
+            {
+                PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
+                PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
+                PoisonMaterial.SetFloat("_InnerPower", 1.75f);
+            }
+            else
+            {
+                PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
+                PoisonMaterial.SetColor("_InnerColor", new Color(176 / 255f, 180 / 255f, 0));
+                PoisonMaterial.SetFloat("_InnerPower", 1.5f);
+            }
             bool isCritical = false;
             float EffectAttackDamage;
             if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
@@ -261,6 +309,20 @@ public class BrickEffectManager : MonoBehaviour
             {
                 if (Random.value < AugmentManager.instance.effectChance.PoisonChance)
                 {
+                    elapsedTime = 0;
+                    while (elapsedTime < 0.25f)
+                    {
+                        PoisonMaterial.SetFloat("_InfinityPoison", Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f));
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }
+                    elapsedTime = 0;
+                    while (elapsedTime < 0.25f)
+                    {
+                        PoisonMaterial.SetFloat("_InfinityPoison", Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f));
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }
                     if (EffectStatusSet["Poison"].EffectStack < EffectStatusSet["Poison"].EffectStackLimit)
                     {
                         EffectStatusSet["Poison"].EffectStack++;
@@ -284,17 +346,27 @@ public class BrickEffectManager : MonoBehaviour
         EffectStatusSet["Poison"].IsActive = false;
         brick.PoisonEffect.SetActive(false);
         EffectStatusSet["Poison"].EffectStack = 0;
+        elapsedTime = 0f;
+        while (elapsedTime < 1)
+        {
+            PoisonMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 1.1f, elapsedTime / 1));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        brick.PoisonEffect.SetActive(false);
         if (AugmentManager.instance.PoisonBrickSet.Contains(brick))
         {
             AugmentManager.instance.PoisonBrickSet.Remove(brick);
         }
     }
+
     public IEnumerator DecayEffect(float effectDuration)
     {
         EffectStatusSet["Decay"].IsActive = true;
         DecayEffectDuration = effectDuration;
         int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
         float interval = 0.1f;
+        VisualEffectManager.Instance.SetDecayVisualEffect(brick);
         while (effectDuration > 0)
         {
             DecayEffectDuration -= interval;
@@ -306,6 +378,7 @@ public class BrickEffectManager : MonoBehaviour
         }
         brick.Decay = null;
         EffectStatusSet["Decay"].EffectStack = 0;
+        VisualEffectManager.Instance.UnSetDecayVisualEffect(brick);
     }
 
     public void FireTimeUpdate(float effectDuration) { FireEffectDuration = effectDuration; }
@@ -317,234 +390,3 @@ public class BrickEffectManager : MonoBehaviour
     //public void StopDecay() { if (brick.Decay != null) { StopCoroutine(brick.Decay); } }
 
 }
-
-
-
-
-//previous effect code 
-/*
-public float FireEffectDuration;
-public float PoisonEffectDuration;
-public float DecayEffectDuration;
-public IEnumerator DamageByFireEffect(float effectDuration)
-{
-    if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
-    {
-        lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
-        lineRenderer.material.SetFloat("_FireHeight", 1f);
-    }
-    else
-    {
-        lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
-        lineRenderer.material.SetFloat("_FireHeight", 2f);
-    }
-    if (Fire != null)
-    {
-        FireEffectDuration = effectDuration;
-        yield break;
-    }
-    EffectStatusSet["Fire"].IsActive = true;
-    lineRenderer.enabled = true;
-    FireEffectDuration = effectDuration;
-    float interval = 0.2f;
-    while (FireEffectDuration > 0)
-    {
-        if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
-        {
-            lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
-            lineRenderer.material.SetFloat("_FireHeight", 1f);
-        }
-        else
-        {
-            lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
-            lineRenderer.material.SetFloat("_FireHeight", 2f);
-        }
-        bool isCritical = false;
-        float EffectAttackDamage;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
-        {
-            isCritical = DamageManager.IsCriticalHit(this);
-        }
-
-        EffectAttackDamage = isCritical
-            ? (StatManager.instance.Temporary_stat.EffectDamage *
-               StatManager.instance.statMultiplier.EffectDamageMultiplier)
-              * EffectStatusSet["Fire"].EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage
-            : (StatManager.instance.Temporary_stat.EffectDamage *
-               StatManager.instance.statMultiplier.EffectDamageMultiplier)
-              * EffectStatusSet["Fire"].EffectStack;
-        float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
-            ? 1
-            : DecayDamageCalculate(EffectAttackDamage);
-        HP -= FinalEffectAttackDamage;
-        ShowText(FinalEffectAttackDamage.ToString("F1"), "Fire", isCritical);
-        FireEffectDuration -= interval;
-        if (!gameObject.activeSelf)
-        {
-            yield break;
-        }
-        yield return new WaitForSeconds(interval);
-    }
-    Fire = null;
-    lineRenderer.enabled = false;
-    EffectStatusSet["Fire"].EffectStack = 0;
-}
-
-public float initialDuration;
-public IEnumerator DamageByPoisonEffect(float effectDuration)
-{
-    if (Poison != null)
-    {
-        yield break;
-    }
-    Material PoisonMaterial = PoisonEffect.GetComponent<Renderer>().material;
-    if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
-    {
-        PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
-        PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
-        PoisonMaterial.SetFloat("_InnerPower", 1.75f);
-    }
-    else
-    {
-        PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
-        PoisonMaterial.SetColor("_InnerColor", new Color(176 / 255f, 180 / 255f, 0));
-        PoisonMaterial.SetFloat("_InnerPower", 1.5f);
-    }
-    float elapsedTime = 0f;
-
-    PoisonEffect.SetActive(true);
-    EffectStatusSet["Poison"].IsActive = true;
-
-    while (elapsedTime < 1)
-    {
-        PoisonMaterial.SetFloat("_Alpha", Mathf.Lerp(1.1f, 0, elapsedTime / 1));
-        elapsedTime += Time.deltaTime;
-        yield return null;
-    }
-
-    float interval = 0.5f;
-    initialDuration = effectDuration;
-    PoisonEffectDuration = effectDuration;
-
-    while (PoisonEffectDuration > 0)
-    {
-        if (EffectStatusSet["Poison"].EffectStack >= EffectStatusSet["Poison"].EffectStackLimit && !AugmentManager.instance.PoisonBrickSet.Contains(this))
-        {
-            AugmentManager.instance.PoisonBrickSet.Add(this);
-        }
-        //Deadly Poison Effect
-        if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
-        {
-            PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
-            PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
-            PoisonMaterial.SetFloat("_InnerPower", 1.75f);
-        }
-        else
-        {
-            PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
-            PoisonMaterial.SetColor("_InnerColor", new Color(176 / 255f, 180 / 255f, 0));
-            PoisonMaterial.SetFloat("_InnerPower", 1.5f);
-        }
-
-        bool isCritical = false;
-        float EffectAttackDamage;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
-        {
-            isCritical = DamageManager.IsCriticalHit(this);
-        }
-
-        EffectAttackDamage = isCritical
-            ? (HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
-                     * EffectStatusSet["Poison"].EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage))
-            : (HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
-                     * EffectStatusSet["Poison"].EffectStack));
-
-        float FinalEffectAttackDamage = (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
-            ? 1
-            : DecayDamageCalculate(EffectAttackDamage);
-        HP -= FinalEffectAttackDamage;
-        ShowText(FinalEffectAttackDamage.ToString("0.###"), "Poison", isCritical);
-        if (!gameObject.activeInHierarchy)
-        {
-            yield break;
-        }
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_16"))
-        {
-            if (Random.value < AugmentManager.instance.effectChance.PoisonChance)
-            {
-                elapsedTime = 0;
-                while (elapsedTime < 0.25f)
-                {
-                    PoisonMaterial.SetFloat("_InfinityPoison", Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f));
-                    elapsedTime += Time.deltaTime;
-                    yield return null;
-                }
-                elapsedTime = 0;
-                while (elapsedTime < 0.25f)
-                {
-                    PoisonMaterial.SetFloat("_InfinityPoison", Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f));
-                    elapsedTime += Time.deltaTime;
-                    yield return null;
-                }
-                if (EffectStatusSet["Poison"].EffectStack < EffectStatusSet["Poison"].EffectStackLimit)
-                {
-                    EffectStatusSet["Poison"].EffectStack++;
-                }
-                PoisonEffectDuration = initialDuration;
-            }
-            else
-            {
-                PoisonEffectDuration -= interval;
-            }
-        }
-        else
-        {
-            PoisonEffectDuration -= interval;
-        }
-
-        yield return new WaitForSeconds(1f);
-    }
-
-    elapsedTime = 0f;
-    while (elapsedTime < 1)
-    {
-        PoisonMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 1.1f, elapsedTime / 1));
-        elapsedTime += Time.deltaTime;
-        yield return null;
-    }
-    Poison = null;
-    EffectStatusSet["Poison"].IsActive = false;
-    PoisonEffect.SetActive(false);
-    Poison = null;
-    EffectStatusSet["Poison"].EffectStack = 0;
-    if (AugmentManager.instance.PoisonBrickSet.Contains(this))
-    {
-        AugmentManager.instance.PoisonBrickSet.Remove(this);
-    }
-}
-public IEnumerator DecayEffect(float effectDuration)
-{
-    if (Decay != null)
-    {
-        DecayEffectDuration = effectDuration;
-        yield break;
-    }
-    VisualEffectManager.Instance.SetDecayVisualEffect(this);
-    EffectStatusSet["Decay"].IsActive = true;
-    DecayEffectDuration = effectDuration;
-    int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
-    float interval = 0.1f;
-    while (effectDuration > 0)
-    {
-        DecayEffectDuration -= interval;
-        if (!gameObject.activeSelf)
-        {
-            yield break;
-        }
-        yield return new WaitForSeconds(interval);
-    }
-    Decay = null;
-    EffectStatusSet["Decay"].EffectStack = 0;
-    VisualEffectManager.Instance.UnSetDecayVisualEffect(this);
-}
-*/

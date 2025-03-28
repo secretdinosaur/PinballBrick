@@ -619,7 +619,7 @@ public class DecayExplosion : SpecialAugment
                     float distance = Vector2.Distance(rb.position, Brick.transform.position);
                     float forceMultiplier = Mathf.Clamp01(1 - (distance / explosionRadius));
 
-                    rb.AddForce(explosionDirection * 5f * forceMultiplier, ForceMode2D.Impulse);
+                    rb.AddForce(explosionDirection * 15f * forceMultiplier, ForceMode2D.Impulse);
                 }
             }
         }
