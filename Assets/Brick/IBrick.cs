@@ -236,6 +236,14 @@ public partial class IBrick
         if (Poison == null)
         {
             Poison = StartCoroutine(BrickEffect.DamageByPoisonEffect(effectDuration));
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_55"))
+            {
+                DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
+            }
+            else if (AugmentManager.instance.determineAugmentID("SPECIAL_56"))
+            {
+                DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
+            }
         }
         else
         {

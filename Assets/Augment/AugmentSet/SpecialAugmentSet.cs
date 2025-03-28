@@ -388,9 +388,15 @@ public class PoisonBall : SpecialAugment
     {
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<InfinitePoison>());
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DeadlyPoison>());
+        isGetAugment = false;
     }
 
-    public override void Remove() { }
+    public override void Remove() 
+    {
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<InfinitePoison>());
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<DeadlyPoison>());
+        isGetAugment = true;
+    }
 
     public override void AfterMainAttackEffect(IBrick Brick)
     {
@@ -398,6 +404,20 @@ public class PoisonBall : SpecialAugment
             Random.value < AugmentManager.instance.effectChance.PoisonChance)
         {
             Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.PoisonDuration); 
+        }
+    }
+    bool isGetAugment = false;
+    private void Update()
+    {
+        if (AugmentManager.instance.activeSpecialAugments.Contains(GetComponent<DecayBall>()) && !isGetAugment)
+        {
+            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayingPoison>());
+            isGetAugment = true;
+        }
+        else if (AugmentManager.instance.activeSpecialAugments.Contains(GetComponent<FireBall>()) && !isGetAugment)
+        {
+            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FlammablePoison>());
+            isGetAugment = true;
         }
     }
 }
@@ -1836,5 +1856,45 @@ public class FreshNewStart : SpecialAugment
     public override void Remove()
     {
 
+    }
+}
+
+public class DecayingPoison: SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_55", "DecayingPoison", "DecayingPoison", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<FlammablePoison>());
+        AugmentManager.instance.effectDuration.FireDuration += 1f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FlammablePoison>());
+        AugmentManager.instance.effectDuration.FireDuration -= 1f;
+    }
+}
+
+public class FlammablePoison: SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_56", "FlammablePoison", "FlammablePoison", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<DecayingPoison>());
+        AugmentManager.instance.effectDuration.DecayDuration += 2f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayingPoison>());
+        AugmentManager.instance.effectDuration.DecayDuration -= 2f;
     }
 }

@@ -47,7 +47,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(1f, 1f, 1f, 1f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
