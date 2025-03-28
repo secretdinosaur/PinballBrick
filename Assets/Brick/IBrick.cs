@@ -80,8 +80,6 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
-        Collider.enabled = false;
-        
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
@@ -141,6 +139,7 @@ public partial class IBrick : MonoBehaviour
     }
     public void OnEnable()
     {
+        HpTemp = 9999999;
         HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
         

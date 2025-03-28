@@ -211,7 +211,10 @@ public class BrickManager : MonoBehaviour
     public void SpawnBoss()
     {
         HPPool = new List<float>();
-        HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(8,12));
+        for(int i = 0; i < 3; i++)
+        {
+            HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(8, 12));
+        }
         Vector2 randomPosition = GenerateRandomPosition();
         IBrick brick = GetBrick();
         brick.IsBoss = true;
