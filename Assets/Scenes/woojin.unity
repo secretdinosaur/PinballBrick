@@ -863,8 +863,8 @@ MonoBehaviour:
   Persistent_stat:
     AttackDamage: 0
     EffectDamage: 0
-    AttackDamageMultiflier: 0
-    EffectDamageMultiflier: 0
+    AttackDamageMultiplier: 0
+    EffectDamageMultiplier: 0
     StartingBall: 0
     BonusExp: 0
     CriticalChance: 0
