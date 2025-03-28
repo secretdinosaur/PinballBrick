@@ -188,6 +188,15 @@ public partial class IBall : MonoBehaviour
             Rigidbody2D TartgetRigidBody = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 TargetDirection = (TartgetRigidBody.position - (Vector2)transform.position).normalized;
             rb.AddForce(RotateVector(TargetDirection, Random.Range(-30f, 30f)) * Random.Range(5f, 11f), ForceMode2D.Impulse);
+
+            for (int i = 0; i < collision.contacts.Length; i++)
+            {
+                Vector2 ContactPos = collision.contacts[i].point;
+                Vector2 ContactVec = collision.contacts[i].normal;
+
+                VisualEffectManager.Instance.SpawnExplosionWithBallEffect(ContactVec, ContactPos);
+            }
+            
         }
         if (collision.gameObject.CompareTag("Brick") && gameObject.activeSelf)
         {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.ParticleSystem;
+using System;
 
 public class VisualEffectManager : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class VisualEffectManager : MonoBehaviour
     public ParticleSystem DecayExplosionPS;
 
     public ParticleSystem AddAttack1PS;
+
+    public ParticleSystem ExplosionWithBallPS;
+
+    Vector2 Vec = Vector2.zero;
     void Start()
     {
         Instance = this;
@@ -43,7 +48,7 @@ public class VisualEffectManager : MonoBehaviour
 
                 LightningHitPS.transform.position = ParticlePosition;
                 LightningHitPS.Emit(5);
-                ParticleSystem.Particle[] particles = new ParticleSystem.Particle[LightningHitPS.particleCount];
+                Particle[] particles = new Particle[LightningHitPS.particleCount];
                 LightningHitPS.GetParticles(particles);
 
                 for (int i = 0; i < particles.Length; i++)
@@ -81,6 +86,37 @@ public class VisualEffectManager : MonoBehaviour
         }
     }
 
+    public void SpawnExplosionWithBallEffect(Vector2 Vec, Vector2 Pos)
+    {
+        ExplosionWithBallPS.Emit(3);
+
+        Particle[] ExplosionWithBallParticles = new Particle[ExplosionWithBallPS.particleCount];
+        ExplosionWithBallPS.GetParticles(ExplosionWithBallParticles);
+
+        Array.Sort(ExplosionWithBallParticles, (a, b) => b.remainingLifetime.CompareTo(a.remainingLifetime));
+
+        for (int i = 0; i < 6; i++)
+        {
+            float angle = Mathf.Atan2(Vec.y, Vec.x) * Mathf.Rad2Deg;
+            ExplosionWithBallParticles[i].position = Pos;
+            ExplosionWithBallParticles[i].rotation = angle;
+
+            int Dir = i % 2 == 1 ? 1 : -1;
+
+            float randomAngleRad = UnityEngine.Random.Range(-10f, 10f) * Mathf.Deg2Rad;
+            float cosA = Mathf.Cos(randomAngleRad);
+            float sinA = Mathf.Sin(randomAngleRad);
+
+            Vector3 randomizedVec = new Vector3(
+                Vec.x * sinA + Vec.y * cosA,
+                Vec.x * cosA - Vec.y * sinA
+            ) * Dir;
+
+            ExplosionWithBallParticles[i].velocity = randomizedVec * 10;
+        }
+        ExplosionWithBallPS.SetParticles(ExplosionWithBallParticles);
+    }
+
     private void SpawnDecayExplosion(Vector2 ParticlePosition)
     {
         DecayExplosionPS.transform.position = ParticlePosition;
@@ -90,8 +126,9 @@ public class VisualEffectManager : MonoBehaviour
     public void SpawnChainLightning(List<IBrick> Bricks)
     {
         ChainLightningPS.Emit(Bricks.Count - 1);
-        ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ChainLightningPS.particleCount];
+        Particle[] particles = new Particle[ChainLightningPS.particleCount];
         ChainLightningPS.GetParticles(particles);
+
         for (int i = 0; i < Bricks.Count - 1; i++)
         {
             Vector2 StartPosition = Bricks[i].transform.position;
