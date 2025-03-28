@@ -35,28 +35,21 @@ public class Example : SpecialAugment
  */
 public class FireBall : SpecialAugment
 {
-    private float FireDamage; //EffectDamage
-    private float FireDuration; //EffectDuration
-
     private void OnEnable()
     {
         SetAugment("SPECIAL_1", "FireBall", "Time to Cast Magic", "Effect", 4);
-        FireDamage = 0.3f;
-        FireDuration = 3f;
     }
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.EffectDamage += FireDamage;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FireEffectStackBlast>());
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<TheFlamethrower>());
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.EffectDamage -= FireDamage;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<FireEffectStackBlast>());
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<TheFlamethrower>());
     }
 
     public override void AfterMainAttackEffect(IBrick Brick)
@@ -64,7 +57,7 @@ public class FireBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.FireChance)
         {
-            Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration); 
+            Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration); 
         }
     }
 }
@@ -386,12 +379,9 @@ public class Lightning : SpecialAugment
  */
 public class PoisonBall : SpecialAugment
 {
-    private float PoisonDuration;
-
     private void OnEnable()
     {
         SetAugment("SPECIAL_15", "PoisonBall", "PoisonBall", "Effect", 4);
-        PoisonDuration = 1.4f;
     }
 
     public override void Apply() 
@@ -407,7 +397,7 @@ public class PoisonBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.PoisonChance)
         {
-            Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + PoisonDuration); 
+            Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.PoisonDuration); 
         }
     }
 }
@@ -533,12 +523,9 @@ public class Chaos : SpecialAugment
  */
 public class DecayBall : SpecialAugment
 {
-    private float DecayDuration;
-
     private void OnEnable()
     {
         SetAugment("SPECIAL_18", "DecayBall", "DecayBall", "Effect", 4);
-        DecayDuration = 1f;
     }
 
     public override void Apply() 
@@ -554,7 +541,7 @@ public class DecayBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
-            Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + DecayDuration);
+            Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
         }
     }
 }
