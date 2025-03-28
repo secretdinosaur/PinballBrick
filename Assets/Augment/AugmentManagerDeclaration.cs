@@ -139,6 +139,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<Oneness>(),
             gameObject.AddComponent<HappyBirthday>(),
             gameObject.AddComponent<MidasHand>(),
+            gameObject.AddComponent<HalfBallSacrifice>(),
+            gameObject.AddComponent<FreshNewStart>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),

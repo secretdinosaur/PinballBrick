@@ -1779,3 +1779,62 @@ public class MidasHand : SpecialAugment
         BrickRenderer.color = PreviousColor;
     }
 }
+
+public class HalfBallSacrifice : SpecialAugment
+{
+    float AtkUpValue = 0;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_55", "HalfBallSacrifice", "HalfBallSacrifice", "Special", 4);
+    }
+
+    public override void Apply() 
+    {
+        if(BallManager.Instance.InGameBall.Count > 1)
+        {
+            for(int i = 0; i < BallManager.Instance.InGameBall.Count / 2; i++)
+            {
+                BallManager.Instance.InGameBall[i].BallDied();
+                AtkUpValue += 1;
+            }
+            StatManager.instance.Temporary_stat.AttackDamage += AtkUpValue;
+            StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        }
+    }
+
+    public override void Remove() 
+    {
+        StatManager.instance.Temporary_stat.AttackDamage -= AtkUpValue;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class FreshNewStart : SpecialAugment
+{
+    int AugmentNum = 0;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_54", "FreshNewStart", "FreshNewStart", "Special", 0);
+    }
+
+    public override void Apply()
+    {
+        AugmentNum = AugmentManager.instance.activeStatAugments.Count
+                   + AugmentManager.instance.activeFieldAugments.Count
+                   + AugmentManager.instance.activeSpecialAugments.Count;
+        AugmentManager.instance.ClearAllAugments();
+        StatManager.instance.Temporary_stat.AttackDamage *= AugmentNum / 2;
+        LevelManager.Instance.LevelSet(1);
+        foreach (IBall ball in BallManager.Instance.InGameBall)
+        {
+            BallManager.Instance.TakeBall(ball);
+        }
+        BallManager.Instance.CreateBall(1);
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<FreshNewStart>());
+    }
+
+    public override void Remove()
+    {
+
+    }
+}

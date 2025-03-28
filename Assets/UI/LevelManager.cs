@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,11 +52,23 @@ public class LevelManager : MonoBehaviour
     {
         Exp -= LevelBar.maxValue;
         Level++;
-        LevelBar.maxValue *= 1.2f;
+        LevelBarMaxValueSet(Level);
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
     }
-    
+
+    public void LevelSet(int value)
+    {
+        Exp = 0;
+        Level = value;
+        LevelBarMaxValueSet(Level);
+    }
+
+    public void LevelBarMaxValueSet(int level)
+    {
+        LevelBar.maxValue = Mathf.Round(100 * Mathf.Pow(1.2f, level - 1));
+    }
+
     public List<KeyValuePair<string, int>> GetRandomStats()
     {
         Dictionary<string, int> statTable = new Dictionary<string, int>
