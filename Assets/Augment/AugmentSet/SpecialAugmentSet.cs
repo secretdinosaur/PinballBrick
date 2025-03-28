@@ -1711,7 +1711,7 @@ public class Oneness: SpecialAugment
             }
             yield return null;
         }
-        MainBall.GrowthAttackDamage += 0.25f;
+        MainBall.BallBaseDamage += 0.25f;
         MainBall.transform.localScale *= 1.001f;
         if (obj.AttackOrDieRoutine != null)
         {
@@ -1742,8 +1742,9 @@ public class HappyBirthday : SpecialAugment
     }
     IEnumerator AtkUp(IBall ball)
     {
-        ball.GrowthAttackDamage += 30;
+        yield return null;
+        ball.BallBaseDamage += 30;
         yield return new WaitForSeconds(1f);
-        ball.GrowthAttackDamage -= 30;
+        ball.BallBaseDamage -= 30;
     }
 }

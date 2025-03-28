@@ -159,7 +159,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<RandomStatUpOrDown>(),
+            gameObject.GetComponent<Oneness>(),
+            gameObject.GetComponent<HappyBirthday>(),
         };
 
         foreach (IAugment augment in TestAugments)
