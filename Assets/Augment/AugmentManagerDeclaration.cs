@@ -135,6 +135,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<GroupViolence>(),
             gameObject.AddComponent<Oneness>(),
             gameObject.AddComponent<HappyBirthday>(),
+            gameObject.AddComponent<MidasHand>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -159,8 +160,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Oneness>(),
-            gameObject.GetComponent<HappyBirthday>(),
+            gameObject.GetComponent<MidasHand>(),
         };
 
         foreach (IAugment augment in TestAugments)

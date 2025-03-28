@@ -37,6 +37,8 @@ public partial class IBrick : MonoBehaviour
     private Collider2D Collider;
 
     public bool IsNeedDelayedDIeForEffect = false;
+
+    public bool isGoldBrick;
     public float HP
     {
         get { return hp; }
@@ -148,6 +150,7 @@ public partial class IBrick : MonoBehaviour
         HPText.enabled = true;
         ExecutionObject1.transform.position = transform.position;
         ExecutionObject2.transform.position = transform.position;
+        isGoldBrick = false;
     }
 
     public void GetComponents()

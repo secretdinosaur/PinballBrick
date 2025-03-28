@@ -1748,3 +1748,47 @@ public class HappyBirthday : SpecialAugment
         ball.BallBaseDamage -= 30;
     }
 }
+
+public class MidasHand : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_54", "MidasHand", "MidasHand", "Special", 4);
+    }
+
+    public override void Apply() { }
+
+    public override void Remove() { }
+
+    public override void AfterMainAttackEffect(IBrick Brick)
+    {
+        if(Random.value < 1f 
+            && Brick.BrickType != "TwinBrick" && Brick.BrickType != "ShieldBrick" 
+            && Brick.BrickType != "TeleportBrick" && Brick.BrickType != "BlackBrick"
+            && Brick.BrickType != "IgnoreBrick")
+        {
+            Brick.StartCoroutine(ChangeToGoldBrick(Brick));
+        }
+    }
+
+    public override void AfterBrickDieEffect(IBrick Brick)
+    {
+        if(Brick.isGoldBrick)
+        {
+            StatManager.instance.GetGold(Random.Range(1, 10));
+        }
+    }
+
+    IEnumerator ChangeToGoldBrick(IBrick Brick)
+    {
+        SpriteRenderer BrickRenderer = Brick.gameObject.GetComponent<SpriteRenderer>();
+        Color PreviousColor = BrickRenderer.color;
+
+        yield return null;
+        Brick.isGoldBrick = true;
+        BrickRenderer.color = new Color(1f, 0.843f, 0f);
+        yield return new WaitForSeconds(5f);
+        Brick.isGoldBrick = false;
+        BrickRenderer.color = PreviousColor;
+    }
+}
