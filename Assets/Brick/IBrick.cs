@@ -37,6 +37,8 @@ public partial class IBrick : MonoBehaviour
     private Collider2D Collider;
 
     public bool IsNeedDelayedDIeForEffect = false;
+
+    public bool isGoldBrick;
     public float HP
     {
         get { return hp; }
@@ -148,6 +150,7 @@ public partial class IBrick : MonoBehaviour
         HPText.enabled = true;
         ExecutionObject1.transform.position = transform.position;
         ExecutionObject2.transform.position = transform.position;
+        isGoldBrick = false;
     }
 
     public void GetComponents()
@@ -233,6 +236,14 @@ public partial class IBrick
         if (Poison == null)
         {
             Poison = StartCoroutine(BrickEffect.DamageByPoisonEffect(effectDuration));
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_55"))
+            {
+                DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
+            }
+            else if (AugmentManager.instance.determineAugmentID("SPECIAL_56"))
+            {
+                DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
+            }
         }
         else
         {

@@ -199,7 +199,7 @@ public class BrickEffectManager : MonoBehaviour
         }
         brick.lineRenderer.enabled = true;
 
-        while (FireEffectDuration > 0)
+        while (FireEffectDuration > 0f)
         {
             bool isCritical = false;
             float EffectAttackDamage;
@@ -249,7 +249,7 @@ public class BrickEffectManager : MonoBehaviour
         brick.PoisonEffect.SetActive(true);
         EffectStatusSet["Poison"].IsActive = true;
 
-        float interval = 0.5f;
+        float interval = 1f;
         initialDuration = effectDuration;
         PoisonEffectDuration = effectDuration;
         Material PoisonMaterial = brick.PoisonEffect.GetComponent<Renderer>().material;
@@ -265,7 +265,7 @@ public class BrickEffectManager : MonoBehaviour
             PoisonMaterial.SetColor("_InnerColor", new Color(176 / 255f, 180 / 255f, 0));
             PoisonMaterial.SetFloat("_InnerPower", 1.5f);
         }
-        while (PoisonEffectDuration > 0)
+        while (PoisonEffectDuration > 0f)
         {
             if (EffectStatusSet["Poison"].EffectStack >= EffectStatusSet["Poison"].EffectStackLimit && !AugmentManager.instance.PoisonBrickSet.Contains(brick))
             {
@@ -339,7 +339,7 @@ public class BrickEffectManager : MonoBehaviour
                 PoisonEffectDuration -= interval;
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(interval);
         }
 
         brick.Poison = null;
@@ -367,7 +367,7 @@ public class BrickEffectManager : MonoBehaviour
         int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
         float interval = 0.1f;
         VisualEffectManager.Instance.SetDecayVisualEffect(brick);
-        while (effectDuration > 0)
+        while (DecayEffectDuration > 0f)
         {
             DecayEffectDuration -= interval;
             if (!brick.gameObject.activeSelf)
@@ -388,5 +388,4 @@ public class BrickEffectManager : MonoBehaviour
     //public void StopFire() { if (brick.Fire != null) { StopCoroutine(brick.Fire); } }
     //public void StopPoison() { if (brick.Poison != null) { StopCoroutine(brick.Poison); } }
     //public void StopDecay() { if (brick.Decay != null) { StopCoroutine(brick.Decay); } }
-
 }

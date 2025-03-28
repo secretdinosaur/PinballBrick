@@ -1274,6 +1274,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 334616435}
     _nonLazy: 0
+  - _name: DecayZoneObj
+    _component: {fileID: 8156588418049617602, guid: ec6b29181ee80674c9c2cca3bb892254, type: 3}
+    _count: 0
+    _container: {fileID: 334616435}
+    _nonLazy: 0
 --- !u!114 &334616438
 MonoBehaviour:
   m_ObjectHideFlags: 0
