@@ -33,11 +33,6 @@ public class VisualEffectManager : MonoBehaviour
         
     }
 
-    /// <summary>
-    /// ParticleNameList:
-    /// Lightning
-    /// </summary>
-    /// <param name="ParticleName"></param>
     public void SpawnParticle(string ParticleName, Vector2 ParticlePosition, int ParticleCount)
     {
         switch (ParticleName)
@@ -72,7 +67,7 @@ public class VisualEffectManager : MonoBehaviour
             case "DecayExplosion":
                 DecayPunchPS.transform.position = ParticlePosition;
                 DecayPunchPS.Emit(1);
-                StartCoroutine(SpawnDecayExplosion(ParticlePosition));
+                SpawnDecayExplosion(ParticlePosition);
                 break;
 
             case "AdditionalAttack":
@@ -86,11 +81,10 @@ public class VisualEffectManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnDecayExplosion(Vector2 ParticlePosition)
+    private void SpawnDecayExplosion(Vector2 ParticlePosition)
     {
-        yield return new WaitForSeconds(0.2f);
         DecayExplosionPS.transform.position = ParticlePosition;
-        DecayExplosionPS.Emit(30);
+        DecayExplosionPS.Emit(15);
     }
 
     public void SpawnChainLightning(List<IBrick> Bricks)

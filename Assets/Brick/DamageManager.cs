@@ -245,6 +245,7 @@ public class BrickEffectManager : MonoBehaviour
     public float initialDuration;
     public IEnumerator DamageByPoisonEffect(float effectDuration)   
     {
+        float elapsedTime = 0;
         brick.PoisonEffect.SetActive(true);
         EffectStatusSet["Poison"].IsActive = true;
 
@@ -308,7 +309,7 @@ public class BrickEffectManager : MonoBehaviour
             {
                 if (Random.value < AugmentManager.instance.effectChance.PoisonChance)
                 {
-                    float elapsedTime = 0;
+                    elapsedTime = 0;
                     while (elapsedTime < 0.25f)
                     {
                         PoisonMaterial.SetFloat("_InfinityPoison", Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f));
@@ -345,7 +346,7 @@ public class BrickEffectManager : MonoBehaviour
         EffectStatusSet["Poison"].IsActive = false;
         brick.PoisonEffect.SetActive(false);
         EffectStatusSet["Poison"].EffectStack = 0;
-        float elapsedTime = 0f;
+        elapsedTime = 0f;
         while (elapsedTime < 1)
         {
             PoisonMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 1.1f, elapsedTime / 1));
@@ -389,38 +390,3 @@ public class BrickEffectManager : MonoBehaviour
     //public void StopDecay() { if (brick.Decay != null) { StopCoroutine(brick.Decay); } }
 
 }
-
-
-
-
-//previous effect code 
-/*
-
-
-
-public IEnumerator DecayEffect(float effectDuration)
-{
-    if (Decay != null)
-    {
-        DecayEffectDuration = effectDuration;
-        yield break;
-    }
-    VisualEffectManager.Instance.SetDecayVisualEffect(this);
-    EffectStatusSet["Decay"].IsActive = true;
-    DecayEffectDuration = effectDuration;
-    int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
-    float interval = 0.1f;
-    while (effectDuration > 0)
-    {
-        DecayEffectDuration -= interval;
-        if (!gameObject.activeSelf)
-        {
-            yield break;
-        }
-        yield return new WaitForSeconds(interval);
-    }
-    Decay = null;
-    EffectStatusSet["Decay"].EffectStack = 0;
-    VisualEffectManager.Instance.UnSetDecayVisualEffect(this);
-}
-*/
