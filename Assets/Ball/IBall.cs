@@ -31,6 +31,8 @@ public partial class IBall : MonoBehaviour
 
     public Renderer Renderer;
 
+    public int AttackNumber;
+
     private void Awake()
     {
         Renderer = GetComponent<Renderer>();
@@ -71,6 +73,7 @@ public partial class IBall : MonoBehaviour
         }
         AttackDelayTime = 0f;
         StartCoroutine(CalAttackDelayTime());
+        AttackNumber = 0;
     }
 
     public void BallDied()

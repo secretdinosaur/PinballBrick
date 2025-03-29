@@ -212,8 +212,14 @@ public partial class IBrick
     public void TakeDamage(IBall ball)
     {
         RecentlyBall = ball;
-        ball.AttackDelayTime = 0f;
+        float PreviousCritChance = RecentlyBall.SpecialCriticalChance;
+        RecentlyBall.AttackDelayTime = 0f;
+        if(RecentlyBall.AttackNumber % 3 == 0 && RecentlyBall.AttackNumber != 0)
+        {
+            RecentlyBall.SpecialCriticalChance = 1f;
+        }
         DamageManager.TakeDamage(this, RecentlyBall);
+        RecentlyBall.SpecialCriticalChance = PreviousCritChance;
     }
 
     public void DamageByFireEffect(float effectDuration)

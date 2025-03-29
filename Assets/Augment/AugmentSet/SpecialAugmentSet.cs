@@ -1947,7 +1947,7 @@ public class FreshNewStart : SpecialAugment
                    + AugmentManager.instance.activeFieldAugments.Count
                    + AugmentManager.instance.activeSpecialAugments.Count;
         AugmentManager.instance.ClearAllAugments();
-        StatManager.instance.Temporary_stat.AttackDamage *= AugmentNum / 2;
+        StatManager.instance.Temporary_stat.AttackDamage *= AugmentNum;
         LevelManager.Instance.LevelSet(1);
         foreach (IBall ball in BallManager.Instance.InGameBall)
         {
@@ -2000,5 +2000,29 @@ public class FlammablePoison: SpecialAugment
     {
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayingPoison>());
         AugmentManager.instance.effectDuration.DecayDuration -= 2f;
+    }
+}
+
+public class CritAfterThreeAttack : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_57", "CritAfterThreeAttack", "CritAfterThreeAttack", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        
+    }
+
+    public override void Remove()
+    {
+        
+    }
+
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        Brick.RecentlyBall.AttackNumber++;
     }
 }

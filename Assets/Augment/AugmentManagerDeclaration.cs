@@ -141,12 +141,15 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<MidasHand>(),
             gameObject.AddComponent<HalfBallSacrifice>(),
             gameObject.AddComponent<FreshNewStart>(),
+            gameObject.AddComponent<CritAfterThreeAttack>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
 
             gameObject.AddComponent<DeadlyPoison>(),
             gameObject.AddComponent<InfinitePoison>(),
+            gameObject.AddComponent<DecayingPoison>(),
+            gameObject.AddComponent<FlammablePoison>(),
 
             gameObject.AddComponent<PowerfulDecay>(),
             gameObject.AddComponent<DecayExplosion>(),
@@ -166,7 +169,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DecayZone>(),
+            gameObject.GetComponent<CritAfterThreeAttack>(),
         };
 
         foreach (IAugment augment in TestAugments)
