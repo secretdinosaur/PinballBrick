@@ -2026,3 +2026,43 @@ public class CritAfterThreeAttack : SpecialAugment
         Brick.RecentlyBall.AttackNumber++;
     }
 }
+
+public class DamageInfection : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_58", "DamageInfection", "DamageInfection", "Special", 1);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    public override void AfterMainAttackEffect(IBrick Brick)
+    {
+        if(Brick.NearbyBricks.Count > 0)
+        {
+            List<IBrick> ChosenBricks = new List<IBrick>(Brick.NearbyBricks);
+            int infectionLimit = Random.Range(1, ChosenBricks.Count > 5 ? 5 : ChosenBricks.Count);
+            for (int i = 0; i < ChosenBricks.Count; i++)
+            {
+                int swapIndex = Random.Range(i, ChosenBricks.Count);
+                (ChosenBricks[i], ChosenBricks[swapIndex]) = (ChosenBricks[swapIndex], ChosenBricks[i]);
+            }
+
+            ChosenBricks = ChosenBricks.GetRange(0, infectionLimit);
+
+            foreach (IBrick brick in ChosenBricks)
+            {
+                float damage = Mathf.Round(Random.Range(Brick.RecentReceivedDamage / 4, Brick.RecentReceivedDamage) * 10f) / 10f;
+                brick.ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Additional");
+            }
+        }
+    }
+}

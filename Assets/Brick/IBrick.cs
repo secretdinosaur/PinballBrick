@@ -208,6 +208,7 @@ public partial class IBrick
     public IBall RecentlyBall;
     public float SpecialCriticalChance; // CriticalChance that Increased by Augment
     public BrickEffectManager BrickEffect;
+    public float RecentReceivedDamage;
 
     public void TakeDamage(IBall ball)
     {

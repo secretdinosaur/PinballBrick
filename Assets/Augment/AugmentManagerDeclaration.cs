@@ -142,6 +142,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<HalfBallSacrifice>(),
             gameObject.AddComponent<FreshNewStart>(),
             gameObject.AddComponent<CritAfterThreeAttack>(),
+            gameObject.AddComponent<DamageInfection>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -169,7 +170,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<CritAfterThreeAttack>(),
+            gameObject.GetComponent<DamageInfection>(),
         };
 
         foreach (IAugment augment in TestAugments)
