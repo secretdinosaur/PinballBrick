@@ -19,6 +19,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public int PoisonStackLimit;
     public int DecayStackLimit;
 
+    public EffectDuration effectDuration;
+
     public List<IBrick> PoisonBrickSet = new List<IBrick>();
 
     public float DecayDamageMultiple;
@@ -45,7 +47,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(1f, 1f, 1f, 1f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f);
+        effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
@@ -135,6 +138,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<GroupViolence>(),
             gameObject.AddComponent<Oneness>(),
             gameObject.AddComponent<HappyBirthday>(),
+            gameObject.AddComponent<MidasHand>(),
+            gameObject.AddComponent<HalfBallSacrifice>(),
+            gameObject.AddComponent<FreshNewStart>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -144,6 +150,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
             gameObject.AddComponent<PowerfulDecay>(),
             gameObject.AddComponent<DecayExplosion>(),
+            gameObject.AddComponent<DecayZone>(),
 
             gameObject.AddComponent<SacrificeQuest2>(),
             gameObject.AddComponent<SacrificeQuest3>(),
@@ -159,7 +166,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<HappyBirthday>(),
+            gameObject.GetComponent<DecayZone>(),
         };
 
         foreach (IAugment augment in TestAugments)
@@ -198,5 +205,19 @@ public class EffectChance
         PoisonChance = poisonChance;
         DecayChance = decayChance;
         CurseChance = curseChance;
+    }
+}
+
+public class EffectDuration
+{
+    public float FireDuration;
+    public float PoisonDuration;
+    public float DecayDuration;
+
+    public EffectDuration(float fireDuration, float poisonDuration, float decayDuration)
+    {
+        FireDuration = fireDuration;
+        PoisonDuration = poisonDuration;
+        DecayDuration = decayDuration;
     }
 }

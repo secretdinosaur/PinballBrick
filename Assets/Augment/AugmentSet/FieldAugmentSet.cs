@@ -533,3 +533,37 @@ public class AttackOrDie : FieldAugment
         }
     }
 }
+
+public class DecayZone : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_12", "DecayZone", "DecayZone", 2);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetDecayZone(7f + Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetDecayZone(float Cooldown)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Cooldown);
+            SpecialObjManager.Instance.CreateSpecialObj("DecayZoneObj");
+        }
+    }
+}
