@@ -94,6 +94,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<LightningRod>(),
             gameObject.AddComponent<Laser>(),
             gameObject.AddComponent<AttackOrDie>(),
+            gameObject.AddComponent<WeatherChange>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -170,7 +171,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DamageInfection>(),
+            gameObject.GetComponent<WeatherChange>(),
         };
 
         foreach (IAugment augment in TestAugments)
