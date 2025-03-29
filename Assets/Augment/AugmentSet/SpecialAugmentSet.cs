@@ -647,9 +647,7 @@ public class ExplosionWithBall : SpecialAugment
 
     public override void Remove() { }
 }
-/// <summary>
-/// Need visual effect from below
-/// </summary>
+
 public class TheFlamethrower : SpecialAugment
 {
     private void OnEnable()
@@ -674,10 +672,12 @@ public class TheFlamethrower : SpecialAugment
 /*
  * ��� ����ġ 30% ȹ��, �� 20�� �����ϸ� ������ (1ȸ)
  */
+
 public class LevelUpQuest : SpecialAugment
 {
-    private int KilledEnemy;
+    private int KilledEnemy = 0;
     private bool isCleared = false;
+    private int ClearRequiredCount = 10;
     private void OnEnable()
     {
         SetAugment("SPECIAL_23", "LevelUpQuest", "LevelUpQuest", "Quest", 5);
@@ -685,9 +685,9 @@ public class LevelUpQuest : SpecialAugment
 
     public override void Apply()
     {
-        Debug.Log(LevelManager.Instance.Exp);
         LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.5f;
-        Debug.Log(LevelManager.Instance.Exp);
+
+        QuestAlarm.Instance.SetQuest("LevelUpQuest", "Killed Enemy", 0, ClearRequiredCount);
     }
 
     public override void Remove(){ }
@@ -695,8 +695,10 @@ public class LevelUpQuest : SpecialAugment
     public override void AfterBrickDieEffect(IBrick Brick)
     {
         KilledEnemy++;
-        Debug.Log(KilledEnemy);
-        if(KilledEnemy >= 20 && !isCleared)
+        if(KilledEnemy <= ClearRequiredCount)
+            QuestAlarm.Instance.SetQuest("LevelUpQuest", "Killed Enemy", KilledEnemy, ClearRequiredCount);
+
+        if (KilledEnemy >= ClearRequiredCount && !isCleared)
         {
             isCleared = true;
             LevelManager.Instance.LevelUp();
@@ -712,27 +714,53 @@ public class GrowBallQuest : SpecialAugment
     private int KilledEnemy;
     private float KeepAtk;
     private bool isCleared = false;
+    int ClearRequiredCount = 20;
     private void OnEnable()
     {
         SetAugment("SPECIAL_24", "GrowBallQuest", "GrowBallQuest", "Quest", 5);
     }
 
-    public override void Apply() { }
+    public override void Apply()
+    {
+        QuestAlarm.Instance.SetQuest("GrowBallQuest", "Killed Enemy", KilledEnemy, ClearRequiredCount);
+    }
 
     public override void Remove() { }
 
     public override void AfterBrickDieEffect(IBrick Brick)
     {
         KilledEnemy++;
+        if (KilledEnemy <= ClearRequiredCount)
+            QuestAlarm.Instance.SetQuest("GrowBallQuest", "Killed Enemy", KilledEnemy, ClearRequiredCount);
         if (Brick.RecentlyBall != null && !isCleared)
         {
             QuestProgressing(Brick);
-            if(KilledEnemy >= 20)
+            if(KilledEnemy >= ClearRequiredCount)
             {
                 StatManager.instance.Temporary_stat.AttackDamage += (KeepAtk + 2);
                 StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
                 isCleared = true;
+                StartCoroutine(GrowBall());
             }
+        }
+    }
+
+    IEnumerator GrowBall()
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < 0.25f)
+        {
+            elapsedTime += Time.deltaTime;
+            BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(1, 0, elapsedTime / 0.25f));
+            yield return null;
+        }
+
+        elapsedTime = 0;
+        while (elapsedTime < 0.25f)
+        {
+            elapsedTime += Time.deltaTime;
+            BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f), Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f), Mathf.Lerp(0, 1, elapsedTime / 0.25f));
+            yield return null;
         }
     }
 
@@ -783,6 +811,7 @@ public class GrowBallQuest : SpecialAugment
     }
 }
 
+
 public class InfiniteGrowBall : SpecialAugment
 {
     private void OnEnable()
@@ -808,21 +837,24 @@ public class InfiniteGrowBall : SpecialAugment
  */
 public class SacrificeQuest1 : SpecialAugment
 {
-    private int SacrificeNumber;
+    private int SacrificeNumber = 0;
+    int ClearRequiredCount = 20;
     private bool isCleared;
     private void OnEnable()
     {
         SetAugment("SPECIAL_26", "SacrificeQuest1", "SacrificeQuest1", "Quest", 5);
     }
 
-    public override void Apply() { }
+    public override void Apply() { QuestAlarm.Instance.SetQuest("SacrificeQuest1", "SacrificeNumber", SacrificeNumber, ClearRequiredCount); }
 
     public override void Remove() { }
 
     public override void AfterDeathEffect(IBall ball)
     {
         SacrificeNumber++;
-        if (SacrificeNumber >= 20 && !isCleared)
+        if (SacrificeNumber <= ClearRequiredCount)
+            QuestAlarm.Instance.SetQuest("SacrificeQuest1", "SacrificeNumber", SacrificeNumber, ClearRequiredCount);
+        if (SacrificeNumber >= ClearRequiredCount && !isCleared)
         {
             StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
             StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.1f;
@@ -840,20 +872,23 @@ public class SacrificeQuest1 : SpecialAugment
  */
 public class SacrificeQuest2 : SpecialAugment
 {
-    private int SacrificeNumber;
+    private int SacrificeNumber = 0;
     private bool isCleared;
+    int ClearRequiredCount = 50;
     private void OnEnable()
     {
         SetAugment("SPECIAL_27", "SacrificeQuest2", "SacrificeQuest2", "Quest", 3);
     }
 
-    public override void Apply() { }
+    public override void Apply() { QuestAlarm.Instance.SetQuest("SacrificeQuest2", "SacrificeNumber", SacrificeNumber, ClearRequiredCount); }
 
     public override void Remove() { }
 
     public override void AfterDeathEffect(IBall ball)
     {
         SacrificeNumber++;
+        if (SacrificeNumber <= ClearRequiredCount)
+            QuestAlarm.Instance.SetQuest("SacrificeQuest2", "SacrificeNumber", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= 50 && !isCleared)
         {
             StatManager.instance.Temporary_stat.AttackDamage += 10;
@@ -873,20 +908,23 @@ public class SacrificeQuest2 : SpecialAugment
  */
 public class SacrificeQuest3 : SpecialAugment
 {
-    private int SacrificeNumber;
+    private int SacrificeNumber = 0;
+    int ClearRequiredCount = 70;
     private bool isCleared;
     private void OnEnable()
     {
         SetAugment("SPECIAL_28", "SacrificeQuest", "SacrificeQuest", "Quest", 2);
     }
 
-    public override void Apply() { }
+    public override void Apply() { QuestAlarm.Instance.SetQuest("SacrificeQuest3", "SacrificeNumber", SacrificeNumber, ClearRequiredCount); }
 
     public override void Remove() { }
 
     public override void AfterDeathEffect(IBall ball)
     {
         SacrificeNumber++;
+        if (SacrificeNumber <= ClearRequiredCount)
+            QuestAlarm.Instance.SetQuest("SacrificeQuest3", "SacrificeNumber", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= 70 && !isCleared)
         {
             Debug.Log("SacrificeQuest3 Clear");
@@ -898,9 +936,11 @@ public class SacrificeQuest3 : SpecialAugment
 /*
  * 50ȸ Ÿ�ݽ� �߰� �� �ϳ�
  */
+
 public class AttackAfterAdditionalBall : SpecialAugment
 {
-    private int attackNumber;
+    private int attackNumber = 0;
+    private int RequiredCount = 50;
     private int AttackNumber
     {
         get
@@ -910,7 +950,7 @@ public class AttackAfterAdditionalBall : SpecialAugment
         set
         {
             attackNumber = value;
-            if(attackNumber >= 50)
+            if(attackNumber >= RequiredCount)
             {
                 BallManager.Instance.CreateBall(1);
                 attackNumber = 0;
@@ -922,13 +962,14 @@ public class AttackAfterAdditionalBall : SpecialAugment
         SetAugment("SPECIAL_29", "AttackAfterAdditionalBall", "AttackAfterAdditionalBall", "Ball", 5);
     }
 
-    public override void Apply() { }
+    public override void Apply() { QuestAlarm.Instance.SetQuest("Attack Ball", "Attack Ball", AttackNumber, RequiredCount); }
 
     public override void Remove() { }
 
     public override void AfterAttackEffect(IBrick Brick)
     {
         AttackNumber++;
+        QuestAlarm.Instance.SetQuest("Attack Ball", "Attack Ball", AttackNumber, RequiredCount);
     }
 }
 public class ShareBallAtk : SpecialAugment
@@ -972,9 +1013,9 @@ public class StrongAdditionalAttack : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             if (RandomValue < SuperUltraStrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 500f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 500f, true));
             else if (RandomValue < SuperStrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f, true));
             else if (RandomValue < StrongAttackChance)
                 StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 10f));
         }
@@ -1170,9 +1211,11 @@ public class RebirthBall : SpecialAugment
     {
         if (Random.value < 0.05f)
         {
-            BallManager.Instance.CreateSpecificBall(AugmentManager.instance.SpawnBallAmount, ball.BallType);
+            BallManager.Instance.CreateSpecificBall(AugmentManager.instance.SpawnBallAmount, ball.BallType, true);
         }
     }
+
+    
 }
 
 public class BossKillBall : SpecialAugment
@@ -1235,6 +1278,8 @@ public class BallSwarm : SpecialAugment
 {
     bool isGetAugment = false;
     bool Upgrade = false;
+
+    int RequiredBall = 30;
     private void OnEnable()
     {
         SetAugment("SPECIAL_38", "BallSwarm", "BallSwarm", "Ball", 4);
@@ -1254,11 +1299,15 @@ public class BallSwarm : SpecialAugment
     {
         if (isGetAugment)
         {
-            if(BallManager.Instance.InGameBall.Count >= 30 && !Upgrade)
+            QuestAlarm.Instance.SetQuest("LevelUpQuest", "Killed Enemy", BallManager.Instance.InGameBall.Count, RequiredBall);
+
+            if (BallManager.Instance.InGameBall.Count >= RequiredBall && !Upgrade)
             {
                 Upgrade = true;
                 StatManager.instance.Temporary_stat.AttackDamage += 2;
                 StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+
+
             }
             else if(BallManager.Instance.InGameBall.Count < 30 && Upgrade)
             {
@@ -1298,12 +1347,15 @@ public class LonelyBall : SpecialAugment
                 Upgrade = true;
                 StatManager.instance.Temporary_stat.AttackDamage += 2;
                 StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+
+                BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(2, 2, 2);
             }
             else if (BallManager.Instance.InGameBall.Count > 5 && Upgrade)
             {
                 Upgrade = false;
                 StatManager.instance.Temporary_stat.AttackDamage -= 2;
                 StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(1, 1, 1);
             }
         }
     }
@@ -1326,6 +1378,7 @@ public class SuicideBoomBall : SpecialAugment
         IBall ball = Brick.RecentlyBall;
         if(Random.value < 0.1f)
         {
+            VisualEffectManager.Instance.SpawnParticle("SuicideBoomBall", Brick.transform.position, 1);
             Brick.ArbitraryDamageAttack(
                     (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier,
                     false,
@@ -1367,10 +1420,30 @@ public class SplitBall : SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        if(Random.value < 0.01f)
+        if(Random.value < 0.11f)
         {
             IBall RecentlyBall = Brick.RecentlyBall;
+            StartCoroutine(SplitBallEffect(RecentlyBall));
             CreateBall(AugmentManager.instance.SpawnBallAmount, RecentlyBall);
+        }
+    }
+
+    IEnumerator SplitBallEffect(IBall RecentlyBall)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < 0.25f)
+        {
+            elapsedTime += Time.deltaTime;
+            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(1, 0, elapsedTime / 0.25f), Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f));
+            yield return null;
+        }
+
+        elapsedTime = 0;
+        while (elapsedTime < 0.25f)
+        {
+            elapsedTime += Time.deltaTime;
+            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(0, 1, elapsedTime / 0.25f), Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f), Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f));
+            yield return null;
         }
     }
 
@@ -1395,6 +1468,7 @@ public class SplitBall : SpecialAugment
                 ball.linearVelocityYValue -= 3f;
             }
             ball.gameObject.SetActive(true);
+            StartCoroutine(SplitBallEffect(ball));
         }
     }
     
@@ -1539,6 +1613,10 @@ public class SpawnBombBall : SpecialAugment
     }
 }
 
+/// <summary>
+/// Need visual effect from below
+/// 
+/// </summary>
 public class ChangeNormalToGlass : SpecialAugment
 {
     private void OnEnable()
@@ -1592,7 +1670,7 @@ public class OneMoreChance : SpecialAugment
     {
         if (!isRevived && BallManager.Instance.InGameBall.Count <= 0)
         {
-            BallManager.Instance.CreateBall(5);
+            BallManager.Instance.CreateSpecificBall(5, BallManager.Instance.NormalBall, true);
             isRevived = true;
         }
     }
@@ -1600,6 +1678,7 @@ public class OneMoreChance : SpecialAugment
 
 public class Concentrate : SpecialAugment
 {
+    int MaxCount = 3;
     int Count = 3;
     private void OnEnable()
     {
@@ -1608,6 +1687,7 @@ public class Concentrate : SpecialAugment
 
     public override void Apply()
     {
+        QuestAlarm.Instance.SetQuest("Concentrate", "GameOver In",  Count, 0);
         StatManager.instance.Temporary_stat.AttackDamage *= 1.6f;
         StatManager.instance.Temporary_stat.EffectDamage *= 1.4f;
         StatManager.instance.Temporary_stat.EffectDuration *= 1.3f;
@@ -1619,6 +1699,8 @@ public class Concentrate : SpecialAugment
     public override void AfterDeathEffect(IBall ball)
     {
         Count--;
+        QuestAlarm.Instance.SetQuest("Concentrate", "GameOver In",  Count, 0);
+
         if (Count <= 0)
         {
             Debug.Log("Game Over");
@@ -1673,6 +1755,25 @@ public class Oneness: SpecialAugment
         isGetAugment = false;
     }
 
+    IEnumerator OnenessBallEffect(IBall RecentlyBall)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < 0.25f)
+        {
+            elapsedTime += Time.deltaTime;
+            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(1, 0, elapsedTime / 0.25f), Mathf.Lerp(1, 0, elapsedTime / 0.25f));
+            yield return null;
+        }
+
+        elapsedTime = 0;
+        while (elapsedTime < 0.25f)
+        {
+            elapsedTime += Time.deltaTime;
+            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(0, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f));
+            yield return null;
+        }
+    }
+
     public void Update()
     {
         if (BallManager.Instance.InGameBall.Count > 0 && isGetAugment)
@@ -1718,13 +1819,14 @@ public class Oneness: SpecialAugment
             }
             yield return null;
         }
-        MainBall.BallBaseDamage += 0.25f;
+        StartCoroutine(OnenessBallEffect(MainBall));
+        MainBall.GrowthAttackDamage += 0.25f;
         MainBall.transform.localScale *= 1.001f;
         if (obj.AttackOrDieRoutine != null)
         {
             obj.FusionMoveRoutine = null;
         }
-        if (!obj.gameObject.activeInHierarchy)
+        if (obj.gameObject.activeInHierarchy)
         {
             obj.BallDied();
         }
@@ -1751,7 +1853,9 @@ public class HappyBirthday : SpecialAugment
     {
         yield return null;
         ball.BallBaseDamage += 30;
+        ball.Renderer.material.color = ball.Renderer.material.color * 2;
         yield return new WaitForSeconds(1f);
+        ball.Renderer.material.color = ball.Renderer.material.color / 2;
         ball.BallBaseDamage -= 30;
     }
 }

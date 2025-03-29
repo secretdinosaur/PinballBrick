@@ -61,7 +61,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: ba3d98bf2b682e34a85bb50203f663b5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -169,6 +169,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BallType: 
+  BallBaseDamage: 0
+  detectArea: {fileID: 0}
+  AttackDelayTime: 0
   CurrentSpeed: 0
   SpecialCriticalChance: 0
   isPhoenix: 0
@@ -176,7 +179,7 @@ MonoBehaviour:
   isOverDeathLine: 0
   StartPosition: {x: 0, y: -5}
   linearVelocityYValue: 10
-  targets: []
+  Renderer: {fileID: 0}
   TransformationMultiple: 1
   GrowthAttackDamageObserve: 0
 --- !u!96 &5368739640230251868
@@ -514,3 +517,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a2760b8aa4f7c4f848daac9a017c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NearbyBricks: []
+  BoomArea: []

@@ -54,7 +54,7 @@ public class StatManager : MonoBehaviour
             AttackDamage = 5f,
             EffectDamage = 5f,
             StartingBall = 1,
-            BonusExp = 0f,
+            BonusExp = 1f,
             CriticalChance = 0.0f,
             CriticalDamage = 1.1f,
             Gold = 100000f,

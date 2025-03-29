@@ -79,7 +79,7 @@ public static partial class DamageManager //Normal Attack
 
 public static partial class DamageManager //Special Effect Attack
 {
-    public static IEnumerator AdditionalAttack(IBrick brick, float MaxAttackTime, float TimeCount, float DamageMultiflier) // AdditionalAttack Coroutine
+    public static IEnumerator AdditionalAttack(IBrick brick, float MaxAttackTime, float TimeCount, float DamageMultiflier, bool IsStrong = false) // AdditionalAttack Coroutine
     {
         yield return new WaitForSeconds(0.5f);
 
@@ -89,7 +89,10 @@ public static partial class DamageManager //Special Effect Attack
             {
                 yield break;
             }
-            VisualEffectManager.Instance.SpawnParticle("AdditionalAttack", brick.transform.position, 1);
+            if (IsStrong)
+                VisualEffectManager.Instance.SpawnParticle("StrongAdditionalAttack", brick.transform.position, 1);
+            else
+                VisualEffectManager.Instance.SpawnParticle("AdditionalAttack", brick.transform.position, 1);
             bool CriticalHit = IsCriticalHit(brick);
             float AdditionalAttackDamage = CriticalHit
                     ? (StatManager.instance.Persistent_stat.AttackDamage +
@@ -133,6 +136,7 @@ public static partial class DamageManager //Special Effect Attack
 
     public static void DamageByCurse(IBrick brick)
     {
+        VisualEffectManager.Instance.SpawnParticle("Curse", brick.transform.position, 5);
         float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
             + StatManager.instance.Temporary_stat.AttackDamage
             + brick.RecentlyBall.GrowthAttackDamage)
@@ -245,14 +249,23 @@ public class BrickEffectManager : MonoBehaviour
     public float initialDuration;
     public IEnumerator DamageByPoisonEffect(float effectDuration)   
     {
+        Material PoisonMaterial = brick.PoisonEffect.GetComponent<Renderer>().material;
+
         float elapsedTime = 0;
         brick.PoisonEffect.SetActive(true);
         EffectStatusSet["Poison"].IsActive = true;
+        elapsedTime = 0f;
+        while (elapsedTime < 1)
+        {
+            PoisonMaterial.SetFloat("_Alpha", Mathf.Lerp(1.1f, 0f, elapsedTime / 1));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
 
         float interval = 1f;
         initialDuration = effectDuration;
         PoisonEffectDuration = effectDuration;
-        Material PoisonMaterial = brick.PoisonEffect.GetComponent<Renderer>().material;
         if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
         {
             PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
@@ -341,11 +354,6 @@ public class BrickEffectManager : MonoBehaviour
 
             yield return new WaitForSeconds(interval);
         }
-
-        brick.Poison = null;
-        EffectStatusSet["Poison"].IsActive = false;
-        brick.PoisonEffect.SetActive(false);
-        EffectStatusSet["Poison"].EffectStack = 0;
         elapsedTime = 0f;
         while (elapsedTime < 1)
         {
@@ -353,6 +361,11 @@ public class BrickEffectManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        brick.Poison = null;
+        EffectStatusSet["Poison"].IsActive = false;
+        brick.PoisonEffect.SetActive(false);
+        EffectStatusSet["Poison"].EffectStack = 0;
+        
         brick.PoisonEffect.SetActive(false);
         if (AugmentManager.instance.PoisonBrickSet.Contains(brick))
         {

@@ -28,7 +28,14 @@ public partial class IBall : MonoBehaviour
     public float linearVelocityYValue = 10;
 
     public Coroutine FusionMoveRoutine = null;
-    
+
+    public Renderer Renderer;
+
+    private void Awake()
+    {
+        Renderer = GetComponent<Renderer>();
+    }
+
     public void OnEnable()
     {
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
@@ -188,6 +195,15 @@ public partial class IBall : MonoBehaviour
             Rigidbody2D TartgetRigidBody = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 TargetDirection = (TartgetRigidBody.position - (Vector2)transform.position).normalized;
             rb.AddForce(RotateVector(TargetDirection, Random.Range(-30f, 30f)) * Random.Range(5f, 11f), ForceMode2D.Impulse);
+
+            for (int i = 0; i < collision.contacts.Length; i++)
+            {
+                Vector2 ContactPos = collision.contacts[i].point;
+                Vector2 ContactVec = collision.contacts[i].normal;
+
+                VisualEffectManager.Instance.SpawnExplosionWithBallEffect(ContactVec, ContactPos);
+            }
+            
         }
         if (collision.gameObject.CompareTag("Brick") && gameObject.activeSelf)
         {
@@ -314,6 +330,7 @@ public partial class IBall //GrowBall
     public float GrowthAttackDamageObserve;
     public void Grow(IBrick brick)
     {
+        StartCoroutine(GrowBall());
         if (brick.IsBoss)
         {
             GrowthAttackDamage += 0.2f;
@@ -322,5 +339,26 @@ public partial class IBall //GrowBall
         {
             GrowthAttackDamage += 0.04f;
         }
+
+        IEnumerator GrowBall()
+        {
+            float elapsedTime = 0;
+            while (elapsedTime < 0.25f)
+            {
+                elapsedTime += Time.deltaTime;
+                Renderer.sharedMaterial.color = new Color(Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(1, 0, elapsedTime / 0.25f));
+                yield return null;
+            }
+
+            elapsedTime = 0;
+            while (elapsedTime < 0.25f)
+            {
+                elapsedTime += Time.deltaTime;
+                Renderer.sharedMaterial.color = new Color(Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f), Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f), Mathf.Lerp(0, 1, elapsedTime / 0.25f));
+                yield return null;
+            }
+        }
     }
+
+    
 }

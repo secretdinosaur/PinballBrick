@@ -38,6 +38,7 @@ public class BombBall : IBall
                     "Fire");
             }
         }
+        VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);
         if (AugmentManager.instance.determineAugmentID("SPECIAL_48"))
         {
             if(Random.value < 0.5f)
