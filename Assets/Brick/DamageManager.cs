@@ -63,6 +63,7 @@ public static partial class DamageManager //Normal Attack
             : brick.DecayDamageCalculate(TotalAttackStat * brick.TotalMultiple);
         if (brick.BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(brick.GetComponent<TeleportBrick>());
         brick.ShowText(FinalDamage.ToString("F1"), "Normal", CriticalHit);
+        brick.RecentReceivedDamage = FinalDamage;
         return FinalDamage;
     }
     public static bool IsCriticalHit(IBrick brick)

@@ -567,3 +567,72 @@ public class DecayZone : FieldAugment
         }
     }
 }
+
+public class WeatherChange : FieldAugment
+{
+    Coroutine Routine = null;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_13", "WeatherChange", "WeatherChange", 1);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetWeatherChange(30f));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator GetWeatherChange(float Cooldown)
+    {
+        while (true)
+        {
+            int i = Random.Range(1, 6);
+            switch (i)
+            {
+                case 1:
+                    //heat wave
+                    Debug.Log("heat wave");
+                    AugmentManager.instance.effectChance.FireChance += 0.15f;
+                    yield return new WaitForSeconds(Cooldown);
+                    AugmentManager.instance.effectChance.FireChance -= 0.15f;
+                    break;
+                case 2:
+                    //toxic fog
+                    Debug.Log("toxic fog");
+                    AugmentManager.instance.effectChance.PoisonChance += 0.15f;
+                    yield return new WaitForSeconds(Cooldown);
+                    AugmentManager.instance.effectChance.PoisonChance -= 0.15f;
+                    break;
+                case 3:
+                    //acid rain
+                    Debug.Log("acid rain");
+                    AugmentManager.instance.effectChance.DecayChance += 0.15f;
+                    yield return new WaitForSeconds(Cooldown);
+                    AugmentManager.instance.effectChance.DecayChance -= 0.15f;
+                    break;
+                case 4:
+                    //solar eclipse
+                    Debug.Log("solar eclipse");
+                    AugmentManager.instance.effectChance.CurseChance += 0.15f;
+                    yield return new WaitForSeconds(Cooldown);
+                    AugmentManager.instance.effectChance.CurseChance -= 0.15f;
+                    break;
+                default:
+                    //nothing
+                    Debug.Log("nothing");
+                    yield return new WaitForSeconds(Cooldown);
+                    break;
+            }
+            yield return new WaitForSeconds(3f);
+        }
+    }
+}
