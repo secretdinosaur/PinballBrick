@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEditor;
 using Random = UnityEngine.Random;
+using System.Collections;
 
 public class BallManager : MonoBehaviour
 {
@@ -42,19 +43,19 @@ public class BallManager : MonoBehaviour
         }
     }
 
-    public void CreateSpecificBall(int Num, string BallType)
+    public void CreateSpecificBall(int Num, string BallType, bool IsRebirth = false)
     {
         for (int i = 0; i < Num; i++)
         {
-            IBall ball = GetSpecificBall(BallType);
+            IBall ball = GetSpecificBall(BallType, IsRebirth);
             if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.05f)
             {
-                IBall BombBall = GetSpecificBall("Ball");
+                IBall BombBall = GetSpecificBall("Ball", IsRebirth);
             }
         }
     }
     
-    private IBall GetSpecificBall(string ballTypeName)
+    private IBall GetSpecificBall(string ballTypeName, bool IsRebirth = false)
     {
         IBall ball = null;
         
@@ -62,7 +63,31 @@ public class BallManager : MonoBehaviour
         var method = typeof(PoolManager).GetMethod("GetFromPool");
         var genericMethod = method.MakeGenericMethod(ballType);
         ball = (IBall)genericMethod.Invoke(PoolManager, null);
+        if (IsRebirth)
+        {
+            StartCoroutine(RebirthBallEffect(ball));
+        }
+        ball.transform.position = ball.StartPosition;
         return ball;
+
+        IEnumerator RebirthBallEffect(IBall RecentlyBall)
+        {
+            float elapsedTime = 0;
+            while (elapsedTime < 0.25f)
+            {
+                elapsedTime += Time.deltaTime;
+                RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(1, 0, elapsedTime / 0.25f), Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f));
+                yield return null;
+            }
+
+            elapsedTime = 0;
+            while (elapsedTime < 0.25f)
+            {
+                elapsedTime += Time.deltaTime;
+                RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(0, 1, elapsedTime / 0.25f), Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f), Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f));
+                yield return null;
+            }
+        }
     }
 
     public void TakeBall(IBall ball)

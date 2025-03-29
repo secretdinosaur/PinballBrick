@@ -20,7 +20,8 @@ public class LevelManager : MonoBehaviour
         set
         {
             exp = value;
-            if(exp < 0)
+            LevelBar.value = exp;
+            if (exp < 0)
             {
                 exp = 0;
             }
@@ -41,10 +42,6 @@ public class LevelManager : MonoBehaviour
         Exp = 0;
         Level = 1;
         Temporary_Stat = StatManager.instance.Temporary_stat;
-    }
-    void Update()
-    {
-        LevelBar.value = Exp;
     }
 
     public void LevelUp()

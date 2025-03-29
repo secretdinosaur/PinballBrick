@@ -61,7 +61,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: ba3d98bf2b682e34a85bb50203f663b5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -170,6 +170,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BallType: 
   BallBaseDamage: 0
+  detectArea: {fileID: 0}
+  AttackDelayTime: 0
   CurrentSpeed: 0
   SpecialCriticalChance: 0
   isPhoenix: 0
@@ -177,7 +179,7 @@ MonoBehaviour:
   isOverDeathLine: 0
   StartPosition: {x: 0, y: -5}
   linearVelocityYValue: 10
-  targets: []
+  Renderer: {fileID: 0}
   TransformationMultiple: 1
   GrowthAttackDamageObserve: 0
 --- !u!96 &5368739640230251868
@@ -378,6 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NearbyBricks: []
+  BoomArea: []
 --- !u!1 &3174909002053136539
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,7 +460,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: 202c1fc799850964a8ed13a2187c475f, type: 3}
-  m_Color: {r: 0.764151, g: 0.1686291, b: 0, a: 0.43137255}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5372549}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
