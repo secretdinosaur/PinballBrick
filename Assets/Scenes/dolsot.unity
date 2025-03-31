@@ -353,7 +353,7 @@ MonoBehaviour:
     _container: {fileID: 137631891}
     _nonLazy: 0
   - _name: TwinBrick
-    _component: {fileID: 3994378899015205521, guid: 1d95b5ffe5d31ed489c639058c8d3d8e, type: 3}
+    _component: {fileID: 4506351670689749019, guid: 02cb33b1921d238428146e6deed00a99, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1

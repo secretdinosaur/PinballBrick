@@ -1613,10 +1613,6 @@ public class SpawnBombBall : SpecialAugment
     }
 }
 
-/// <summary>
-/// Need visual effect from below
-/// 
-/// </summary>
 public class ChangeNormalToGlass : SpecialAugment
 {
     private void OnEnable()
@@ -2095,5 +2091,23 @@ public class DamageInfection : SpecialAugment
                 brick.ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Additional");
             }
         }
+    }
+}
+
+public class CriticalOnEffect : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_59", "CriticalOnEffect", "CriticalOnEffect", "Special", 4);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+
     }
 }

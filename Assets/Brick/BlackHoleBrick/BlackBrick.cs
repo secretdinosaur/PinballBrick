@@ -5,7 +5,6 @@ public class BlackBrick : IBrick
     public WhiteBrick WhiteBrick;
     private void OnEnable()
     {
-        base.OnEnable();
         BrickType = "BlackBrick";
         GetComponents();
     }

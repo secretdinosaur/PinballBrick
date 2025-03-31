@@ -333,20 +333,22 @@ MonoBehaviour:
   Point: 0
   BasicHP: 1
   IsBoss: 0
-  isDied: 0
   HPText: {fileID: 0}
   BrickType: 
   BrickTransform: {fileID: 0}
   HpTemp: 0
   BallSpeed: 0
+  lineRenderer: {fileID: 0}
   PoisonEffect: {fileID: 5824697516544662238}
   TotalMultiple: 0
   ExecutionObject1: {fileID: 6043405584209643707}
   ExecutionObject2: {fileID: 8060063675450445384}
+  IsNeedDelayedDIeForEffect: 0
+  isGoldBrick: 0
   RecentlyBall: {fileID: 0}
-  FireEffectDuration: 0
-  PoisonEffectDuration: 0
-  DecayEffectDuration: 0
+  SpecialCriticalChance: 0
+  BrickEffect: {fileID: 0}
+  RecentReceivedDamage: 0
   NearbyBricks: []
   boxSize: {x: 6, y: 4}
   isTouchedBlackHole: 0

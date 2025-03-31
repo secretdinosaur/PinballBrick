@@ -5,6 +5,7 @@ public class LowerBrick : IBrick
 {
     private void OnEnable()
     {
+        base.OnEnable();
         HP = BasicHP * BrickManager.Instance.HPPool[0];
         BrickType = "TwinBrick";
         GetComponents();
