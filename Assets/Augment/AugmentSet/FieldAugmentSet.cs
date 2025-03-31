@@ -42,7 +42,7 @@ public class AllDamage : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(StartAllDamage(0.5f, Damage));
+        Routine = StartCoroutine(StartAllDamage(Cooldown, Damage));
     }
 
     public override void Remove()
@@ -64,9 +64,18 @@ public class AllDamage : FieldAugment
             {
                 IBrick brick = BrickManager.Instance.CurrentBricks[i];
                 Damage = 10 * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
-                brick.ArbitraryDamageAttack(Damage, false, Damage.ToString("F1"), "Lightning");
+                StartCoroutine(SyncDamageAndEffect(Damage, brick));
             }
         }
+    }
+
+    private IEnumerator SyncDamageAndEffect(float Damage, IBrick brick)
+    {
+        yield return new WaitForSeconds(Random.Range(0, 0.5f));
+        VisualEffectManager.Instance.SpawnParticle("AllDamage", brick.transform.position, 1);
+
+        yield return new WaitForSeconds(0.65f);
+        brick.ArbitraryDamageAttack(Damage, false, Damage.ToString("F1"), "Lightning");
     }
 }
 
