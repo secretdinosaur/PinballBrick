@@ -638,3 +638,63 @@ public class WeatherChange : FieldAugment
         }
     }
 }
+
+public class DiceGamble : FieldAugment
+{
+    Coroutine Routine = null;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_14", "DiceGamble", "DiceGamble", 2);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetDiceGamble(60f));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+    private List<int> rolledDiceSet = new List<int>();
+    private IEnumerator GetDiceGamble(float Cooldown)
+    {
+        while (true)
+        {
+            rolledDiceSet = new List<int>();
+            DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
+            yield return new WaitForSeconds(1f);
+            DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
+            yield return new WaitForSeconds(1f);
+            DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
+            yield return null;
+            CalDiceSet();
+        }
+    }
+
+    private void AddDiceSet(int dice)
+    {
+        rolledDiceSet.Add(dice);
+    }
+
+    private void CalDiceSet()
+    {
+        rolledDiceSet.Sort();
+        if (rolledDiceSet[0] == rolledDiceSet[1] && rolledDiceSet[1] == rolledDiceSet[2])
+        {
+            foreach (Brick brick in BrickManager.Instance.CurrentBricks)
+            {
+                brick.BrickDie();
+            }
+        }
+        else if (rolledDiceSet[0] + 1 == rolledDiceSet[1] && rolledDiceSet[1] + 1 == rolledDiceSet[2])
+        {
+            LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.25f;
+        }
+    }
+}

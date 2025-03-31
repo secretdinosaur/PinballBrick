@@ -448,6 +448,12 @@ MonoBehaviour:
   DecayPunchPS: {fileID: 1579539098}
   DecayExplosionPS: {fileID: 1865102531}
   AddAttack1PS: {fileID: 1176334496}
+  ExplosionWithBallPS: {fileID: 0}
+  SuicideBoomBallPS: {fileID: 0}
+  SuicideBoomBallPS2: {fileID: 0}
+  CursePS: {fileID: 0}
+  BombBallPS: {fileID: 0}
+  BallSacrificePS: {fileID: 0}
 --- !u!4 &154175218
 Transform:
   m_ObjectHideFlags: 0
@@ -39919,7 +39925,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac38ddb599cd4c47a912205714d8cc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dices: []
   IsRolling: 0
 --- !u!114 &2000923009
 MonoBehaviour:
