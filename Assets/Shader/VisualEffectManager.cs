@@ -36,7 +36,7 @@ public class VisualEffectManager : MonoBehaviour
 
     public ParticleSystem BallSacrificePS;
 
-
+    public ParticleSystem AllDamagePS;
 
     Vector2 Vec = Vector2.zero;
     void Start()
@@ -122,6 +122,10 @@ public class VisualEffectManager : MonoBehaviour
                 BallSacrificePS.Emit(ParticleCount);
                 break;
 
+            case "AllDamage":
+                AllDamagePS.transform.position = ParticlePosition + new Vector2(0, 1.4f);
+                AllDamagePS.Emit(ParticleCount);
+                break;
 
             default:
                 Debug.Log("Invalid ParticleName");
