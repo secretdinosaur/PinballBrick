@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using static UnityEngine.Rendering.HableCurve;
 
 public partial class AugmentManager : MonoBehaviour //Declaration
 {
@@ -166,13 +167,18 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DecayZone>(),
+            //gameObject.GetComponent<HalfBallSacrifice>(),
         };
 
         foreach (IAugment augment in TestAugments)
         {
             AddAugment(augment);
         }
+    }
+
+    public void AddAugmentButton()
+    {
+        AddAugment(gameObject.GetComponent<FreshNewStart>());
     }
 }
 

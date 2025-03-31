@@ -1866,7 +1866,7 @@ public class MidasHand : SpecialAugment
     {
         SetAugment("SPECIAL_54", "MidasHand", "MidasHand", "Special", 4);
     }
-
+    Coroutine Routine = null;
     public override void Apply() { }
 
     public override void Remove() { }
@@ -1876,9 +1876,9 @@ public class MidasHand : SpecialAugment
         if(Random.value < 1f 
             && Brick.BrickType != "TwinBrick" && Brick.BrickType != "ShieldBrick" 
             && Brick.BrickType != "TeleportBrick" && Brick.BrickType != "BlackBrick"
-            && Brick.BrickType != "IgnoreBrick")
+            && Brick.BrickType != "IgnoreBrick" && Routine == null)
         {
-            Brick.StartCoroutine(ChangeToGoldBrick(Brick));
+            Routine = Brick.StartCoroutine(ChangeToGoldBrick(Brick));
         }
     }
 
@@ -1898,9 +1898,26 @@ public class MidasHand : SpecialAugment
         yield return null;
         Brick.isGoldBrick = true;
         BrickRenderer.color = new Color(1f, 0.843f, 0f);
-        yield return new WaitForSeconds(5f);
+
+        float elapsedTime = 0f;
+        while(elapsedTime < 0.25f)
+        {
+            BrickRenderer.color = new Color(Mathf.Lerp(PreviousColor.r, 2, elapsedTime / 0.25f), Mathf.Lerp(PreviousColor.g, 0.843f * 2, elapsedTime / 0.25f), Mathf.Lerp(PreviousColor.b, 0, elapsedTime / 0.25f));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(4.75f);
+        elapsedTime = 0;
+        while (elapsedTime < 0.25f)
+        {
+            BrickRenderer.color = new Color(Mathf.Lerp(2, PreviousColor.r, elapsedTime / 0.25f), Mathf.Lerp(0.843f * 2, PreviousColor.g, elapsedTime / 0.25f), Mathf.Lerp(0, PreviousColor.b, elapsedTime / 0.25f));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
         Brick.isGoldBrick = false;
         BrickRenderer.color = PreviousColor;
+        Routine = null;
     }
 }
 
@@ -1918,12 +1935,19 @@ public class HalfBallSacrifice : SpecialAugment
         {
             for(int i = 0; i < BallManager.Instance.InGameBall.Count / 2; i++)
             {
-                BallManager.Instance.InGameBall[i].BallDied();
+                StartCoroutine(BallRemoveEffect(BallManager.Instance.InGameBall[i]));
                 AtkUpValue += 1;
             }
             StatManager.instance.Temporary_stat.AttackDamage += AtkUpValue;
             StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
         }
+    }
+
+    private IEnumerator BallRemoveEffect(IBall ball)
+    {
+        VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
+        yield return null;
+        ball.BallDied();
     }
 
     public override void Remove() 
@@ -1951,10 +1975,17 @@ public class FreshNewStart : SpecialAugment
         LevelManager.Instance.LevelSet(1);
         foreach (IBall ball in BallManager.Instance.InGameBall)
         {
+            StartCoroutine(BallRemoveEffect(ball));
             BallManager.Instance.TakeBall(ball);
         }
         BallManager.Instance.CreateBall(1);
         AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<FreshNewStart>());
+    }
+
+    private IEnumerator BallRemoveEffect(IBall ball)
+    {
+        VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
+        yield return null;
     }
 
     public override void Remove()

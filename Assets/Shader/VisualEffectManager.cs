@@ -34,6 +34,8 @@ public class VisualEffectManager : MonoBehaviour
     public ParticleSystem CursePS;
     public ParticleSystem BombBallPS;
 
+    public ParticleSystem BallSacrificePS;
+
 
 
     Vector2 Vec = Vector2.zero;
@@ -113,7 +115,11 @@ public class VisualEffectManager : MonoBehaviour
             case "Curse":
                 CursePS.transform.position = new Vector2(0, -10);
                 SpawnCurseEffect(ParticlePosition);
+                break;
 
+            case "BallSacrifice":
+                BallSacrificePS.transform.position = ParticlePosition;
+                BallSacrificePS.Emit(ParticleCount);
                 break;
 
 
