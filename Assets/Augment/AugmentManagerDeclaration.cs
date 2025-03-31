@@ -95,6 +95,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<LightningRod>(),
             gameObject.AddComponent<Laser>(),
             gameObject.AddComponent<AttackOrDie>(),
+            gameObject.AddComponent<WeatherChange>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -142,12 +143,16 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<MidasHand>(),
             gameObject.AddComponent<HalfBallSacrifice>(),
             gameObject.AddComponent<FreshNewStart>(),
+            gameObject.AddComponent<CritAfterThreeAttack>(),
+            gameObject.AddComponent<DamageInfection>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
 
             gameObject.AddComponent<DeadlyPoison>(),
             gameObject.AddComponent<InfinitePoison>(),
+            gameObject.AddComponent<DecayingPoison>(),
+            gameObject.AddComponent<FlammablePoison>(),
 
             gameObject.AddComponent<PowerfulDecay>(),
             gameObject.AddComponent<DecayExplosion>(),
