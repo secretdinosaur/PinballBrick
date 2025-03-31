@@ -15,6 +15,7 @@ public class ShieldBrick : IBrick
         ShieldCount = BasicShieldCount * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)] / 5;
         HPMultiplier = ShieldCount / BasicShieldCount;
         HP = ShieldCount;
+        HpTemp = HP;
 
         GetComponents();
     }
@@ -30,5 +31,7 @@ public class ShieldBrick : IBrick
     {
         IsShieldDestroyed = true;
         HP = (IsBoss) ? BasicHP * HPMultiplier : BasicHP * HPMultiplier * 10;
+        HpTemp = HP;
+        HPText.enabled = true;
     }
 }

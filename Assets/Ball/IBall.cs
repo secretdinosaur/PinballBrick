@@ -59,6 +59,8 @@ public partial class IBall : MonoBehaviour
         MaxBounce = 0;
         detectArea = GetComponentInChildren<BallDetect>();
         detectArea.NearbyBricks.Clear();
+        Renderer.material.SetFloat("_Edge", -1);
+        Renderer.material.SetFloat("_Alpha", -1);
         currentTarget = null;
         isOverDeathLine = false;
         isPhoenix = false;
@@ -83,6 +85,7 @@ public partial class IBall : MonoBehaviour
             gameObject.SetActive(false);
             gameObject.SetActive(true);
         }
+        
         else
         {
             for(int i = 0; i < AugmentManager.instance.AfterDeathActiveNumber; i++)
@@ -98,6 +101,7 @@ public partial class IBall : MonoBehaviour
                 StopCoroutine(FusionMoveRoutine);
                 FusionMoveRoutine = null;
             }
+
             BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
         }
     }
@@ -270,7 +274,7 @@ public partial class IBall //Homing
     private float detectionRadius = 1.6f;
     private float rotationSpeed = 40f;
 
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private Transform currentTarget = new RectTransform();
 
     public void FixedUpdate()

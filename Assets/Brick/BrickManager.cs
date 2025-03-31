@@ -51,7 +51,13 @@ public class BrickManager : MonoBehaviour
     {
         if(!CurrentBricks.Contains(brick))
         {
-            CurrentBricks.Add(brick);
+            if(brick.BrickType == "TwinBrick")
+            {
+                CurrentBricks.Add(brick.GetComponent<TwinBrick>());
+                CurrentBricks.Add(brick.GetComponentInChildren<LowerBrick>());
+            }
+            else
+                CurrentBricks.Add(brick);
         }
     }
     void InitializeGrid()
@@ -123,6 +129,7 @@ public class BrickManager : MonoBehaviour
             var genericMethod = method.MakeGenericMethod(brickType);
             genericMethod.Invoke(PoolManager, new object[] { brick.GetComponent<IBrick>() });
             CurrentBricks.Remove(brick);
+            if(brick.BrickType == "TwinBrick") CurrentBricks.Remove(brick.GetComponentInChildren<LowerBrick>());
         }
 
     }

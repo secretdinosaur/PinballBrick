@@ -33,7 +33,7 @@ public class AllDamage : FieldAugment
 {
     Coroutine Routine = null;
     float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
-    float Damage = 10f;
+    float Damage;
 
     private void OnEnable()
     {
@@ -42,7 +42,7 @@ public class AllDamage : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(StartAllDamage(10f + Cooldown, Damage));
+        Routine = StartCoroutine(StartAllDamage(0.5f, Damage));
     }
 
     public override void Remove()
@@ -56,13 +56,15 @@ public class AllDamage : FieldAugment
 
     private IEnumerator StartAllDamage(float period, float Damage)
     {
-        while(true)
+        while (true)
         {
             yield return new WaitForSeconds(period);
 
-            foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
+            for (int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
             {
-                brick.HP -= 10 * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
+                IBrick brick = BrickManager.Instance.CurrentBricks[i];
+                Damage = 10 * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
+                brick.ArbitraryDamageAttack(Damage, false, Damage.ToString("F1"), "Lightning");
             }
         }
     }

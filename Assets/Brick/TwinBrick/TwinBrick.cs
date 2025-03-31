@@ -1,27 +1,34 @@
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 public class TwinBrick : IBrick
 {
-    public LowerBrick LowerBrick;
-    public UpperBrick UpperBrick;
-
     bool IsWaitingHeal = false;
-
+    public LowerBrick LowerBrick;
     private void OnEnable()
     {
-        BrickType = "TwinBrick";
-
         base.OnEnable();
+        HP = BasicHP * BrickManager.Instance.HPPool[0];
+        BrickType = "TwinBrick";
+        GetComponents();
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball") && HP > 0)
+        {
+            TakeDamage(collision.gameObject.GetComponent<IBall>());
+        }
+    }
+
     public void CheckBothBrickDead()
     {
-        if(UpperBrick.HP <= 0 && LowerBrick.HP <= 0)
+        if (HP <= 0 && LowerBrick.HP <= 0)
         {
             IsWaitingHeal = false;
             BrickDie();
         }
-        else if (UpperBrick.HP <= 0 || LowerBrick.HP <= 0)
+        else if (HP <= 0 || LowerBrick.HP <= 0)
         {
             if (!IsWaitingHeal)
             {
@@ -39,8 +46,8 @@ public class TwinBrick : IBrick
         IsWaitingHeal = true;
         yield return new WaitForSeconds(10);
 
-        if (UpperBrick.HP < LowerBrick.HP) UpperBrick.HP = LowerBrick.HP;
-        else LowerBrick.HP = UpperBrick.HP;
+        if (HP < LowerBrick.HP) HP = LowerBrick.HP;
+        else LowerBrick.HP = HP;
         IsWaitingHeal = false;
     }
 }

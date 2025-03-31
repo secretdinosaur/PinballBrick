@@ -121,7 +121,7 @@ public static partial class DamageManager //Special Effect Attack
     public static void DamageByLightningEffect(IBrick brick, float DamageAmount, int ParticleCount)
     {
         bool isCritical = true;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
         {
             isCritical = IsCriticalHit(brick);
         }
@@ -152,8 +152,21 @@ public static partial class DamageManager //Special Effect Attack
     public static void ArbitraryDamageAttack(IBrick brick, float damage, bool isCritical, string damageText, string DamageType)
     {
         damage = DecayDamageCalculate(brick, damage);
-        brick.HP -= damage;
-        brick.ShowText(damageText, DamageType, isCritical);
+        if (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
+        {
+            damage = 1;
+            brick.HP -= damage;
+            brick.ShowText("1", DamageType, isCritical);
+        }
+        else if(brick.BrickType == "WhiteBrick")
+        {
+            return;
+        }
+        else
+        {
+            brick.HP -= damage;
+            brick.ShowText(damageText, DamageType, isCritical);
+        }
     }
 
     public static float DecayDamageCalculate(IBrick brick, float Damage)
@@ -218,7 +231,7 @@ public class BrickEffectManager : MonoBehaviour
                 brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
                 brick.lineRenderer.material.SetFloat("_FireHeight", 2f);
             }
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
             {
                 isCritical = DamageManager.IsCriticalHit(brick);
             }
@@ -299,7 +312,7 @@ public class BrickEffectManager : MonoBehaviour
             }
             bool isCritical = false;
             float EffectAttackDamage;
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_7"))
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
             {
                 isCritical = DamageManager.IsCriticalHit(brick);
             }
