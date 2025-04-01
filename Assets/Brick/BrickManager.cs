@@ -17,9 +17,7 @@ public class BrickManager : MonoBehaviour
     private float ScreenHeight;
 
     private float HorizontalGridSize = 6;
-    private float VerticalGridSize = 16;
-
-    private int minYGrid = 5;
+    private float VerticalGridSize = 10;
 
     public BrickInfo BrickInfo;
 
@@ -62,16 +60,17 @@ public class BrickManager : MonoBehaviour
     }
     void InitializeGrid()
     {
-        float cellWidth = ScreenWidth / HorizontalGridSize;
-        float cellHeight = ScreenHeight / VerticalGridSize;
+        float cellWidth = 4.75f / HorizontalGridSize;
+        float cellHeight = 6f / VerticalGridSize;
         availablePositions = new List<Vector2>();
         for (int x = 0; x < HorizontalGridSize; x++)
         {
-            for (int y = minYGrid; y < VerticalGridSize - 1; y++)
+            for (int y = 0; y < VerticalGridSize; y++)
             {
-                float posX = x * cellWidth + cellWidth / 2;
-                float posY = y * cellHeight + cellHeight / 2;
+                float posX = -2.375f+ x * cellWidth + cellWidth / 2;
+                float posY = -1.75f + y * cellHeight + cellHeight / 2;
                 availablePositions.Add(new Vector2(posX, posY));
+                print(new Vector2(posX, posY));
             }
         }
     }
@@ -88,10 +87,10 @@ public class BrickManager : MonoBehaviour
 
     public void TeleportBrickPosition(IBrick brick)
     {
-        availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
-        usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
+        availablePositions.Add(brick.transform.position);
+        usingPositions.Remove(brick.transform.position);
         Vector2 RandomPosition = GenerateRandomPosition();
-        brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(RandomPosition.x, RandomPosition.y, 35));
+        brick.transform.position = new Vector3(RandomPosition.x, RandomPosition.y, 35);
     }
     public void TakeBrick(IBrick brick)
     {
@@ -122,8 +121,8 @@ public class BrickManager : MonoBehaviour
 
             ItemManager.Instance.SpawnItem(brick.transform.position);
 
-            availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
-            usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
+            availablePositions.Add(brick.transform.position);
+            usingPositions.Remove(brick.transform.position);
             Type brickType = Type.GetType(brick.BrickType);
             var method = typeof(PoolManager).GetMethod("TakeToPool");
             var genericMethod = method.MakeGenericMethod(brickType);
@@ -210,7 +209,7 @@ public class BrickManager : MonoBehaviour
         {
             Vector2 randomPosition = GenerateRandomPosition();
             IBrick brick = GetBrick();
-            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+            brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
             UpdateCurrentBricks(brick);
         }
     }
@@ -225,7 +224,7 @@ public class BrickManager : MonoBehaviour
         Vector2 randomPosition = GenerateRandomPosition();
         IBrick brick = GetBrick();
         brick.IsBoss = true;
-        brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+        brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
         UpdateCurrentBricks(brick);
     }
 
@@ -236,7 +235,7 @@ public class BrickManager : MonoBehaviour
         {
             Vector2 randomPosition = GenerateRandomPosition();
             brick = GetSpecificBrick(BrickType);
-            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+            brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
             UpdateCurrentBricks(brick);
         }
         return brick;

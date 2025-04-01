@@ -269,17 +269,7 @@ public class BrickEffectManager : MonoBehaviour
         brick.PoisonEffect.SetActive(true);
         EffectStatusSet["Poison"].IsActive = true;
         elapsedTime = 0f;
-        while (elapsedTime < 1)
-        {
-            PoisonMaterial.SetFloat("_Alpha", Mathf.Lerp(1.1f, 0f, elapsedTime / 1));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
 
-
-        float interval = 1f;
-        initialDuration = effectDuration;
-        PoisonEffectDuration = effectDuration;
         if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
         {
             PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
@@ -292,6 +282,18 @@ public class BrickEffectManager : MonoBehaviour
             PoisonMaterial.SetColor("_InnerColor", new Color(176 / 255f, 180 / 255f, 0));
             PoisonMaterial.SetFloat("_InnerPower", 1.5f);
         }
+
+        while (elapsedTime < 1)
+        {
+            PoisonMaterial.SetFloat("_Alpha", Mathf.Lerp(1.1f, 0f, elapsedTime / 1));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        float interval = 1f;
+        initialDuration = effectDuration;
+        PoisonEffectDuration = effectDuration;
+        
         while (PoisonEffectDuration > 0f)
         {
             if (EffectStatusSet["Poison"].EffectStack >= EffectStatusSet["Poison"].EffectStackLimit && !AugmentManager.instance.PoisonBrickSet.Contains(brick))
