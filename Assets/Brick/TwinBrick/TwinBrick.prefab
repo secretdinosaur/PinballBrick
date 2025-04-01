@@ -532,15 +532,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2403079591653523001}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a06edeacd11544f418d0987aea67e023, type: 3}
+  m_Script: {fileID: 11500000, guid: 068fbce7384ea2348b0d62dd2b285dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Point: 5
-  BasicHP: 5
+  BasicHP: 3
   IsBoss: 0
-  HPText: {fileID: 778884806965899887}
-  BrickType: TwinBrick
-  BrickTransform: {fileID: 996205896106921696}
+  HPText: {fileID: 0}
+  BrickType: 
+  BrickTransform: {fileID: 0}
   HpTemp: 0
   BallSpeed: 0
   lineRenderer: {fileID: 7853834334144190774}
@@ -554,13 +554,11 @@ MonoBehaviour:
   SpecialCriticalChance: 0
   BrickEffect: {fileID: 0}
   RecentReceivedDamage: 0
-  NearbyBricks:
-  - {fileID: 0}
-  - {fileID: 5325530097451108238}
-  boxSize: {x: 2, y: 2}
+  NearbyBricks: []
+  boxSize: {x: 0, y: 0}
   isTouchedBlackHole: 0
   TouchedObject: {fileID: 0}
-  LowerBrick: {fileID: 5325530097451108238}
+  LowerBrick: {fileID: 0}
 --- !u!1 &8253443428837631999
 GameObject:
   m_ObjectHideFlags: 0

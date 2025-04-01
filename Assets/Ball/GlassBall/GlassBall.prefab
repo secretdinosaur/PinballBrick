@@ -79,8 +79,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 899750405
-  m_SortingLayer: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: -1
   m_Sprite: {fileID: 2021728353789754084, guid: 21e20fd9593f9344d92efa14827cd887, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -180,6 +180,8 @@ MonoBehaviour:
   StartPosition: {x: 0, y: -5}
   linearVelocityYValue: 10
   Renderer: {fileID: 0}
+  AttackNumber: 0
+  rb: {fileID: 0}
   TransformationMultiple: 1
   GrowthAttackDamageObserve: 0
 --- !u!96 &5368739640230251868
@@ -226,7 +228,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Time: 0
   m_PreviewTimeScale: 1
   m_Parameters:
@@ -375,7 +377,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -2413806693520163455, guid: 202c1fc799850964a8ed13a2187c475f, type: 3}
   m_Color: {r: 0.764151, g: 0.1686291, b: 0, a: 0.43137255}
   m_FlipX: 0
