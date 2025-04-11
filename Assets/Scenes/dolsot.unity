@@ -10572,6 +10572,12 @@ MonoBehaviour:
     EffectDuration: 0
     EffectCriticalDamage: 0
     GoldGain: 0
+  OptionButtonSprites:
+  - {fileID: 4132716061048618184, guid: 86917ebde18f5e1449abd41b4d86856d, type: 3}
+  - {fileID: -7198440490928857949, guid: 60ae8fb2dcf1d4c4c88ab82b0e1b2031, type: 3}
+  - {fileID: 270058920942252848, guid: fdfb4e5045da8224a92dc508e5b83c42, type: 3}
+  - {fileID: 3556431781438714426, guid: 635b388779d75f34dbe8ecd5b431eb22, type: 3}
+  - {fileID: 3788167435311697132, guid: 6f68f645b5373aa49b4bd19637162b1c, type: 3}
 --- !u!114 &218456169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11024,8 +11030,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 218456169}
-        m_TargetAssemblyTypeName: LevelUpPanel, Assembly-CSharp
+      - m_Target: {fileID: 218456168}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
         m_MethodName: LevelUpEnd
         m_Mode: 1
         m_Arguments:
@@ -74882,7 +74888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac38ddb599cd4c47a912205714d8cc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dices: []
   IsRolling: 0
 --- !u!114 &2000923009
 MonoBehaviour:
