@@ -2129,3 +2129,22 @@ public class RollDiceBall : SpecialAugment
 
     }
 }
+
+public class ItemInhance : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_61", "ItemInhance", "ItemInhance", "item", 2);
+    }
+
+    public override void Apply()
+    {
+        ItemManager.Instance.BaseItemSpawnChance *= 2;
+        //todo: think item inhancement
+    }
+
+    public override void Remove()
+    {
+        ItemManager.Instance.BaseItemSpawnChance /= 2;
+    }
+}

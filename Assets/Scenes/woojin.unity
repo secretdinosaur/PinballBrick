@@ -58330,7 +58330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891e30582599bb24f9f2130d1a873f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationSpeed: 1000
+  RotationSpeed: 750
   TargetAngle: 40
   CurrentAngle: 0
 --- !u!212 &1510115438
@@ -64819,7 +64819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b353ad79189df3e45bf6dcae5e3ba180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationSpeed: -1000
+  RotationSpeed: -750
   TargetAngle: 40
   CurrentAngle: 0
 --- !u!1 &1870363752
@@ -79788,6 +79788,7 @@ MonoBehaviour:
   PoolManager: {fileID: 0}
   ItemInfo: {fileID: 11400000, guid: ae23a3d2222f51e4da533cabb4858316, type: 2}
   IsPowerUp: 0
+  BaseItemSpawnChance: 0
 --- !u!114 &2033836777
 MonoBehaviour:
   m_ObjectHideFlags: 0
