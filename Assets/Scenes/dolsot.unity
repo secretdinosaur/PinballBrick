@@ -43169,7 +43169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1226102604
 RectTransform:
   m_ObjectHideFlags: 0
@@ -58324,8 +58324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891e30582599bb24f9f2130d1a873f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 2
-  RotationSpeed: 300
+  RotationSpeed: 1000
   TargetAngle: 40
   CurrentAngle: 0
 --- !u!212 &1510115438
@@ -58391,13 +58390,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510115434}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.008726558, w: 0.999962}
-  m_LocalPosition: {x: -2.695476, y: -3.712813, z: -0.0046721995}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.695476, y: -3.712813, z: 0}
   m_LocalScale: {x: 1.0500001, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 374219221}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1518693217
 GameObject:
   m_ObjectHideFlags: 0
@@ -64306,8 +64305,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1783727145}
-          m_TargetAssemblyTypeName: Pin, Assembly-CSharp
+        - m_Target: {fileID: 1783727148}
+          m_TargetAssemblyTypeName: RightPin, Assembly-CSharp
           m_MethodName: OnPointerUp
           m_Mode: 1
           m_Arguments:
@@ -64322,8 +64321,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1783727145}
-          m_TargetAssemblyTypeName: Pin, Assembly-CSharp
+        - m_Target: {fileID: 1783727148}
+          m_TargetAssemblyTypeName: RightPin, Assembly-CSharp
           m_MethodName: OnPointerDown
           m_Mode: 1
           m_Arguments:
@@ -64639,9 +64638,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1783727147}
   - component: {fileID: 1783727146}
-  - component: {fileID: 1783727145}
   - component: {fileID: 1783727144}
   - component: {fileID: 1783727143}
+  - component: {fileID: 1783727148}
   m_Layer: 0
   m_Name: RightPin
   m_TagString: Untagged
@@ -64732,22 +64731,6 @@ PolygonCollider2D:
       - {x: 1.2029878, y: 0.14746961}
       - {x: -0.082773566, y: 0.5452181}
   m_UseDelaunayMesh: 0
---- !u!114 &1783727145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783727142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 891e30582599bb24f9f2130d1a873f61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  velocity: 2
-  RotationSpeed: -300
-  TargetAngle: 40
-  CurrentAngle: 0
 --- !u!212 &1783727146
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -64811,13 +64794,28 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783727142}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 1.9045238, y: -3.712813, z: -0.0046721995}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 1.9045238, y: -3.712813, z: 0}
   m_LocalScale: {x: 1.05, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 374219221}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1783727148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783727142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b353ad79189df3e45bf6dcae5e3ba180, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationSpeed: -1000
+  TargetAngle: 40
+  CurrentAngle: 0
 --- !u!1 &1870363752
 GameObject:
   m_ObjectHideFlags: 0
