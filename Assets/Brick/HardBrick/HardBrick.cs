@@ -11,7 +11,7 @@ public class HardBrick : IBrick
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            TakeDamage(collision.gameObject.GetComponent<Ball>());
+            TakeDamage(collision.gameObject.GetComponent<IBall>());
         }
     }
 }

@@ -12,10 +12,13 @@ public class WhiteBrick : IBrick
         base.OnEnable();
         BrickType = "WhiteBrick";
         GetComponents();
-
+        HPText.enabled = true;
         GetBlackBrick = BrickManager.Instance.SpawnSpecificBrick("BlackBrick");
         BlackBrick = GetBlackBrick.GetComponent<BlackBrick>();
+        BlackBrick.HP = HP;
+        BlackBrick.HpTemp = HP;
         BlackBrick.WhiteBrick = this;
+        HP = RebirthCount + 1;
     }
 
     private void Update()
@@ -32,14 +35,16 @@ public class WhiteBrick : IBrick
         if (RebirthCount > 0)
         {
             RebirthCount--;
+            HP = RebirthCount + 1;
             BlackBrick.HP = HpTemp;
+            BlackBrick.HPText.enabled = true;
             BrickManager.Instance.TeleportBrickPosition(BlackBrick);
             BlackBrick = GetBlackBrick.GetComponent<BlackBrick>();
         }
         else
         {
             GetBlackBrick.BrickDie();
-            this.BrickDie();
+            BrickDie();
         }
     }
 }

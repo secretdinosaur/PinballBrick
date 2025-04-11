@@ -34,7 +34,6 @@ public class Fever : MonoBehaviour
         set
         {
             FeverGaugeLossValue += 0.1f;
-            MultipleText.fontSize = MultipleText.fontSize < 140 ? MultipleText.fontSize += 7 : MultipleText.fontSize = 140;
             feverCount = Mathf.Clamp(value, 1, 1024);
         }
     }
@@ -50,7 +49,6 @@ public class Fever : MonoBehaviour
         FeverGauge = 0;
         FeverCount = 1;
         FeverGaugeLossValue = 0.1f;
-        MultipleText.fontSize = 70;
         StartFever = false;
     }
 
@@ -71,7 +69,6 @@ public class Fever : MonoBehaviour
                 ScoreManager.Instance.TotalScore += ScoreManager.Instance.ContinuousScore * FeverCount;
                 ScoreManager.Instance.ContinuousScore = 0;
                 FeverCount = 1;
-                MultipleText.fontSize = 70;
                 FeverGaugeLossValue = 0.1f;
                 StartFever = false;
             }

@@ -5,6 +5,7 @@ public class LowerBrick : IBrick
 {
     private void OnEnable()
     {
+        base.OnEnable();
         HP = BasicHP * BrickManager.Instance.HPPool[0];
         BrickType = "TwinBrick";
         GetComponents();
@@ -13,7 +14,7 @@ public class LowerBrick : IBrick
     {
         if (collision.gameObject.CompareTag("Ball") && HP > 0)
         {
-            TakeDamage(collision.gameObject.GetComponent<Ball>());
+            TakeDamage(collision.gameObject.GetComponent<IBall>());
         }
     }
 }

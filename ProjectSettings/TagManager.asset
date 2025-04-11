@@ -8,6 +8,8 @@ TagManager:
   - DicePlane
   - Wall
   - Brick
+  - Flamethrower
+  - Pin
   layers:
   - Default
   - TransparentFX
@@ -17,9 +19,9 @@ TagManager:
   - UI
   - Game
   - Wall
-  - 
-  - 
-  - 
+  - Ball
+  - Pin
+  - Laser
   - 
   - 
   - 

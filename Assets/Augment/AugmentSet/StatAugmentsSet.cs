@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-
+﻿using System;
+using System.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
+using Random = UnityEngine.Random;
 /*
 public class Example : StatAugment
 {
@@ -35,7 +38,7 @@ public class Atk30Up : StatAugment
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.3f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.3f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
@@ -55,7 +58,7 @@ public class Atk50Up : StatAugment
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.5f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
@@ -199,7 +202,7 @@ public class Atk10Up : StatAugment
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.1f;
         StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
@@ -304,3 +307,222 @@ public class GoldGain50Up : StatAugment
     }
 }
 
+public class PowerButSlow : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_15", "PowerButSlow", "Atk Up Max Speed Decrease", 4);
+    }
+
+    public override void Apply()
+    {
+        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 10f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class WeakButFast : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_16", "WeakButFast", "Atk Down Max Speed Increase", 4);
+    }
+
+    public override void Apply()
+    {
+        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 20f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 0.7f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 0.7f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class WeakButStrongEffect : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_17", "WeakButStrongEffect", "Atk Down Effect Damage Increase", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 0.33f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.6f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 0.33f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.6f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+}
+
+public class WeakButStrongAtk : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_18", "WeakButStrongAtk", "Atk Up Effect Damage decrease", 4);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.6f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 0.33f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.6f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 0.33f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+    }
+}
+
+public class DecreaseFieldCooldown5 : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_19", "DecreaseFieldCooldown", "DecreaseFieldCooldown", 5);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.FieldGlobalCooldown *= 0.95f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.FieldGlobalCooldown /= 0.95f;
+    }
+}
+
+public class DecreaseFieldCooldown30 : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_20", "DecreaseFieldCooldown30", "DecreaseFieldCooldown30", 3);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.FieldGlobalCooldown *= 0.7f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.FieldGlobalCooldown /= 0.7f;
+    }
+}
+
+public class CritChanceToAttackDamage : StatAugment
+{
+    bool isGetAugment = false;
+    private void OnEnable()
+    {
+        SetAugment("STAT_21", "CritChanceToAttackDamage", "CritChanceToAttackDamage", 4);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+    }
+
+    public override void Remove()
+    {
+        isGetAugment = false;
+    }
+
+    public void Update()
+    {
+        if (isGetAugment && (StatManager.instance.Persistent_stat.CriticalChance > 0 || StatManager.instance.Temporary_stat.CriticalChance > 0))
+        {
+            float TotalCritChance = StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance;
+            TransferToAttackDamage(TotalCritChance);
+        }
+    }
+
+    private void TransferToAttackDamage(float CritChance)
+    {
+        StatManager.instance.Temporary_stat.AttackDamage += CritChance * 0.4f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class RandomStatUpOrDown : StatAugment
+{
+    public float ChangeAttackDamage;
+    public float ChangeEffectDamage;
+    public float ChangeCritDamage;
+    public float ChangeCritChance;
+    private void OnEnable()
+    {
+        SetAugment("STAT_22", "RandomStatUpOrDown", "RandomStatUpOrDown", 4);
+    }
+
+    public override void Apply()
+    {
+        float attackDamageMin = -3f, attackDamageMax = 7f;
+        float effectDamageMin = -0.1f, effectDamageMax = 0.2f;
+        float critDamageMin = -0.1f, critDamageMax = 0.3f;
+        float critChanceMin = -0.05f, critChanceMax = 0.1f;
+
+        ChangeAttackDamage = Mathf.Round(Random.Range(attackDamageMin, attackDamageMax) * 100f) / 100f;
+        ChangeEffectDamage = Mathf.Round(Random.Range(effectDamageMin, effectDamageMax) * 100f) / 100f;
+        ChangeCritDamage = Mathf.Round(Random.Range(critDamageMin, critDamageMax) * 100f) / 100f;
+        ChangeCritChance = Mathf.Round(Random.Range(critChanceMin, critChanceMax) * 100f) / 100f;
+
+        bool hasPositiveValue = (ChangeAttackDamage > 0) || (ChangeEffectDamage > 0) || (ChangeCritDamage > 0) || (ChangeCritChance > 0);
+
+        if (!hasPositiveValue)
+        {
+            int index = Random.Range(0, 4);
+
+            switch (index)
+            {
+                case 0:
+                    ChangeAttackDamage = Random.Range(0.1f, attackDamageMax);
+                    break;
+                case 1:
+                    ChangeEffectDamage = Random.Range(0.1f, effectDamageMax);
+                    break;
+                case 2:
+                    ChangeCritDamage = Random.Range(0.1f, critDamageMax);
+                    break;
+                case 3:
+                    ChangeCritChance = Random.Range(0.01f, critChanceMax);
+                    break;
+            }
+        }
+        StatManager.instance.Temporary_stat.AttackDamage += ChangeAttackDamage;
+        StatManager.instance.Temporary_stat.EffectDamage += ChangeEffectDamage;
+        StatManager.instance.Temporary_stat.CriticalDamage += ChangeCritDamage;
+        StatManager.instance.Temporary_stat.CriticalChance += ChangeCritChance;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage -= ChangeAttackDamage;
+        StatManager.instance.Temporary_stat.EffectDamage -= ChangeEffectDamage;
+        StatManager.instance.Temporary_stat.CriticalDamage -= ChangeCritDamage;
+        StatManager.instance.Temporary_stat.CriticalChance -= ChangeCritChance;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}

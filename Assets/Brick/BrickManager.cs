@@ -10,53 +10,65 @@ public class BrickManager : MonoBehaviour
     private int GameTick = 1;
 
     public static BrickManager Instance;
-    public IBrick[] CurrentBricks;
+    public List<IBrick> CurrentBricks = new List<IBrick>();
     private PoolManager PoolManager;
 
     private float ScreenWidth;
     private float ScreenHeight;
 
     private float HorizontalGridSize = 6;
-    private float VerticalGridSize = 16;
-
-    private int minYGrid = 5;
+    private float VerticalGridSize = 10;
 
     public BrickInfo BrickInfo;
 
     public List<Vector2> availablePositions = new List<Vector2>();
     public List<Vector2> usingPositions = new List<Vector2>();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    public IBrick MainBrick;
+
+    void Awake()
     {
         Instance = this;
         ScreenWidth = Screen.width;
         ScreenHeight = Screen.height;
         InitializeGrid();
         PoolManager = GetComponent<PoolManager>();
-        UpdateCurrentBricks();
-        //StartCoroutine(SpawnBricks());
     }
-    
+
+    private void Start()
+    {
+        StartCoroutine(SpawnBricks());
+    }
+
     void Update()
     {
         
     }
 
-    public void UpdateCurrentBricks()
+    public void UpdateCurrentBricks(IBrick brick)
     {
-        CurrentBricks = GetComponentsInChildren<IBrick>();
+        if(!CurrentBricks.Contains(brick))
+        {
+            if(brick.BrickType == "TwinBrick")
+            {
+                CurrentBricks.Add(brick.GetComponent<TwinBrick>());
+                CurrentBricks.Add(brick.GetComponentInChildren<LowerBrick>());
+            }
+            else
+                CurrentBricks.Add(brick);
+        }
     }
     void InitializeGrid()
     {
-        float cellWidth = ScreenWidth / HorizontalGridSize;
-        float cellHeight = ScreenHeight / VerticalGridSize;
+        float cellWidth = 4.75f / HorizontalGridSize;
+        float cellHeight = 6f / VerticalGridSize;
         availablePositions = new List<Vector2>();
         for (int x = 0; x < HorizontalGridSize; x++)
         {
-            for (int y = minYGrid; y < VerticalGridSize - 1; y++)
+            for (int y = 0; y < VerticalGridSize; y++)
             {
-                float posX = x * cellWidth + cellWidth / 2;
-                float posY = y * cellHeight + cellHeight / 2;
+                float posX = -2.375f+ x * cellWidth + cellWidth / 2;
+                float posY = -1.75f + y * cellHeight + cellHeight / 2;
                 availablePositions.Add(new Vector2(posX, posY));
             }
         }
@@ -69,33 +81,55 @@ public class BrickManager : MonoBehaviour
 
         usingPositions.Add(selectedPosition);
         availablePositions.RemoveAt(randomIndex);
-
         return selectedPosition;
     }
 
     public void TeleportBrickPosition(IBrick brick)
     {
-        availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
-        usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
+        availablePositions.Add(brick.transform.position);
+        usingPositions.Remove(brick.transform.position);
         Vector2 RandomPosition = GenerateRandomPosition();
-        brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(RandomPosition.x, RandomPosition.y, 35));
+        brick.transform.position = new Vector3(RandomPosition.x, RandomPosition.y, 35);
     }
     public void TakeBrick(IBrick brick)
     {
         if(brick.gameObject.activeSelf)
         {
+            if (brick.Fire != null)
+            {
+                brick.StopCoroutine(brick.Fire);
+                brick.Fire = null;
+                brick.lineRenderer.enabled = false;
+            }
+            if (brick.Poison != null)
+            {
+                brick.StopCoroutine(brick.Poison);
+                brick.Poison = null;
+                brick.PoisonEffect.SetActive(false);
+            }
+            if (brick.Decay != null)
+            {
+                brick.StopCoroutine(brick.Decay);
+                brick.Decay = null;
+                VisualEffectManager.Instance.UnSetDecayVisualEffect(brick);
+            }
+            if (brick.ExecutionCor != null)
+            {
+                brick.StopCoroutine(brick.ExecutionCor);
+            }
+
             ItemManager.Instance.SpawnItem(brick.transform.position);
 
-            availablePositions.Add(Camera.main.WorldToScreenPoint(brick.transform.position));
-            usingPositions.Remove(Camera.main.WorldToScreenPoint(brick.transform.position));
-
+            availablePositions.Add(brick.transform.position);
+            usingPositions.Remove(brick.transform.position);
             Type brickType = Type.GetType(brick.BrickType);
             var method = typeof(PoolManager).GetMethod("TakeToPool");
             var genericMethod = method.MakeGenericMethod(brickType);
             genericMethod.Invoke(PoolManager, new object[] { brick.GetComponent<IBrick>() });
-
-            UpdateCurrentBricks();
+            CurrentBricks.Remove(brick);
+            if(brick.BrickType == "TwinBrick") CurrentBricks.Remove(brick.GetComponentInChildren<LowerBrick>());
         }
+
     }
 
     private IBrick GetBrick()
@@ -117,7 +151,7 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
-        UpdateCurrentBricks();
+        //UpdateCurrentBricks();
         return brick;
     }
     
@@ -129,7 +163,7 @@ public class BrickManager : MonoBehaviour
         var method = typeof(PoolManager).GetMethod("GetFromPool");
         var genericMethod = method.MakeGenericMethod(brickType);
         brick = (IBrick)genericMethod.Invoke(PoolManager, null);
-        UpdateCurrentBricks();
+        //UpdateCurrentBricks();
         return brick;
     }
 
@@ -164,9 +198,9 @@ public class BrickManager : MonoBehaviour
     public void SpawnBrick()
     {
         HPPool = new List<float>();
-        int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f);
+        int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, UnityEngine.Random.Range(0.9f, 1.1f));
         //need to adjust
-        for (int j = HPBase; j < 3 + HPBase; j++)
+        for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
         {
             HPPool.Add(j);
         }
@@ -174,18 +208,23 @@ public class BrickManager : MonoBehaviour
         {
             Vector2 randomPosition = GenerateRandomPosition();
             IBrick brick = GetBrick();
-            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+            brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
+            UpdateCurrentBricks(brick);
         }
     }
 
     public void SpawnBoss()
     {
         HPPool = new List<float>();
-        HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * 10);
+        for(int i = 0; i < 3; i++)
+        {
+            HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(8, 12));
+        }
         Vector2 randomPosition = GenerateRandomPosition();
         IBrick brick = GetBrick();
         brick.IsBoss = true;
-        brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+        brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
+        UpdateCurrentBricks(brick);
     }
 
     public IBrick SpawnSpecificBrick(string BrickType)
@@ -195,9 +234,9 @@ public class BrickManager : MonoBehaviour
         {
             Vector2 randomPosition = GenerateRandomPosition();
             brick = GetSpecificBrick(BrickType);
-            brick.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomPosition.x, randomPosition.y, 35));
+            brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
+            UpdateCurrentBricks(brick);
         }
-
         return brick;
     }
 }

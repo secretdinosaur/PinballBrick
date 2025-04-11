@@ -12,7 +12,7 @@ public class TeleportBrick : IBrick
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            TakeDamage(collision.gameObject.GetComponent<Ball>());
+            TakeDamage(collision.gameObject.GetComponent<IBall>());
         }
     }
 }

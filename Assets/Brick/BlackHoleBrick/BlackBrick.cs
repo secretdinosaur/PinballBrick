@@ -5,7 +5,6 @@ public class BlackBrick : IBrick
     public WhiteBrick WhiteBrick;
     private void OnEnable()
     {
-        base.OnEnable();
         BrickType = "BlackBrick";
         GetComponents();
     }
@@ -14,8 +13,8 @@ public class BlackBrick : IBrick
     {
         if(collision.gameObject.CompareTag("Ball"))
         {
-            WhiteBrick.TouchedBlackHole(collision.gameObject.GetComponent<Ball>());
-            TakeDamage(collision.gameObject.GetComponent<Ball>());
+            WhiteBrick.TouchedBlackHole(collision.gameObject.GetComponent<IBall>());
+            TakeDamage(collision.gameObject.GetComponent<IBall>());
         }
     }
 }
