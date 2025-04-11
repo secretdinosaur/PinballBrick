@@ -1765,7 +1765,7 @@ public class Oneness: SpecialAugment
         while (elapsedTime < 0.25f)
         {
             elapsedTime += Time.deltaTime;
-            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(0, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f));
+            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f));
             yield return null;
         }
     }

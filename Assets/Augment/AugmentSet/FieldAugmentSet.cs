@@ -112,10 +112,30 @@ public class AngryBall : FieldAugment
 
             foreach (Ball ball in BallManager.Instance.InGameBall)
             {
+                StartCoroutine(AngryBallEffect(ball));
                 Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
                 Vector3 forceDirection = rb.linearVelocity.normalized;
                 rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
             }
+        }
+    }
+
+    IEnumerator AngryBallEffect(IBall RecentlyBall)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < 0.25f)
+        {
+            elapsedTime += Time.deltaTime;
+            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(1, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(1, 0, elapsedTime / 0.25f), Mathf.Lerp(1, 0, elapsedTime / 0.25f));
+            yield return null;
+        }
+
+        elapsedTime = 0;
+        while (elapsedTime < 0.25f)
+        {
+            elapsedTime += Time.deltaTime;
+            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f));
+            yield return null;
         }
     }
 }
@@ -148,16 +168,19 @@ public class PhoenixBall : FieldAugment
     {
         while(true)
         {
-            yield return new WaitForSeconds(Cooldown);
+
             if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null && !BallManager.Instance.thereISPhoenix)
             {
                 IBall ball = BallManager.Instance.InGameBall[Random.Range(0, BallManager.Instance.InGameBall.Count)];
                 ball.isPhoenix = true;
                 BallManager.Instance.thereISPhoenix = true;
+                ball.Renderer.material.color = new Color(2, 0, 0);
                 yield return new WaitForSeconds(period);
                 ball.isPhoenix = false;
+                ball.Renderer.material.color = new Color(1, 1, 1);
                 BallManager.Instance.thereISPhoenix = false;
             }
+            yield return new WaitForSeconds(Cooldown);
         }
     }
 }
@@ -166,6 +189,8 @@ public class TargetMark : FieldAugment
 {
     Coroutine Routine = null;
     float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+    GameObject Target;
+    Material TargetMat;
     private void OnEnable()
     {
         SetAugment("FIELD_4", "TargetMark", "TargetMark", 1);
@@ -174,6 +199,9 @@ public class TargetMark : FieldAugment
     public override void Apply()
     {
         Routine = StartCoroutine(TargetMarking(5f + Cooldown));
+        Target = GameObject.Find("Target");
+        TargetMat = Target.GetComponent<Renderer>().material;
+        Target.SetActive(false);
     }
 
     public override void Remove()
@@ -187,9 +215,10 @@ public class TargetMark : FieldAugment
 
     private IEnumerator TargetMarking(float Cooldown)
     {
+        
         while (true)
         {
-            yield return new WaitForSeconds(Cooldown);
+            yield return new WaitForSeconds(5);
             if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null)
             {
                 List<Rigidbody2D> BallRigidBody2D = new List<Rigidbody2D>();
@@ -200,16 +229,32 @@ public class TargetMark : FieldAugment
                     rb.gravityScale = Random.Range(0.01f, 0.03f);
                     rb.linearVelocity = Vector2.zero;
                 }
-                yield return new WaitForSeconds(1.5f);
                 IBrick brick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+                Target.transform.position = brick.transform.position;
+                Target.SetActive(true);
+                StartCoroutine(FindTarget());
+                yield return new WaitForSeconds(1.5f);
+                Target.SetActive(false);
                 foreach (Rigidbody2D ball in BallRigidBody2D)
                 {
                     Vector2 TargetDirection = (brick.transform.position - ball.transform.position).normalized;
-                    ball.AddForce(TargetDirection * 50f, ForceMode2D.Impulse);
+                    ball.AddForce(TargetDirection * 250f, ForceMode2D.Impulse);
                     yield return null;
                     ball.gravityScale = 0.5f;
                 }
             }
+        }
+    }
+
+    private IEnumerator FindTarget()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < 1.5f)
+        {
+            elapsedTime += Time.deltaTime;
+            TargetMat.SetFloat("_Alpha", Mathf.Lerp(1, 0, elapsedTime / 1.5f));
+            TargetMat.SetFloat("_Color", Mathf.Lerp(0, 1, elapsedTime / 1.5f));
+            yield return null;
         }
     }
 }
