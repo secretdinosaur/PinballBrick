@@ -2,7 +2,6 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using static UnityEditor.PlayerSettings;
 using static UnityEngine.ParticleSystem;
 using System;
 using System.Drawing;
