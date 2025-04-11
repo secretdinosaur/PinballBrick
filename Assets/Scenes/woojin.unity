@@ -23322,7 +23322,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1226102604
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28804,8 +28804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891e30582599bb24f9f2130d1a873f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 2
-  RotationSpeed: 300
+  RotationSpeed: 750
   TargetAngle: 40
   CurrentAngle: 0
 --- !u!212 &1510115438
@@ -34462,8 +34461,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1783727145}
-          m_TargetAssemblyTypeName: Pin, Assembly-CSharp
+        - m_Target: {fileID: 1783727148}
+          m_TargetAssemblyTypeName: RightPin, Assembly-CSharp
           m_MethodName: OnPointerUp
           m_Mode: 1
           m_Arguments:
@@ -34478,8 +34477,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1783727145}
-          m_TargetAssemblyTypeName: Pin, Assembly-CSharp
+        - m_Target: {fileID: 1783727148}
+          m_TargetAssemblyTypeName: RightPin, Assembly-CSharp
           m_MethodName: OnPointerDown
           m_Mode: 1
           m_Arguments:
@@ -34719,7 +34718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1783727147}
   - component: {fileID: 1783727146}
-  - component: {fileID: 1783727145}
+  - component: {fileID: 1783727148}
   - component: {fileID: 1783727144}
   - component: {fileID: 1783727143}
   m_Layer: 9
@@ -34813,22 +34812,6 @@ PolygonCollider2D:
       - {x: 0.29651916, y: 0.41597462}
       - {x: -0.10167789, y: 0.73577297}
   m_UseDelaunayMesh: 0
---- !u!114 &1783727145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783727142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 891e30582599bb24f9f2130d1a873f61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  velocity: 2
-  RotationSpeed: -300
-  TargetAngle: 40
-  CurrentAngle: 0
 --- !u!212 &1783727146
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -34899,6 +34882,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1783727148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783727142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b353ad79189df3e45bf6dcae5e3ba180, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationSpeed: -750
+  TargetAngle: 40
+  CurrentAngle: 0
 --- !u!1 &1865102530
 GameObject:
   m_ObjectHideFlags: 0
@@ -40014,6 +40012,7 @@ MonoBehaviour:
   PoolManager: {fileID: 0}
   ItemInfo: {fileID: 11400000, guid: ae23a3d2222f51e4da533cabb4858316, type: 2}
   IsPowerUp: 0
+  BaseItemSpawnChance: 0
 --- !u!114 &2033836777
 MonoBehaviour:
   m_ObjectHideFlags: 0
