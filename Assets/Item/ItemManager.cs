@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance;
@@ -12,39 +13,30 @@ public class ItemManager : MonoBehaviour
 
     public bool IsPowerUp = false;
     private List<PowerUpItem> PowerUpItemQueue = new List<PowerUpItem>();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public float BaseItemSpawnChance;
+
     void Start()
     {
         Instance = this;
         PoolManager = GetComponent<PoolManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        BaseItemSpawnChance = 0.1f;
     }
 
     public void SpawnItem(Vector2 BlockPosition)
     {
-        float RandomNumber = UnityEngine.Random.value;
-        Item item;
-        float ChanceSum = 0;
-        for (int i = 0; i < ItemInfo.Items.Length; i++)
+        if(Random.value < BaseItemSpawnChance)
         {
-            ChanceSum += ItemInfo.ItemSpawnChance[i];
-            if (RandomNumber < ChanceSum)
-            {
-                Type brickType = Type.GetType(ItemInfo.ItemName[i]);
-                var method = typeof(PoolManager).GetMethod("GetFromPool");
-                var genericMethod = method.MakeGenericMethod(brickType);
-                item = (Item)genericMethod.Invoke(PoolManager, null);
-                item.transform.position = BlockPosition;
-                break;
-            }
+            int RandomNumber = Random.Range(0, ItemInfo.Items.Length); 
+            Item item;
+            Type brickType = Type.GetType(ItemInfo.ItemName[RandomNumber]);
+            var method = typeof(PoolManager).GetMethod("GetFromPool");
+            var genericMethod = method.MakeGenericMethod(brickType);
+            item = (Item)genericMethod.Invoke(PoolManager, null);
+            item.transform.position = BlockPosition;
         }
     }
-
+    
     public void TakeItem(Item item)
     {
         Type ItemName = Type.GetType(item.ItemName);
