@@ -145,6 +145,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<FreshNewStart>(),
             gameObject.AddComponent<CritAfterThreeAttack>(),
             gameObject.AddComponent<DamageInfection>(),
+            gameObject.AddComponent<RollDiceBall>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),

@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEditor;
 using Random = UnityEngine.Random;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class BallManager : MonoBehaviour
 {
@@ -33,7 +34,19 @@ public class BallManager : MonoBehaviour
 
     public void CreateBall(int Num)
     {
-        for (int i = 0; i < Num; i++)
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_60"))
+        {
+            DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(Num, OnCreateBall));
+        }
+        else
+        {
+            OnCreateBall(Num);
+        }
+    }
+
+    private void OnCreateBall(int diceSum)
+    {
+        for (int i = 0; i < diceSum; i++)
         {
             IBall ball = GetSpecificBall(NormalBall);
             if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)

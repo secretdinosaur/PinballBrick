@@ -2111,3 +2111,21 @@ public class CriticalOnEffect : SpecialAugment
 
     }
 }
+
+public class RollDiceBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_60", "RollDice", "RollDice", "Ball", 1);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+
+    }
+}

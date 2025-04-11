@@ -448,6 +448,13 @@ MonoBehaviour:
   DecayPunchPS: {fileID: 1579539098}
   DecayExplosionPS: {fileID: 1865102531}
   AddAttack1PS: {fileID: 1176334496}
+  ExplosionWithBallPS: {fileID: 0}
+  SuicideBoomBallPS: {fileID: 0}
+  SuicideBoomBallPS2: {fileID: 0}
+  CursePS: {fileID: 0}
+  BombBallPS: {fileID: 0}
+  BallSacrificePS: {fileID: 0}
+  AllDamagePS: {fileID: 0}
 --- !u!4 &154175218
 Transform:
   m_ObjectHideFlags: 0
@@ -754,7 +761,6 @@ GameObject:
   - component: {fileID: 218456165}
   - component: {fileID: 218456164}
   - component: {fileID: 218456168}
-  - component: {fileID: 218456169}
   - component: {fileID: 218456173}
   - component: {fileID: 218456170}
   - component: {fileID: 218456171}
@@ -830,18 +836,6 @@ MonoBehaviour:
     EffectDuration: 0
     EffectCriticalDamage: 0
     GoldGain: 0
---- !u!114 &218456169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 218456163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a9fed516a26b30449f03f451786af60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   OptionButtonSprites:
   - {fileID: 4132716061048618184, guid: 86917ebde18f5e1449abd41b4d86856d, type: 3}
   - {fileID: -7198440490928857949, guid: 60ae8fb2dcf1d4c4c88ab82b0e1b2031, type: 3}
@@ -1163,7 +1157,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 218456169}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelUpPanel, Assembly-CSharp
         m_MethodName: OptionButtonClick
         m_Mode: 2
@@ -1376,8 +1370,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 218456169}
-        m_TargetAssemblyTypeName: LevelUpPanel, Assembly-CSharp
+      - m_Target: {fileID: 218456168}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
         m_MethodName: LevelUpEnd
         m_Mode: 1
         m_Arguments:
@@ -7843,7 +7837,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 218456169}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelUpPanel, Assembly-CSharp
         m_MethodName: OptionButtonClick
         m_Mode: 2
@@ -23328,7 +23322,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1226102604
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23678,7 +23672,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 218456169}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelUpPanel, Assembly-CSharp
         m_MethodName: OptionButtonClick
         m_Mode: 2
@@ -39919,7 +39913,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac38ddb599cd4c47a912205714d8cc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dices: []
   IsRolling: 0
 --- !u!114 &2000923009
 MonoBehaviour:
