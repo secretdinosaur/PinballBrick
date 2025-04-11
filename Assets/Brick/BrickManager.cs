@@ -37,7 +37,7 @@ public class BrickManager : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine(SpawnBricks());
+        StartCoroutine(SpawnBricks());
     }
 
     void Update()
