@@ -70,7 +70,6 @@ public class BrickManager : MonoBehaviour
                 float posX = -2.375f+ x * cellWidth + cellWidth / 2;
                 float posY = -1.75f + y * cellHeight + cellHeight / 2;
                 availablePositions.Add(new Vector2(posX, posY));
-                print(new Vector2(posX, posY));
             }
         }
     }
