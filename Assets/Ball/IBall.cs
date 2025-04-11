@@ -140,7 +140,13 @@ public partial class IBall : MonoBehaviour
         CurrentSpeed = rb.linearVelocity.magnitude;
         if (isPhoenix)
         {
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 0f);
+            TrailRenderer.enabled = true;
+            TrailRenderer.material.color = new Color(2, 0, 0);
+            TrailRenderer.time = 1;
+        }
+        else
+        {
+            TrailRenderer.material.color = new Color(1, 1, 1);
         }
         
         if (CurrentSpeed > 8 && (AugmentManager.instance.determineAugmentID("SPECIAL_12") || AugmentManager.instance.determineAugmentID("SPECIAL_13"))) //Speed Augment
@@ -153,6 +159,7 @@ public partial class IBall : MonoBehaviour
             {
                 TransformationMultiple = 1f + ((CurrentSpeed / 100f) * 2.5f);
             }
+            TrailRenderer.enabled = true;
             TrailRenderer.time = 1;
         }
         else
@@ -165,7 +172,7 @@ public partial class IBall : MonoBehaviour
             {
                 TransformationMultiple = 1f;
             }
-            TrailRenderer.time -= TrailRenderer.time != 0 ? 0.005f : 0f;
+            TrailRenderer.enabled = false;
         }
         if(transform.position.y <= -10 && !isOverDeathLine)
         {
