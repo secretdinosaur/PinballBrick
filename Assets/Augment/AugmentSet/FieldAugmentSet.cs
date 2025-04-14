@@ -425,7 +425,7 @@ public class LightningRod: FieldAugment
     }
 }
 
-public class Laser : FieldAugment
+public class Laser : FieldAugment //delete
 {
     Coroutine Routine = null;
     float Cooldown = AugmentManager.instance.FieldGlobalCooldown;

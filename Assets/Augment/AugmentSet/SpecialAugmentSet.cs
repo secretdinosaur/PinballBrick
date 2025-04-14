@@ -1147,7 +1147,7 @@ public class OneLineBall : SpecialAugment
         isGetThisAugment = true;
     }
 
-    public override void Remove() 
+    public override void Remove()
     {
         int BallLayer = LayerMask.NameToLayer("Ball");
         Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, false);
@@ -2087,8 +2087,7 @@ public class DamageInfection : SpecialAugment
 
             foreach (IBrick brick in ChosenBricks)
             {
-                float damage = Mathf.Round(Random.Range(Brick.RecentReceivedDamage / 4, Brick.RecentReceivedDamage) * 10f) / 10f;
-                brick.ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Additional");
+                DamageManager.TakeDamageWithoutMainAttack(brick, Brick.RecentlyBall);
             }
         }
     }
@@ -2098,7 +2097,7 @@ public class CriticalOnEffect : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_59", "CriticalOnEffect", "CriticalOnEffect", "Special", 4);
+        SetAugment("SPECIAL_59", "CriticalOnEffect", "CriticalOnEffect", "Special", 3);
     }
 
     public override void Apply()
