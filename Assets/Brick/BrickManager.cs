@@ -210,6 +210,7 @@ public class BrickManager : MonoBehaviour
             IBrick brick = GetBrick();
             brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
             UpdateCurrentBricks(brick);
+            SoundManager.instance.SpawnBrickSound(brick.GetComponent<AudioSource>());
         }
     }
 
@@ -225,6 +226,7 @@ public class BrickManager : MonoBehaviour
         brick.IsBoss = true;
         brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
         UpdateCurrentBricks(brick);
+        SoundManager.instance.SpawnBrickSound(brick.GetComponent<AudioSource>());
     }
 
     public IBrick SpawnSpecificBrick(string BrickType)
@@ -237,6 +239,7 @@ public class BrickManager : MonoBehaviour
             brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
             UpdateCurrentBricks(brick);
         }
+        SoundManager.instance.SpawnBrickSound(brick.GetComponent<AudioSource>());
         return brick;
     }
 }
