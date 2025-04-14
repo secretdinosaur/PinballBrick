@@ -43553,6 +43553,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1245759342}
+  - component: {fileID: 1245759343}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -43577,6 +43578,26 @@ Transform:
   - {fileID: 1041319362}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1245759343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245759341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5dd632ba7d0d9c4da512aef602b2d89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BgmClips:
+  - {fileID: 8300000, guid: 280e18c3fe0a52641aee51291e63e285, type: 3}
+  - {fileID: 8300000, guid: d00613518f321ea479b9447cb4b35284, type: 3}
+  - {fileID: 8300000, guid: 02f9acfb54052ed499f4cc48f6cf020e, type: 3}
+  SfxClips:
+  - {fileID: 8300000, guid: ed5a13804e938444a9e1963a6614fb3f, type: 3}
+  - {fileID: 8300000, guid: 4c6677bda0d9fc24986ea5dcdffe630a, type: 3}
+  - {fileID: 8300000, guid: 03554c1455e976546bae4209a2f434f4, type: 3}
 --- !u!1 &1303877927
 GameObject:
   m_ObjectHideFlags: 0

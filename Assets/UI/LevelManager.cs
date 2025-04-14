@@ -164,6 +164,7 @@ public partial class LevelManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
+        SoundManager.instance.LevelUpSound();
         Level = LevelUpQueue.Dequeue();
 
         NoticeLevelText.text = "Now Your Level: " + Level;

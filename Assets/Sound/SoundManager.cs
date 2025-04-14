@@ -47,7 +47,11 @@ public class SoundManager : MonoBehaviour
         }
         if (LevelManager.Instance.LevelUpPanel.activeSelf)
         {
-            Bgm.pitch = 0.4f;
+            Bgm.pitch = 0.7f;
+        }
+        else
+        {
+            Bgm.pitch = 1f;
         }
     }
 
@@ -57,9 +61,15 @@ public class SoundManager : MonoBehaviour
         audio.Play();
     }
 
+    public void BallAttackSound(AudioSource audio)
+    {
+        audio.clip = SfxClips[1];
+        audio.Play();
+    }
+
     public void LevelUpSound()
     {
-        Sfx.clip = SfxClips[1];
+        Sfx.clip = SfxClips[2];
         Sfx.Play();
     }
 }

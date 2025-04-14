@@ -209,8 +209,7 @@ public partial class IBall : MonoBehaviour
                 Vector2 ContactVec = collision.contacts[i].normal;
 
                 VisualEffectManager.Instance.SpawnExplosionWithBallEffect(ContactVec, ContactPos);
-            }
-            
+            }  
         }
         if (collision.gameObject.CompareTag("Brick") && gameObject.activeSelf)
         {
@@ -220,6 +219,10 @@ public partial class IBall : MonoBehaviour
             {
                 detectArea.NearbyBricks.Remove(collision.gameObject.GetComponent<IBrick>());
             }
+        }
+        if (!collision.gameObject.CompareTag("Ball") && gameObject.activeSelf)
+        {
+            SoundManager.instance.BallAttackSound(gameObject.GetComponent<AudioSource>());
         }
     }
 
