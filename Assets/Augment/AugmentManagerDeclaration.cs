@@ -174,7 +174,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            
+
         };
 
         foreach (IAugment augment in TestAugments)
