@@ -59,12 +59,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         CurseActiveNumber = 1;
         AfterDeathActiveNumber = 1;
         ClearAllAugments();
+
         augmentsSet = new List<IAugment>
-        { gameObject.AddComponent<AtkUpWhenCritical>(),
-        gameObject.AddComponent<AtkUpWhenCritical>(),
-        gameObject.AddComponent<AtkUpWhenCritical>(),
-        };
-        /*augmentsSet = new List<IAugment>
         {
             gameObject.AddComponent<Atk10Up>(),
             gameObject.AddComponent<Atk30Up>(),
@@ -175,7 +171,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
             gameObject.AddComponent<RebornBombBall>(),
             ////////////////////////// Delete These Before Build
-        };*/
+        };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
