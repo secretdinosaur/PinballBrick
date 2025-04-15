@@ -147,4 +147,10 @@ public class SoundManager : MonoBehaviour
         Sfx.clip = SfxClips[2];
         Sfx.Play();
     }
+
+    public void ButtonClickSound()
+    {
+        Sfx.clip = SfxClips[3];
+        Sfx.Play();
+    }
 }
