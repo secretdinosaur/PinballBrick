@@ -59,6 +59,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         CurseActiveNumber = 1;
         AfterDeathActiveNumber = 1;
         ClearAllAugments();
+
         augmentsSet = new List<IAugment>
         {
             gameObject.AddComponent<Atk10Up>(),
