@@ -24,6 +24,24 @@ public static partial class DamageManager //Normal Attack
         }
     }
 
+    public static void TakeDamageWithoutMainAttack(IBrick brick, IBall ball)
+    {
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_51"))
+        {
+            BrickManager.Instance.MainBrick.RecentlyBall = ball;
+            BrickManager.Instance.MainBrick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
+            BrickManager.Instance.MainBrick.SpecialCriticalChance = ball.SpecialCriticalChance;
+            DamageProcessWithoutMainAttack(BrickManager.Instance.MainBrick);
+        }
+        else
+        {
+            brick.RecentlyBall = ball;
+            brick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
+            brick.SpecialCriticalChance = ball.SpecialCriticalChance;
+            DamageProcessWithoutMainAttack(brick);
+        }
+    }
+
     private static void DamageProcess(IBrick brick)
     {
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
@@ -36,6 +54,21 @@ public static partial class DamageManager //Normal Attack
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
         {
             Augment.AfterMainAttackEffect(brick);
+            Augment.AfterAttackEffect(brick);
+        }
+    }
+
+    public static void DamageProcessWithoutMainAttack(IBrick brick)
+    {
+        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        {
+            Augment.BeforeAttackEffect(brick);
+        }
+
+        brick.HP -= FinalDamage(brick);
+
+        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        {
             Augment.AfterAttackEffect(brick);
         }
     }

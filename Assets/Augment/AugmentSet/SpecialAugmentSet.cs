@@ -1147,7 +1147,7 @@ public class OneLineBall : SpecialAugment
         isGetThisAugment = true;
     }
 
-    public override void Remove() 
+    public override void Remove()
     {
         int BallLayer = LayerMask.NameToLayer("Ball");
         Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, false);
@@ -1765,7 +1765,7 @@ public class Oneness: SpecialAugment
         while (elapsedTime < 0.25f)
         {
             elapsedTime += Time.deltaTime;
-            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(0, 1.5f, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f));
+            RecentlyBall.Renderer.material.color = new Color(Mathf.Lerp(1.5f, 1, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f), Mathf.Lerp(0f, 1, elapsedTime / 0.25f));
             yield return null;
         }
     }
@@ -2087,8 +2087,7 @@ public class DamageInfection : SpecialAugment
 
             foreach (IBrick brick in ChosenBricks)
             {
-                float damage = Mathf.Round(Random.Range(Brick.RecentReceivedDamage / 4, Brick.RecentReceivedDamage) * 10f) / 10f;
-                brick.ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Additional");
+                DamageManager.TakeDamageWithoutMainAttack(brick, Brick.RecentlyBall);
             }
         }
     }
@@ -2098,7 +2097,7 @@ public class CriticalOnEffect : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_59", "CriticalOnEffect", "CriticalOnEffect", "Special", 4);
+        SetAugment("SPECIAL_59", "CriticalOnEffect", "CriticalOnEffect", "Special", 3);
     }
 
     public override void Apply()
@@ -2127,5 +2126,24 @@ public class RollDiceBall : SpecialAugment
     public override void Remove()
     {
 
+    }
+}
+
+public class ItemInhance : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_61", "ItemInhance", "ItemInhance", "item", 2);
+    }
+
+    public override void Apply()
+    {
+        ItemManager.Instance.BaseItemSpawnChance *= 2;
+        //todo: think item inhancement
+    }
+
+    public override void Remove()
+    {
+        ItemManager.Instance.BaseItemSpawnChance /= 2;
     }
 }
