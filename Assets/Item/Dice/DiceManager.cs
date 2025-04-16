@@ -9,7 +9,7 @@ public class DiceManager : MonoBehaviour
     public static DiceManager Instance;
     private PoolManager poolManager;
     public bool IsRolling = false;
-    private void Start()
+    private void Awake()
     {
         Instance = this;
         poolManager = GetComponent<PoolManager>();
