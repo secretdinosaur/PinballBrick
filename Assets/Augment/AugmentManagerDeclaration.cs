@@ -94,9 +94,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<AntiGravity>(),
             gameObject.AddComponent<BountyHunter>(),
             gameObject.AddComponent<LightningRod>(),
-            gameObject.AddComponent<Laser>(),
             gameObject.AddComponent<AttackOrDie>(),
             gameObject.AddComponent<WeatherChange>(),
+            gameObject.AddComponent<DiceGamble>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -175,7 +175,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-
+            gameObject.GetComponent<DiceGamble>()
         };
 
         foreach (IAugment augment in TestAugments)

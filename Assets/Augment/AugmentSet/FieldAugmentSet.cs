@@ -37,7 +37,7 @@ public class AllDamage : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_1", "All Damage", "All Damage", 3);
+        SetAugment("FIELD_1", "Holy Rain", "The holy water damages all bricks", 3);
     }
 
     public override void Apply()
@@ -87,7 +87,7 @@ public class AngryBall : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_2", "AngryBall", "AngryBall", 3);
+        SetAugment("FIELD_2", "Angry Ball", "Balls become enraged and move faster", 3);
     }
 
     public override void Apply()
@@ -147,7 +147,7 @@ public class PhoenixBall : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_3", "PhoenixBall", "PhoenixBall", 4);
+        SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for 20 seconds", 4);
     }
 
     public override void Apply()
@@ -193,7 +193,7 @@ public class TargetMark : FieldAugment
     Material TargetMat;
     private void OnEnable()
     {
-        SetAugment("FIELD_4", "TargetMark", "TargetMark", 1);
+        SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 1);
     }
 
     public override void Apply()
@@ -266,7 +266,7 @@ public class SatelliteBeam : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_5", "SatelliteBeam", "SatelliteBeam", 1);
+        SetAugment("FIELD_5", "Satellite Beam", "Generates a powerful satellite beam", 1);
     }
 
     public override void Apply()
@@ -300,7 +300,7 @@ public class AutoGetExp : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_6", "AutoGetExp", "AutoGetExp", 5);
+        SetAugment("FIELD_6", "Meditation", "Automatically gain EXP over time", 5);
     }
 
     public override void Apply()
@@ -334,7 +334,7 @@ public class AntiGravity : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_7", "AntiGravity", "AntiGravity", 3);
+        SetAugment("FIELD_7", "Antigravity", "Reverses gravity at regular intervals", 3);
     }
 
     public override void Apply()
@@ -383,7 +383,7 @@ public class BountyHunter: FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_8", "BountyHunter", "BountyHunter", 4);
+        SetAugment("FIELD_8", "Bounty Hunter", "Random brick is wanted\nRewards are earned when breaking it", 4);
     }
 
     public override void Apply()
@@ -443,7 +443,7 @@ public class LightningRod: FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_9", "LightningRod", "LightningRod", 2);
+        SetAugment("FIELD_9", "Thunderstrike Zone", "Generates thunderstrike zone where lightning strikes automatically", 2);
     }
 
     public override void Apply()
@@ -470,53 +470,13 @@ public class LightningRod: FieldAugment
     }
 }
 
-public class Laser : FieldAugment //delete
-{
-    Coroutine Routine = null;
-    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
-
-    private void OnEnable()
-    {
-        SetAugment("FIELD_10", "Laser", "Laser", 3);
-    }
-
-    public override void Apply()
-    {
-        Routine = StartCoroutine(GetLaser(3f + Cooldown));
-    }
-
-    public override void Remove()
-    {
-        if (Routine != null)
-        {
-            StopCoroutine(Routine);
-            Routine = null;
-        }
-    }
-
-    private IEnumerator GetLaser(float Cooldown)
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(Random.Range(Cooldown - 4f, Cooldown + 4f));
-            if (BallManager.Instance.InGameBall.Count > 0)
-            {
-                for(int i = 0; i < Random.Range(1, BallManager.Instance.InGameBall.Count); i++)
-                {
-                    SpecialObjManager.Instance.CreateSpecialObj("LaserObj");
-                }
-            }
-        }
-    }
-}
-
 public class AttackOrDie : FieldAugment
 {
     Coroutine Routine = null;
 
     private void OnEnable()
     {
-        SetAugment("FIELD_11", "AttackOrDie", "AttackOrDie", 2);
+        SetAugment("FIELD_11", "Last Breath", "Attack damage +40%\nBalls die if they do not hit any bricks within 2 seconds", 2);
     }
 
     public override void Apply()
@@ -597,7 +557,7 @@ public class DecayZone : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_12", "DecayZone", "DecayZone", 2);
+        SetAugment("FIELD_12", "Decay Zone", "Generate a decay zone where decay happens automatically", 2);
     }
 
     public override void Apply()
@@ -630,7 +590,7 @@ public class WeatherChange : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_13", "WeatherChange", "WeatherChange", 1);
+        SetAugment("FIELD_13", "Constant Disaster", "Random disaster occured causing random effects", 1);
     }
 
     public override void Apply()
@@ -699,7 +659,7 @@ public class DiceGamble : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_14", "DiceGamble", "DiceGamble", 2);
+        SetAugment("FIELD_14", "Dice Gamble", "Roll the dice and get rewards based on the result", 2);
     }
 
     public override void Apply()
