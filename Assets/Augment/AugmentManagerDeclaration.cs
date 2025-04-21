@@ -59,6 +59,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         CurseActiveNumber = 1;
         AfterDeathActiveNumber = 1;
         ClearAllAugments();
+
         augmentsSet = new List<IAugment>
         {
             gameObject.AddComponent<Atk10Up>(),
@@ -93,9 +94,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<AntiGravity>(),
             gameObject.AddComponent<BountyHunter>(),
             gameObject.AddComponent<LightningRod>(),
-            gameObject.AddComponent<Laser>(),
             gameObject.AddComponent<AttackOrDie>(),
             gameObject.AddComponent<WeatherChange>(),
+            gameObject.AddComponent<DiceGamble>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -146,6 +147,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<CritAfterThreeAttack>(),
             gameObject.AddComponent<DamageInfection>(),
             gameObject.AddComponent<RollDiceBall>(),
+            gameObject.AddComponent<ItemEnhance>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -173,7 +175,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DecayZone>(),
+            gameObject.GetComponent<SplitBall>(),
+            gameObject.GetComponent<RollDiceBall>()
         };
 
         foreach (IAugment augment in TestAugments)
