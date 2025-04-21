@@ -253,7 +253,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -3
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -427,7 +427,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -3
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -712,11 +712,11 @@ MonoBehaviour:
   ExecutionObject1: {fileID: 1868960140044852002}
   ExecutionObject2: {fileID: 7916849180730673543}
   IsNeedDelayedDIeForEffect: 0
+  isGoldBrick: 0
   RecentlyBall: {fileID: 0}
-  FireEffectDuration: 0
-  PoisonEffectDuration: 0
-  DecayEffectDuration: 0
-  initialDuration: 0
+  SpecialCriticalChance: 0
+  BrickEffect: {fileID: 0}
+  RecentReceivedDamage: 0
   NearbyBricks: []
   boxSize: {x: 6, y: 4}
   isTouchedBlackHole: 0

@@ -329,6 +329,7 @@ public class AutoGetExp : FieldAugment
 
 public class AntiGravity : FieldAugment
 {
+    GameObject AntiGravityObj;
     Coroutine Routine = null;
     float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
 
@@ -341,6 +342,7 @@ public class AntiGravity : FieldAugment
     {
         //12f + Cooldown
         Routine = StartCoroutine(GetAntiGravity(7f));
+        AntiGravityObj = GameObject.Find("AntiGravity");
     }
 
     public override void Remove()
@@ -365,7 +367,9 @@ public class AntiGravity : FieldAugment
                 Vector3 forceDirection = rb.linearVelocity.normalized;
                 rb.AddForce(forceDirection * 1f, ForceMode2D.Impulse);
             }
+            StartCoroutine(AntiGravityEffect(true));
             yield return new WaitForSeconds(5f);
+            StartCoroutine(AntiGravityEffect(false));
             BallManager.Instance.isAntiGravity = false;
             foreach (Ball ball in BallManager.Instance.InGameBall)
             {
@@ -374,13 +378,36 @@ public class AntiGravity : FieldAugment
             }
         }
     }
+
+    private IEnumerator AntiGravityEffect(bool IsUp)
+    {
+        float rotation = IsUp ? 0 : 180;
+        AntiGravityObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotation));
+        float elapsedTime = 0f;
+
+        if (IsUp)
+            while (elapsedTime < 0.25f)
+            {
+                elapsedTime += Time.deltaTime;
+                AntiGravityObj.transform.position = Vector3.Lerp(new Vector3(0, -8, 0), new Vector3(0, 8, 0), elapsedTime / 0.25f);
+                yield return null;
+            }
+        else
+            while (elapsedTime < 0.25f)
+            {
+                elapsedTime += Time.deltaTime;
+                AntiGravityObj.transform.position = Vector3.Lerp(new Vector3(0, 8, 0), new Vector3(0, -8, 0), elapsedTime / 0.25f);
+                yield return null;
+            }
+    }
 }
 
 public class BountyHunter: FieldAugment
 {
     Coroutine Routine = null;
     float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
-
+    GameObject BountyHunterObj;
+    Material BountyHunterMat;
     private void OnEnable()
     {
         SetAugment("FIELD_8", "BountyHunter", "BountyHunter", 4);
@@ -389,6 +416,9 @@ public class BountyHunter: FieldAugment
     public override void Apply()
     {
         Routine = StartCoroutine(GetBountyHunter(Cooldown));
+        BountyHunterObj = GameObject.Find("BountyHunter");
+        BountyHunterMat = BountyHunterObj.GetComponent<Renderer>().material;
+        BountyHunterObj.SetActive(false);
     }
 
     public override void Remove()
@@ -408,10 +438,15 @@ public class BountyHunter: FieldAugment
             if(BrickManager.Instance.CurrentBricks.Count >= 1)
             {
                 IBrick WantedBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+                BountyHunterObj.SetActive(true);
+                BountyHunterObj.transform.position = WantedBrick.transform.position;
+                
                 bool isDestroy = false;
                 float timer = 20f;
                 while (timer > 0)
                 {
+                    BountyHunterMat.SetFloat("_Alpha", Mathf.Lerp(1, 0, timer / 20f));
+                    BountyHunterMat.SetFloat("_Color", Mathf.Lerp(0, 1, timer / 20f));
                     if (WantedBrick == null || !WantedBrick.gameObject.activeInHierarchy)
                     {
                         isDestroy = true;
@@ -448,7 +483,7 @@ public class LightningRod: FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetLightningRod(8f + Cooldown));
+        Routine = StartCoroutine(GetLightningRod(5));
     }
 
     public override void Remove()
@@ -498,7 +533,8 @@ public class Laser : FieldAugment
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(Cooldown - 4f, Cooldown + 4f));
+            yield return new WaitForSeconds(Random.Range(1, 2));
+            //yield return new WaitForSeconds(Random.Range(Cooldown - 4f, Cooldown + 4f));
             if (BallManager.Instance.InGameBall.Count > 0)
             {
                 for(int i = 0; i < Random.Range(1, BallManager.Instance.InGameBall.Count); i++)
@@ -602,7 +638,7 @@ public class DecayZone : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetDecayZone(7f + Cooldown));
+        Routine = StartCoroutine(GetDecayZone(Cooldown));
     }
 
     public override void Remove()

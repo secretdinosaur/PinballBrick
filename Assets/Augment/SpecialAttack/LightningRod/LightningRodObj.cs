@@ -18,8 +18,8 @@ public class LightningRodObj : SpecialObj
 
     IEnumerator LightningRod()
     {
-        int time = 0;
-        while (time < 10)
+        float time = 0;
+        while (time < 3)
         {
             if (detectArea.NearbyBricks.Count > 0)
             {
@@ -31,12 +31,12 @@ public class LightningRodObj : SpecialObj
                     int index = Random.Range(0, detectArea.NearbyBricks.Count);
                     if (detectArea.NearbyBricks[index] != null && detectArea.NearbyBricks[index].gameObject.activeInHierarchy)
                     {
-                        detectArea.NearbyBricks[index].DamageByLightningEffect(5f, 1);
+                        detectArea.NearbyBricks[index].DamageByLightningEffect(1f, 1);
                     }
                 }
             }
-            time += 1;
-            yield return new WaitForSeconds(1f);
+            time += 0.1f;
+            yield return new WaitForSeconds(0.1f);
         }
         SpecialObjManager.Instance.TakeSpecialObj(this);
     }

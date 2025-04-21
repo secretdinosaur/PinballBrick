@@ -173,7 +173,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<TargetMark>(),
+            gameObject.GetComponent<DecayZone>(),
         };
 
         foreach (IAugment augment in TestAugments)
