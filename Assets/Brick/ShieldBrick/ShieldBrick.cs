@@ -1,6 +1,6 @@
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
-
+using System.Collections;
 public class ShieldBrick : IBrick
 {
     public float BasicShieldCount;
@@ -14,12 +14,13 @@ public class ShieldBrick : IBrick
     {
         BrickType = "ShieldBrick";
         Shield.SetActive(true);
+        Shield.GetComponent<Renderer>().material.SetFloat("_Alpha", 0);
         IsShieldDestroyed = false;
         ShieldCount = BasicShieldCount * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)] / 5;
         HPMultiplier = ShieldCount / BasicShieldCount;
         HP = ShieldCount;
         HpTemp = HP;
-
+        HPText.enabled = true;
         GetComponents();
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -32,7 +33,21 @@ public class ShieldBrick : IBrick
 
     public void DestroyShield()
     {
+        StartCoroutine(DestroySheildEffect());
+        
+    }
+
+    private IEnumerator DestroySheildEffect()
+    {
+        float elapsedTime = 0f;
+        while(elapsedTime < 0.5f)
+        {
+            Shield.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(0, 1, elapsedTime / 0.5f));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
         Shield.SetActive(false);
+
         IsShieldDestroyed = true;
         HP = (IsBoss) ? BasicHP * HPMultiplier : BasicHP * HPMultiplier * 10;
         HpTemp = HP;
