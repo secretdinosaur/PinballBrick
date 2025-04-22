@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using System.Linq;
+using System.Drawing;
+using NUnit.Framework;
 public class BrickManager : MonoBehaviour
 {
     public List<float> HPPool;
@@ -190,7 +192,7 @@ public class BrickManager : MonoBehaviour
         {
             if (BrickQueue == null)
             {
-                yield return new WaitForSeconds(10f);
+                SettingBrickSpawnChance();
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
@@ -210,7 +212,7 @@ public class BrickManager : MonoBehaviour
                     if(availablePositions.Count > 0)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * 0.6f);
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * (0.6f - GameManager.instance.Wave * 0.002f));
                     }
                     else
                     {
@@ -229,7 +231,7 @@ public class BrickManager : MonoBehaviour
                     {
                         SpawnBrick(BrickQueue.Dequeue());
                         //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * 3);
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * (1.5f - GameManager.instance.Wave * 0.005f));
                     }
                     else
                     {
@@ -243,6 +245,7 @@ public class BrickManager : MonoBehaviour
                 BrickQueue = null;
                 GameTick += 1;
                 GameManager.instance.Wave += 1;
+                yield return new WaitForSeconds(5f);
             }
             yield return null;
         }
@@ -284,6 +287,29 @@ public class BrickManager : MonoBehaviour
         return brick;
     }
 
+    private void SettingBrickSpawnChance()
+    {
+        int Wave = GameManager.instance.Wave;
+        float sigma = 15f;
+        BrickInfo.BrickSpawnChance = new float[BrickInfo.BrickSpawnChance.Length];
+        for (int i = 0; i < BrickInfo.BrickSpawnChance.Length - 1; i++)
+        {
+            float center = i * 50f;
+            float x = Wave;
+
+            float value = Mathf.Exp(-(x - center) * (x - center) / (2 * sigma * sigma));
+            BrickInfo.BrickSpawnChance[i] = value;
+        }
+        
+        float sum = BrickInfo.BrickSpawnChance.Sum();
+        if (sum > 0f)
+        {
+            for (int i = 0; i < BrickInfo.BrickSpawnChance.Length - 1; i++)
+            {
+                BrickInfo.BrickSpawnChance[i] /= sum;
+            }
+        }
+    }
     public IBrick SettingBrick()
     {
         IBrick brick = new IBrick();
