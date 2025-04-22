@@ -1954,6 +1954,7 @@ public class FreshNewStart : SpecialAugment
             BallManager.Instance.TakeBall(ball);
         }
         BallManager.Instance.CreateBall(1);
+        QuestAlarm.Instance.ClearQuest();
         AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<FreshNewStart>());
     }
 

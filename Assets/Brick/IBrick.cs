@@ -19,7 +19,7 @@ public partial class IBrick : MonoBehaviour
     public float HpTemp;
     public float BallSpeed;
 
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     public LineRenderer lineRenderer;
 
     public GameObject PoisonEffect;
@@ -151,6 +151,7 @@ public partial class IBrick : MonoBehaviour
         ExecutionObject1.transform.position = transform.position;
         ExecutionObject2.transform.position = transform.position;
         isGoldBrick = false;
+        spriteRenderer.material.SetFloat("_Decay", 0);
     }
 
     public void GetComponents()

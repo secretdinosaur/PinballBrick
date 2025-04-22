@@ -502,7 +502,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9c939f5b7d3a27a4ea734364bed228a6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -524,7 +524,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.65723264, b: 0.65723264, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -707,6 +707,7 @@ MonoBehaviour:
   BrickTransform: {fileID: 0}
   HpTemp: 0
   BallSpeed: 0
+  spriteRenderer: {fileID: 0}
   lineRenderer: {fileID: 5653289487697083759}
   PoisonEffect: {fileID: 2924254579067933721}
   TotalMultiple: 0

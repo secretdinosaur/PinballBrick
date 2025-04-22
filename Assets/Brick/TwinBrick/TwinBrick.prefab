@@ -189,7 +189,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 65
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 431f3535a15396c4abb71d9cea6f43ac, type: 2}
   m_sharedMaterial: {fileID: 409990138255620586, guid: 431f3535a15396c4abb71d9cea6f43ac, type: 2}
@@ -327,7 +327,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: bb2e6ed7225a55b449f97dedf483f253, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -349,7 +349,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.9811321, g: 0.5970096, b: 0.6250172, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -544,6 +544,7 @@ MonoBehaviour:
   BrickTransform: {fileID: 0}
   HpTemp: 0
   BallSpeed: 0
+  spriteRenderer: {fileID: 0}
   lineRenderer: {fileID: 7853834334144190774}
   PoisonEffect: {fileID: 8253443428837631999}
   TotalMultiple: 0
@@ -929,12 +930,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2930037138640383005, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
       propertyPath: m_Color.g
-      value: 0.6084906
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2930037138640383005, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
       propertyPath: m_Color.r
-      value: 0.64771295
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2930037138640383005, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c0a8f2726b8f58d41b4b58b5e9d6264b, type: 2}
     - target: {fileID: 3077907449073165325, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1005,7 +1010,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8521442660743975225, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
       propertyPath: m_text
-      value: 65
+      value: '
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 8521442660743975225, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
       propertyPath: m_fontSize
@@ -1080,6 +1087,7 @@ MonoBehaviour:
   BrickTransform: {fileID: 1830871794493315591}
   HpTemp: 0
   BallSpeed: 0
+  spriteRenderer: {fileID: 0}
   lineRenderer: {fileID: 4209844541766759813}
   PoisonEffect: {fileID: 712380388453779190}
   TotalMultiple: 0

@@ -150,7 +150,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 7a4f6b8d3da97874b8a42e2c7d187dda, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -248,6 +248,7 @@ MonoBehaviour:
   BrickTransform: {fileID: 0}
   HpTemp: 0
   BallSpeed: 0
+  spriteRenderer: {fileID: 0}
   lineRenderer: {fileID: 0}
   PoisonEffect: {fileID: 6691469168034723681}
   TotalMultiple: 0

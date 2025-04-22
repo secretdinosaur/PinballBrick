@@ -55,7 +55,7 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _NoisePower: 16.46
-    - _NoiseScale: 31.33
+    - _NoiseScale: 32.47
     - _NoiseSpeed1: -0.2
     - _NoiseSpeed2: 0.4
     - _OuterNoisePower: 2.3
