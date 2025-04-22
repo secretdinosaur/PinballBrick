@@ -286,24 +286,12 @@ public class BrickManager : MonoBehaviour
     public IBrick SettingBrick()
     {
         IBrick brick = new IBrick();
-        HPPool = new List<float>();
-        int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, UnityEngine.Random.Range(0.9f, 1.1f));
-        //need to adjust
-        for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
-        {
-            HPPool.Add(j);
-        }
         return brick;
     }
 
     public IBrick SettingBoss()
     {
         IBrick brick = new IBrick();
-        HPPool = new List<float>();
-        for (int i = 0; i < 3; i++)
-        {
-            HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(11, 14));
-        }
         brick.IsBoss = true;
         return brick;
     }
@@ -311,17 +299,36 @@ public class BrickManager : MonoBehaviour
     public IBrick SettingMiniBoss()
     {
         IBrick brick = new IBrick();
-        HPPool = new List<float>();
-        for (int i = 0; i < 3; i++)
-        {
-            HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(6, 8));
-        }
         brick.IsBoss = true;
         return brick;
     }
 
     public void SpawnBrick(IBrick brick)
     {
+        HPPool = new List<float>();
+        if (brick.IsBoss)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(11, 14));
+            }
+        }
+        else if (brick.IsMiniBoss)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(6, 8));
+            }
+        }
+        else
+        {
+            int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, UnityEngine.Random.Range(0.9f, 1.1f));
+            //need to adjust
+            for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
+            {
+                HPPool.Add(j);
+            }
+        }
         IBrick Brick = GetBrick(brick);
 
         Vector2 randomPosition = GenerateRandomPosition();
