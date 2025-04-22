@@ -190,6 +190,8 @@ public class BrickManager : MonoBehaviour
         {
             if (BrickQueue == null)
             {
+                yield return new WaitForSeconds(10f);
+                StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
                 Debug.Log("Wave : " + GameManager.instance.Wave + " Left Bricks Count : " + BrickQueue.Count);
