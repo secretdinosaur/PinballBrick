@@ -5,10 +5,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public GameObject PausePanel;
+    public int Wave;
     void Awake()
     {
         instance = this;
         PausePanel = GameObject.Find("Canvas").transform.Find("PausePanel").gameObject;
+        Wave = 0;
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
     }
 
