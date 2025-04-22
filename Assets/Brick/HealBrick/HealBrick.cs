@@ -21,21 +21,73 @@ public class HealBrick : IBrick
 
     public IEnumerator BrickHeal()
     {
-        while(true)
+        Color startColor = spriteRenderer.material.GetColor("_Color");
+        Color targetColor = startColor * 2;
+
+
+        while (true)
         {
             yield return new WaitForSeconds(10f - HealCount / 5);
-            if(HealCount <= 25)
+
+            if (HealCount <= 25)
                 HealCount += 1;
             if (HP + HpTemp / 10 > HpTemp && HP != HpTemp)
             {
                 HP = HpTemp;
                 ShowText("+" + (HpTemp - HP).ToString(), "Heal", false);
+
+                float duration = 0.25f;
+                float elapsed = 0f;
+
+                while (elapsed < duration)
+                {
+                    elapsed += Time.deltaTime;
+                    spriteRenderer.material.SetColor("_Color", Color.Lerp(startColor, targetColor, elapsed / duration));
+                    yield return null;
+                }
+
+                elapsed = 0f;
+
+                while (elapsed < duration)
+                {
+                    elapsed += Time.deltaTime;
+                    spriteRenderer.material.SetColor("_Color", Color.Lerp(targetColor, startColor, elapsed / duration));
+                    yield return null;
+                }
+
+                spriteRenderer.material.SetColor("_Color", startColor);
             }
             else if (HP != HpTemp)
             {
                 HP += (int)(HpTemp / 10);
                 ShowText("+" + ((int)(HpTemp / 10)).ToString(), "Heal", false);
+
+                float duration = 0.25f;
+                float elapsed = 0f;
+
+                while (elapsed < duration)
+                {
+                    elapsed += Time.deltaTime;
+                    spriteRenderer.material.SetColor("_Color", Color.Lerp(startColor, targetColor, elapsed / duration));
+                    yield return null;
+                }
+
+                elapsed = 0f;
+
+                while (elapsed < duration)
+                {
+                    elapsed += Time.deltaTime;
+                    spriteRenderer.material.SetColor("_Color", Color.Lerp(targetColor, startColor, elapsed / duration));
+                    yield return null;
+                }
+
+                spriteRenderer.material.SetColor("_Color", startColor);
             }
+            else // for sync heal cooltime
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
         }
     }
 }

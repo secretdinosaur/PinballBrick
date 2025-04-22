@@ -13,12 +13,29 @@ public class QuestAlarm : MonoBehaviour
 
     }
 
+    public void ClearQuest()
+    {
+        Quests[0].GetComponent<QuestText>().QuestName = null;
+        Quests[1].GetComponent<QuestText>().QuestName = null;
+        Quests[2].GetComponent<QuestText>().QuestName = null;
+        Quests[3].GetComponent<QuestText>().QuestName = null;
+        Quests[4].GetComponent<QuestText>().QuestName = null;
+        Quests[5].GetComponent<QuestText>().QuestName = null;
+
+        Quests[0].text = "";
+        Quests[1].text = "";
+        Quests[2].text = "";
+        Quests[3].text = "";
+        Quests[4].text = "";
+        Quests[5].text = "";
+
+    }
     public void SetQuest(string QuestName, string Text, int CurrentCount, int MaxCount)
     {
 
         if (CurrentCount == MaxCount)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 6; i++)
             {
                 if (Quests[i].GetComponent<QuestText>().QuestName == QuestName)
                 {
@@ -27,7 +44,7 @@ public class QuestAlarm : MonoBehaviour
                 }
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (Quests[i].text == "")
                 {
@@ -39,7 +56,7 @@ public class QuestAlarm : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 6; i++)
         {
             if (Quests[i].GetComponent<QuestText>().QuestName != null && Quests[i].GetComponent<QuestText>().QuestName == QuestName)
             {
@@ -48,7 +65,7 @@ public class QuestAlarm : MonoBehaviour
             }
             
         }
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 6; i++)
         {
             if (Quests[i].text == "")
             {
