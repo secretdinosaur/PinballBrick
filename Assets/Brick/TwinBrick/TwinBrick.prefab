@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: -2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -147,7 +147,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 409990138255620586, guid: 431f3535a15396c4abb71d9cea6f43ac, type: 2}
+  - {fileID: -4342024423633253655, guid: 3e68e69ba6504d3489aa55e8ed98a1e4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -167,7 +167,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &778884806965899887
 MonoBehaviour:
@@ -191,15 +191,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 431f3535a15396c4abb71d9cea6f43ac, type: 2}
-  m_sharedMaterial: {fileID: 409990138255620586, guid: 431f3535a15396c4abb71d9cea6f43ac, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3e68e69ba6504d3489aa55e8ed98a1e4, type: 2}
+  m_sharedMaterial: {fileID: -4342024423633253655, guid: 3e68e69ba6504d3489aa55e8ed98a1e4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -539,6 +539,7 @@ MonoBehaviour:
   Point: 5
   BasicHP: 3
   IsBoss: 0
+  IsMiniBoss: 0
   HPText: {fileID: 0}
   BrickType: 
   BrickTransform: {fileID: 0}
@@ -560,7 +561,7 @@ MonoBehaviour:
   boxSize: {x: 0, y: 0}
   isTouchedBlackHole: 0
   TouchedObject: {fileID: 0}
-  LowerBrick: {fileID: 0}
+  LowerBrick: {fileID: 5325530097451108238}
 --- !u!82 &7599529369765230798
 AudioSource:
   m_ObjectHideFlags: 0
@@ -820,7 +821,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: -2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1082,6 +1083,7 @@ MonoBehaviour:
   Point: 5
   BasicHP: 5
   IsBoss: 0
+  IsMiniBoss: 0
   HPText: {fileID: 6131141027042948034}
   BrickType: TwinBrick
   BrickTransform: {fileID: 1830871794493315591}

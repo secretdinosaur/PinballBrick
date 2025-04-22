@@ -179,7 +179,6 @@ public class BrickManager : MonoBehaviour
         }
         for (int i = 0; i < WaveBricks; i++)
         {
-            brickQueue.Enqueue(SettingBoss());
             brickQueue.Enqueue(SettingBrick());
         }
         SpawnBrickQueue.Enqueue(brickQueue);
@@ -310,19 +309,19 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(11, 14));
+                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 1, 1.1f) * UnityEngine.Random.Range(11, 14));
             }
         }
         else if (brick.IsMiniBoss)
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, 1.1f) * UnityEngine.Random.Range(6, 8));
+                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 1, 1.1f) * UnityEngine.Random.Range(6, 8));
             }
         }
         else
         {
-            int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 10, UnityEngine.Random.Range(0.9f, 1.1f));
+            int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 1, UnityEngine.Random.Range(0.9f, 1.1f));
             //need to adjust
             for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
             {

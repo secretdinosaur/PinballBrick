@@ -48,9 +48,9 @@ public partial class IBrick : MonoBehaviour
             hp = value;
             if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
 
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_6"))
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_6") && (BrickType != "ShieldBrick" || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
             {
-                if (hp <= HpTemp * 0.15 && hp > 0)
+                if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999)
                 {
                     ExecutionCor = StartCoroutine(Execution());
                 }
@@ -144,6 +144,7 @@ public partial class IBrick : MonoBehaviour
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
+        HPText.enabled = true;
     }
     public void OnEnable()
     {
@@ -173,6 +174,10 @@ public partial class IBrick : MonoBehaviour
         if (spriteRenderer != null)
             UpdateOutline();
         BrickEffect = new BrickEffectManager(this);
+        spriteRenderer.enabled = true;
+        Collider.enabled = true;
+        ExecutionObject1.SetActive(false);
+        ExecutionObject2.SetActive(false);
     }
 
     public void UpdateOutline()
@@ -342,6 +347,9 @@ public partial class IBrick //Detect Nearby Bricks
 
     private IEnumerator Execution()
     {
+        ExecutionObject1.SetActive(true);
+        ExecutionObject2.SetActive(true);
+
         spriteRenderer.enabled = false;
         HPText.enabled = false;
         Collider.enabled = false;
@@ -357,6 +365,9 @@ public partial class IBrick //Detect Nearby Bricks
 
         ExecutionObject1.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
         ExecutionObject2.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
+
+        ExecutionObject1.GetComponent<SpriteRenderer>().material.SetColor("_Color", spriteRenderer.material.color);
+        ExecutionObject2.GetComponent<SpriteRenderer>().material.SetColor("_Color", spriteRenderer.material.color);
 
         float Speed = 0.006f;
         if(Random.value < 0.5f)
