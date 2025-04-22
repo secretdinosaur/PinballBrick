@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpecialObjs:
   - {fileID: 7326153111843879287, guid: 24ed46a1c1fab1345bdb131f8d72bb8d, type: 3}
-  - {fileID: 1357072191999100221, guid: bcdc1deb14c076642a75b1b4543e8d18, type: 3}
-  - {fileID: 1357072191999100221, guid: bcdc1deb14c076642a75b1b4543e8d18, type: 3}
+  - {fileID: 7301536095216048713, guid: c578860ffa3c15049afdb6a569d58085, type: 3}
+  - {fileID: 1339531550721380634, guid: b1f493abaafd28646b15373bcbb21cad, type: 3}
   - {fileID: 8156588418049617602, guid: ec6b29181ee80674c9c2cca3bb892254, type: 3}
   SpecialObjTypes:
   - SatelliteBeamObj

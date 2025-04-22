@@ -6,10 +6,12 @@ public class LaserObj : SpecialObj
     private Rigidbody2D rb;
     public float Speed;
     private int Count;
+    public TrailRenderer trailRenderer;
     private void OnEnable()
     {
         SpecialObjType = "LaserObj";
         transform.position = GetParentBall().transform.position;
+        trailRenderer.Clear();
         Count = 3;
         rb = GetComponent<Rigidbody2D>();
         Vector2 randomDirection = Random.insideUnitCircle.normalized;

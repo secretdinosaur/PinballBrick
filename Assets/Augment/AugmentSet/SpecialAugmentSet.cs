@@ -279,7 +279,7 @@ public class DeathExp : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_10", "Death = Exp", "Gain EXP when the ball drops", "Death", 5);
+        SetAugment("SPECIAL_10", "Death EXP", "Gain EXP when the ball drops", "Death", 5);
     }
 
     public override void Apply(){ }
@@ -299,7 +299,7 @@ public class DeathGold : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_11", "Death = Gold", "Gain Gold when the ball drops", "Death", 5);
+        SetAugment("SPECIAL_11", "Death Gold", "Gain Gold when the ball drops", "Death", 5);
     }
 
     public override void Apply(){ }
@@ -319,7 +319,7 @@ public class SpeedPower : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_12", "Speed = Power", "Speed = Power", "Speed", 4);
+        SetAugment("SPECIAL_12", "Momentum", "Atack damage increases with ball speed", "Speed", 4);
     }
 
     public override void Apply(){ }
@@ -339,7 +339,7 @@ public class SpeedCritical : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_13", "Speed = Critical Chance", "Critical chance increases with ball speed", "Speed", 4);
+        SetAugment("SPECIAL_13", "Quick and Accurate", "Critical chance increases with ball speed", "Speed", 4);
     }
 
     public override void Apply(){ }
@@ -422,10 +422,6 @@ public class PoisonBall : SpecialAugment
     }
 }
 
-/*
- * When poisoned, there is a certain chance to increase the Poison Effect stack by 1 and refresh its duration.
- * If the stack reaches 3, the poison spreads to nearby blocks.
- */
 public class InfinitePoison : SpecialAugment
 {
     bool isGetAugment = false;
@@ -506,10 +502,6 @@ public class DeadlyPoison : SpecialAugment
         AugmentManager.instance.effectChance.PoisonChance -= 0.1f;
     }
 }
-
-/*
- * ��� ���� Ȯ�� �����ϰ� ����(0Ƽ��� ��ݺ����̾ �� ������ ����)
- */
 public class Chaos : SpecialAugment
 {
     private void OnEnable()
@@ -537,15 +529,11 @@ public class Chaos : SpecialAugment
         AugmentManager.instance.rarityWeights[5] = 52f;
     }
 }
-
-/*
- * ���� �޴� ������ (1.1^�ν� ����) ��ŭ ����
- */
 public class DecayBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_18", "Decay Ball", "Chance to decay on hit", "Effect", 4);
+        SetAugment("SPECIAL_18", "Decay Ball", "Chance to a decay effect that deals 10% additional damage per stack", "Effect", 4);
     }
 
     public override void Apply() 
@@ -570,7 +558,7 @@ public class PowerfulDecay : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_19", "Powerful Decay", "Increase decay damage and chance", "Effect", 3);
+        SetAugment("SPECIAL_19", "Powerful Decay", "Increase decay damage increase rate and chance", "Effect", 3);
     }
 
     public override void Apply()
@@ -586,9 +574,6 @@ public class PowerfulDecay : SpecialAugment
     }
 }
 
-/*
- * �ν� ������ �ִ��� ���·� ���� ������ ������
- */
 public class DecayExplosion : SpecialAugment
 {
     private void OnEnable()
@@ -633,9 +618,6 @@ public class DecayExplosion : SpecialAugment
     }
 }
 
-/*
- * ���� ���� �´����� ���� �ݴ�������� ���� ����. �߰��� �� �����̶� �ٿ=�Ŀ� ���� ���� ������ ���� �ƴ϶� ���̶� �ε����� �ٿ���� �ö󰡰� ��
- */
 public class ExplosionWithBall : SpecialAugment
 {
     private void OnEnable()
@@ -669,9 +651,6 @@ public class TheFlamethrower : SpecialAugment
         BallManager.Instance.isOnFlamerower = false;
     }
 }
-/*
- * ��� ����ġ 30% ȹ��, �� 20�� �����ϸ� ������ (1ȸ)
- */
 
 public class LevelUpQuest : SpecialAugment
 {
@@ -706,9 +685,6 @@ public class LevelUpQuest : SpecialAugment
     }
 }
 
-/*
- * �� 20�� �����Ҷ����� ���� �� Ÿ�Կ� ���� float ����, Ŭ�����ϸ� ����ġ +2 �ؼ� ���ݷ¾�
- */
 public class GrowBallQuest : SpecialAugment
 {
     private int KilledEnemy;
@@ -811,7 +787,6 @@ public class GrowBallQuest : SpecialAugment
     }
 }
 
-
 public class InfiniteGrowBall : SpecialAugment
 {
     private void OnEnable()
@@ -835,9 +810,6 @@ public class InfiniteGrowBall : SpecialAugment
     }
 }
 
-/*
- * �� ���� �����Ű�� �̾��� ����, ���� Ǯ�� SacrificeQuest2 �߰�
- */
 public class SacrificeQuest1 : SpecialAugment
 {
     private int SacrificeNumber = 0;
@@ -870,9 +842,6 @@ public class SacrificeQuest1 : SpecialAugment
     }
 }
 
-/*
- * �� ���� �����Ű�� �߰� ����, ���� Ǯ�� SacrificeQuest3 �߰�
- */
 public class SacrificeQuest2 : SpecialAugment
 {
     private int SacrificeNumber = 0;
@@ -906,9 +875,6 @@ public class SacrificeQuest2 : SpecialAugment
     }
 }
 
-/*
- * �� ���� �����Ű�� ���� ���� �Դ� Ÿ�ֿ̹� 1ȸ Ȯ������ 1Ƽ�� ���� 3�� ����
- */
 public class SacrificeQuest3 : SpecialAugment
 {
     private int SacrificeNumber = 0;
@@ -936,10 +902,6 @@ public class SacrificeQuest3 : SpecialAugment
         }
     }
 }
-/*
- * 50ȸ Ÿ�ݽ� �߰� �� �ϳ�
- */
-
 public class AttackAfterAdditionalBall : SpecialAugment
 {
     private int attackNumber = 0;
@@ -962,19 +924,20 @@ public class AttackAfterAdditionalBall : SpecialAugment
     }
     private void OnEnable()
     {
-        SetAugment("SPECIAL_29", "Windfall", "Adds a chance for an ball to be created after an attack", "Ball", 5);
+        SetAugment("SPECIAL_29", "Sincerity", "A ball is created every 50 hits", "Ball", 5);
     }
 
-    public override void Apply() { QuestAlarm.Instance.SetQuest("Attack Ball", "Attack Ball", AttackNumber, RequiredCount); }
+    public override void Apply() { QuestAlarm.Instance.SetQuest("Sincerity", "Attack Count", AttackNumber, RequiredCount); }
 
     public override void Remove() { }
 
     public override void AfterAttackEffect(IBrick Brick)
     {
         AttackNumber++;
-        QuestAlarm.Instance.SetQuest("Attack Ball", "Attack Ball", AttackNumber, RequiredCount);
+        QuestAlarm.Instance.SetQuest("Sincerity", "Attack Count", AttackNumber, RequiredCount);
     }
 }
+
 public class ShareBallAtk : SpecialAugment
 {
     private void OnEnable()
@@ -995,7 +958,7 @@ public class ShareBallAtk : SpecialAugment
         }
     }
 }
-// Ȯ���� ���� ���� �߰�Ÿ(���õ�����)
+
 public class StrongAdditionalAttack : SpecialAugment
 {
     float StrongAttackChance = 0.1f;
@@ -1408,7 +1371,7 @@ public class SplitBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_41", "Split Ball", "A low chance for the ball to split after an attack", "Ball", 3);
+        SetAugment("SPECIAL_41", "Diffraction", "A low chance for the ball to split after an attack", "Ball", 3);
     }
 
     public override void Apply()
