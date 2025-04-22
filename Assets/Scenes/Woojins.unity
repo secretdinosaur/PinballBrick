@@ -5174,6 +5174,9 @@ MonoBehaviour:
   availablePositions: []
   usingPositions: []
   MainBrick: {fileID: 0}
+  MiniBossSpawnChanceValue: 0.15
+  RapidStageChanceValue: 0.09
+  BaseBrickSpawnValue: 10
 --- !u!114 &137631893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11283,6 +11286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PausePanel: {fileID: 0}
+  Wave: 0
 --- !u!1 &316358251
 GameObject:
   m_ObjectHideFlags: 0
