@@ -11,6 +11,7 @@ public partial class IBrick : MonoBehaviour
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
+    public bool IsMiniBoss = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -134,6 +135,11 @@ public partial class IBrick : MonoBehaviour
             HPText = GetComponentInChildren<TextMeshPro>();
             HPText.text = ((int)hp).ToString();
         }
+    }
+    public void Init(bool isBoss, bool isMiniBoss)
+    {
+        this.IsBoss = isBoss;
+        this.IsMiniBoss = isMiniBoss;
     }
     public void Start()
     {

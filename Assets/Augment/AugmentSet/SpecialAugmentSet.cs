@@ -1072,7 +1072,7 @@ public class RandomEffect : SpecialAugment
             if (RandomValue < accumulatedProbability)
             {
                 Debug.Log("BrickSpawn");
-                BrickManager.Instance.SpawnBrick();
+                BrickManager.Instance.BrickQueue.Enqueue(BrickManager.Instance.SettingBrick());
                 return;
             }
 
@@ -1080,7 +1080,7 @@ public class RandomEffect : SpecialAugment
             if (RandomValue < accumulatedProbability)
             {
                 Debug.Log("BossSpawn");
-                BrickManager.Instance.SpawnBoss();
+                BrickManager.Instance.BrickQueue.Enqueue(BrickManager.Instance.SettingBoss());
                 return;
             }
 
