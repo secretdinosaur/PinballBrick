@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -147,7 +148,7 @@ public class AtkUpWhenCritical : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +0.2\nfor 3 seconds", 4);
+        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +20%\nfor 3 seconds", 4);
     }
 
     public override void Apply()
@@ -164,8 +165,22 @@ public class AtkUpWhenCritical : StatAugment
     {
         if (Brick.gameObject.activeSelf)
         {
-            StatManager.instance.RunAttackDamageUpFewSec(3f, 0.2f);
+            RunAttackDamageUpFewSec(3f, 0.2f);
         }
+    }
+
+    public void RunAttackDamageUpFewSec(float setTime, float AttackUpValue)
+    {
+        StartCoroutine(AttackDamageUpFewSec(setTime, AttackUpValue));
+    }
+    
+    IEnumerator AttackDamageUpFewSec(float setTime, float AttackUpValue)
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier += AttackUpValue;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        yield return new WaitForSeconds(setTime);
+        StatManager.instance.statMultiplier.AttackDamageMultiplier -= AttackUpValue;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
     }
 }
 
