@@ -176,11 +176,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-<<<<<<< HEAD
-            gameObject.GetComponent<CritChanceToAttackDamage>(),
-=======
 
->>>>>>> 685199f0303ae9fa7717c721f9f59f719c8f5f0c
         };
 
         foreach (IAugment augment in TestAugments)

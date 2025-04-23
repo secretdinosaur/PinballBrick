@@ -8,19 +8,33 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameObject PausePanel;
     public TMP_Text WaveNoticeText;
+    public TMP_Text WaveExtraNoticeText;
     public int Wave;
     void Awake()
     {
         instance = this;
         PausePanel = GameObject.Find("Canvas").transform.Find("PausePanel").gameObject;
         WaveNoticeText = GameObject.Find("Canvas").transform.Find("WaveNoticeText").GetComponent<TMP_Text>();
+        WaveExtraNoticeText = GameObject.Find("Canvas").transform.Find("WaveExtraNoticeText").GetComponent<TMP_Text>();
         Wave = 0;
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
     }
 
     public IEnumerator WaveNotice()
     {
-        WaveNoticeText.text = "Wave " + Wave;
+        if(Wave % 10 != 0)
+        {
+            WaveNoticeText.text = "Wave " + Wave;
+        }
+        else
+        {
+            WaveNoticeText.text = "Boss Wave";
+        }
+        if(BrickManager.Instance.isRapid)
+        {
+            WaveExtraNoticeText.text = "Rapid";
+            WaveExtraNoticeText.gameObject.SetActive(true);
+        }
         WaveNoticeText.gameObject.SetActive(true);
         float time = 0f;
         while (time < 1)
@@ -30,6 +44,12 @@ public class GameManager : MonoBehaviour
             Color color = WaveNoticeText.color;
             color.a = alpha;
             WaveNoticeText.color = color;
+            if (WaveExtraNoticeText.gameObject.activeSelf)
+            {
+                Color color1 = WaveExtraNoticeText.color;
+                color1.a = alpha;
+                WaveExtraNoticeText.color= color1;
+            }
             yield return null;
         }
         yield return new WaitForSeconds(1.5f);
@@ -41,7 +61,17 @@ public class GameManager : MonoBehaviour
             Color color = WaveNoticeText.color;
             color.a = alpha;
             WaveNoticeText.color = color;
+            if (WaveExtraNoticeText.gameObject.activeSelf)
+            {
+                Color color1 = WaveExtraNoticeText.color;
+                color1.a = alpha;
+                WaveExtraNoticeText.color = color1;
+            }
             yield return null;
+        }
+        if (WaveExtraNoticeText.gameObject.activeSelf)
+        {
+            WaveExtraNoticeText.gameObject.SetActive(false);
         }
         WaveNoticeText.gameObject.SetActive(false);
     }
@@ -60,7 +90,8 @@ public class GameManager : MonoBehaviour
 
     public void PausePanelOff()
     {
-        if(!LevelManager.Instance.LevelUpPanel.activeSelf)
+        SoundManager.instance.SaveVolume();
+        if (!LevelManager.Instance.LevelUpPanel.activeSelf)
             Time.timeScale = 1f;
     }
 }

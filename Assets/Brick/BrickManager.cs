@@ -148,6 +148,7 @@ public class BrickManager : MonoBehaviour
     private float MiniBossSpawnChance = 0;
     public float MiniBossSpawnChanceValue = 0.1f;
 
+    public bool isRapid = false;
     private float RapidStageChance = 0;
     public float RapidStageChanceValue = 0.09f;
 
@@ -159,6 +160,10 @@ public class BrickManager : MonoBehaviour
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
         int WaveBricks = UnityEngine.Random.Range((int)BaseBrickSpawnValue + (AddPerWave / 10), (int)BaseBrickSpawnValue + 5 + (AddPerWave / 10));
         Queue<IBrick> brickQueue = new Queue<IBrick>();
+        for (int i = 0; i < WaveBricks; i++)
+        {
+            brickQueue.Enqueue(SettingBrick());
+        }
         if (Wave % 10 != 0)
         {
             if (!isMiniBossSpanwed && Wave >= 5) //After wave 5, Mini boss can spawn
@@ -180,10 +185,6 @@ public class BrickManager : MonoBehaviour
             brickQueue.Enqueue(SettingBoss());
             isMiniBossSpanwed = false;
         }
-        for (int i = 0; i < WaveBricks; i++)
-        {
-            brickQueue.Enqueue(SettingBrick());
-        }
         SpawnBrickQueue.Enqueue(brickQueue);
     }
 
@@ -193,6 +194,7 @@ public class BrickManager : MonoBehaviour
         {
             if (BrickQueue == null)
             {
+                isRapid = UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10;
                 SettingBrickSpawnChance();
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
@@ -204,7 +206,7 @@ public class BrickManager : MonoBehaviour
                 Debug.Log("Wave : " + GameManager.instance.Wave + " Left Bricks Count : " + BrickQueue.Count);
             }
             /////////////////////////////////------------------------------------------------------------------------------------------
-            if (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10) // Rapid stages are active after wave 10
+            if (isRapid) // Rapid stages are active after wave 10
             {
                 Debug.Log("Rapid Stage");
                 RapidStageChance = 0;
@@ -245,7 +247,13 @@ public class BrickManager : MonoBehaviour
             {
                 BrickQueue = null;
                 GameManager.instance.Wave += 1;
-                yield return new WaitForSeconds(1f);
+
+                int WaitingTime = 0;
+                while(WaitingTime < 5 && CurrentBricks.Count > 5)
+                {
+                    WaitingTime++;
+                    yield return new WaitForSeconds(1f);
+                }
             }
             yield return null;
         }
