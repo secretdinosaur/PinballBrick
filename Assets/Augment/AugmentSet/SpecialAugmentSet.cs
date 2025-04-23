@@ -1657,18 +1657,23 @@ public class Concentrate : SpecialAugment
     public override void Apply()
     {
         QuestAlarm.Instance.SetQuest("Concentrate", "GameOver In",  Count, 0);
-        StatManager.instance.Temporary_stat.AttackDamage *= 2f;
-        StatManager.instance.Temporary_stat.EffectDamage *= 1.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 2f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.7f;
         StatManager.instance.Temporary_stat.EffectDuration *= 1.3f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<SpawnBombBall>());
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<RebornBombBall>());
     }
 
     public override void Remove() 
     {
-        StatManager.instance.Temporary_stat.AttackDamage /= 2f;
-        StatManager.instance.Temporary_stat.EffectDamage /= 1.7f;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 2f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.7f;
         StatManager.instance.Temporary_stat.EffectDuration /= 1.3f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SpawnBombBall>());
     }
 
     public override void AfterDeathEffect(IBall ball)
