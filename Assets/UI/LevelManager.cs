@@ -240,7 +240,6 @@ public partial class LevelManager : MonoBehaviour
         }
         else
         {
-            isAlreadyClickedButton = new bool[OptionButtons.Length];
             LevelUpEnd();
         }
     }
@@ -274,7 +273,13 @@ public partial class LevelManager : MonoBehaviour
                 AugmentManager.instance.RemoveAugment(augmentsSet[optionIndex]);
             }
         }
-        if(LevelUpQueue.Count > 0)
+        isAlreadyClickedButton = new bool[OptionButtons.Length];
+        optionIndex = -1;
+        for (int i = 0; i < OptionButtons.Length; i++)
+        {
+            OptionButtons[i].transform.localScale = new Vector3(0.93f, 0.93f, 0.93f);
+        }
+        if (LevelUpQueue.Count > 0)
         {
             ShowLevelUpPanel();
         }

@@ -504,7 +504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Point: 10
-  BasicHP: 10
+  BasicHP: 5
   IsBoss: 0
   IsMiniBoss: 0
   HPText: {fileID: 0}
