@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using System.Linq;
+using System.Drawing;
+using NUnit.Framework;
 public class BrickManager : MonoBehaviour
 {
     public List<float> HPPool;
-    private int GameTick = 1;
 
     public static BrickManager Instance;
     public List<IBrick> CurrentBricks = new List<IBrick>();
@@ -145,7 +146,7 @@ public class BrickManager : MonoBehaviour
 
     private bool isMiniBossSpanwed = false;
     private float MiniBossSpawnChance = 0;
-    public float MiniBossSpawnChanceValue = 0.15f;
+    public float MiniBossSpawnChanceValue = 0.1f;
 
     private float RapidStageChance = 0;
     public float RapidStageChanceValue = 0.09f;
@@ -154,13 +155,15 @@ public class BrickManager : MonoBehaviour
 
     private void CreateSpawnBrickQueue()
     {
-        int WaveBricks = UnityEngine.Random.Range((int)BaseBrickSpawnValue + GameTick, (int)BaseBrickSpawnValue + 5 + GameTick);
+        int Wave = GameManager.instance.Wave;
+        int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
+        int WaveBricks = UnityEngine.Random.Range((int)BaseBrickSpawnValue + (AddPerWave / 10), (int)BaseBrickSpawnValue + 5 + (AddPerWave / 10));
         Queue<IBrick> brickQueue = new Queue<IBrick>();
-        if (GameManager.instance.Wave % 10 != 0)
+        if (Wave % 10 != 0)
         {
-            if (!isMiniBossSpanwed && GameManager.instance.Wave >= 5) //After wave 5, Mini boss can spawn
+            if (!isMiniBossSpanwed && Wave >= 5) //After wave 5, Mini boss can spawn
             {
-                if (MiniBossSpawnChance < UnityEngine.Random.value)
+                if (UnityEngine.Random.value < MiniBossSpawnChance)
                 {
                     brickQueue.Enqueue(SettingMiniBoss());
                     MiniBossSpawnChance = 0f;
@@ -168,7 +171,7 @@ public class BrickManager : MonoBehaviour
                 }
                 else
                 {
-                    MiniBossSpawnChance += MiniBossSpawnChanceValue; // Ensure it activates by stage 7 at the latest
+                    MiniBossSpawnChance += MiniBossSpawnChanceValue; // Ensure it activates by stage 10 at the latest
                 }
             }
         }
@@ -190,6 +193,8 @@ public class BrickManager : MonoBehaviour
         {
             if (BrickQueue == null)
             {
+                SettingBrickSpawnChance();
+                StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
                 Debug.Log("Wave : " + GameManager.instance.Wave + " Left Bricks Count : " + BrickQueue.Count);
@@ -199,7 +204,7 @@ public class BrickManager : MonoBehaviour
                 Debug.Log("Wave : " + GameManager.instance.Wave + " Left Bricks Count : " + BrickQueue.Count);
             }
             /////////////////////////////////------------------------------------------------------------------------------------------
-            if (RapidStageChance < UnityEngine.Random.value && GameManager.instance.Wave >= 5) // Rapid stages are active after wave 5
+            if (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10) // Rapid stages are active after wave 10
             {
                 Debug.Log("Rapid Stage");
                 RapidStageChance = 0;
@@ -208,7 +213,7 @@ public class BrickManager : MonoBehaviour
                     if(availablePositions.Count > 0)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * 0.6f);
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * (0.6f - GameManager.instance.Wave * 0.002f));
                     }
                     else
                     {
@@ -227,7 +232,7 @@ public class BrickManager : MonoBehaviour
                     {
                         SpawnBrick(BrickQueue.Dequeue());
                         //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * 3);
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * (1.5f - GameManager.instance.Wave * 0.005f));
                     }
                     else
                     {
@@ -239,8 +244,8 @@ public class BrickManager : MonoBehaviour
             if(BrickQueue.Count <= 0)
             {
                 BrickQueue = null;
-                GameTick += 1;
                 GameManager.instance.Wave += 1;
+                yield return new WaitForSeconds(1f);
             }
             yield return null;
         }
@@ -282,6 +287,92 @@ public class BrickManager : MonoBehaviour
         return brick;
     }
 
+    enum BrickType
+    {
+        Brick,
+        HealBrick,
+        ShieldBrick,
+        SlimeBrick,
+        HardBrick,
+        TeleportBrick,
+        WhiteBrick,
+        IgnoreBrick,
+        TwinBrick,
+    }
+
+    private void SettingBrickSpawnChance()
+    {
+        int Wave = GameManager.instance.Wave;
+        float sigma = 20f;
+        float remain = 0;
+        BrickInfo.BrickSpawnChance = new float[BrickInfo.BrickSpawnChance.Length];
+        for (int i = 0; i < BrickInfo.BrickSpawnChance.Length - 1; i++)
+        {
+            float center = i * 20f;
+            float x = Wave < 80 ? Wave : 80;
+
+            float value = Mathf.Exp(-(x - center) * (x - center) / (2 * sigma * sigma));
+            BrickInfo.BrickSpawnChance[i] = value;
+        }
+        
+        float sum = BrickInfo.BrickSpawnChance.Sum();
+        if (sum > 0f)
+        {
+            for (int i = 0; i < BrickInfo.BrickSpawnChance.Length - 1; i++)
+            {
+                BrickInfo.BrickSpawnChance[i] /= sum;
+                if(Wave < 11 && i == (int)BrickType.HealBrick)
+                {
+                    remain += BrickInfo.BrickSpawnChance[i];
+                    BrickInfo.BrickSpawnChance[i] = 0;
+                }
+                else if (Wave < 21 && i == (int)BrickType.ShieldBrick)
+                {
+                    remain += BrickInfo.BrickSpawnChance[i];
+                    BrickInfo.BrickSpawnChance[i] = 0;
+                }
+                else if (Wave < 31 && i == (int)BrickType.SlimeBrick)
+                {
+                    remain += BrickInfo.BrickSpawnChance[i];
+                    BrickInfo.BrickSpawnChance[i] = 0;
+                }
+                else if (Wave < 41 && i == (int)BrickType.HardBrick)
+                {
+                    remain += BrickInfo.BrickSpawnChance[i];
+                    BrickInfo.BrickSpawnChance[i] = 0;
+                }
+                else if (Wave < 51 && i == (int)BrickType.TeleportBrick)
+                {
+                    remain += BrickInfo.BrickSpawnChance[i];
+                    BrickInfo.BrickSpawnChance[i] = 0;
+                }
+                else if (Wave < 61 && i == (int)BrickType.WhiteBrick)
+                {
+                    remain += BrickInfo.BrickSpawnChance[i];
+                    BrickInfo.BrickSpawnChance[i] = 0;
+                }
+                else if (Wave < 71 && i == (int)BrickType.IgnoreBrick)
+                {
+                    remain += BrickInfo.BrickSpawnChance[i];
+                    BrickInfo.BrickSpawnChance[i] = 0;
+                }
+                else if (Wave < 81 && i == (int)BrickType.TwinBrick)
+                {
+                    remain += BrickInfo.BrickSpawnChance[i];
+                    BrickInfo.BrickSpawnChance[i] = 0;
+                }
+                if (BrickInfo.BrickSpawnChance[i] * 10000 < 1)
+                {
+                    remain += BrickInfo.BrickSpawnChance[i];
+                    BrickInfo.BrickSpawnChance[i] = 0;
+                }
+            }
+        }
+        if(remain > 0f)
+        {
+            BrickInfo.BrickSpawnChance[0] += remain;
+        }
+    }
     public IBrick SettingBrick()
     {
         IBrick brick = new IBrick();
@@ -298,30 +389,31 @@ public class BrickManager : MonoBehaviour
     public IBrick SettingMiniBoss()
     {
         IBrick brick = new IBrick();
-        brick.IsBoss = true;
+        brick.IsMiniBoss = true;
         return brick;
     }
 
     public void SpawnBrick(IBrick brick)
     {
         HPPool = new List<float>();
+        int Wave = GameManager.instance.Wave;
         if (brick.IsBoss)
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 1, 1.1f) * UnityEngine.Random.Range(11, 14));
+                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(7, 9));
             }
         }
         else if (brick.IsMiniBoss)
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 1, 1.1f) * UnityEngine.Random.Range(6, 8));
+                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(2, 4));
             }
         }
         else
         {
-            int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + GameTick + 1, UnityEngine.Random.Range(0.9f, 1.1f));
+            int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + Wave + 1, UnityEngine.Random.Range(0.9f, 1.1f));
             //need to adjust
             for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
             {
