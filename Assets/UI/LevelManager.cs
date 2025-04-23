@@ -62,6 +62,8 @@ public partial class LevelManager : MonoBehaviour
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_3_Description = LevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
+
+        isAlreadyClickedButton = new bool[OptionButtons.Length];
     }
     void Start()
     {
@@ -223,13 +225,24 @@ public partial class LevelManager : MonoBehaviour
     }
 
     private int optionIndex = -1;
+    private bool[] isAlreadyClickedButton;
     public void OptionButtonClick(Button clickedButton)
     {
-        foreach (Button button in OptionButtons)
+        if (!isAlreadyClickedButton[Array.IndexOf(OptionButtons, clickedButton)])
         {
-            button.transform.localScale = button == clickedButton ? new Vector3(1.05f, 1.05f, 1.05f) : Vector3.one;
+            for (int i = 0; i < OptionButtons.Length; i++)
+            {
+                OptionButtons[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
+                isAlreadyClickedButton[i] = i == Array.IndexOf(OptionButtons, clickedButton);
+            }
+
+            optionIndex = Array.IndexOf(OptionButtons, clickedButton);
         }
-        optionIndex = Array.IndexOf(OptionButtons, clickedButton);
+        else
+        {
+            isAlreadyClickedButton = new bool[OptionButtons.Length];
+            LevelUpEnd();
+        }
     }
 
     public void LevelUpEnd()

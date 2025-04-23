@@ -58,7 +58,7 @@ public class QuestAlarm : MonoBehaviour
 
         for (int i = 0; i < 6; i++)
         {
-            if (Quests[i].GetComponent<QuestText>().QuestName != null && Quests[i].GetComponent<QuestText>().QuestName == QuestName)
+            if (Quests[i].GetComponent<QuestText>().QuestName != null && Quests[i].GetComponent<QuestText>().QuestName == QuestName)    
             {
                 Quests[i].text = MaxCount == 0 ? QuestName + ": " + Text + " " + CurrentCount : QuestName + ": " + Text + " " + CurrentCount + " / " + MaxCount;
                 return;
