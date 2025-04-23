@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb8a6679847b0234c99919145c3f9d6e, type: 3}
+  m_Name: BrickInfoTemp
+  m_EditorClassIdentifier: 
+  Bricks:
+  - {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  - {fileID: -977798360730988515, guid: 5d8e5d6e556634948bffc7c88fffd630, type: 3}
+  - {fileID: 8715328750586643657, guid: a4c16860799e88e4da46f796a23d139a, type: 3}
+  - {fileID: 4506351670689749019, guid: 02cb33b1921d238428146e6deed00a99, type: 3}
+  - {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
+  - {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
+  - {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
+  - {fileID: -3384781788680756480, guid: de966c7a39a1b0f40a7d91811b707933, type: 3}
+  - {fileID: 1708533091770634106, guid: 2c348e231a74f5045a32d0f3665b8982, type: 3}
+  - {fileID: 1824619304834806856, guid: bf73b28786367574196390cd1711acd8, type: 3}
+  BrickSpawnChance:
+  - 0.5
+  - 0.1
+  - 0.05
+  - 0.02
+  - 0.02
+  - 0.06
+  - 0.1
+  - 0
+  - 0.05
+  - 0.1
+  BrickTypes:
+  - Brick
+  - HardBrick
+  - ShieldBrick
+  - TwinBrick
+  - IgnoreBrick
+  - SlimeBrick
+  - TeleportBrick
+  - BlackBrick
+  - WhiteBrick
+  - HealBrick
