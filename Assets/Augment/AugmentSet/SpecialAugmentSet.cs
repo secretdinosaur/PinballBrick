@@ -2132,3 +2132,25 @@ public class ItemEnhance : SpecialAugment
         ItemManager.Instance.BaseItemSpawnChance /= 2;
     }
 }
+
+public class InfiniteRapid : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_62", "Rapidfire", "Atk Up,\nAll waves appear as transformed rapid waves", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage += 5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        BrickManager.Instance.RapidStageChanceValue = 1f;
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage -= 5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        BrickManager.Instance.RapidStageChanceValue = 0.09f;
+    }
+}
