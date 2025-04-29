@@ -46,6 +46,7 @@ public class BrickManager : MonoBehaviour
     public float BaseMiniBossHealthValue;
     public float BaseBossHealthValue;
 
+    public float BaseSpawnTimeValue;
     public int BaseWaitingTimeValue;
 
     public int BaseBossSpawnValue;
@@ -74,6 +75,7 @@ public class BrickManager : MonoBehaviour
         RapidStageChance = 0;
         RapidStageChanceValue = 0.09f;
         BaseWaitingTimeValue = 5;
+        BaseSpawnTimeValue = 1f;
 
         BaseBrickSpawnValue = 1f;
         BaseBrickHealthValue = 1f;
@@ -244,7 +246,7 @@ public class BrickManager : MonoBehaviour
                     if(availablePositions.Count > 0)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * (0.6f - GameManager.instance.Wave * 0.002f));
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * BaseSpawnTimeValue * ((0.6f - GameManager.instance.Wave * 0.002f)));
                     }
                     else
                     {
@@ -263,7 +265,7 @@ public class BrickManager : MonoBehaviour
                     {
                         SpawnBrick(BrickQueue.Dequeue());
                         //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * (1.5f - GameManager.instance.Wave * 0.005f));
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * BaseSpawnTimeValue * ((1.5f - GameManager.instance.Wave * 0.005f)));
                     }
                     else
                     {
@@ -430,6 +432,7 @@ public class BrickManager : MonoBehaviour
         return brick;
     }
 
+    private float _FusionBrickHealth;
     public void SpawnBrick(IBrick brick)
     {
         HPPool = new List<float>();
@@ -457,12 +460,38 @@ public class BrickManager : MonoBehaviour
                 HPPool.Add(j);
             }
         }
-        IBrick Brick = GetBrick(brick);
+        _FusionBrickHealth += HPPool.Average();
 
-        Vector2 randomPosition = GenerateRandomPosition();
-        Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
-        UpdateCurrentBricks(Brick);
-        SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
+        IBrick Brick = new IBrick();
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_65"))
+        {
+            if(BrickQueue.Count == 0)
+            {
+                HPPool.Clear();
+                HPPool.Add((int)_FusionBrickHealth);
+                Debug.Log(_FusionBrickHealth);
+                brick.IsBoss = true;
+                brick.IsMiniBoss = false;
+                Brick = GetBrick(brick);
+
+                Vector2 randomPosition = GenerateRandomPosition();
+                Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
+                UpdateCurrentBricks(Brick);
+                SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
+
+                _FusionBrickHealth = 0;
+            }
+        }
+        else
+        {
+            Brick = GetBrick(brick);
+
+            Vector2 randomPosition = GenerateRandomPosition();
+            Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
+            UpdateCurrentBricks(Brick);
+            SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
+        }
+
         if (Brick.IsBoss)
         {
             Debug.Log("Boss Awake");

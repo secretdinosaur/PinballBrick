@@ -2228,3 +2228,21 @@ public class DoubleBoss : SpecialAugment
         BrickManager.Instance.BaseBossHealthValue = 1f;
     }
 }
+
+public class FusionBricks : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health. \nIt is treated as a boss", "Special", 0);
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BaseSpawnTimeValue = 0.4f;
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BaseSpawnTimeValue = 1f;
+    }
+}
