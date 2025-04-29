@@ -5248,7 +5248,13 @@ MonoBehaviour:
   MiniBossSpawnChanceValue: 0.15
   isRapid: 0
   RapidStageChanceValue: 0.09
-  BaseBrickSpawnValue: 10
+  BaseBrickSpawnValue: 1
+  BaseBrickHealthValue: 1
+  BaseMiniBossHealthValue: 1
+  BaseBossHealthValue: 1
+  BaseSpawnTimeValue: 0
+  BaseWaitingTimeValue: 5
+  BaseBossSpawnValue: 1
 --- !u!114 &137631893
 MonoBehaviour:
   m_ObjectHideFlags: 0

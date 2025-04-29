@@ -409,12 +409,12 @@ public class PoisonBall : SpecialAugment
     bool isGetAugment = false;
     private void Update()
     {
-        if (AugmentManager.instance.activeSpecialAugments.Contains(GetComponent<DecayBall>()) && !isGetAugment)
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_18") && !isGetAugment)
         {
             AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayingPoison>());
             isGetAugment = true;
         }
-        else if (AugmentManager.instance.activeSpecialAugments.Contains(GetComponent<FireBall>()) && !isGetAugment)
+        else if (AugmentManager.instance.determineAugmentID("SPECIAL_1") && !isGetAugment)
         {
             AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FlammablePoison>());
             isGetAugment = true;
@@ -2130,5 +2130,119 @@ public class ItemEnhance : SpecialAugment
     public override void Remove()
     {
         ItemManager.Instance.BaseItemSpawnChance /= 2;
+    }
+}
+
+public class InfiniteRapid : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_62", "Rapidfire", "Atk Up,\nAll waves appear as transformed rapid waves", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage += 5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.AttackDamage -= 5f;
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class MoreAndWeakBricks : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_63", "Legion", "Every Bricks appear 50% more frequently, \nbut their health is reduced by 33%", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BaseBrickSpawnValue = 1.5f;
+        BrickManager.Instance.BaseBrickHealthValue = 0.66f;
+        BrickManager.Instance.BaseMiniBossHealthValue = 0.66f;
+        BrickManager.Instance.BaseBossHealthValue = 0.66f;
+        BrickManager.Instance.BaseWaitingTimeValue = 6;
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<LessAndStrongBricks>());
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BaseBrickSpawnValue = 1f;
+        BrickManager.Instance.BaseBrickHealthValue = 1f;
+        BrickManager.Instance.BaseMiniBossHealthValue = 1f;
+        BrickManager.Instance.BaseBossHealthValue = 1f;
+        BrickManager.Instance.BaseWaitingTimeValue = 5;
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<LessAndStrongBricks>());
+    }
+}
+
+public class LessAndStrongBricks : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_63", "Elite Group", "Every Bricks appear 50% less frequently, \nbut their health is increased by 33%.", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BaseBrickSpawnValue = 0.5f;
+        BrickManager.Instance.BaseBrickHealthValue = 1.33f;
+        BrickManager.Instance.BaseMiniBossHealthValue = 1.33f;
+        BrickManager.Instance.BaseBossHealthValue = 1.33f;
+        BrickManager.Instance.BaseWaitingTimeValue = 4;
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<MoreAndWeakBricks>());
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BaseBrickSpawnValue = 1f;
+        BrickManager.Instance.BaseBrickHealthValue = 1f;
+        BrickManager.Instance.BaseMiniBossHealthValue = 1f;
+        BrickManager.Instance.BaseBossHealthValue = 1f;
+        BrickManager.Instance.BaseWaitingTimeValue = 5;
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<MoreAndWeakBricks>());
+    }
+}
+
+public class DoubleBoss : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_64", "Twins!", "The boss splits into two, \neach having 66% the original health.", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BaseBossSpawnValue = 2;
+        BrickManager.Instance.BaseBossHealthValue = 0.66f;
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BaseBossSpawnValue = 1;
+        BrickManager.Instance.BaseBossHealthValue = 1f;
+    }
+}
+
+public class FusionBricks : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health. \nIt is treated as a boss", "Special", 0);
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BaseSpawnTimeValue = 0.4f;
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BaseSpawnTimeValue = 1f;
     }
 }

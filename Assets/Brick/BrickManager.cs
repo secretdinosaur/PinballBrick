@@ -29,21 +29,61 @@ public class BrickManager : MonoBehaviour
 
     public Coroutine SpawnBrickRoutine;
 
+    Queue<Queue<IBrick>> SpawnBrickQueue;
+    public Queue<IBrick> BrickQueue;
+
+    private bool isMiniBossSpanwed;
+    private float MiniBossSpawnChance;
+    public float MiniBossSpawnChanceValue;
+
+    public bool isRapid;
+    private float RapidStageChance;
+    public float RapidStageChanceValue;
+
+    public float BaseBrickSpawnValue;
+
+    public float BaseBrickHealthValue;
+    public float BaseMiniBossHealthValue;
+    public float BaseBossHealthValue;
+
+    public float BaseSpawnTimeValue;
+    public int BaseWaitingTimeValue;
+
+    public int BaseBossSpawnValue;
+
     void Awake()
     {
         Instance = this;
         ScreenWidth = Screen.width;
         ScreenHeight = Screen.height;
         InitializeGrid();
+        InitializeVariables();
         SpawnBrickQueue = new Queue<Queue<IBrick>>();
         BrickQueue = new Queue<IBrick>();
         PoolManager = GetComponent<PoolManager>();
         SpawnBrickRoutine = null;
+        SpawnBrickRoutine = StartCoroutine(SpawnBricks());
     }
 
-    private void Start()
+    private void InitializeVariables()
     {
-        StartCoroutine(SpawnBricks());
+        isMiniBossSpanwed = false;
+        MiniBossSpawnChance = 0;
+        MiniBossSpawnChanceValue = 0.1f;
+        isRapid = false;
+
+        RapidStageChance = 0;
+        RapidStageChanceValue = 0.09f;
+        BaseWaitingTimeValue = 5;
+        BaseSpawnTimeValue = 1f;
+
+        BaseBrickSpawnValue = 1f;
+        BaseBrickHealthValue = 1f;
+
+        BaseMiniBossHealthValue = 1f;
+
+        BaseBossHealthValue = 1f;
+        BaseBossSpawnValue = 1;
     }
 
     void Update()
@@ -141,24 +181,11 @@ public class BrickManager : MonoBehaviour
 
     }
 
-    Queue<Queue<IBrick>> SpawnBrickQueue;
-    public Queue<IBrick> BrickQueue;
-
-    private bool isMiniBossSpanwed = false;
-    private float MiniBossSpawnChance = 0;
-    public float MiniBossSpawnChanceValue = 0.1f;
-
-    public bool isRapid = false;
-    private float RapidStageChance = 0;
-    public float RapidStageChanceValue = 0.09f;
-
-    public float BaseBrickSpawnValue = 10;
-
     private void CreateSpawnBrickQueue()
     {
         int Wave = GameManager.instance.Wave;
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
-        int WaveBricks = UnityEngine.Random.Range((int)BaseBrickSpawnValue + (AddPerWave / 10), (int)BaseBrickSpawnValue + 5 + (AddPerWave / 10));
+        int WaveBricks = UnityEngine.Random.Range((int)(BaseBrickSpawnValue * (10 + AddPerWave)), (int)(BaseBrickSpawnValue * (15 + AddPerWave)));
         Queue<IBrick> brickQueue = new Queue<IBrick>();
         for (int i = 0; i < WaveBricks; i++)
         {
@@ -182,7 +209,10 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            brickQueue.Enqueue(SettingBoss());
+            for(int i = 0; i < BaseBossSpawnValue; i++)
+            {
+                brickQueue.Enqueue(SettingBoss());
+            }
             isMiniBossSpanwed = false;
         }
         SpawnBrickQueue.Enqueue(brickQueue);
@@ -194,7 +224,8 @@ public class BrickManager : MonoBehaviour
         {
             if (BrickQueue == null)
             {
-                isRapid = UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10;
+                isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
+                    || AugmentManager.instance.determineAugmentID("SPECIAL_62");
                 SettingBrickSpawnChance();
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
@@ -215,7 +246,7 @@ public class BrickManager : MonoBehaviour
                     if(availablePositions.Count > 0)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * (0.6f - GameManager.instance.Wave * 0.002f));
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * BaseSpawnTimeValue * ((0.6f - GameManager.instance.Wave * 0.002f)));
                     }
                     else
                     {
@@ -234,7 +265,7 @@ public class BrickManager : MonoBehaviour
                     {
                         SpawnBrick(BrickQueue.Dequeue());
                         //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * (1.5f - GameManager.instance.Wave * 0.005f));
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * BaseSpawnTimeValue * ((1.5f - GameManager.instance.Wave * 0.005f)));
                     }
                     else
                     {
@@ -249,7 +280,7 @@ public class BrickManager : MonoBehaviour
                 GameManager.instance.Wave += 1;
 
                 int WaitingTime = 0;
-                while(WaitingTime < 5 && CurrentBricks.Count > 5)
+                while(WaitingTime < BaseWaitingTimeValue && CurrentBricks.Count > 5)
                 {
                     WaitingTime++;
                     yield return new WaitForSeconds(1f);
@@ -401,6 +432,7 @@ public class BrickManager : MonoBehaviour
         return brick;
     }
 
+    private float _FusionBrickHealth;
     public void SpawnBrick(IBrick brick)
     {
         HPPool = new List<float>();
@@ -409,31 +441,57 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(7, 9));
+                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(7, 9))));
             }
         }
         else if (brick.IsMiniBoss)
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(2, 4));
+                HPPool.Add((int)(BaseMiniBossHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(2, 4))));
             }
         }
         else
         {
-            int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + Wave + 1, UnityEngine.Random.Range(0.9f, 1.1f));
+            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, UnityEngine.Random.Range(0.9f, 1.1f))));
             //need to adjust
             for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
             {
                 HPPool.Add(j);
             }
         }
-        IBrick Brick = GetBrick(brick);
+        _FusionBrickHealth += HPPool.Average();
 
-        Vector2 randomPosition = GenerateRandomPosition();
-        Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
-        UpdateCurrentBricks(Brick);
-        SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
+        IBrick Brick = new IBrick();
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_65"))
+        {
+            if(BrickQueue.Count == 0)
+            {
+                HPPool.Clear();
+                HPPool.Add(_FusionBrickHealth);
+                Debug.Log(_FusionBrickHealth);
+                brick.IsBoss = true;
+                brick.IsMiniBoss = false;
+                Brick = GetBrick(brick);
+
+                Vector2 randomPosition = GenerateRandomPosition();
+                Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
+                UpdateCurrentBricks(Brick);
+                SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
+
+                _FusionBrickHealth = 0;
+            }
+        }
+        else
+        {
+            Brick = GetBrick(brick);
+
+            Vector2 randomPosition = GenerateRandomPosition();
+            Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
+            UpdateCurrentBricks(Brick);
+            SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
+        }
+
         if (Brick.IsBoss)
         {
             Debug.Log("Boss Awake");
