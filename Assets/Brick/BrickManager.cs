@@ -29,21 +29,59 @@ public class BrickManager : MonoBehaviour
 
     public Coroutine SpawnBrickRoutine;
 
+    Queue<Queue<IBrick>> SpawnBrickQueue;
+    public Queue<IBrick> BrickQueue;
+
+    private bool isMiniBossSpanwed;
+    private float MiniBossSpawnChance;
+    public float MiniBossSpawnChanceValue;
+
+    public bool isRapid;
+    private float RapidStageChance;
+    public float RapidStageChanceValue;
+
+    public float BaseBrickSpawnValue;
+
+    public float BaseBrickHealthValue;
+    public float BaseMiniBossHealthValue;
+    public float BaseBossHealthValue;
+
+    public int BaseWaitingTimeValue;
+
+    public int BaseBossSpawnValue;
+
     void Awake()
     {
         Instance = this;
         ScreenWidth = Screen.width;
         ScreenHeight = Screen.height;
         InitializeGrid();
+        InitializeVariables();
         SpawnBrickQueue = new Queue<Queue<IBrick>>();
         BrickQueue = new Queue<IBrick>();
         PoolManager = GetComponent<PoolManager>();
         SpawnBrickRoutine = null;
+        SpawnBrickRoutine = StartCoroutine(SpawnBricks());
     }
 
-    private void Start()
+    private void InitializeVariables()
     {
-        StartCoroutine(SpawnBricks());
+        isMiniBossSpanwed = false;
+        MiniBossSpawnChance = 0;
+        MiniBossSpawnChanceValue = 0.1f;
+        isRapid = false;
+
+        RapidStageChance = 0;
+        RapidStageChanceValue = 0.09f;
+        BaseWaitingTimeValue = 5;
+
+        BaseBrickSpawnValue = 1f;
+        BaseBrickHealthValue = 1f;
+
+        BaseMiniBossHealthValue = 1f;
+
+        BaseBossHealthValue = 1f;
+        BaseBossSpawnValue = 1;
     }
 
     void Update()
@@ -141,32 +179,11 @@ public class BrickManager : MonoBehaviour
 
     }
 
-    Queue<Queue<IBrick>> SpawnBrickQueue;
-    public Queue<IBrick> BrickQueue;
-
-    private bool isMiniBossSpanwed = false;
-    private float MiniBossSpawnChance = 0;
-    public float MiniBossSpawnChanceValue = 0.1f;
-
-    public bool isRapid = false;
-    private float RapidStageChance = 0;
-    public float RapidStageChanceValue = 0.09f;
-
-    public float BaseBrickSpawnValue = 1f;
-
-    public float BaseBrickHealthValue = 1f;
-    public float BaseMiniBossHealthValue = 1f;
-    public float BaseBossHealthValue = 1f;
-
-    public int BaseWaitingTimeValue = 5;
-
-    public int BaseBossSpawnValue = 1;
-
     private void CreateSpawnBrickQueue()
     {
         int Wave = GameManager.instance.Wave;
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
-        int WaveBricks = UnityEngine.Random.Range((int)BaseBrickSpawnValue * (10 + (AddPerWave / 10)), (int)BaseBrickSpawnValue *(15 + (AddPerWave / 10)));
+        int WaveBricks = UnityEngine.Random.Range((int)(BaseBrickSpawnValue * (10 + AddPerWave)), (int)(BaseBrickSpawnValue * (15 + AddPerWave)));
         Queue<IBrick> brickQueue = new Queue<IBrick>();
         for (int i = 0; i < WaveBricks; i++)
         {
@@ -205,7 +222,8 @@ public class BrickManager : MonoBehaviour
         {
             if (BrickQueue == null)
             {
-                isRapid = UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10;
+                isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
+                    || AugmentManager.instance.determineAugmentID("SPECIAL_62");
                 SettingBrickSpawnChance();
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();

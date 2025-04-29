@@ -409,12 +409,12 @@ public class PoisonBall : SpecialAugment
     bool isGetAugment = false;
     private void Update()
     {
-        if (AugmentManager.instance.activeSpecialAugments.Contains(GetComponent<DecayBall>()) && !isGetAugment)
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_18") && !isGetAugment)
         {
             AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayingPoison>());
             isGetAugment = true;
         }
-        else if (AugmentManager.instance.activeSpecialAugments.Contains(GetComponent<FireBall>()) && !isGetAugment)
+        else if (AugmentManager.instance.determineAugmentID("SPECIAL_1") && !isGetAugment)
         {
             AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FlammablePoison>());
             isGetAugment = true;
@@ -2144,14 +2144,12 @@ public class InfiniteRapid : SpecialAugment
     {
         StatManager.instance.Temporary_stat.AttackDamage += 5f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
-        BrickManager.Instance.RapidStageChanceValue = 1f;
     }
 
     public override void Remove()
     {
         StatManager.instance.Temporary_stat.AttackDamage -= 5f;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
-        BrickManager.Instance.RapidStageChanceValue = 0.09f;
     }
 }
 
@@ -2168,6 +2166,7 @@ public class MoreAndWeakBricks : SpecialAugment
         BrickManager.Instance.BaseBrickHealthValue = 0.66f;
         BrickManager.Instance.BaseMiniBossHealthValue = 0.66f;
         BrickManager.Instance.BaseBossHealthValue = 0.66f;
+        BrickManager.Instance.BaseWaitingTimeValue = 6;
         AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<LessAndStrongBricks>());
     }
 
@@ -2177,6 +2176,7 @@ public class MoreAndWeakBricks : SpecialAugment
         BrickManager.Instance.BaseBrickHealthValue = 1f;
         BrickManager.Instance.BaseMiniBossHealthValue = 1f;
         BrickManager.Instance.BaseBossHealthValue = 1f;
+        BrickManager.Instance.BaseWaitingTimeValue = 5;
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<LessAndStrongBricks>());
     }
 }
@@ -2194,6 +2194,7 @@ public class LessAndStrongBricks : SpecialAugment
         BrickManager.Instance.BaseBrickHealthValue = 1.33f;
         BrickManager.Instance.BaseMiniBossHealthValue = 1.33f;
         BrickManager.Instance.BaseBossHealthValue = 1.33f;
+        BrickManager.Instance.BaseWaitingTimeValue = 4;
         AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<MoreAndWeakBricks>());
     }
 
@@ -2203,6 +2204,7 @@ public class LessAndStrongBricks : SpecialAugment
         BrickManager.Instance.BaseBrickHealthValue = 1f;
         BrickManager.Instance.BaseMiniBossHealthValue = 1f;
         BrickManager.Instance.BaseBossHealthValue = 1f;
+        BrickManager.Instance.BaseWaitingTimeValue = 5;
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<MoreAndWeakBricks>());
     }
 }
@@ -2211,13 +2213,13 @@ public class DoubleBoss : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_64", "Twins!", "The boss splits into two, \neach having half the original health.", "Special", 3);
+        SetAugment("SPECIAL_64", "Twins!", "The boss splits into two, \neach having 66% the original health.", "Special", 3);
     }
 
     public override void Apply()
     {
         BrickManager.Instance.BaseBossSpawnValue = 2;
-        BrickManager.Instance.BaseBossHealthValue = 0.5f;
+        BrickManager.Instance.BaseBossHealthValue = 0.66f;
     }
 
     public override void Remove()

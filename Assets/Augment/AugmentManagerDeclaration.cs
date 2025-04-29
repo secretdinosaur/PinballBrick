@@ -180,7 +180,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-
+            gameObject.GetComponent<DoubleBoss>(),
+            gameObject.GetComponent<InfiniteRapid>(),
         };
 
         foreach (IAugment augment in TestAugments)
