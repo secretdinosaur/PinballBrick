@@ -150,6 +150,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<RollDiceBall>(),
             gameObject.AddComponent<ItemEnhance>(),
             gameObject.AddComponent<InfiniteRapid>(),
+            gameObject.AddComponent<MoreAndWeakBricks>(),
+            gameObject.AddComponent<LessAndStrongBricks>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),

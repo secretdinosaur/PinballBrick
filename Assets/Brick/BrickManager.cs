@@ -152,13 +152,15 @@ public class BrickManager : MonoBehaviour
     private float RapidStageChance = 0;
     public float RapidStageChanceValue = 0.09f;
 
-    public float BaseBrickSpawnValue = 10;
+    public float BaseBrickSpawnValue = 1f;
+    public float BaseBrickHealthValue = 1f;
+    public int BaseWaitingTimeValue = 5;
 
     private void CreateSpawnBrickQueue()
     {
         int Wave = GameManager.instance.Wave;
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
-        int WaveBricks = UnityEngine.Random.Range((int)BaseBrickSpawnValue + (AddPerWave / 10), (int)BaseBrickSpawnValue + 5 + (AddPerWave / 10));
+        int WaveBricks = UnityEngine.Random.Range((int)BaseBrickSpawnValue * (10 + (AddPerWave / 10)), (int)BaseBrickSpawnValue *(15 + (AddPerWave / 10)));
         Queue<IBrick> brickQueue = new Queue<IBrick>();
         for (int i = 0; i < WaveBricks; i++)
         {
@@ -249,7 +251,7 @@ public class BrickManager : MonoBehaviour
                 GameManager.instance.Wave += 1;
 
                 int WaitingTime = 0;
-                while(WaitingTime < 5 && CurrentBricks.Count > 5)
+                while(WaitingTime < BaseWaitingTimeValue && CurrentBricks.Count > 5)
                 {
                     WaitingTime++;
                     yield return new WaitForSeconds(1f);
@@ -409,19 +411,19 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(7, 9));
+                HPPool.Add((int)(BaseBrickHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(7, 9))));
             }
         }
         else if (brick.IsMiniBoss)
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(2, 4));
+                HPPool.Add((int)(BaseBrickHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(2, 4))));
             }
         }
         else
         {
-            int HPBase = (int)Mathf.Pow(LevelManager.Instance.Level + Wave + 1, UnityEngine.Random.Range(0.9f, 1.1f));
+            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, UnityEngine.Random.Range(0.9f, 1.1f))));
             //need to adjust
             for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
             {

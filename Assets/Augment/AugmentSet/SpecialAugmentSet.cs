@@ -2154,3 +2154,47 @@ public class InfiniteRapid : SpecialAugment
         BrickManager.Instance.RapidStageChanceValue = 0.09f;
     }
 }
+
+public class MoreAndWeakBricks : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_63", "Legion", "Bricks appear 50% more frequently, \nbut their health is reduced by 33%", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BaseBrickSpawnValue = 1.5f;
+        BrickManager.Instance.BaseBrickHealthValue = 0.66f;
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<LessAndStrongBricks>());
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BaseBrickSpawnValue = 1f;
+        BrickManager.Instance.BaseBrickHealthValue = 1f;
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<LessAndStrongBricks>());
+    }
+}
+
+public class LessAndStrongBricks : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_63", "Elite Group", "Bricks appear 50% less frequently, \nbut their health is increased by 33%.", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BaseBrickSpawnValue = 0.5f;
+        BrickManager.Instance.BaseBrickHealthValue = 1.33f;
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<MoreAndWeakBricks>());
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BaseBrickSpawnValue = 1f;
+        BrickManager.Instance.BaseBrickHealthValue = 1f;
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<MoreAndWeakBricks>());
+    }
+}
