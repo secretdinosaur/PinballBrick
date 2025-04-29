@@ -2159,13 +2159,15 @@ public class MoreAndWeakBricks : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_63", "Legion", "Bricks appear 50% more frequently, \nbut their health is reduced by 33%", "Special", 3);
+        SetAugment("SPECIAL_63", "Legion", "Every Bricks appear 50% more frequently, \nbut their health is reduced by 33%", "Special", 3);
     }
 
     public override void Apply()
     {
         BrickManager.Instance.BaseBrickSpawnValue = 1.5f;
         BrickManager.Instance.BaseBrickHealthValue = 0.66f;
+        BrickManager.Instance.BaseMiniBossHealthValue = 0.66f;
+        BrickManager.Instance.BaseBossHealthValue = 0.66f;
         AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<LessAndStrongBricks>());
     }
 
@@ -2173,6 +2175,8 @@ public class MoreAndWeakBricks : SpecialAugment
     {
         BrickManager.Instance.BaseBrickSpawnValue = 1f;
         BrickManager.Instance.BaseBrickHealthValue = 1f;
+        BrickManager.Instance.BaseMiniBossHealthValue = 1f;
+        BrickManager.Instance.BaseBossHealthValue = 1f;
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<LessAndStrongBricks>());
     }
 }
@@ -2181,13 +2185,15 @@ public class LessAndStrongBricks : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_63", "Elite Group", "Bricks appear 50% less frequently, \nbut their health is increased by 33%.", "Special", 3);
+        SetAugment("SPECIAL_63", "Elite Group", "Every Bricks appear 50% less frequently, \nbut their health is increased by 33%.", "Special", 3);
     }
 
     public override void Apply()
     {
         BrickManager.Instance.BaseBrickSpawnValue = 0.5f;
         BrickManager.Instance.BaseBrickHealthValue = 1.33f;
+        BrickManager.Instance.BaseMiniBossHealthValue = 1.33f;
+        BrickManager.Instance.BaseBossHealthValue = 1.33f;
         AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<MoreAndWeakBricks>());
     }
 
@@ -2195,6 +2201,28 @@ public class LessAndStrongBricks : SpecialAugment
     {
         BrickManager.Instance.BaseBrickSpawnValue = 1f;
         BrickManager.Instance.BaseBrickHealthValue = 1f;
+        BrickManager.Instance.BaseMiniBossHealthValue = 1f;
+        BrickManager.Instance.BaseBossHealthValue = 1f;
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<MoreAndWeakBricks>());
+    }
+}
+
+public class DoubleBoss : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_64", "Twins!", "The boss splits into two, \neach having half the original health.", "Special", 3);
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BaseBossSpawnValue = 2;
+        BrickManager.Instance.BaseBossHealthValue = 0.5f;
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BaseBossSpawnValue = 1;
+        BrickManager.Instance.BaseBossHealthValue = 1f;
     }
 }

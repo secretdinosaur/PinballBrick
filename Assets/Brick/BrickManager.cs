@@ -153,8 +153,14 @@ public class BrickManager : MonoBehaviour
     public float RapidStageChanceValue = 0.09f;
 
     public float BaseBrickSpawnValue = 1f;
+
     public float BaseBrickHealthValue = 1f;
+    public float BaseMiniBossHealthValue = 1f;
+    public float BaseBossHealthValue = 1f;
+
     public int BaseWaitingTimeValue = 5;
+
+    public int BaseBossSpawnValue = 1;
 
     private void CreateSpawnBrickQueue()
     {
@@ -184,7 +190,10 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            brickQueue.Enqueue(SettingBoss());
+            for(int i = 0; i < BaseBossSpawnValue; i++)
+            {
+                brickQueue.Enqueue(SettingBoss());
+            }
             isMiniBossSpanwed = false;
         }
         SpawnBrickQueue.Enqueue(brickQueue);
@@ -411,14 +420,14 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseBrickHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(7, 9))));
+                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(7, 9))));
             }
         }
         else if (brick.IsMiniBoss)
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseBrickHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(2, 4))));
+                HPPool.Add((int)(BaseMiniBossHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(2, 4))));
             }
         }
         else

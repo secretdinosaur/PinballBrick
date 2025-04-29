@@ -152,6 +152,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<InfiniteRapid>(),
             gameObject.AddComponent<MoreAndWeakBricks>(),
             gameObject.AddComponent<LessAndStrongBricks>(),
+            gameObject.AddComponent<DoubleBoss>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
