@@ -468,7 +468,7 @@ public class BrickManager : MonoBehaviour
             if(BrickQueue.Count == 0)
             {
                 HPPool.Clear();
-                HPPool.Add((int)_FusionBrickHealth);
+                HPPool.Add(_FusionBrickHealth);
                 Debug.Log(_FusionBrickHealth);
                 brick.IsBoss = true;
                 brick.IsMiniBoss = false;

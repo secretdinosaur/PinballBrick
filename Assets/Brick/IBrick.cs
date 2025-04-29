@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Random = UnityEngine.Random;
+using UnityEngine.UIElements;
 
 public partial class IBrick : MonoBehaviour
 {
@@ -134,6 +135,23 @@ public partial class IBrick : MonoBehaviour
         {
             HPText = GetComponentInChildren<TextMeshPro>();
             HPText.text = ((int)hp).ToString();
+        }
+
+        if ((int)hp >= 100000)
+        {
+            HPText.fontSize = 2.7f;
+        }
+        else if ((int)hp >= 10000)
+        {
+            HPText.fontSize = 3.2f;
+        }
+        else if ((int)hp >= 1000)
+        {
+            HPText.fontSize = 4f;
+        }
+        else
+        {
+            HPText.fontSize = 5f;
         }
     }
     public void Init(bool isBoss, bool isMiniBoss)

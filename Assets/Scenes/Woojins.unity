@@ -5252,6 +5252,7 @@ MonoBehaviour:
   BaseBrickHealthValue: 1
   BaseMiniBossHealthValue: 1
   BaseBossHealthValue: 1
+  BaseSpawnTimeValue: 0
   BaseWaitingTimeValue: 5
   BaseBossSpawnValue: 1
 --- !u!114 &137631893
