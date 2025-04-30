@@ -37,12 +37,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
-        { 0, 0.01f },
-        { 1, 0.59f },
-        { 2, 3.9f },
-        { 3, 11.5f },
-        { 4, 32f },
-        { 5, 52f }
+        { 0, 0.015f },
+        { 1, 0.0355f },
+        { 2, 0.0865f },
+        { 3, 0.1543f },
+        { 4, 0.3087f },
+        { 5, 0.4f }
     };
     
     void Awake()
@@ -154,6 +154,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<LessAndStrongBricks>(),
             gameObject.AddComponent<DoubleBoss>(),
             gameObject.AddComponent<FusionBricks>(),
+            gameObject.AddComponent<GainBallAfterLevelUp>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -181,7 +182,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<FusionBricks>(),
+            gameObject.GetComponent<GainBallAfterLevelUp>(),
         };
 
         foreach (IAugment augment in TestAugments)

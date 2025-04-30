@@ -917,7 +917,7 @@ public class AttackAfterAdditionalBall : SpecialAugment
             attackNumber = value;
             if(attackNumber >= RequiredCount)
             {
-                BallManager.Instance.CreateBall(1);
+                BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
                 attackNumber = 0;
             }
         }
@@ -2234,6 +2234,24 @@ public class FusionBricks : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health. \nIt is treated as a boss", "Special", 0);
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BaseSpawnTimeValue = 0.4f;
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BaseSpawnTimeValue = 1f;
+    }
+}
+
+public class GainBallAfterLevelUp : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_66", "Promotion Gift", "After level up, roll a dice \nand gain that many balls", "Special", 4);
     }
 
     public override void Apply()

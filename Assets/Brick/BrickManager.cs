@@ -310,10 +310,68 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
-        Brick.Init(brick.IsBoss, brick.IsMiniBoss);
+        Brick.Init(
+            brick.IsBoss, 
+            
+            brick.IsMiniBoss, 
+
+            (!brick.IsBoss && !brick.IsMiniBoss) ? BrickPointSetting(brick.BrickType) :
+            (!brick.IsBoss && brick.IsMiniBoss) ? (int)(1.2f * BrickPointSetting(brick.BrickType)) :
+            (brick.IsBoss && !brick.IsMiniBoss) ? (int)(1.4f * BrickPointSetting(brick.BrickType)) : BrickPointSetting(brick.BrickType),
+
+            (!brick.IsBoss && !brick.IsMiniBoss) ? BrickExpSetting(brick.BrickType) :
+            (!brick.IsBoss && brick.IsMiniBoss) ? (int)(1.4f * BrickExpSetting(brick.BrickType)) :
+            (brick.IsBoss && !brick.IsMiniBoss) ? (int)(1.9f * BrickExpSetting(brick.BrickType)) : BrickExpSetting(brick.BrickType));
         return Brick;
     }
 
+    private int BrickPointSetting(string brickType)
+    {
+        if (brickType == "Brick")
+            return 1;
+        else if (brickType == "HardBrick")
+            return 5;
+        else if (brickType == "HealBrick")
+            return 2;
+        else if (brickType == "IgnoreBrick")
+            return 5;
+        else if (brickType == "ShieldBrick")
+            return 3;
+        else if (brickType == "SlimeBrick")
+            return 2;
+        else if (brickType == "TeleportBrick")
+            return 3;
+        else if (brickType == "TwinBrick")
+            return 5;
+        else if (brickType == "BlackBrick")
+            return 1;
+        else
+            return 1;
+    }
+
+    private float BrickExpSetting(string brickType)
+    {
+        if (brickType == "Brick")
+            return 10f;
+        else if (brickType == "HardBrick")
+            return 20f;
+        else if (brickType == "HealBrick")
+            return 12.5f;
+        else if (brickType == "IgnoreBrick")
+            return 20f;
+        else if (brickType == "ShieldBrick")
+            return 15.5f;
+        else if (brickType == "SlimeBrick")
+            return 12.5f;
+        else if (brickType == "TeleportBrick")
+            return 15.5f;
+        else if (brickType == "TwinBrick")
+            return 20f;
+        else if (brickType == "BlackBrick")
+            return 10f;
+        else
+            return 10f;
+    }
     private IBrick GetSpecificBrick(string brickTypeName)
     {
         IBrick brick = new IBrick();
@@ -433,6 +491,7 @@ public class BrickManager : MonoBehaviour
     }
 
     private float _FusionBrickHealth;
+    private int _FusionBrickNum;
     public void SpawnBrick(IBrick brick)
     {
         HPPool = new List<float>();
@@ -461,7 +520,7 @@ public class BrickManager : MonoBehaviour
             }
         }
         _FusionBrickHealth += HPPool.Average();
-
+        _FusionBrickNum++;
         IBrick Brick = new IBrick();
         if (AugmentManager.instance.determineAugmentID("SPECIAL_65"))
         {
@@ -474,12 +533,16 @@ public class BrickManager : MonoBehaviour
                 brick.IsMiniBoss = false;
                 Brick = GetBrick(brick);
 
+                Brick.Point *= _FusionBrickNum;
+                Brick.Exp *= _FusionBrickNum;
+
                 Vector2 randomPosition = GenerateRandomPosition();
                 Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
                 UpdateCurrentBricks(Brick);
                 SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
 
                 _FusionBrickHealth = 0;
+                _FusionBrickNum = 0;
             }
         }
         else
@@ -515,4 +578,57 @@ public class BrickManager : MonoBehaviour
         SoundManager.instance.SpawnBrickSound(brick.GetComponent<AudioSource>());
         return brick;
     }
+
+    //Text Button Functions
+    public void OnSpawnWaveBrickButtonClick()
+    {
+        try
+        {
+            if(availablePositions.Count > 0)
+            {
+                SpawnBrick(BrickQueue.Dequeue());
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.Log("BrickQueue가 비어 있습니다: " + e.Message);
+        }
+    }
+
+    public void OnBrickSpawnButtonClick()
+    {
+        if(availablePositions.Count > 0)
+        {
+            SpawnBrick(SettingBrick());
+        }
+    }
+
+    public void OnMiniBossSpawnButtonClick()
+    {
+        if(availablePositions.Count > 0)
+        {
+            SpawnBrick(SettingMiniBoss());
+        }
+    }
+
+    public void OnBossSpawnButtonClick()
+    {
+        if(availablePositions.Count > 0)
+        {
+            SpawnBrick(SettingBoss());
+        }
+    }
+
+    public void OnSkipWaveButtonClick()
+    {
+        if(BrickQueue.Count > 0)
+        {
+            BrickQueue.Clear();
+        }
+        BrickQueue = null;
+        GameManager.instance.Wave += 1;
+        StopCoroutine(SpawnBrickRoutine);
+        SpawnBrickRoutine = null;
+    }
+    //*******************************************************
 }
