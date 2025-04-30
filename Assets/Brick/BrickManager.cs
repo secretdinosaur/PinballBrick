@@ -578,4 +578,57 @@ public class BrickManager : MonoBehaviour
         SoundManager.instance.SpawnBrickSound(brick.GetComponent<AudioSource>());
         return brick;
     }
+
+    //Text Button Functions
+    public void OnSpawnWaveBrickButtonClick()
+    {
+        try
+        {
+            if(availablePositions.Count > 0)
+            {
+                SpawnBrick(BrickQueue.Dequeue());
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.Log("BrickQueue가 비어 있습니다: " + e.Message);
+        }
+    }
+
+    public void OnBrickSpawnButtonClick()
+    {
+        if(availablePositions.Count > 0)
+        {
+            SpawnBrick(SettingBrick());
+        }
+    }
+
+    public void OnMiniBossSpawnButtonClick()
+    {
+        if(availablePositions.Count > 0)
+        {
+            SpawnBrick(SettingMiniBoss());
+        }
+    }
+
+    public void OnBossSpawnButtonClick()
+    {
+        if(availablePositions.Count > 0)
+        {
+            SpawnBrick(SettingBoss());
+        }
+    }
+
+    public void OnSkipWaveButtonClick()
+    {
+        if(BrickQueue.Count > 0)
+        {
+            BrickQueue.Clear();
+        }
+        BrickQueue = null;
+        GameManager.instance.Wave += 1;
+        StopCoroutine(SpawnBrickRoutine);
+        SpawnBrickRoutine = null;
+    }
+    //*******************************************************
 }
