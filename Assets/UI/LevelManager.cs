@@ -85,7 +85,7 @@ public partial class LevelManager : MonoBehaviour
     {
         if (AugmentManager.instance.determineAugmentID("SPECIAL_66"))
         {
-            DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, BallManager.Instance.OnCreateBall));
+            DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(AugmentManager.instance.SpawnBallAmount, BallManager.Instance.OnCreateBall));
         }
         Exp -= LevelBar.maxValue;
         Level++;

@@ -310,7 +310,18 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
-        Brick.Init(brick.IsBoss, brick.IsMiniBoss, BrickPointSetting(brick.BrickType), BrickExpSetting(brick.BrickType));
+        Brick.Init(
+            brick.IsBoss, 
+            
+            brick.IsMiniBoss, 
+
+            (!brick.IsBoss && !brick.IsMiniBoss) ? BrickPointSetting(brick.BrickType) :
+            (!brick.IsBoss && brick.IsMiniBoss) ? (int)(1.2f * BrickPointSetting(brick.BrickType)) :
+            (brick.IsBoss && !brick.IsMiniBoss) ? (int)(1.4f * BrickPointSetting(brick.BrickType)) : BrickPointSetting(brick.BrickType),
+
+            (!brick.IsBoss && !brick.IsMiniBoss) ? BrickExpSetting(brick.BrickType) :
+            (!brick.IsBoss && brick.IsMiniBoss) ? (int)(1.4f * BrickExpSetting(brick.BrickType)) :
+            (brick.IsBoss && !brick.IsMiniBoss) ? (int)(1.9f * BrickExpSetting(brick.BrickType)) : BrickExpSetting(brick.BrickType));
         return Brick;
     }
 
@@ -480,6 +491,7 @@ public class BrickManager : MonoBehaviour
     }
 
     private float _FusionBrickHealth;
+    private int _FusionBrickNum;
     public void SpawnBrick(IBrick brick)
     {
         HPPool = new List<float>();
@@ -508,7 +520,7 @@ public class BrickManager : MonoBehaviour
             }
         }
         _FusionBrickHealth += HPPool.Average();
-
+        _FusionBrickNum++;
         IBrick Brick = new IBrick();
         if (AugmentManager.instance.determineAugmentID("SPECIAL_65"))
         {
@@ -521,12 +533,16 @@ public class BrickManager : MonoBehaviour
                 brick.IsMiniBoss = false;
                 Brick = GetBrick(brick);
 
+                Brick.Point *= _FusionBrickNum;
+                Brick.Exp *= _FusionBrickNum;
+
                 Vector2 randomPosition = GenerateRandomPosition();
                 Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
                 UpdateCurrentBricks(Brick);
                 SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
 
                 _FusionBrickHealth = 0;
+                _FusionBrickNum = 0;
             }
         }
         else

@@ -917,7 +917,7 @@ public class AttackAfterAdditionalBall : SpecialAugment
             attackNumber = value;
             if(attackNumber >= RequiredCount)
             {
-                BallManager.Instance.CreateBall(1);
+                BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
                 attackNumber = 0;
             }
         }
