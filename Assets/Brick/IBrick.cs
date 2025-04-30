@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 public partial class IBrick : MonoBehaviour
 {
     public int Point;
+    public float Exp;
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
@@ -154,10 +155,12 @@ public partial class IBrick : MonoBehaviour
             HPText.fontSize = 5f;
         }
     }
-    public void Init(bool isBoss, bool isMiniBoss)
+    public void Init(bool isBoss, bool isMiniBoss, int Point, float Exp)
     {
         this.IsBoss = isBoss;
         this.IsMiniBoss = isMiniBoss;
+        this.Point = Point;
+        this.Exp = Exp;
     }
     public void Start()
     {

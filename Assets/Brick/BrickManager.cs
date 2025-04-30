@@ -310,10 +310,57 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
-        Brick.Init(brick.IsBoss, brick.IsMiniBoss);
+        Brick.Init(brick.IsBoss, brick.IsMiniBoss, BrickPointSetting(brick.BrickType), BrickExpSetting(brick.BrickType));
         return Brick;
     }
 
+    private int BrickPointSetting(string brickType)
+    {
+        if (brickType == "Brick")
+            return 1;
+        else if (brickType == "HardBrick")
+            return 5;
+        else if (brickType == "HealBrick")
+            return 2;
+        else if (brickType == "IgnoreBrick")
+            return 5;
+        else if (brickType == "ShieldBrick")
+            return 3;
+        else if (brickType == "SlimeBrick")
+            return 2;
+        else if (brickType == "TeleportBrick")
+            return 3;
+        else if (brickType == "TwinBrick")
+            return 5;
+        else if (brickType == "BlackBrick")
+            return 1;
+        else
+            return 1;
+    }
+
+    private float BrickExpSetting(string brickType)
+    {
+        if (brickType == "Brick")
+            return 10f;
+        else if (brickType == "HardBrick")
+            return 20f;
+        else if (brickType == "HealBrick")
+            return 12.5f;
+        else if (brickType == "IgnoreBrick")
+            return 20f;
+        else if (brickType == "ShieldBrick")
+            return 15.5f;
+        else if (brickType == "SlimeBrick")
+            return 12.5f;
+        else if (brickType == "TeleportBrick")
+            return 15.5f;
+        else if (brickType == "TwinBrick")
+            return 20f;
+        else if (brickType == "BlackBrick")
+            return 10f;
+        else
+            return 10f;
+    }
     private IBrick GetSpecificBrick(string brickTypeName)
     {
         IBrick brick = new IBrick();
