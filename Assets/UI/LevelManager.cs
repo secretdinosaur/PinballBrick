@@ -162,6 +162,16 @@ public partial class LevelManager : MonoBehaviour
     private List<IAugment> augmentsSet;
     private bool CheckStatOrAugment;
 
+    enum AugmentRarity
+    {
+        Myth,
+        Epic,
+        Legendary,
+        Unique,
+        Rare,
+        Common
+    }
+
     void ShowLevelUpPanel()
     {
         Time.timeScale = 0f;
@@ -176,7 +186,7 @@ public partial class LevelManager : MonoBehaviour
             randomStats = GetRandomStats();
             for (int i = 0; i < 3; i++)
             {
-                OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[4];
+                OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[(int)AugmentRarity.Common];
             }
             Option_1_Name.text = randomStats[0].Key;
             Option_1_Description.text =
@@ -197,7 +207,7 @@ public partial class LevelManager : MonoBehaviour
                 for (int i = 0; i < 3; i++)
                 {
                     augmentsSet.Add(AugmentManager.instance.GetRandomAugmentByRarity(1));
-                    OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity - 1];
+                    OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity];
                 }
                 AugmentManager.instance.isSacrificeQuest3Cleared = false;
             }
@@ -206,7 +216,7 @@ public partial class LevelManager : MonoBehaviour
                 for (int i = 0; i < 3; i++)
                 {
                     augmentsSet.Add(AugmentManager.instance.GetRandomAugment());
-                    OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity - 1];
+                    OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity];
                 }
             }
             Option_1_Name.text = augmentsSet[0].Name;

@@ -11216,6 +11216,7 @@ MonoBehaviour:
     EffectCriticalDamage: 0
     GoldGain: 0
   OptionButtonSprites:
+  - {fileID: -1819087756073362977, guid: 8bc4d34a02657da47a20a6c316f2811c, type: 3}
   - {fileID: 4132716061048618184, guid: 86917ebde18f5e1449abd41b4d86856d, type: 3}
   - {fileID: -7198440490928857949, guid: 60ae8fb2dcf1d4c4c88ab82b0e1b2031, type: 3}
   - {fileID: 270058920942252848, guid: fdfb4e5045da8224a92dc508e5b83c42, type: 3}
