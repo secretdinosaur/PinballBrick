@@ -44,7 +44,7 @@ public class BallManager : MonoBehaviour
         }
     }
 
-    private void OnCreateBall(int diceSum)
+    public void OnCreateBall(int diceSum)
     {
         for (int i = 0; i < diceSum; i++)
         {

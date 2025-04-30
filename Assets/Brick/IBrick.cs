@@ -89,7 +89,7 @@ public partial class IBrick : MonoBehaviour
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
-        LevelManager.Instance.Exp += 20 * StatManager.instance.Persistent_stat.BonusExp;
+        LevelManager.Instance.Exp += Exp * StatManager.instance.Persistent_stat.BonusExp;
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
         {
             Augment.AfterBrickDieEffect(this);
@@ -155,10 +155,10 @@ public partial class IBrick : MonoBehaviour
             HPText.fontSize = 5f;
         }
     }
-    public void Init(bool isBoss, bool isMiniBoss, int Point, float Exp)
+    public void Init(bool IsBoss, bool IsMiniBoss, int Point, float Exp)
     {
-        this.IsBoss = isBoss;
-        this.IsMiniBoss = isMiniBoss;
+        this.IsBoss = IsBoss;
+        this.IsMiniBoss = IsMiniBoss;
         this.Point = Point;
         this.Exp = Exp;
     }

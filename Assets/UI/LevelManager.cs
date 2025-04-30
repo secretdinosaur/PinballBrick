@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -82,6 +83,10 @@ public partial class LevelManager : MonoBehaviour
 
     public void LevelUp()
     {
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_66"))
+        {
+            DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, BallManager.Instance.OnCreateBall));
+        }
         Exp -= LevelBar.maxValue;
         Level++;
         LevelBarMaxValueSet(Level);

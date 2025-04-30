@@ -154,6 +154,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<LessAndStrongBricks>(),
             gameObject.AddComponent<DoubleBoss>(),
             gameObject.AddComponent<FusionBricks>(),
+            gameObject.AddComponent<GainBallAfterLevelUp>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -181,7 +182,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<FusionBricks>(),
+            gameObject.GetComponent<GainBallAfterLevelUp>(),
         };
 
         foreach (IAugment augment in TestAugments)
