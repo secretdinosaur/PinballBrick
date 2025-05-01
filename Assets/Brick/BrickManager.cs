@@ -51,6 +51,24 @@ public class BrickManager : MonoBehaviour
 
     public int BaseBossSpawnValue;
 
+    enum BrickType
+    {
+        Brick,
+        HealBrick,
+        ShieldBrick,
+        SlimeBrick,
+        HardBrick,
+        TeleportBrick,
+        WhiteBrick,
+        IgnoreBrick,
+        TwinBrick,
+    }
+
+    enum SpecialBrickType
+    {
+        ExpBrick,
+    }
+
     void Awake()
     {
         Instance = this;
@@ -293,9 +311,7 @@ public class BrickManager : MonoBehaviour
     private IBrick GetBrick(IBrick brick)
     {
         float RandomNumber = UnityEngine.Random.value;
-
         float ChanceSum = 0;
-
         IBrick Brick = null;
 
         for (int i = 0; i < BrickInfo.BrickSpawnChance.Length; i++)
@@ -314,6 +330,19 @@ public class BrickManager : MonoBehaviour
             brick.IsBoss, false,
             !brick.IsBoss ? BrickPointSetting(brick.BrickType) : (int)(1.4f * BrickPointSetting(brick.BrickType)),
             !brick.IsBoss  ? BrickExpSetting(brick.BrickType) : 1.4f * BrickExpSetting(brick.BrickType));
+        return Brick;
+    }
+
+    private IBrick GetSpecialBrick(IBrick brick, int index)
+    {
+        IBrick Brick = null;
+
+        Type brickType = Type.GetType(BrickInfo.SpecialBrickTypes[index]);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(brickType);
+        Brick = (IBrick)genericMethod.Invoke(PoolManager, null);
+        
+        Brick.Init(false, true, 1, 10f);
         return Brick;
     }
 
@@ -374,19 +403,6 @@ public class BrickManager : MonoBehaviour
         brick = (IBrick)genericMethod.Invoke(PoolManager, null);
         //UpdateCurrentBricks();
         return brick;
-    }
-
-    enum BrickType
-    {
-        Brick,
-        HealBrick,
-        ShieldBrick,
-        SlimeBrick,
-        HardBrick,
-        TeleportBrick,
-        WhiteBrick,
-        IgnoreBrick,
-        TwinBrick,
     }
 
     private void SettingBrickSpawnChance()
@@ -539,7 +555,10 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            Brick = GetBrick(brick);
+            if(brick.IsMiniBoss)
+                Brick = GetSpecialBrick(brick, UnityEngine.Random.Range(0, BrickInfo.SpecialBrickTypes.Length));
+            else
+                Brick = GetBrick(brick);
 
             Vector2 randomPosition = GenerateRandomPosition();
             Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
