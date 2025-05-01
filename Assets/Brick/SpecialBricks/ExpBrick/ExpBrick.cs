@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,12 +8,7 @@ public class ExpBrick : IBrick
     {
         base.OnEnable();
         BrickType = "ExpBrick";
-    }
-
-    public override void BrickDie()
-    {
-        LevelManager.Instance.GetExp(100f + GameManager.instance.Wave / 2);
-        base.BrickDie();
+        StartCoroutine(TimeSet());
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -22,5 +18,12 @@ public class ExpBrick : IBrick
             TakeDamage(collision.gameObject.GetComponent<IBall>());
             LevelManager.Instance.GetExp(10f + GameManager.instance.Wave / 2);
         }
+    }
+
+    IEnumerator TimeSet()
+    {
+        yield return new WaitForSeconds(10f);
+        BrickManager.Instance.TakeBrick(this);
+        Debug.Log("MiniBoss has gone");
     }
 }

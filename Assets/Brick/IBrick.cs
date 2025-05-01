@@ -77,6 +77,13 @@ public partial class IBrick : MonoBehaviour
                 else
                 {
                     if (BrickType == "HealBrick") StopCoroutine(BrickHealCoroutine);
+                    if (IsMiniBoss)
+                    {
+                        if (BrickType == "ExpBrick")
+                        {
+                            LevelManager.Instance.GetExp(100f + GameManager.instance.Wave / 2);
+                        }
+                    }
                     BrickDie();
                 }
             }
@@ -84,7 +91,7 @@ public partial class IBrick : MonoBehaviour
         }
     }
 
-    public virtual void BrickDie()
+    public void BrickDie()
     {
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;

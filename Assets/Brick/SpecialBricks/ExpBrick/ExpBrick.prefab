@@ -362,6 +362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4196403253232580860}
   - component: {fileID: 2930037138640383005}
+  - component: {fileID: -7027782104363891570}
   - component: {fileID: 8065087008795427907}
   - component: {fileID: 1817292585717798782}
   - component: {fileID: -5770648894091472395}
@@ -414,7 +415,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7a4f6b8d3da97874b8a42e2c7d187dda, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -446,6 +447,44 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-7027782104363891570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5333168213614402114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a410586d8f5772e47963a0155e45a83f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Point: 0
+  Exp: 0
+  BasicHP: 1
+  IsBoss: 0
+  IsMiniBoss: 0
+  HPText: {fileID: 0}
+  BrickType: 
+  BrickTransform: {fileID: 0}
+  HpTemp: 0
+  BallSpeed: 0
+  spriteRenderer: {fileID: 0}
+  lineRenderer: {fileID: 0}
+  PoisonEffect: {fileID: 3077907449073165325}
+  TotalMultiple: 0
+  ExecutionObject1: {fileID: 4203321890243191342}
+  ExecutionObject2: {fileID: 6289374651800827077}
+  IsNeedDelayedDIeForEffect: 0
+  isGoldBrick: 0
+  RecentlyBall: {fileID: 0}
+  SpecialCriticalChance: 0
+  BrickEffect: {fileID: 0}
+  RecentReceivedDamage: 0
+  NearbyBricks: []
+  boxSize: {x: 6, y: 4}
+  isTouchedBlackHole: 0
+  TouchedObject: {fileID: 0}
 --- !u!61 &8065087008795427907
 BoxCollider2D:
   m_ObjectHideFlags: 0

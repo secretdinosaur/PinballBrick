@@ -520,7 +520,7 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseMiniBossHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(2, 4))));
+                HPPool.Add((int)(BaseMiniBossHealthValue * (Mathf.Pow(10 + Wave / 2, UnityEngine.Random.Range(1f, 1.2f)))));
             }
         }
         else
@@ -647,10 +647,16 @@ public class BrickManager : MonoBehaviour
         {
             BrickQueue.Clear();
         }
-        BrickQueue = null;
+        if(BrickQueue != null)
+        {
+            BrickQueue = null;
+        }
+        if(SpawnBrickRoutine != null)
+        {
+            StopCoroutine(SpawnBrickRoutine);
+            SpawnBrickRoutine = null;
+        }
         GameManager.instance.Wave += 1;
-        StopCoroutine(SpawnBrickRoutine);
-        SpawnBrickRoutine = null;
     }
     //*******************************************************
 }

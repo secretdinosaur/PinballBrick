@@ -5318,6 +5318,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
+  - _name: ExpBrick
+    _component: {fileID: -7027782104363891570, guid: 7939d13e8e8fc5748bca7056835515e9, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
 --- !u!1 &147145237
 GameObject:
   m_ObjectHideFlags: 0
@@ -34388,7 +34393,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 5
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
