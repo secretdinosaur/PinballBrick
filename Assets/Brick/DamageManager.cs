@@ -44,18 +44,25 @@ public static partial class DamageManager //Normal Attack
 
     private static void DamageProcess(IBrick brick)
     {
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        if (!brick.IsMiniBoss)
         {
-            Augment.BeforeAttackEffect(brick);
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.BeforeAttackEffect(brick);
+            }
+
+            brick.HP -= FinalDamage(brick);
+
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.AfterMainAttackEffect(brick);
+                Augment.AfterAttackEffect(brick);
+            }
         }
-
-        brick.HP -= FinalDamage(brick);
-
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        else
         {
-            Augment.AfterMainAttackEffect(brick);
-            Augment.AfterAttackEffect(brick);
-        }
+            brick.HP -= 1;
+        } 
     }
 
     public static void DamageProcessWithoutMainAttack(IBrick brick)

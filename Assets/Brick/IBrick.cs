@@ -50,7 +50,8 @@ public partial class IBrick : MonoBehaviour
             hp = value;
             if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
 
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_6") && (BrickType != "ShieldBrick" || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_6") && (BrickType != "ShieldBrick" 
+                || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
             {
                 if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999)
                 {
@@ -83,7 +84,7 @@ public partial class IBrick : MonoBehaviour
         }
     }
 
-    public void BrickDie()
+    public virtual void BrickDie()
     {
         Fever.StartFever = true;
         Fever.Instance.FeverCount *= 2;
