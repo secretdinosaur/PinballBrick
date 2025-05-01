@@ -51,6 +51,9 @@ public class BrickManager : MonoBehaviour
 
     public int BaseBossSpawnValue;
 
+
+    private bool WavePause;
+
     enum BrickType
     {
         Brick,
@@ -102,11 +105,13 @@ public class BrickManager : MonoBehaviour
 
         BaseBossHealthValue = 1f;
         BaseBossSpawnValue = 1;
+
+        WavePause = false;
     }
 
     void Update()
     {
-        if(availablePositions.Count > 0 && SpawnBrickRoutine == null)
+        if(availablePositions.Count > 0 && SpawnBrickRoutine == null && !WavePause)
         {
             SpawnBrickRoutine = StartCoroutine(SpawnBricks());
         }
@@ -261,7 +266,7 @@ public class BrickManager : MonoBehaviour
                 RapidStageChance = 0;
                 while(BrickQueue.Count > 0)
                 {
-                    if(availablePositions.Count > 0)
+                    if(availablePositions.Count > 0 && !WavePause)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
                         yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) * BaseSpawnTimeValue * ((0.6f - GameManager.instance.Wave * 0.002f)));
@@ -279,7 +284,7 @@ public class BrickManager : MonoBehaviour
                 RapidStageChance += RapidStageChanceValue; //Ensure it activates by stage 11 at the latest
                 while (BrickQueue.Count > 0)
                 {
-                    if(availablePositions.Count > 0)
+                    if(availablePositions.Count > 0 && !WavePause)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
                         //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
@@ -628,6 +633,12 @@ public class BrickManager : MonoBehaviour
         {
             SpawnBrick(SettingBoss());
         }
+    }
+
+    public void OnWaveStopButtonClick()
+    {
+        WavePause = !WavePause;
+        Debug.Log("Now WaveStop : " + WavePause);
     }
 
     public void OnSkipWaveButtonClick()
