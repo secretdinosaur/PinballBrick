@@ -32,8 +32,9 @@ public class SatelliteBeamObj : SpecialObj
         while(true)
         {
             yield return new WaitForSeconds(0.1f);
-            foreach (IBrick brick in detectArea.NearbyBricks)
+            for(int i = 0; i < detectArea.NearbyBricks.Count; i++)
             {
+                IBrick brick = detectArea.NearbyBricks[i];
                 if (brick != null)
                 {
                     if (!TouchedBricks.Contains(brick))

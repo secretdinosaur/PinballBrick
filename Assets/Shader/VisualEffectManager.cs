@@ -216,11 +216,11 @@ public class VisualEffectManager : MonoBehaviour
 
     public void SetDecayVisualEffect(IBrick brick)
     {
-        brick.GetComponent<SpriteRenderer>().material = DecayMaterial;
+        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 1);
     }
 
     public void UnSetDecayVisualEffect(IBrick brick)
     {
-        brick.GetComponent<SpriteRenderer>().material = DefaultMaterial;
+        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 0);
     }
 }

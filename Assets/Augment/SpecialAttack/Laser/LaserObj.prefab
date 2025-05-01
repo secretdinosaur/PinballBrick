@@ -220,3 +220,4 @@ MonoBehaviour:
   SpecialObjType: 
   detectArea: {fileID: 0}
   Speed: 0
+  trailRenderer: {fileID: 5162559928125995944}

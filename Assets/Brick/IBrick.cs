@@ -4,13 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Random = UnityEngine.Random;
+using UnityEngine.UIElements;
 
 public partial class IBrick : MonoBehaviour
 {
     public int Point;
+    public float Exp;
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
+    public bool IsMiniBoss = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -19,7 +22,7 @@ public partial class IBrick : MonoBehaviour
     public float HpTemp;
     public float BallSpeed;
 
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     public LineRenderer lineRenderer;
 
     public GameObject PoisonEffect;
@@ -47,9 +50,9 @@ public partial class IBrick : MonoBehaviour
             hp = value;
             if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
 
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_6"))
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_6") && (BrickType != "ShieldBrick" || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
             {
-                if (hp <= HpTemp * 0.15 && hp > 0)
+                if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999)
                 {
                     ExecutionCor = StartCoroutine(Execution());
                 }
@@ -86,7 +89,7 @@ public partial class IBrick : MonoBehaviour
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
-        LevelManager.Instance.Exp += 20 * StatManager.instance.Persistent_stat.BonusExp;
+        LevelManager.Instance.Exp += Exp * StatManager.instance.Persistent_stat.BonusExp;
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
         {
             Augment.AfterBrickDieEffect(this);
@@ -134,10 +137,35 @@ public partial class IBrick : MonoBehaviour
             HPText = GetComponentInChildren<TextMeshPro>();
             HPText.text = ((int)hp).ToString();
         }
+
+        if ((int)hp >= 100000)
+        {
+            HPText.fontSize = 2.7f;
+        }
+        else if ((int)hp >= 10000)
+        {
+            HPText.fontSize = 3.2f;
+        }
+        else if ((int)hp >= 1000)
+        {
+            HPText.fontSize = 4f;
+        }
+        else
+        {
+            HPText.fontSize = 5f;
+        }
+    }
+    public void Init(bool IsBoss, bool IsMiniBoss, int Point, float Exp)
+    {
+        this.IsBoss = IsBoss;
+        this.IsMiniBoss = IsMiniBoss;
+        this.Point = Point;
+        this.Exp = Exp;
     }
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
+        HPText.enabled = true;
     }
     public void OnEnable()
     {
@@ -151,6 +179,7 @@ public partial class IBrick : MonoBehaviour
         ExecutionObject1.transform.position = transform.position;
         ExecutionObject2.transform.position = transform.position;
         isGoldBrick = false;
+        spriteRenderer.material.SetFloat("_Decay", 0);
     }
 
     public void GetComponents()
@@ -166,6 +195,10 @@ public partial class IBrick : MonoBehaviour
         if (spriteRenderer != null)
             UpdateOutline();
         BrickEffect = new BrickEffectManager(this);
+        spriteRenderer.enabled = true;
+        Collider.enabled = true;
+        ExecutionObject1.SetActive(false);
+        ExecutionObject2.SetActive(false);
     }
 
     public void UpdateOutline()
@@ -335,6 +368,9 @@ public partial class IBrick //Detect Nearby Bricks
 
     private IEnumerator Execution()
     {
+        ExecutionObject1.SetActive(true);
+        ExecutionObject2.SetActive(true);
+
         spriteRenderer.enabled = false;
         HPText.enabled = false;
         Collider.enabled = false;
@@ -350,6 +386,9 @@ public partial class IBrick //Detect Nearby Bricks
 
         ExecutionObject1.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
         ExecutionObject2.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
+
+        ExecutionObject1.GetComponent<SpriteRenderer>().material.SetColor("_Color", spriteRenderer.material.color);
+        ExecutionObject2.GetComponent<SpriteRenderer>().material.SetColor("_Color", spriteRenderer.material.color);
 
         float Speed = 0.006f;
         if(Random.value < 0.5f)
