@@ -44,7 +44,7 @@ public static partial class DamageManager //Normal Attack
 
     private static void DamageProcess(IBrick brick)
     {
-        if (!brick.IsMiniBoss)
+        if (!brick.IsSpecialBrick)
         {
             foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
             {
@@ -67,7 +67,7 @@ public static partial class DamageManager //Normal Attack
 
     public static void DamageProcessWithoutMainAttack(IBrick brick)
     {
-        if (!brick.IsMiniBoss)
+        if (!brick.IsSpecialBrick)
         {
             foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
             {
@@ -105,7 +105,7 @@ public static partial class DamageManager //Normal Attack
             }
         }
 
-        float FinalDamage = (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed) || brick.IsMiniBoss
+        float FinalDamage = (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed) || brick.IsSpecialBrick
             ? 1
             : brick.DecayDamageCalculate(TotalAttackStat * brick.TotalMultiple);
         if (brick.BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(brick.GetComponent<TeleportBrick>());

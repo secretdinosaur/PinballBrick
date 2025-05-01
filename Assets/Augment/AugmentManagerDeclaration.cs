@@ -155,6 +155,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DoubleBoss>(),
             gameObject.AddComponent<FusionBricks>(),
             gameObject.AddComponent<GainBallAfterLevelUp>(),
+            gameObject.AddComponent<SpecialBrickChanceUp>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),

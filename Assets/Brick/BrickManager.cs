@@ -32,9 +32,8 @@ public class BrickManager : MonoBehaviour
     Queue<Queue<IBrick>> SpawnBrickQueue;
     public Queue<IBrick> BrickQueue;
 
-    private bool isMiniBossSpanwed;
-    public float MiniBossSpawnChance;
-    public float MiniBossSpawnChanceValue;
+    public float SpecialBrickSpawnChance;
+    public float SpecialBrickSpawnChanceValue;
 
     public bool isRapid;
     public float RapidStageChance;
@@ -88,9 +87,8 @@ public class BrickManager : MonoBehaviour
 
     private void InitializeVariables()
     {
-        isMiniBossSpanwed = false;
-        MiniBossSpawnChance = 0;
-        MiniBossSpawnChanceValue = 1f;
+        SpecialBrickSpawnChance = 0;
+        SpecialBrickSpawnChanceValue = 1f;
         isRapid = false;
 
         RapidStageChance = 0;
@@ -215,14 +213,14 @@ public class BrickManager : MonoBehaviour
             brickQueue.Enqueue(SettingBrick());
             if(Wave >= 5)
             {
-                if (UnityEngine.Random.value < MiniBossSpawnChance)
+                if (UnityEngine.Random.value < SpecialBrickSpawnChance)
                 {
-                    brickQueue.Enqueue(SettingMiniBoss());
-                    MiniBossSpawnChance = 0f;
+                    brickQueue.Enqueue(SettingSpecialBrick());
+                    SpecialBrickSpawnChance = 0f;
                 }
                 else
                 {
-                    MiniBossSpawnChance += MiniBossSpawnChanceValue * (1f / (100f * BaseBrickSpawnValue));
+                    SpecialBrickSpawnChance += SpecialBrickSpawnChanceValue * (1f / (100f * BaseBrickSpawnValue));
                 }
             }
         }
@@ -491,10 +489,10 @@ public class BrickManager : MonoBehaviour
         return brick;
     }
 
-    public IBrick SettingMiniBoss()
+    public IBrick SettingSpecialBrick()
     {
         IBrick brick = new IBrick();
-        brick.IsMiniBoss = true;
+        brick.IsSpecialBrick = true;
         return brick;
     }
 
@@ -511,7 +509,7 @@ public class BrickManager : MonoBehaviour
                 HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(7, 9))));
             }
         }
-        else if (brick.IsMiniBoss)
+        else if (brick.IsSpecialBrick)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -538,7 +536,7 @@ public class BrickManager : MonoBehaviour
                 HPPool.Add(_FusionBrickHealth);
                 Debug.Log(_FusionBrickHealth);
                 brick.IsBoss = true;
-                brick.IsMiniBoss = false;
+                brick.IsSpecialBrick = false;
                 Brick = GetBrick(brick);
 
                 Brick.Point *= _FusionBrickNum;
@@ -555,7 +553,7 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            if(brick.IsMiniBoss)
+            if(brick.IsSpecialBrick)
                 Brick = GetSpecialBrick(brick, UnityEngine.Random.Range(0, BrickInfo.SpecialBrickTypes.Length));
             else
                 Brick = GetBrick(brick);
@@ -570,9 +568,9 @@ public class BrickManager : MonoBehaviour
         {
             Debug.Log("Boss Awake");
         }
-        else if(Brick.IsMiniBoss)
+        else if(Brick.IsSpecialBrick)
         {
-            Debug.Log("MiniBoss Awake");
+            Debug.Log("SpecialBrick Awake");
         }
     }
 
@@ -614,11 +612,11 @@ public class BrickManager : MonoBehaviour
         }
     }
 
-    public void OnMiniBossSpawnButtonClick()
+    public void OnSpecialBrickSpawnButtonClick()
     {
         if(availablePositions.Count > 0)
         {
-            SpawnBrick(SettingMiniBoss());
+            SpawnBrick(SettingSpecialBrick());
         }
     }
 

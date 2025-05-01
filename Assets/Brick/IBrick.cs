@@ -13,7 +13,7 @@ public partial class IBrick : MonoBehaviour
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
-    public bool IsMiniBoss = false;
+    public bool IsSpecialBrick = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -77,7 +77,7 @@ public partial class IBrick : MonoBehaviour
                 else
                 {
                     if (BrickType == "HealBrick") StopCoroutine(BrickHealCoroutine);
-                    if (IsMiniBoss)
+                    if (IsSpecialBrick)
                     {
                         if (BrickType == "ExpBrick")
                         {
@@ -163,10 +163,10 @@ public partial class IBrick : MonoBehaviour
             HPText.fontSize = 5f;
         }
     }
-    public void Init(bool IsBoss, bool IsMiniBoss, int Point, float Exp)
+    public void Init(bool IsBoss, bool IsSpecialBrick, int Point, float Exp)
     {
         this.IsBoss = IsBoss;
-        this.IsMiniBoss = IsMiniBoss;
+        this.IsSpecialBrick = IsSpecialBrick;
         this.Point = Point;
         this.Exp = Exp;
     }

@@ -2214,8 +2214,8 @@ public class FusionBricks : SpecialAugment
     {
         BrickManager.Instance.BaseSpawnTimeValue = 0.4f;
 
-        BrickManager.Instance.MiniBossSpawnChance = 0;
-        BrickManager.Instance.MiniBossSpawnChanceValue = 0f;
+        BrickManager.Instance.SpecialBrickSpawnChance = 0;
+        BrickManager.Instance.SpecialBrickSpawnChanceValue = 0f;
 
         BrickManager.Instance.RapidStageChance = 0;
         BrickManager.Instance.RapidStageChanceValue = 0f;
@@ -2224,7 +2224,7 @@ public class FusionBricks : SpecialAugment
     public override void Remove()
     {
         BrickManager.Instance.BaseSpawnTimeValue = 1f;
-        BrickManager.Instance.MiniBossSpawnChanceValue = 0.1f;
+        BrickManager.Instance.SpecialBrickSpawnChanceValue = 0.1f;
         BrickManager.Instance.RapidStageChanceValue = 0.09f;
     }
 }
@@ -2247,7 +2247,7 @@ public class GainBallAfterLevelUp : SpecialAugment
     }
 }
 
-public class MiniBossChanceUp : SpecialAugment
+public class SpecialBrickChanceUp : SpecialAugment
 {
     private void OnEnable()
     {
@@ -2256,11 +2256,11 @@ public class MiniBossChanceUp : SpecialAugment
 
     public override void Apply()
     {
-        BrickManager.Instance.MiniBossSpawnChanceValue = 1.75f;
+        BrickManager.Instance.SpecialBrickSpawnChanceValue = 1.75f;
     }
 
     public override void Remove()
     {
-        BrickManager.Instance.MiniBossSpawnChanceValue = 1f;
+        BrickManager.Instance.SpecialBrickSpawnChanceValue = 1f;
     }
 }
