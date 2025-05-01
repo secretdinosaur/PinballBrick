@@ -2213,11 +2213,19 @@ public class FusionBricks : SpecialAugment
     public override void Apply()
     {
         BrickManager.Instance.BaseSpawnTimeValue = 0.4f;
+
+        BrickManager.Instance.MiniBossSpawnChance = 0;
+        BrickManager.Instance.MiniBossSpawnChanceValue = 0f;
+
+        BrickManager.Instance.RapidStageChance = 0;
+        BrickManager.Instance.RapidStageChanceValue = 0f;
     }
 
     public override void Remove()
     {
         BrickManager.Instance.BaseSpawnTimeValue = 1f;
+        BrickManager.Instance.MiniBossSpawnChanceValue = 0.1f;
+        BrickManager.Instance.RapidStageChanceValue = 0.09f;
     }
 }
 

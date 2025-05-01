@@ -33,11 +33,11 @@ public class BrickManager : MonoBehaviour
     public Queue<IBrick> BrickQueue;
 
     private bool isMiniBossSpanwed;
-    private float MiniBossSpawnChance;
+    public float MiniBossSpawnChance;
     public float MiniBossSpawnChanceValue;
 
     public bool isRapid;
-    private float RapidStageChance;
+    public float RapidStageChance;
     public float RapidStageChanceValue;
 
     public float BaseBrickSpawnValue;
