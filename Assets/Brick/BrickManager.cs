@@ -90,7 +90,7 @@ public class BrickManager : MonoBehaviour
     {
         isMiniBossSpanwed = false;
         MiniBossSpawnChance = 0;
-        MiniBossSpawnChanceValue = 0.1f;
+        MiniBossSpawnChanceValue = 1f;
         isRapid = false;
 
         RapidStageChance = 0;
@@ -213,30 +213,25 @@ public class BrickManager : MonoBehaviour
         for (int i = 0; i < WaveBricks; i++)
         {
             brickQueue.Enqueue(SettingBrick());
-        }
-        if (Wave % 10 != 0)
-        {
-            if (!isMiniBossSpanwed && Wave >= 5) //After wave 5, Mini boss can spawn
+            if(Wave >= 5)
             {
                 if (UnityEngine.Random.value < MiniBossSpawnChance)
                 {
                     brickQueue.Enqueue(SettingMiniBoss());
                     MiniBossSpawnChance = 0f;
-                    isMiniBossSpanwed = true;
                 }
                 else
                 {
-                    MiniBossSpawnChance += MiniBossSpawnChanceValue; // Ensure it activates by stage 10 at the latest
+                    MiniBossSpawnChance += MiniBossSpawnChanceValue * (1f / (100f * BaseBrickSpawnValue));
                 }
             }
         }
-        else
+        if (Wave % 10 == 0)
         {
-            for(int i = 0; i < BaseBossSpawnValue; i++)
+            for (int i = 0; i < BaseBossSpawnValue; i++)
             {
                 brickQueue.Enqueue(SettingBoss());
             }
-            isMiniBossSpanwed = false;
         }
         SpawnBrickQueue.Enqueue(brickQueue);
     }

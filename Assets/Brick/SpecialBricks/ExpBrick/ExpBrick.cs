@@ -22,7 +22,7 @@ public class ExpBrick : IBrick
 
     IEnumerator TimeSet()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(20f);
         BrickManager.Instance.TakeBrick(this);
         Debug.Log("MiniBoss has gone");
     }
