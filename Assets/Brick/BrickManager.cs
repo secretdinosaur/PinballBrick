@@ -311,17 +311,9 @@ public class BrickManager : MonoBehaviour
             }
         }
         Brick.Init(
-            brick.IsBoss, 
-            
-            brick.IsMiniBoss, 
-
-            (!brick.IsBoss && !brick.IsMiniBoss) ? BrickPointSetting(brick.BrickType) :
-            (!brick.IsBoss && brick.IsMiniBoss) ? (int)(1.2f * BrickPointSetting(brick.BrickType)) :
-            (brick.IsBoss && !brick.IsMiniBoss) ? (int)(1.4f * BrickPointSetting(brick.BrickType)) : BrickPointSetting(brick.BrickType),
-
-            (!brick.IsBoss && !brick.IsMiniBoss) ? BrickExpSetting(brick.BrickType) :
-            (!brick.IsBoss && brick.IsMiniBoss) ? (int)(1.4f * BrickExpSetting(brick.BrickType)) :
-            (brick.IsBoss && !brick.IsMiniBoss) ? (int)(1.9f * BrickExpSetting(brick.BrickType)) : BrickExpSetting(brick.BrickType));
+            brick.IsBoss, false,
+            !brick.IsBoss ? BrickPointSetting(brick.BrickType) : (int)(1.4f * BrickPointSetting(brick.BrickType)),
+            !brick.IsBoss  ? BrickExpSetting(brick.BrickType) : 1.4f * BrickExpSetting(brick.BrickType));
         return Brick;
     }
 
