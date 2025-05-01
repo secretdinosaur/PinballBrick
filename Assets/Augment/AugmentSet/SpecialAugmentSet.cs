@@ -30,14 +30,11 @@ public class Example : SpecialAugment
 }
  */
 
-/**
- * Ȯ���� ���� �� ����Ʈ ȿ�� ����, �ش� ���� �� ����Ʈ ������ �ִ�ġ�� �ƴ϶�� +1
- */
 public class FireBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_1", "FireBall", "Time to Cast Magic", "Effect", 4);
+        SetAugment("SPECIAL_1", "FireBall", "Bricks have a 30% chance to catch fire when struck by a ball", "Effect", 4);
     }
 
     public override void Apply()
@@ -62,14 +59,11 @@ public class FireBall : SpecialAugment
     }
 }
 
-/**
- * ���� �ֺ� ���� ã�Ƽ� ����
- */
 public class Homing : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_2", "Homing Ball", "Lock On!", "Homing", 1);
+        SetAugment("SPECIAL_2", "Magnetic Ball", "Ball chases bricks within range", "Homing", 1);
     }
     public override void Apply()
     {
@@ -82,14 +76,11 @@ public class Homing : SpecialAugment
     }
 }
 
-/**
- * ���� ƨ�涧���� �ٿ Ƚ�� ����(������ ����)
- */
 public class BouncePower: SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_3", "Bounce = Power", "Get Stronger with Bounces", "Bounce", 3);
+        SetAugment("SPECIAL_3", "Thrust", "Ball gains +5% attack damage for each wall bounce up to a maximum of 25%", "Bounce", 3);
     }
 
     public override void Apply(){ }
@@ -103,14 +94,11 @@ public class BouncePower: SpecialAugment
     }
 }
 
-/**
- * ���� ���Ŀ� 3ȸ �߰�Ÿ�߻�
- */
 public class AdditionalThreeAttack: SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_4", "Ninja", "Blink of an Eye", "AdditionalAttack", 1);
+        SetAugment("SPECIAL_4", "Afterimage", "Rapid three additional attacks follow after ball hits", "AdditionalAttack", 1);
     }
 
     public override void Apply(){ }
@@ -126,15 +114,11 @@ public class AdditionalThreeAttack: SpecialAugment
     }
 }
 
-
-/**
- * ũ��Ƽ�� ���� ���Ŀ� �߰�Ÿ 1ȸ �߻�
- */
 public class CriticalAdditionalAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_5", "CriticalAdditionalAttack", "CriticalAdditionalAttack", "AdditionalAttack", 4);
+        SetAugment("SPECIAL_5", "Deadpoint", "Additional attack follows after critical attack", "AdditionalAttack", 4);
     }
 
     public override void Apply(){  }
@@ -150,15 +134,11 @@ public class CriticalAdditionalAttack : SpecialAugment
     }
 }
 
-/**
- * ���� ü�� ���� �� ó��
- */
-
 public class Execution : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_6", "Execution", "Execution", "Special", 1);
+        SetAugment("SPECIAL_6", "Execution", "THe ball executes bricks with less than 15% of max HP", "Special", 1);
     }
 
     public override void Apply(){ }
@@ -166,14 +146,11 @@ public class Execution : SpecialAugment
     public override void Remove(){ }
 }
 
-/**
- * �� �ִ�ü�� �ۼ�Ʈ ������
- */
 public class PercentDamage : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_7", "Percent Damage", "Percent Damage", "Special", 3);
+        SetAugment("SPECIAL_7", "Rupture", "The ball deals 1% of brick's HP with each attack", "Special", 3);
     }
 
     public override void Apply(){ }
@@ -189,15 +166,12 @@ public class PercentDamage : SpecialAugment
     }
 }
 
-/**
- * ���� �� ����Ʈ ������ �ִ��� �����ϸ� ���� �ֺ� ���� (�� �ִ뽺�� * 3) ��ŭ�� ������ ���̽�Ű�� �� ����Ʈ ȿ�� �ߵ�
- */
 public class FireEffectStackBlast : SpecialAugment
 {
     private float FireDuration;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_8", "FireEffectStackBlast", "FireEffectStackBlast", "Effect", 3);
+        SetAugment("SPECIAL_8", "Fire Burst", "An explosion occurs when the brick reaches maximum fire stack", "Effect", 3);
     }
 
     public override void Apply()
