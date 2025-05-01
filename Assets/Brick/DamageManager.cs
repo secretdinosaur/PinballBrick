@@ -44,32 +44,46 @@ public static partial class DamageManager //Normal Attack
 
     private static void DamageProcess(IBrick brick)
     {
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        if (!brick.IsSpecialBrick)
         {
-            Augment.BeforeAttackEffect(brick);
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.BeforeAttackEffect(brick);
+            }
+
+            brick.HP -= FinalDamage(brick);
+
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.AfterMainAttackEffect(brick);
+                Augment.AfterAttackEffect(brick);
+            }
         }
-
-        brick.HP -= FinalDamage(brick);
-
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        else
         {
-            Augment.AfterMainAttackEffect(brick);
-            Augment.AfterAttackEffect(brick);
-        }
+            brick.HP -= FinalDamage(brick);
+        } 
     }
 
     public static void DamageProcessWithoutMainAttack(IBrick brick)
     {
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        if (!brick.IsSpecialBrick)
         {
-            Augment.BeforeAttackEffect(brick);
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.BeforeAttackEffect(brick);
+            }
+
+            brick.HP -= FinalDamage(brick);
+
+            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            {
+                Augment.AfterAttackEffect(brick);
+            }
         }
-
-        brick.HP -= FinalDamage(brick);
-
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        else
         {
-            Augment.AfterAttackEffect(brick);
+            brick.HP -= FinalDamage(brick);
         }
     }
 
@@ -91,7 +105,7 @@ public static partial class DamageManager //Normal Attack
             }
         }
 
-        float FinalDamage = (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
+        float FinalDamage = (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed) || brick.IsSpecialBrick
             ? 1
             : brick.DecayDamageCalculate(TotalAttackStat * brick.TotalMultiple);
         if (brick.BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(brick.GetComponent<TeleportBrick>());
