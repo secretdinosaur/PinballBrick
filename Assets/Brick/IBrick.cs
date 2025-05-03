@@ -83,6 +83,10 @@ public partial class IBrick : MonoBehaviour
                         {
                             LevelManager.Instance.GetExp(100f + GameManager.instance.Wave / 2);
                         }
+                        else if(BrickType == "GoldBrick")
+                        {
+                            StatManager.instance.GetGold(100 + GameManager.instance.Wave / 2);
+                        }
                     }
                     BrickDie();
                 }

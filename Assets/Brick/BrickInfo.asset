@@ -47,5 +47,7 @@ MonoBehaviour:
   - 0
   SpecialBricks:
   - {fileID: -7027782104363891570, guid: 7939d13e8e8fc5748bca7056835515e9, type: 3}
+  - {fileID: 5734178081787487032, guid: 8546d68879e3f4c478aa9a716abef5b2, type: 3}
   SpecialBrickTypes:
   - ExpBrick
+  - GoldBrick
