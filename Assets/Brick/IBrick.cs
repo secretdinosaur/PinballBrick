@@ -87,6 +87,10 @@ public partial class IBrick : MonoBehaviour
                         {
                             StatManager.instance.GetGold(100 + GameManager.instance.Wave / 2);
                         }
+                        else if(BrickType == "BallBrick")
+                        {
+                            BallManager.Instance.CreateBall(10);
+                        }
                     }
                     BrickDie();
                 }
@@ -101,7 +105,7 @@ public partial class IBrick : MonoBehaviour
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
-        LevelManager.Instance.Exp += Exp * StatManager.instance.Persistent_stat.BonusExp;
+        LevelManager.Instance.GetExp(Exp);
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
         {
             Augment.AfterBrickDieEffect(this);
