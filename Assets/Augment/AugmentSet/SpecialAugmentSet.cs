@@ -168,7 +168,6 @@ public class PercentDamage : SpecialAugment
 
 public class FireEffectStackBlast : SpecialAugment
 {
-    private float FireDuration;
     private void OnEnable()
     {
         SetAugment("SPECIAL_8", "Fire Burst", "An explosion occurs when the brick reaches maximum fire stack", "Effect", 3);
@@ -176,7 +175,7 @@ public class FireEffectStackBlast : SpecialAugment
 
     public override void Apply()
     {
-        FireDuration = 0.5f;
+        
     }
 
     public override void Remove(){ }
@@ -194,7 +193,7 @@ public class FireEffectStackBlast : SpecialAugment
                     false,
                     BlastDamage.ToString("F1"), 
                     "Fire");
-                nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + FireDuration);
+                nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
             }
             VisualEffectManager.Instance.SpawnParticle("FireBlast", Brick.transform.position, 30);
         }
@@ -2251,7 +2250,7 @@ public class SpecialBrickChanceUp : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_67", "Lucky Day", "Mini bosses spawn more frequently.", "Special", 2);
+        SetAugment("SPECIAL_67", "Lucky Day", "Mini bosses spawn more frequently.", "Special", 3);
     }
 
     public override void Apply()

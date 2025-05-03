@@ -54,7 +54,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
         DecayDamageMultiple = 1.1f;
-        isSacrificeQuest3Cleared = false;
+        isSacrificeQuest3Cleared = true;
         SpawnBallAmount = 1;
         CurseActiveNumber = 1;
         AfterDeathActiveNumber = 1;

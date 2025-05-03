@@ -5325,6 +5325,16 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
+  - _name: GoldBrick
+    _component: {fileID: 5734178081787487032, guid: 8546d68879e3f4c478aa9a716abef5b2, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
+  - _name: BallBrick
+    _component: {fileID: 7680240655323945563, guid: 9e7e6c6a330962347b97694316ae50d0, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
 --- !u!1 &147145237
 GameObject:
   m_ObjectHideFlags: 0

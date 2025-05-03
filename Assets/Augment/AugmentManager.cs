@@ -52,7 +52,7 @@ public partial class AugmentManager //Utility
 
     public int GetTargetRarity()
     {
-        float chance = Random.value * 100f;
+        float chance = Random.value;
         if (chance < rarityWeights[0])
             return 0;
         chance -= rarityWeights[0];
