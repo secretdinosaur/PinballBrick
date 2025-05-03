@@ -15,7 +15,6 @@ public partial class LevelManager : MonoBehaviour
     public static LevelManager Instance;
     public Slider LevelBar;
     public GameObject LevelUpPanel;
-    public Temporary_Stat Temporary_Stat;
     public Queue<int> LevelUpQueue;
     public int Level { get; set; }
     private float exp;
@@ -100,7 +99,6 @@ public partial class LevelManager : MonoBehaviour
     {
         Exp = 0;
         Level = 1;
-        Temporary_Stat = StatManager.instance.Temporary_stat;
     }
 
     private void FixedUpdate()
