@@ -5331,7 +5331,7 @@ MonoBehaviour:
     _container: {fileID: 137631891}
     _nonLazy: 1
   - _name: BallBrick
-    _component: {fileID: -7027782104363891570, guid: 7939d13e8e8fc5748bca7056835515e9, type: 3}
+    _component: {fileID: 7680240655323945563, guid: 9e7e6c6a330962347b97694316ae50d0, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1

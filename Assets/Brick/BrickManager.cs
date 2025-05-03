@@ -502,23 +502,24 @@ public class BrickManager : MonoBehaviour
     {
         HPPool = new List<float>();
         int Wave = GameManager.instance.Wave;
+        int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
         if (brick.IsBoss)
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, 1.1f) * UnityEngine.Random.Range(7, 9))));
+                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(2f, 3f))));
             }
         }
         else if (brick.IsSpecialBrick)
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseMiniBossHealthValue * (Mathf.Pow(10 + Wave / 2, UnityEngine.Random.Range(1f, 1.2f)))));
+                HPPool.Add((int)(BaseMiniBossHealthValue * (Mathf.Pow(5 + Wave / 2, UnityEngine.Random.Range(1f, 1.2f)))));
             }
         }
         else
         {
-            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow(LevelManager.Instance.Level + Wave + 1, UnityEngine.Random.Range(0.9f, 1.1f))));
+            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, UnityEngine.Random.Range(0.9f, 1.1f))));
             //need to adjust
             for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
             {
@@ -600,7 +601,7 @@ public class BrickManager : MonoBehaviour
         }
         catch (NullReferenceException e)
         {
-            Debug.Log("BrickQueue가 비어 있습니다: " + e.Message);
+            Debug.Log("BrickQueue is empty: " + e.Message);
         }
     }
 

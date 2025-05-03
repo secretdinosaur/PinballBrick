@@ -2251,7 +2251,7 @@ public class SpecialBrickChanceUp : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_67", "Lucky Day", "Mini bosses spawn more frequently.", "Special", 2);
+        SetAugment("SPECIAL_67", "Lucky Day", "Mini bosses spawn more frequently.", "Special", 3);
     }
 
     public override void Apply()
