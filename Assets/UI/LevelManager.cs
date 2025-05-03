@@ -263,11 +263,11 @@ public partial class LevelManager : MonoBehaviour
                 OptionButtons[i].gameObject.GetComponent<Image>().sprite =
                     OptionButtonSprites
                     [
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 50 ? (int)AugmentRarity.Myth :
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 40 ? (int)AugmentRarity.Epic :
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 30 ? (int)AugmentRarity.Legendary :
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 20 ? (int)AugmentRarity.Unique :
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 10 ? (int)AugmentRarity.Rare :
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 25 ? (int)AugmentRarity.Myth :
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 20 ? (int)AugmentRarity.Epic :
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 15 ? (int)AugmentRarity.Legendary :
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 10 ? (int)AugmentRarity.Unique :
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 5 ? (int)AugmentRarity.Rare :
                         (int)AugmentRarity.Common
                     ];
             }
