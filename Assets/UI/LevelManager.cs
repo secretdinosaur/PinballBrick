@@ -5,7 +5,10 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
+using Button = UnityEngine.UI.Button;
+
 
 public partial class LevelManager : MonoBehaviour
 {
@@ -36,6 +39,31 @@ public partial class LevelManager : MonoBehaviour
             }
         }
     }
+
+    enum StatName
+    {
+        AttackDamage,
+        CriticalDamage,
+        CriticalChance,
+        EffectDamage,
+        EffectDuration,
+        EffectCriticalDamage,
+        GoldGain,
+    }
+
+    List<List<float>> StatUpValue = new List<List<float>>
+    {
+        new List<float> { 0.6f, 1.7f },
+        new List<float> { 0.03f, 0.08f },
+        new List<float> { 0.02f, 0.05f },
+        new List<float> { 0.04f, 1.1f },
+        new List<float> { 0.02f, 0.05f },
+        new List<float> { 0.03f, 0.08f },
+        new List<float> { 0.012f, 0.034f },
+    };
+
+    public float BaseStatUpValue;
+
     void Awake()
     {
         Instance = this;
@@ -65,6 +93,8 @@ public partial class LevelManager : MonoBehaviour
             .transform.Find("Description").GetComponent<TMP_Text>();
 
         isAlreadyClickedButton = new bool[OptionButtons.Length];
+
+        BaseStatUpValue = 1f;
     }
     void Start()
     {
@@ -117,9 +147,9 @@ public partial class LevelManager : MonoBehaviour
             { "Attack\nDamage", 0},
             { "Critical\nDamage", 1 },
             { "Critical\nChance", 2 },
-            { "Ball\nSpeed", 3 },
-            { "Effect\nDamage", 4 },
-            { "Effect\nDuration", 5 },
+            { "Effect\nDamage", 3 },
+            { "Effect\nDuration", 4 },
+            { "Effect\nCritical\nDamage", 5 },
             { "Gold\nGain", 6 }
         };
         
@@ -139,13 +169,52 @@ public partial class LevelManager : MonoBehaviour
         return selectedStats;
     }
 
-    public Temporary_Stat CalculateTemporaryStatWithLevel() // stat formula
+    public void CalculateTemporaryStatWithLevel(int i) // stat formula
     {
-        Temporary_Stat stat = new Temporary_Stat();
-        stat.StatLevel = Temporary_Stat.StatLevel;
-        stat.AttackDamage = Temporary_Stat.AttackDamage + Temporary_Stat.StatLevel[0] - 1;
-        stat.EffectDamage = Temporary_Stat.EffectDamage + Temporary_Stat.StatLevel[4] - 1;
-        return stat;
+        switch (i)
+        {
+            case (int)StatName.AttackDamage:
+                StatManager.instance.Temporary_stat.AttackDamage += 
+                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.AttackDamage] % 5 == 0 
+                    ? StatUpValue[(int)StatName.AttackDamage][1] : StatUpValue[(int)StatName.AttackDamage][0]);
+                break;
+            case (int)StatName.CriticalDamage:
+                StatManager.instance.Temporary_stat.CriticalDamage += 
+                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0 
+                    ? StatUpValue[(int)StatName.CriticalDamage][1] : StatUpValue[(int)StatName.CriticalDamage][0]);
+                break;
+            case (int)StatName.CriticalChance:
+                StatManager.instance.Temporary_stat.CriticalChance +=
+                    StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance >= 1f ?
+                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0 
+                    ? StatUpValue[(int)StatName.CriticalDamage][1] : StatUpValue[(int)StatName.CriticalDamage][0]) :
+                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalChance] % 5 == 0 
+                    ? StatUpValue[(int)StatName.CriticalChance][1] : StatUpValue[(int)StatName.CriticalChance][0]);
+                break;
+            case (int)StatName.EffectDamage:
+                StatManager.instance.Temporary_stat.EffectDamage +=
+                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectDamage] % 5 == 0 
+                    ? StatUpValue[(int)StatName.EffectDamage][1] : StatUpValue[(int)StatName.EffectDamage][0]);
+                break;
+            case (int)StatName.EffectDuration:
+                StatManager.instance.Temporary_stat.EffectDuration +=
+                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectDuration] % 5 == 0 
+                    ? StatUpValue[(int)StatName.EffectDuration][1] : StatUpValue[(int)StatName.EffectDuration][0]);
+                break;
+            case (int)StatName.EffectCriticalDamage:
+                StatManager.instance.Temporary_stat.EffectCriticalDamage +=
+                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectCriticalDamage] % 5 == 0 
+                    ? StatUpValue[(int)StatName.EffectCriticalDamage][1] : StatUpValue[(int)StatName.EffectCriticalDamage][0]);
+                break;
+            case (int)StatName.GoldGain:
+                StatManager.instance.Temporary_stat.GoldGain +=
+                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.GoldGain] % 5 == 0 
+                    ? StatUpValue[(int)StatName.GoldGain][1] : StatUpValue[(int)StatName.GoldGain][0]);
+                break;
+            default:
+                break;
+        }
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
 
@@ -191,17 +260,35 @@ public partial class LevelManager : MonoBehaviour
             randomStats = GetRandomStats();
             for (int i = 0; i < 3; i++)
             {
-                OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[(int)AugmentRarity.Common];
+                OptionButtons[i].gameObject.GetComponent<Image>().sprite =
+                    OptionButtonSprites
+                    [
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 30 ? (int)AugmentRarity.Myth :
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 24 ? (int)AugmentRarity.Epic :
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 18 ? (int)AugmentRarity.Legendary :
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 12 ? (int)AugmentRarity.Unique :
+                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 6 ? (int)AugmentRarity.Rare :
+                        (int)AugmentRarity.Common
+                    ];
             }
             Option_1_Name.text = randomStats[0].Key;
             Option_1_Description.text =
-                "Lv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1);
+                " +"  + ((StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1) % 5 == 0 ? 
+                StatUpValue[randomStats[0].Value][1] : StatUpValue[randomStats[0].Value][0])
+                + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1);
+
             Option_2_Name.text = randomStats[1].Key;
             Option_2_Description.text =
-                "Lv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1);
+                " +" + ((StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1) % 5 == 0 ? 
+                StatUpValue[randomStats[1].Value][1] : StatUpValue[randomStats[1].Value][0])
+                + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1);
+
             Option_3_Name.text = randomStats[2].Key;
             Option_3_Description.text =
-                "Lv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1);
+                " +" + ((StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1) % 5 == 0 ? 
+                StatUpValue[randomStats[2].Value][1] : StatUpValue[randomStats[2].Value][0])
+                + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1);
+
             CheckStatOrAugment = true;
         }
         else
@@ -265,13 +352,14 @@ public partial class LevelManager : MonoBehaviour
         {
             if (optionIndex == -1)
             {
-                Temporary_Stat.StatLevel[randomStats[Random.Range(0, 3)].Value]++;
-                StatManager.instance.SaveTemporaryStat(CalculateTemporaryStatWithLevel());
+                int RandomNumber = Random.Range(0, 3);
+                StatManager.instance.Temporary_stat.StatLevel[randomStats[RandomNumber].Value]++;
+                CalculateTemporaryStatWithLevel(randomStats[RandomNumber].Value);
             }
             else
             {
-                Temporary_Stat.StatLevel[randomStats[optionIndex].Value]++;
-                StatManager.instance.SaveTemporaryStat(CalculateTemporaryStatWithLevel());
+                StatManager.instance.Temporary_stat.StatLevel[randomStats[optionIndex].Value]++;
+                CalculateTemporaryStatWithLevel(randomStats[optionIndex].Value);
             }
         }
         else
