@@ -35,6 +35,7 @@ public class Temporary_Stat //In Game Stats(Upgradeable Stats Using Skill Points
     public float EffectDuration;
     public float EffectCriticalDamage;
     public float GoldGain;
+    public float ExpGain;
 }
 
 [System.Serializable]

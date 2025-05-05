@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 using Button = UnityEngine.UI.Button;
+using UnityEngine.InputSystem;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -48,6 +49,7 @@ public partial class LevelManager : MonoBehaviour
         EffectDuration,
         EffectCriticalDamage,
         GoldGain,
+        ExpGain,
     }
 
     List<List<float>> StatUpValue = new List<List<float>>
@@ -58,6 +60,7 @@ public partial class LevelManager : MonoBehaviour
         new List<float> { 0.04f, 1.1f },
         new List<float> { 0.02f, 0.05f },
         new List<float> { 0.03f, 0.08f },
+        new List<float> { 0.012f, 0.034f },
         new List<float> { 0.012f, 0.034f },
     };
 
@@ -135,7 +138,7 @@ public partial class LevelManager : MonoBehaviour
 
     public void GetExp(float value)
     {
-        Exp += value * StatManager.instance.Persistent_stat.BonusExp;
+        Exp += value * (StatManager.instance.Persistent_stat.BonusExp + StatManager.instance.Temporary_stat.ExpGain);
     }
 
     public List<KeyValuePair<string, int>> GetRandomStats()
@@ -148,7 +151,8 @@ public partial class LevelManager : MonoBehaviour
             { "Effect\nDamage", 3 },
             { "Effect\nDuration", 4 },
             { "Effect\nCritical\nDamage", 5 },
-            { "Gold\nGain", 6 }
+            { "Gold\nGain", 6 },
+            { "Exp\nGain", 7 }
         };
         
         List<string> keys = new List<string>(statTable.Keys);
@@ -208,6 +212,11 @@ public partial class LevelManager : MonoBehaviour
                 StatManager.instance.Temporary_stat.GoldGain +=
                     BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.GoldGain] % 5 == 0 
                     ? StatUpValue[(int)StatName.GoldGain][1] : StatUpValue[(int)StatName.GoldGain][0]);
+                break;
+            case (int)StatName.ExpGain:
+                StatManager.instance.Temporary_stat.ExpGain +=
+                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.ExpGain] % 5 == 0
+                    ? StatUpValue[(int)StatName.ExpGain][1] : StatUpValue[(int)StatName.ExpGain][0]);
                 break;
             default:
                 break;
@@ -270,22 +279,13 @@ public partial class LevelManager : MonoBehaviour
                     ];
             }
             Option_1_Name.text = randomStats[0].Key;
-            Option_1_Description.text =
-                " +"  + ((StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1) % 5 == 0 ? 
-                StatUpValue[randomStats[0].Value][1] : StatUpValue[randomStats[0].Value][0])
-                + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1);
+            Option_1_Description.text = LevelUpTextWhenStatUp(0);
 
             Option_2_Name.text = randomStats[1].Key;
-            Option_2_Description.text =
-                " +" + ((StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1) % 5 == 0 ? 
-                StatUpValue[randomStats[1].Value][1] : StatUpValue[randomStats[1].Value][0])
-                + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1);
+            Option_2_Description.text = LevelUpTextWhenStatUp(1);
 
             Option_3_Name.text = randomStats[2].Key;
-            Option_3_Description.text =
-                " +" + ((StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1) % 5 == 0 ? 
-                StatUpValue[randomStats[2].Value][1] : StatUpValue[randomStats[2].Value][0])
-                + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1);
+            Option_3_Description.text = LevelUpTextWhenStatUp(2);
 
             CheckStatOrAugment = true;
         }
@@ -317,6 +317,19 @@ public partial class LevelManager : MonoBehaviour
             Option_3_Description.text = augmentsSet[2].Description;
             CheckStatOrAugment = false;
         }
+    }
+
+    private string LevelUpTextWhenStatUp(int i)
+    {
+        string seconds = "sec";
+        string percent = "%";
+        
+        return " +" + ((StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1) % 5 == 0 ?
+                StatUpValue[randomStats[i].Value][1] : StatUpValue[randomStats[i].Value][0])
+                + (randomStats[i].Value == 4 ? seconds
+                : (randomStats[i].Value == 2 || randomStats[i].Value == 6 || randomStats[i].Value == 7) ? percent
+                : "")
+                + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
     }
 
     private bool IsStatOrAugment()
