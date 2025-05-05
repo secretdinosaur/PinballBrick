@@ -80,14 +80,15 @@ public class StatManager : MonoBehaviour
     {
         Temporary_Stat initialStats = new Temporary_Stat
         {
-            StatLevel = new []{1, 1, 1, 1, 1, 1, 1},
+            StatLevel = new []{1, 1, 1, 1, 1, 1, 1, 1},
             AttackDamage = 0f,
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
             EffectDamage = 0.5f,
             EffectDuration = 0.5f,
             EffectCriticalDamage = 1.1f,
-            GoldGain = 0.0f
+            GoldGain = 0.0f,
+            ExpGain = 0.0f,
         };
         
         string json = JsonUtility.ToJson(initialStats, true);
@@ -165,6 +166,6 @@ public class StatManager : MonoBehaviour
 
     public void GetGold(int Value)
     {
-        Persistent_stat.Gold += Value + (Value * Temporary_stat.GoldGain);
+        Persistent_stat.Gold += Value * (Persistent_stat.BonusGold + Temporary_stat.GoldGain);
     }
 }
