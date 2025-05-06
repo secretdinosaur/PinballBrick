@@ -621,6 +621,10 @@ public class TheFlamethrower : SpecialAugment
 
     public override void Remove() 
     {
+        foreach (IBall ball in BallManager.Instance.InGameBall)
+        {
+            ball.flamethrower.FlamethrowerOff();
+        }
         BallManager.Instance.isOnFlamerower = false;
     }
 }
