@@ -58,7 +58,7 @@ public partial class IBrick : MonoBehaviour
                     ExecutionCor = StartCoroutine(Execution());
                 }
             }
-            if (hp <= 0)
+            if ((int)hp <= 0)
             {
                 hp = 0;
                 HPText.enabled = false;
