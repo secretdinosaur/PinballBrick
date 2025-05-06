@@ -85,6 +85,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<DecreaseFieldCooldown30>(),
             gameObject.AddComponent<CritChanceToAttackDamage>(),
             gameObject.AddComponent<RandomStatUpOrDown>(),
+            gameObject.AddComponent<Trinity>(),
+            gameObject.AddComponent<Perfectionism>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -156,6 +158,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<FusionBricks>(),
             gameObject.AddComponent<GainBallAfterLevelUp>(),
             gameObject.AddComponent<SpecialBrickChanceUp>(),
+            gameObject.AddComponent<IncreseStatUpValue>(),
+            gameObject.AddComponent<GoalWaveBonus>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -183,7 +187,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<TheFlamethrower>(),
+            gameObject.GetComponent<Perfectionism>(),
+            gameObject.GetComponent<CritChanceToAttackDamage>(),
         };
 
         foreach (IAugment augment in TestAugments)
