@@ -28356,7 +28356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &822551879
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28371,10 +28371,10 @@ RectTransform:
   m_Children:
   - {fileID: 1361114363}
   - {fileID: 1805350889}
-  - {fileID: 861604714}
-  - {fileID: 1465065770}
   - {fileID: 624654960}
+  - {fileID: 861604714}
   - {fileID: 2046938568}
+  - {fileID: 1465065770}
   - {fileID: 1882489967}
   m_Father: {fileID: 983967367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28567,7 +28567,7 @@ GameObject:
   - component: {fileID: 861604716}
   - component: {fileID: 861604715}
   m_Layer: 5
-  m_Name: RarityShaderTest2
+  m_Name: RarityShader2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28590,7 +28590,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 550}
+  m_SizeDelta: {x: 295, y: 545}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &861604715
 MonoBehaviour:
@@ -70075,7 +70075,7 @@ GameObject:
   - component: {fileID: 1465065772}
   - component: {fileID: 1465065771}
   m_Layer: 5
-  m_Name: RarityShaderTest3
+  m_Name: RarityShader3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70098,7 +70098,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 260, y: 0}
-  m_SizeDelta: {x: 300, y: 550}
+  m_SizeDelta: {x: 295, y: 545}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1465065771
 MonoBehaviour:
@@ -77808,7 +77808,7 @@ GameObject:
   - component: {fileID: 1805350891}
   - component: {fileID: 1805350890}
   m_Layer: 5
-  m_Name: RarityShaderTest1
+  m_Name: RarityShader1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77828,10 +77828,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 822551879}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -260, y: 0}
-  m_SizeDelta: {x: 300, y: 550}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 139.99998, y: -844.44385}
+  m_SizeDelta: {x: 295, y: 545}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1805350890
 MonoBehaviour:

@@ -9,6 +9,7 @@ using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 using Button = UnityEngine.UI.Button;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -81,18 +82,31 @@ public partial class LevelManager : MonoBehaviour
             LevelUpPanel.transform.Find("SelectButton_2").GetComponent<Button>(),
             LevelUpPanel.transform.Find("SelectButton_3").GetComponent<Button>()
         };
+
+        OptionButtonShaders = new[]
+        {
+            LevelUpPanel.transform.Find("RarityShader1").gameObject,
+            LevelUpPanel.transform.Find("RarityShader2").gameObject,
+            LevelUpPanel.transform.Find("RarityShader3").gameObject,
+        };
+
         Option_1_Name = LevelUpPanel.transform.Find("SelectButton_1").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_1_Description = LevelUpPanel.transform.Find("SelectButton_1").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
+        Option_1_Aura = LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material;
+
         Option_2_Name = LevelUpPanel.transform.Find("SelectButton_2").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_2_Description = LevelUpPanel.transform.Find("SelectButton_2").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
+        Option_2_Aura = LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material;
+
         Option_3_Name = LevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_3_Description = LevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
+        Option_3_Aura = LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material;
 
         isAlreadyClickedButton = new bool[OptionButtons.Length];
 
@@ -231,17 +245,25 @@ public partial class LevelManager : MonoBehaviour
     private TMP_Text NoticeLevelText;
 
     private Button[] OptionButtons;
+    private GameObject[] OptionButtonShaders;
 
     private TMP_Text Option_1_Name;
     private TMP_Text Option_1_Description;
+    private Material Option_1_Aura;
+
     private TMP_Text Option_2_Name;
     private TMP_Text Option_2_Description;
+    private Material Option_2_Aura;
+
     private TMP_Text Option_3_Name;
     private TMP_Text Option_3_Description;
+    private Material Option_3_Aura;
 
     private List<KeyValuePair<string, int>> randomStats;
     private List<IAugment> augmentsSet;
     private bool CheckStatOrAugment;
+
+    private Coroutine LevelUpMaterialTimeRoutine;
 
     enum AugmentRarity
     {
@@ -259,6 +281,7 @@ public partial class LevelManager : MonoBehaviour
         LevelUpPanel.SetActive(true);
         SoundManager.instance.LevelUpSound();
         Level = LevelUpQueue.Dequeue();
+
 
         NoticeLevelText.text = "Now Your Level: " + Level;
         optionIndex = -1;
@@ -280,12 +303,15 @@ public partial class LevelManager : MonoBehaviour
             }
             Option_1_Name.text = randomStats[0].Key;
             Option_1_Description.text = LevelUpTextWhenStatUp(0);
+            Option_1_Aura.SetColor("_Color", SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1));
 
             Option_2_Name.text = randomStats[1].Key;
             Option_2_Description.text = LevelUpTextWhenStatUp(1);
+            Option_2_Aura.SetColor("_Color", SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1));
 
             Option_3_Name.text = randomStats[2].Key;
             Option_3_Description.text = LevelUpTextWhenStatUp(2);
+            Option_3_Aura.SetColor("_Color", SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1));
 
             CheckStatOrAugment = true;
         }
@@ -311,10 +337,16 @@ public partial class LevelManager : MonoBehaviour
             }
             Option_1_Name.text = augmentsSet[0].Name;
             Option_1_Description.text = augmentsSet[0].Description;
+            Option_1_Aura.SetColor("_Color", SetMaterialColor_Augment(augmentsSet[0].Rarity));
+
             Option_2_Name.text = augmentsSet[1].Name;
             Option_2_Description.text = augmentsSet[1].Description;
+            Option_2_Aura.SetColor("_Color", SetMaterialColor_Augment(augmentsSet[1].Rarity));
+
             Option_3_Name.text = augmentsSet[2].Name;
             Option_3_Description.text = augmentsSet[2].Description;
+            Option_3_Aura.SetColor("_Color", SetMaterialColor_Augment(augmentsSet[2].Rarity));
+
             CheckStatOrAugment = false;
         }
     }
@@ -332,6 +364,55 @@ public partial class LevelManager : MonoBehaviour
                 + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
     }
 
+    private Color SetMaterialColor_Stat(int i)
+    {
+        if(i >= 25)
+        {
+            return Color.cyan;
+        }
+        else if(i >= 20)
+        {
+            return Color.yellow;
+        }
+        else if(i >= 15)
+        {
+            return new Color(1.0f, 0.4f, 0.0f);
+        }
+        else if(i >= 10)
+        {
+            return new Color(1.0f, 0.41f, 0.71f);
+        }
+        else if(i >= 5)
+        {
+            return new Color(0.78f, 0.63f, 1.0f);
+        }
+        else
+        {
+            return Color.white;
+        }
+    }
+
+    private Color SetMaterialColor_Augment(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                return Color.cyan;
+            case 1:
+                return Color.yellow;
+            case 2:
+                return new Color(1.0f, 0.4f, 0.0f);
+            case 3:
+                return new Color(1.0f, 0.41f, 0.71f);
+            case 4:
+                return new Color(0.78f, 0.63f, 1.0f);
+            case 5:
+                return Color.white;
+            default:
+                return Color.white;
+        }
+    }
+
     private bool IsStatOrAugment()
     {
         return Level % 2 != 0;
@@ -346,6 +427,7 @@ public partial class LevelManager : MonoBehaviour
             for (int i = 0; i < OptionButtons.Length; i++)
             {
                 OptionButtons[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
+                OptionButtonShaders[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
                 isAlreadyClickedButton[i] = i == Array.IndexOf(OptionButtons, clickedButton);
             }
 
@@ -392,6 +474,7 @@ public partial class LevelManager : MonoBehaviour
         for (int i = 0; i < OptionButtons.Length; i++)
         {
             OptionButtons[i].transform.localScale = new Vector3(0.93f, 0.93f, 0.93f);
+            OptionButtonShaders[i].transform.localScale = new Vector3(0.93f, 0.93f, 0.93f);
         }
         if (LevelUpQueue.Count > 0)
         {
