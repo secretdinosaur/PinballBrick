@@ -592,3 +592,39 @@ public class Perfectionism : StatAugment
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
+
+public class MassivelyCriticalDamageUp : StatAugment
+{
+    bool isGetAugment;
+    private void OnEnable()
+    {
+        SetAugment("STAT_25", "Waiter", "Max Critical Chance Becomes 20%,\n Critical Damage Upgrade Values Are Doubled After Level Up", 3);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+        LevelManager.Instance.StatUpValue[1][0] *= 2;
+        LevelManager.Instance.StatUpValue[1][1] *= 2;
+    }
+
+    public override void Remove()
+    {
+        isGetAugment = false;
+        LevelManager.Instance.StatUpValue[1][0] /= 2;
+        LevelManager.Instance.StatUpValue[1][1] /= 2;
+    }
+
+    private void Update()
+    {
+        if (isGetAugment)
+        {
+            if(StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0.2f)
+            {
+                float excess = (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) - 0.2f;
+                StatManager.instance.Temporary_stat.CriticalChance -= excess;
+                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            }
+        }
+    }
+}

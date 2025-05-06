@@ -55,16 +55,16 @@ public partial class LevelManager : MonoBehaviour
         ExpGain,
     }
 
-    List<List<float>> StatUpValue = new List<List<float>>
+    public List<List<float>> StatUpValue = new List<List<float>>
     {
-        new List<float> { 0.6f, 1.7f },
-        new List<float> { 0.03f, 0.08f },
-        new List<float> { 0.02f, 0.05f },
-        new List<float> { 0.04f, 1.1f },
-        new List<float> { 0.02f, 0.05f },
-        new List<float> { 0.03f, 0.08f },
-        new List<float> { 0.012f, 0.034f },
-        new List<float> { 0.012f, 0.034f },
+        new List<float> { 0.6f, 1.7f }, //AttackDamage
+        new List<float> { 0.03f, 0.08f }, //CriticalDamage
+        new List<float> { 0.02f, 0.05f }, //CriticalChance
+        new List<float> { 0.04f, 1.1f }, //EffectDamage
+        new List<float> { 0.02f, 0.05f }, //EffectDuration
+        new List<float> { 0.03f, 0.08f }, //EffectCriticalDamage
+        new List<float> { 0.012f, 0.034f }, //GoldGain
+        new List<float> { 0.012f, 0.034f }, //ExpGain
     };
 
     public float BaseStatUpValue;

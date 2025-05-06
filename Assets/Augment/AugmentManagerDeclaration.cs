@@ -87,6 +87,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<RandomStatUpOrDown>(),
             gameObject.AddComponent<Trinity>(),
             gameObject.AddComponent<Perfectionism>(),
+            gameObject.AddComponent<MassivelyCriticalDamageUp>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -188,7 +189,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         List<IAugment> TestAugments = new List<IAugment>
         {
             gameObject.GetComponent<Perfectionism>(),
-            gameObject.GetComponent<CritChanceToAttackDamage>(),
+            gameObject.GetComponent<MassivelyCriticalDamageUp>(),
         };
 
         foreach (IAugment augment in TestAugments)
