@@ -59,11 +59,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CustomTime: 139.66385
     - _QueueControl: 1
     - _QueueOffset: 0
     - _Speed: 1.1
     m_Colors:
-    - _AuraColor: {r: 2.670157, g: 2.670157, b: 2.670157, a: 0}
+    - _AuraColor: {r: 3.5648696, g: 0, b: 2.1799018, a: 0}
     - _GlowColor: {r: 1, g: 0.9102765, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

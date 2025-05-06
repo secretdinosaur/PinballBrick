@@ -280,7 +280,7 @@ public partial class IBall : MonoBehaviour
 
 public partial class IBall //Homing
 {
-    private float homingThrust = 80f;
+    private float homingThrust = 150f;
     private float detectionRadius = 1.6f;
     private float rotationSpeed = 40f;
 
