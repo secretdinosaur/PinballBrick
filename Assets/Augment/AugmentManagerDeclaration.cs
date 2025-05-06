@@ -54,7 +54,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
         DecayDamageMultiple = 1.1f;
-        isSacrificeQuest3Cleared = true;
+        isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
         CurseActiveNumber = 1;
         AfterDeathActiveNumber = 1;
@@ -188,8 +188,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Perfectionism>(),
-            gameObject.GetComponent<MassivelyCriticalDamageUp>(),
+
         };
 
         foreach (IAugment augment in TestAugments)
