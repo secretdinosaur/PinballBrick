@@ -8,8 +8,10 @@ using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 using Button = UnityEngine.UI.Button;
+using Color = UnityEngine.Color;
 using UnityEngine.InputSystem;
 using System.Collections;
+using System.Drawing;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -94,23 +96,30 @@ public partial class LevelManager : MonoBehaviour
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_1_Description = LevelUpPanel.transform.Find("SelectButton_1").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
-        Option_1_Aura = LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material;
+        Option_1_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material);
+        LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material = Option_1_Aura;
 
         Option_2_Name = LevelUpPanel.transform.Find("SelectButton_2").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_2_Description = LevelUpPanel.transform.Find("SelectButton_2").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
-        Option_2_Aura = LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material;
+        Option_2_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material);
+        LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material = Option_2_Aura;
 
         Option_3_Name = LevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_3_Description = LevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
-        Option_3_Aura = LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material;
+        Option_3_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material);
+        LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material = Option_3_Aura;
 
         isAlreadyClickedButton = new bool[OptionButtons.Length];
 
         BaseStatUpValue = 1f;
+
+        CustomTime_1 = 0f;
+        CustomTime_2 = 0f;
+        CustomTime_3 = 0f;
     }
     void Start()
     {
@@ -120,9 +129,23 @@ public partial class LevelManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf)
+        if (LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf)
         {
             ShowLevelUpPanel();
+        }
+    }
+
+    private void Update()
+    {
+        if (LevelUpPanel.activeSelf)
+        {
+            CustomTime_1 += Time.unscaledDeltaTime * Random.Range(0.1f, 1f);
+            CustomTime_2 += Time.unscaledDeltaTime * Random.Range(0.1f, 1f);
+            CustomTime_3 += Time.unscaledDeltaTime * Random.Range(0.1f, 1f);
+
+            Option_1_Aura.SetFloat("_CustomTime", CustomTime_1);
+            Option_2_Aura.SetFloat("_CustomTime", CustomTime_2);
+            Option_3_Aura.SetFloat("_CustomTime", CustomTime_3);
         }
     }
 
@@ -263,7 +286,9 @@ public partial class LevelManager : MonoBehaviour
     private List<IAugment> augmentsSet;
     private bool CheckStatOrAugment;
 
-    private Coroutine LevelUpMaterialTimeRoutine;
+    private float CustomTime_1;
+    private float CustomTime_2;
+    private float CustomTime_3;
 
     enum AugmentRarity
     {
@@ -303,15 +328,15 @@ public partial class LevelManager : MonoBehaviour
             }
             Option_1_Name.text = randomStats[0].Key;
             Option_1_Description.text = LevelUpTextWhenStatUp(0);
-            Option_1_Aura.SetColor("_Color", SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1));
+            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1, Option_1_Aura);
 
             Option_2_Name.text = randomStats[1].Key;
             Option_2_Description.text = LevelUpTextWhenStatUp(1);
-            Option_2_Aura.SetColor("_Color", SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1));
+            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1, Option_2_Aura);
 
             Option_3_Name.text = randomStats[2].Key;
             Option_3_Description.text = LevelUpTextWhenStatUp(2);
-            Option_3_Aura.SetColor("_Color", SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1));
+            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1, Option_3_Aura);
 
             CheckStatOrAugment = true;
         }
@@ -337,15 +362,15 @@ public partial class LevelManager : MonoBehaviour
             }
             Option_1_Name.text = augmentsSet[0].Name;
             Option_1_Description.text = augmentsSet[0].Description;
-            Option_1_Aura.SetColor("_Color", SetMaterialColor_Augment(augmentsSet[0].Rarity));
+            SetMaterialColor_Augment(augmentsSet[0].Rarity, Option_1_Aura);
 
             Option_2_Name.text = augmentsSet[1].Name;
             Option_2_Description.text = augmentsSet[1].Description;
-            Option_2_Aura.SetColor("_Color", SetMaterialColor_Augment(augmentsSet[1].Rarity));
+            SetMaterialColor_Augment(augmentsSet[1].Rarity, Option_2_Aura);
 
             Option_3_Name.text = augmentsSet[2].Name;
             Option_3_Description.text = augmentsSet[2].Description;
-            Option_3_Aura.SetColor("_Color", SetMaterialColor_Augment(augmentsSet[2].Rarity));
+            SetMaterialColor_Augment(augmentsSet[2].Rarity, Option_3_Aura);
 
             CheckStatOrAugment = false;
         }
@@ -364,52 +389,60 @@ public partial class LevelManager : MonoBehaviour
                 + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
     }
 
-    private Color SetMaterialColor_Stat(int i)
+    private void SetMaterialColor_Stat(int i, Material material)
     {
         if(i >= 25)
         {
-            return Color.cyan;
+            material.SetColor("_AuraColor", Color.cyan);
         }
         else if(i >= 20)
         {
-            return Color.yellow;
+            material.SetColor("_AuraColor", Color.yellow);
         }
         else if(i >= 15)
         {
-            return new Color(1.0f, 0.4f, 0.0f);
+            material.SetColor("_AuraColor", new Color(1.0f, 0.4f, 0.0f));
         }
         else if(i >= 10)
         {
-            return new Color(1.0f, 0.41f, 0.71f);
+            material.SetColor("_AuraColor", new Color(1.0f, 0.41f, 0.71f));
         }
         else if(i >= 5)
         {
-            return new Color(0.78f, 0.63f, 1.0f);
+            material.SetColor("_AuraColor", new Color(0.78f, 0.63f, 1.0f));
         }
         else
         {
-            return Color.white;
+            material.SetColor("_AuraColor", Color.white);
         }
     }
 
-    private Color SetMaterialColor_Augment(int i)
+    private void SetMaterialColor_Augment(int i, Material material)
     {
+        Debug.Log(i);
         switch (i)
         {
             case 0:
-                return Color.cyan;
+                material.SetColor("_AuraColor", Color.cyan);
+                break;
             case 1:
-                return Color.yellow;
+                material.SetColor("_AuraColor", Color.yellow);
+                break;
             case 2:
-                return new Color(1.0f, 0.4f, 0.0f);
+                material.SetColor("_AuraColor", new Color(1.0f, 0.4f, 0.0f));
+                break;
             case 3:
-                return new Color(1.0f, 0.41f, 0.71f);
+                material.SetColor("_AuraColor", new Color(1.0f, 0.41f, 0.71f));
+                break;
             case 4:
-                return new Color(0.78f, 0.63f, 1.0f);
+                material.SetColor("_AuraColor", new Color(0.6f, 0.17f, 0.75f));
+                break;
             case 5:
-                return Color.white;
+                material.SetColor("_AuraColor", Color.white);
+                break;
             default:
-                return Color.white;
+                material.SetColor("_AuraColor", Color.white);
+                break;
         }
     }
 
@@ -482,6 +515,9 @@ public partial class LevelManager : MonoBehaviour
         }
         else
         {
+            CustomTime_1 = 0;
+            CustomTime_2 = 0;
+            CustomTime_3 = 0;
             Time.timeScale = 1f;
             LevelUpPanel.SetActive(false);
         }
