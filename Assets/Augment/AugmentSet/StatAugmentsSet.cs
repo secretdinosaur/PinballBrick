@@ -531,6 +531,9 @@ public class RandomStatUpOrDown : StatAugment
         StatManager.instance.Temporary_stat.CriticalDamage += ChangeCritDamage;
         StatManager.instance.Temporary_stat.CriticalChance += ChangeCritChance;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+
+        QuestAlarm.Instance.SetAlarm("Stat Roulette", "Stat Roulette: AD " + ChangeAttackDamage + " ED " + ChangeEffectDamage);
+        QuestAlarm.Instance.SetAlarm("Stat Roulette2", "Cri Damage " + ChangeCritDamage + " Cri Chance " + ChangeCritChance + "%");
     }
 
     public override void Remove()

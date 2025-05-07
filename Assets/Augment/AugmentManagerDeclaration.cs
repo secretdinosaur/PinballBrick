@@ -199,7 +199,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<FreshNewStart>());
+        AddAugment(gameObject.GetComponent<RandomStatUpOrDown>());
     }
 }
 

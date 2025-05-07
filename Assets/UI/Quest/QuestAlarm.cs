@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
+using System.Collections;
 public class QuestAlarm : MonoBehaviour
 {
     public static QuestAlarm Instance;
@@ -65,6 +66,7 @@ public class QuestAlarm : MonoBehaviour
             }
             
         }
+
         for(int i = 0; i < 6; i++)
         {
             if (Quests[i].text == "")
@@ -72,6 +74,47 @@ public class QuestAlarm : MonoBehaviour
                 Quests[i].text = MaxCount == 0 ? QuestName + ": " + Text + " " + CurrentCount : QuestName + ": " + Text + " " + CurrentCount + " / " + MaxCount;
                 Quests[i].GetComponent<QuestText>().QuestName = QuestName;
                 return;
+            }
+        }
+    }
+
+    public void SetAlarm(string AlarmName, string Text)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (Quests[i].text == "")
+            {
+                Quests[i].text = Text;
+                Quests[i].GetComponent<QuestText>().QuestName = AlarmName;
+                StartCoroutine(TakeAlarm(AlarmName));
+                return;
+            }
+        }
+    }
+
+    private IEnumerator TakeAlarm(string AlarmName)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < 10f)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            if (Quests[i].GetComponent<QuestText>().QuestName == AlarmName)
+            {
+                Quests[i].text = "";
+                Quests[i].GetComponent<QuestText>().QuestName = null;
+            }
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            if (Quests[i].text == "")
+            {
+                Quests[i].text = Quests[i + 1].text;
+                Quests[i + 1].text = "";
+                Quests[i].GetComponent<QuestText>().QuestName = Quests[i + 1].GetComponent<QuestText>().QuestName;
             }
         }
     }
