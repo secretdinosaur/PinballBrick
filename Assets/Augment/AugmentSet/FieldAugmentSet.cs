@@ -460,6 +460,7 @@ public class BountyHunter: FieldAugment
                     LevelManager.Instance.GetExp(WantedBrick.IsBoss ?
                         Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.1f, LevelManager.Instance.LevelBar.maxValue * 0.2f)
                         : Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.05f, LevelManager.Instance.LevelBar.maxValue * 0.1f));
+                    BountyHunterObj.SetActive(false);
                 }
                 else
                 {

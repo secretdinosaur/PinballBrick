@@ -63,7 +63,7 @@ public abstract class FieldAugment : IAugment
 
 public abstract class SpecialAugment : IAugment
 {
-    protected void SetAugment(string id, string name, string description, string type, int rarity, int cooltime = 0)
+    protected void SetAugment(string id, string name, string description, string type, int rarity, int cooltime = 0, string TypeForPanel = "")
     {
         ID = id;
         Name = name;
@@ -71,6 +71,5 @@ public abstract class SpecialAugment : IAugment
         Type = type;
         Rarity = rarity;
         CoolTime = cooltime;
-        Type = "Special";
     }
 }
