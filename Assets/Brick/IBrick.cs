@@ -13,7 +13,7 @@ public partial class IBrick : MonoBehaviour
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
-    public bool IsMiniBoss = false;
+    public bool IsSpecialBrick = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -50,14 +50,15 @@ public partial class IBrick : MonoBehaviour
             hp = value;
             if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
 
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_6") && (BrickType != "ShieldBrick" || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_6") && (BrickType != "ShieldBrick" 
+                || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
             {
                 if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999)
                 {
                     ExecutionCor = StartCoroutine(Execution());
                 }
             }
-            if (hp <= 0)
+            if ((int)hp <= 0)
             {
                 hp = 0;
                 HPText.enabled = false;
@@ -76,6 +77,21 @@ public partial class IBrick : MonoBehaviour
                 else
                 {
                     if (BrickType == "HealBrick") StopCoroutine(BrickHealCoroutine);
+                    if (IsSpecialBrick)
+                    {
+                        if (BrickType == "ExpBrick")
+                        {
+                            LevelManager.Instance.GetExp(100f + GameManager.instance.Wave / 2);
+                        }
+                        else if(BrickType == "GoldBrick")
+                        {
+                            StatManager.instance.GetGold(100 + GameManager.instance.Wave / 2);
+                        }
+                        else if(BrickType == "BallBrick")
+                        {
+                            BallManager.Instance.CreateBall(3);
+                        }
+                    }
                     BrickDie();
                 }
             }
@@ -89,7 +105,7 @@ public partial class IBrick : MonoBehaviour
         Fever.Instance.FeverCount *= 2;
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
-        LevelManager.Instance.Exp += Exp * StatManager.instance.Persistent_stat.BonusExp;
+        LevelManager.Instance.GetExp(Exp);
         foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
         {
             Augment.AfterBrickDieEffect(this);
@@ -155,10 +171,10 @@ public partial class IBrick : MonoBehaviour
             HPText.fontSize = 5f;
         }
     }
-    public void Init(bool IsBoss, bool IsMiniBoss, int Point, float Exp)
+    public void Init(bool IsBoss, bool IsSpecialBrick, int Point, float Exp)
     {
         this.IsBoss = IsBoss;
-        this.IsMiniBoss = IsMiniBoss;
+        this.IsSpecialBrick = IsSpecialBrick;
         this.Point = Point;
         this.Exp = Exp;
     }
