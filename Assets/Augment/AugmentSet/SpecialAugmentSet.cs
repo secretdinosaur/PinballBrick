@@ -63,7 +63,7 @@ public class Homing : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_2", "Magnetic Ball", "Ball chases bricks within range", "Homing", 1);
+        SetAugment("SPECIAL_2", "Magnetic Ball", "Ball chases bricks within range", "Special", 1);
     }
     public override void Apply()
     {
@@ -80,7 +80,7 @@ public class BouncePower: SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_3", "Thrust", "Ball gains +5% attack damage for each wall bounce up to a maximum of 25%", "Bounce", 3);
+        SetAugment("SPECIAL_3", "Thrust", "Ball gains +5% attack damage for each wall bounce up to a maximum of 25%", "Special", 3);
     }
 
     public override void Apply(){ }
@@ -98,7 +98,7 @@ public class AdditionalThreeAttack: SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_4", "Afterimage", "Rapid three additional attacks follow after ball hits", "AdditionalAttack", 1);
+        SetAugment("SPECIAL_4", "Afterimage", "Rapid three additional attacks follow after ball hits", "Special", 1);
     }
 
     public override void Apply(){ }
@@ -118,7 +118,7 @@ public class CriticalAdditionalAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_5", "Deadpoint", "Additional attack follows after critical attack", "AdditionalAttack", 4);
+        SetAugment("SPECIAL_5", "Deadpoint", "Additional attack follows after critical attack", "Special", 4);
     }
 
     public override void Apply(){  }
@@ -207,7 +207,7 @@ public class ChainLightning : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_9", "Chain Lightning", "Lightning chains to 3 nearby bricks", "AdditionalAttack", 3);
+        SetAugment("SPECIAL_9", "Chain Lightning", "Lightning chains to 3 nearby bricks", "Effect", 3);
     }
 
     public override void Apply(){ }
@@ -252,7 +252,7 @@ public class DeathExp : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_10", "Death EXP", "Gain EXP when the ball drops", "Death", 5);
+        SetAugment("SPECIAL_10", "Death EXP", "Gain EXP when the ball drops", "Special", 5);
     }
 
     public override void Apply(){ }
@@ -272,7 +272,7 @@ public class DeathGold : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_11", "Death Gold", "Gain Gold when the ball drops", "Death", 5);
+        SetAugment("SPECIAL_11", "Death Gold", "Gain Gold when the ball drops", "Special", 5);
     }
 
     public override void Apply(){ }
@@ -292,7 +292,7 @@ public class SpeedPower : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_12", "Momentum", "Atack damage increases with ball speed", "Speed", 4);
+        SetAugment("SPECIAL_12", "Momentum", "Atack damage increases with ball speed", "Special", 4);
     }
 
     public override void Apply(){ }
@@ -312,7 +312,7 @@ public class SpeedCritical : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_13", "Quick and Accurate", "Critical chance increases with ball speed", "Speed", 4);
+        SetAugment("SPECIAL_13", "Quick and Accurate", "Critical chance increases with ball speed", "Special", 4);
     }
 
     public override void Apply(){ }
@@ -334,7 +334,7 @@ public class Lightning : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_14", "Lightning Attack", "An additional lightning strike occurs on attack", "Lightning", 5);
+        SetAugment("SPECIAL_14", "Lightning Attack", "An additional lightning strike occurs on attack", "Effect", 5);
     }
 
     public override void Apply() { }
@@ -595,7 +595,7 @@ public class ExplosionWithBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_21", "Elasticity", "Balls bounce further when they collide with each other", "Bounce", 5);
+        SetAugment("SPECIAL_21", "Elasticity", "Balls bounce further when they collide with each other", "Special", 5);
     }
 
     public override void Apply() { }
@@ -636,14 +636,14 @@ public class LevelUpQuest : SpecialAugment
     private int ClearRequiredCount = 10;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_23", "Level Up Quest", "Gain 50% of EXP and accept a level up quest.\nComplete it to level up", "Quest", 5);
+        SetAugment("SPECIAL_23", "Slayer", "Gain 50% of EXP and accept a quest.\nComplete it to level up", "Quest", 5);
     }
 
     public override void Apply()
     {
         LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.5f;
 
-        QuestAlarm.Instance.SetQuest("LevelUpQuest", "Killed Enemy", 0, ClearRequiredCount);
+        QuestAlarm.Instance.SetQuest("Slayer", "Killed", 0, ClearRequiredCount);
     }
 
     public override void Remove(){ }
@@ -652,7 +652,7 @@ public class LevelUpQuest : SpecialAugment
     {
         KilledEnemy++;
         if(KilledEnemy <= ClearRequiredCount)
-            QuestAlarm.Instance.SetQuest("LevelUpQuest", "Killed Enemy", KilledEnemy, ClearRequiredCount);
+            QuestAlarm.Instance.SetQuest("Slayer", "Killed", KilledEnemy, ClearRequiredCount);
 
         if (KilledEnemy >= ClearRequiredCount && !isCleared)
         {
@@ -670,12 +670,12 @@ public class GrowBallQuest : SpecialAugment
     int ClearRequiredCount = 20;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_24", "Grow Ball Quest", "Accept a grow ball quest.\nComplete it to attack damage up", "Quest", 5);
+        SetAugment("SPECIAL_24", "Grow Ball", "Accept a grow ball quest.\nComplete it to attack damage up", "Quest", 5);
     }
 
     public override void Apply()
     {
-        QuestAlarm.Instance.SetQuest("GrowBallQuest", "Killed Enemy", KilledEnemy, ClearRequiredCount);
+        QuestAlarm.Instance.SetQuest("Grow Ball", "Killed", KilledEnemy, ClearRequiredCount);
     }
 
     public override void Remove() { }
@@ -684,7 +684,7 @@ public class GrowBallQuest : SpecialAugment
     {
         KilledEnemy++;
         if (KilledEnemy <= ClearRequiredCount)
-            QuestAlarm.Instance.SetQuest("GrowBallQuest", "Killed Enemy", KilledEnemy, ClearRequiredCount);
+            QuestAlarm.Instance.SetQuest("Grow Ball", "Killed", KilledEnemy, ClearRequiredCount);
         if (Brick.RecentlyBall != null && !isCleared)
         {
             QuestProgressing(Brick);
@@ -768,7 +768,7 @@ public class InfiniteGrowBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_25", "Infinite Grow Ball", "The ball's attack power increases after destroying bricks", "Stat", 3);
+        SetAugment("SPECIAL_25", "Infinite Grow Ball", "The ball's attack power increases after destroying bricks", "Special", 3);
     }
 
     public override void Apply() 
@@ -794,10 +794,10 @@ public class SacrificeQuest1 : SpecialAugment
     private bool isCleared;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_26", "Sacrifice Quest I", "Accept a sacrifice quest I.\nComplete it to Receive a weak reward", "Quest", 5);
+        SetAugment("SPECIAL_26", "Sacrifice I", "Accept a sacrifice I.\nComplete it to Receive a weak reward", "Quest", 5);
     }
 
-    public override void Apply() { QuestAlarm.Instance.SetQuest("SacrificeQuest1", "SacrificeNumber", SacrificeNumber, ClearRequiredCount); }
+    public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
 
     public override void Remove() { }
 
@@ -805,7 +805,7 @@ public class SacrificeQuest1 : SpecialAugment
     {
         SacrificeNumber++;
         if (SacrificeNumber <= ClearRequiredCount)
-            QuestAlarm.Instance.SetQuest("SacrificeQuest1", "SacrificeNumber", SacrificeNumber, ClearRequiredCount);
+            QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= ClearRequiredCount && !isCleared)
         {
             StatManager.instance.Temporary_stat.AttackDamage += 7;
@@ -813,7 +813,6 @@ public class SacrificeQuest1 : SpecialAugment
             StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
 
             AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest2>());
-            Debug.Log("SacrificeQuest1 Clear");
             isCleared = true;
         }
     }
@@ -826,10 +825,10 @@ public class SacrificeQuest2 : SpecialAugment
     int ClearRequiredCount = 50;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_27", "Sacrifice Quest II", "Accept a sacrifice quest II.\nComplete it to Receive a moderate reward", "Quest", 3);
+        SetAugment("SPECIAL_27", "Sacrifice II", "Accept a sacrifice II.\nComplete it to Receive a moderate reward", "Quest", 3);
     }
 
-    public override void Apply() { QuestAlarm.Instance.SetQuest("SacrificeQuest2", "SacrificeNumber", SacrificeNumber, ClearRequiredCount); }
+    public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
 
     public override void Remove() { }
 
@@ -837,7 +836,7 @@ public class SacrificeQuest2 : SpecialAugment
     {
         SacrificeNumber++;
         if (SacrificeNumber <= ClearRequiredCount)
-            QuestAlarm.Instance.SetQuest("SacrificeQuest2", "SacrificeNumber", SacrificeNumber, ClearRequiredCount);
+            QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= 50 && !isCleared)
         {
             StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.4f;
@@ -845,7 +844,6 @@ public class SacrificeQuest2 : SpecialAugment
             StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
             StatManager.instance.GetGold((int)(50f * StatManager.instance.Temporary_stat.GoldGain));
 
-            Debug.Log("SacrificeQuest2 Clear");
             AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest3>());
             isCleared = true;
         }
@@ -859,10 +857,10 @@ public class SacrificeQuest3 : SpecialAugment
     private bool isCleared;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_28", "Sacrifice Quest III", "Accept a sacrifice quest III.\nComplete it to Receive a powerful reward", "Quest", 2);
+        SetAugment("SPECIAL_28", "Sacrifice III", "Accept a sacrifice III.\nComplete it to Receive a powerful reward", "Quest", 2);
     }
 
-    public override void Apply() { QuestAlarm.Instance.SetQuest("SacrificeQuest3", "SacrificeNumber", SacrificeNumber, ClearRequiredCount); }
+    public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice III", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
 
     public override void Remove() { }
 
@@ -870,7 +868,7 @@ public class SacrificeQuest3 : SpecialAugment
     {
         SacrificeNumber++;
         if (SacrificeNumber <= ClearRequiredCount)
-            QuestAlarm.Instance.SetQuest("SacrificeQuest3", "SacrificeNumber", SacrificeNumber, ClearRequiredCount);
+            QuestAlarm.Instance.SetQuest("Sacrifice III", "Sacrificed", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= 70 && !isCleared)
         {
             Debug.Log("SacrificeQuest3 Clear");
@@ -901,17 +899,17 @@ public class AttackAfterAdditionalBall : SpecialAugment
     }
     private void OnEnable()
     {
-        SetAugment("SPECIAL_29", "Sincerity", "A ball is created every 50 hits", "Ball", 5);
+        SetAugment("SPECIAL_29", "Sincerity", "A ball is created every 50 hits", "Special", 5);
     }
 
-    public override void Apply() { QuestAlarm.Instance.SetQuest("Sincerity", "Attack Count", AttackNumber, RequiredCount); }
+    public override void Apply() { QuestAlarm.Instance.SetQuest("Sincerity", "Attack", AttackNumber, RequiredCount); }
 
     public override void Remove() { }
 
     public override void AfterAttackEffect(IBrick Brick)
     {
         AttackNumber++;
-        QuestAlarm.Instance.SetQuest("Sincerity", "Attack Count", AttackNumber, RequiredCount);
+        QuestAlarm.Instance.SetQuest("Sincerity", "Attack", AttackNumber, RequiredCount);
     }
 }
 
@@ -919,7 +917,7 @@ public class ShareBallAtk : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_30", "Inheritance", "Fallen ball's 70% attack power that\ndivided among current balls", "Ball", 5);
+        SetAugment("SPECIAL_30", "Inheritance", "Fallen ball's 70% attack power\ndivided among current balls", "Special", 5);
     }
 
     public override void Apply() { }
@@ -943,7 +941,7 @@ public class StrongAdditionalAttack : SpecialAugment
     float SuperUltraStrongAttackChance = 0.001f;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_31", "One in a thousand", "A powerful additional attack triggers at low chance", "AdditionalAttack", 2);
+        SetAugment("SPECIAL_31", "One in a thousand", "A powerful additional attack triggers at low chance", "Special", 2);
     }
 
     public override void Apply() { }
@@ -980,7 +978,7 @@ public class RandomEffect : SpecialAugment
     };
     private void OnEnable()
     {
-        SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nIt may be positive or negative", "AdditionalAttack", 3);
+        SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nIt may be positive or negative", "Special", 3);
     }
 
     public override void Apply() { }
@@ -1143,7 +1141,7 @@ public class RebirthBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_34", "Immortality", "Adds a low chance to revive after the ball falls", "Ball", 5);
+        SetAugment("SPECIAL_34", "Immortality", "Adds a low chance to revive after the ball falls", "Special", 5);
     }
 
     public override void Apply() { }
@@ -1165,7 +1163,7 @@ public class BossKillBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_35", "Uprising", "Summons an ball when the boss is defeated", "Ball", 5);
+        SetAugment("SPECIAL_35", "Uprising", "Summons an ball when the boss is defeated", "Special", 5);
     }
 
     public override void Apply() { }
@@ -1185,7 +1183,7 @@ public class SpawnBallAmountMultiple1 : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_36", "2x!", "All summoned balls are doubled", "Ball", 2);
+        SetAugment("SPECIAL_36", "2x!", "All summoned balls are doubled", "Special", 2);
     }
 
     public override void Apply() 
@@ -1203,7 +1201,7 @@ public class SpawnBallAmountMultiple2 : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_37", "3x!!", "All summoned balls are tripled", "Ball", 1);
+        SetAugment("SPECIAL_37", "3x!!", "All summoned balls are tripled", "Special", 1);
     }
 
     public override void Apply()
@@ -1225,7 +1223,7 @@ public class BallSwarm : SpecialAugment
     int RequiredBall = 30;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_38", "Ball Swarm", "Attack power increases \nwhen 30 or more balls are summoned", "Ball", 4);
+        SetAugment("SPECIAL_38", "Ball Swarm", "Attack power increases \nwhen 30 or more balls are summoned", "Special", 4);
     }
 
     public override void Apply()
@@ -1268,7 +1266,7 @@ public class LonelyBall : SpecialAugment
     bool Upgrade = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_39", "Lonely Ball", "Attack power increases \nwhen 5 or less balls are summoned", "Ball", 4);
+        SetAugment("SPECIAL_39", "Lonely Ball", "Attack power increases \nwhen 5 or less balls are summoned", "Special", 4);
     }
 
     public override void Apply()
@@ -1309,7 +1307,7 @@ public class SuicideBoomBall : SpecialAugment
     float damage = 50;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_40", "Explosive Ball", "A low chance for the ball to explode after an attack", "Ball", 1);
+        SetAugment("SPECIAL_40", "Explosive Ball", "A low chance for the ball to explode after an attack", "Special", 1);
     }
 
     public override void Apply() { }
@@ -1348,7 +1346,7 @@ public class SplitBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_41", "Diffraction", "A low chance for the ball to split after an attack", "Ball", 3);
+        SetAugment("SPECIAL_41", "Diffraction", "A low chance for the ball to split after an attack", "Special", 3);
     }
 
     public override void Apply()
@@ -1431,7 +1429,7 @@ public class CurseBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_42", "Curse Ball", "When the ball falls, \nit deals curse damage to a random block", "Death", 4);
+        SetAugment("SPECIAL_42", "Curse Ball", "When the ball falls, \nit deals curse damage to a random block", "Effect", 4);
     }
 
     public override void Apply()
@@ -1477,7 +1475,7 @@ public class ThreeBrickCurseAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_43", "Deep Grudge", "Deals 3 additional curse attacks", "Death", 3);
+        SetAugment("SPECIAL_43", "Deep Grudge", "Deals 3 additional curse attacks", "Effect", 3);
     }
 
     public override void Apply() 
@@ -1510,7 +1508,7 @@ public class CurseTwice : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_44", "Persistent Grudge", "All curse attack are doubled", "Death", 2);
+        SetAugment("SPECIAL_44", "Persistent Grudge", "All curse attack are doubled", "Effect", 2);
     }
 
     public override void Apply() 
@@ -1528,7 +1526,7 @@ public class DeathEffectTwice : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_45", "Die again?", "All actions performed after the ball's death are doubled", "Death", 1);
+        SetAugment("SPECIAL_45", "Die again?", "All actions performed after the ball's death are doubled", "Special", 1);
     }
 
     public override void Apply()
@@ -1546,7 +1544,7 @@ public class SpawnBombBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_46", "Bomb Maniac", "Low chance of bomb ball on summon", "Ball", 3);
+        SetAugment("SPECIAL_46", "Bomb Maniac", "Low chance of bomb ball on summon", "Special", 3);
     }
 
     public override void Apply()
@@ -1564,7 +1562,7 @@ public class ChangeNormalToGlass : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_47", "Glassification", "The basic ball becomes a glass ball with higher attack", "Ball", 3);
+        SetAugment("SPECIAL_47", "Glassification", "The basic ball becomes a glass ball with higher attack", "Special", 3);
     }
 
     public override void Apply()
@@ -1586,7 +1584,7 @@ public class RebornBombBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_48", "Bomb Modification", "Bomb ball revive a low chance after explode", "Ball", 1);
+        SetAugment("SPECIAL_48", "Bomb Modification", "Bomb ball revive a low chance after explode", "Special", 1);
     }
 
     public override void Apply() { }
@@ -1599,7 +1597,7 @@ public class OneMoreChance : SpecialAugment
     bool isRevived = true;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_49", "One More Chance", "If no balls exist,\nsummon 5 balls at once", "Ball", 2);
+        SetAugment("SPECIAL_49", "One More Chance", "If no balls exist,\nsummon 5 balls at once", "Special", 2);
     }
 
     public override void Apply() 
@@ -1956,7 +1954,7 @@ public class DecayingPoison: SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_55", "Decaying Poison", "When poisoned, decay is also applied", "Special", 3);
+        SetAugment("SPECIAL_55", "Decaying Poison", "When poisoned, decay is also applied", "Effect", 3);
     }
 
     public override void Apply()
@@ -1976,7 +1974,7 @@ public class FlammablePoison: SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_56", "Flammable Poison", "When poisoned, fire is also applied", "Special", 3);
+        SetAugment("SPECIAL_56", "Flammable Poison", "When poisoned, fire is also applied", "Effect", 3);
     }
 
     public override void Apply()
@@ -2077,7 +2075,7 @@ public class RollDiceBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_60", "Roll the Dice!", "Roll dice instead of summoning balls.\nsummon as many balls as the dice show.", "Ball", 1);
+        SetAugment("SPECIAL_60", "Roll the Dice!", "Roll dice instead of summoning balls.\nsummon as many balls as the dice show.", "Special", 1);
     }
 
     public override void Apply()
@@ -2095,7 +2093,7 @@ public class ItemEnhance : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_61", "Item Enhancement", "Increases item spawn rate and enhances them", "item", 2);
+        SetAugment("SPECIAL_61", "Item Enhancement", "Increases item spawn rate and enhances them", "Special", 2);
     }
 
     public override void Apply()

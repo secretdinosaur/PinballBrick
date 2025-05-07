@@ -23,12 +23,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/GameScenes/Shop.unity
     guid: e8b3ad676b33b92469d1167655afdc77
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Before0415/dolsot.unity
     guid: 99c4640d9f2ae4d449513b9ef6d64c1b
   - enabled: 0
     path: Assets/Scenes/Before0411/woojin.unity
     guid: 0f349203edabaee4288a65139c6b2f07
+  - enabled: 1
+    path: Assets/Scenes/Dolsot.unity
+    guid: af414726a83dc584fbec7cd95e37fedc
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: e8ede286e6f66b1419d4c6232b377c34, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 9e93d28aa6734e2498bc438dfbc15ce7, type: 2}
