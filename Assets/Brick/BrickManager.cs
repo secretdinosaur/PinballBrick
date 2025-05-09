@@ -113,6 +113,18 @@ public class BrickManager : MonoBehaviour
         {
             SpawnBrickRoutine = StartCoroutine(SpawnBricks());
         }
+
+        if (availablePositions.Count > 0 && CurrentBricks.Count < 5)
+        {
+            try
+            {
+                SpawnBrick(BrickQueue.Dequeue());
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
     }
 
     public void UpdateCurrentBricks(IBrick brick)
@@ -248,24 +260,21 @@ public class BrickManager : MonoBehaviour
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
-                Debug.Log("Wave : " + Wave + " Left Bricks Count : " + BrickQueue.Count);
             }
             else
             {
-                Debug.Log("Wave : " + Wave + " Left Bricks Count : " + BrickQueue.Count);
             }
             /////////////////////////////////------------------------------------------------------------------------------------------
             if (isRapid) // Rapid stages are active after wave 10
             {
-                Debug.Log("Rapid Stage");
                 RapidStageChance = 0;
                 while(BrickQueue.Count > 0)
                 {
                     if(availablePositions.Count > 0 && !WavePause)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) 
-                            * BaseSpawnTimeValue * 
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value)
+                            * BaseSpawnTimeValue *
                             (0.6f - (Wave * 0.0015f) - (AddPerWave * 0.015f)) <= 0.3f ? 0.3f : (0.6f - (Wave * 0.002f) - (AddPerWave * 0.02f)));
                     }
                     else
@@ -277,7 +286,6 @@ public class BrickManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Normal Stage");
                 RapidStageChance += RapidStageChanceValue; //Ensure it activates by stage 11 at the latest
                 while (BrickQueue.Count > 0)
                 {
@@ -286,7 +294,7 @@ public class BrickManager : MonoBehaviour
                         SpawnBrick(BrickQueue.Dequeue());
                         //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
                         yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value)
-                            * BaseSpawnTimeValue * 
+                            * BaseSpawnTimeValue *
                             (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)) <= 0.8f ? 0.8f : (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)));
                     }
                     else
@@ -302,7 +310,7 @@ public class BrickManager : MonoBehaviour
                 GameManager.instance.Wave += 1;
 
                 int WaitingTime = 0;
-                while(WaitingTime < BaseWaitingTimeValue && CurrentBricks.Count > 5)
+                while (WaitingTime < BaseWaitingTimeValue && CurrentBricks.Count > 5)
                 {
                     WaitingTime++;
                     yield return new WaitForSeconds(1f);
@@ -595,7 +603,7 @@ public class BrickManager : MonoBehaviour
         return brick;
     }
 
-    //Text Button Functions
+    //Test Button Functions
     public void OnSpawnWaveBrickButtonClick()
     {
         try

@@ -257,6 +257,151 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8099474}
   m_CullTransparentMesh: 1
+--- !u!1 &23742497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 23742498}
+  - component: {fileID: 23742500}
+  - component: {fileID: 23742499}
+  m_Layer: 0
+  m_Name: BrickSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &23742498
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23742497}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 153662570}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &23742499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23742497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34a86ae4ccff6854286b10139bad7c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPPool: []
+  CurrentBricks: []
+  BrickInfo: {fileID: 11400000, guid: bbb84a3b34e8063498cc697faa3a9f0f, type: 2}
+  availablePositions: []
+  usingPositions: []
+  MainBrick: {fileID: 0}
+  SpecialBrickSpawnChance: 0
+  SpecialBrickSpawnChanceValue: 0
+  isRapid: 0
+  RapidStageChance: 0
+  RapidStageChanceValue: 0.09
+  BaseBrickSpawnValue: 1
+  BaseBrickHealthValue: 1
+  BaseMiniBossHealthValue: 1
+  BaseBossHealthValue: 1
+  BaseSpawnTimeValue: 0
+  BaseWaitingTimeValue: 5
+  BaseBossSpawnValue: 1
+--- !u!114 &23742500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23742497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733f4e1ff483611408f4a8d4fc9202ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pools:
+  - _name: brick
+    _component: {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 0
+  - _name: Hard
+    _component: {fileID: -977798360730988515, guid: 5d8e5d6e556634948bffc7c88fffd630, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 0
+  - _name: Shield
+    _component: {fileID: 8715328750586643657, guid: a4c16860799e88e4da46f796a23d139a, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 0
+  - _name: TwinBrick
+    _component: {fileID: 4506351670689749019, guid: 02cb33b1921d238428146e6deed00a99, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
+  - _name: SlimeBrick
+    _component: {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
+  - _name: IgnoreBrick
+    _component: {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
+  - _name: TeleportBrick
+    _component: {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
+  - _name: WhiteBrick
+    _component: {fileID: 1708533091770634106, guid: 2c348e231a74f5045a32d0f3665b8982, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
+  - _name: HealBrick
+    _component: {fileID: 1824619304834806856, guid: bf73b28786367574196390cd1711acd8, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
+  - _name: BlackBrick
+    _component: {fileID: -3384781788680756480, guid: de966c7a39a1b0f40a7d91811b707933, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
+  - _name: ExpBrick
+    _component: {fileID: -7027782104363891570, guid: 7939d13e8e8fc5748bca7056835515e9, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
+  - _name: GoldBrick
+    _component: {fileID: 5734178081787487032, guid: 8546d68879e3f4c478aa9a716abef5b2, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
+  - _name: BallBrick
+    _component: {fileID: 7680240655323945563, guid: 9e7e6c6a330962347b97694316ae50d0, type: 3}
+    _count: 0
+    _container: {fileID: 23742498}
+    _nonLazy: 1
 --- !u!1 &99315169
 GameObject:
   m_ObjectHideFlags: 0
@@ -5328,136 +5473,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 134100765}
   m_CullTransparentMesh: 1
---- !u!1 &137631890
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 137631891}
-  - component: {fileID: 137631893}
-  - component: {fileID: 137631892}
-  m_Layer: 0
-  m_Name: BrickSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &137631891
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 137631890}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 153662570}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &137631892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 137631890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34a86ae4ccff6854286b10139bad7c39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HPPool: []
-  CurrentBricks: []
-  BrickInfo: {fileID: 11400000, guid: bbb84a3b34e8063498cc697faa3a9f0f, type: 2}
-  availablePositions: []
-  usingPositions: []
-  MainBrick: {fileID: 0}
-  SpecialBrickSpawnChance: 0
-  SpecialBrickSpawnChanceValue: 0
-  isRapid: 0
-  RapidStageChance: 0
-  RapidStageChanceValue: 0.09
-  BaseBrickSpawnValue: 1
-  BaseBrickHealthValue: 1
-  BaseMiniBossHealthValue: 1
-  BaseBossHealthValue: 1
-  BaseSpawnTimeValue: 0
-  BaseWaitingTimeValue: 5
-  BaseBossSpawnValue: 1
---- !u!114 &137631893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 137631890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733f4e1ff483611408f4a8d4fc9202ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pools:
-  - _name: brick
-    _component: {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 0
-  - _name: Hard
-    _component: {fileID: -977798360730988515, guid: 5d8e5d6e556634948bffc7c88fffd630, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 0
-  - _name: Shield
-    _component: {fileID: 8715328750586643657, guid: a4c16860799e88e4da46f796a23d139a, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 0
-  - _name: TwinBrick
-    _component: {fileID: 4506351670689749019, guid: 02cb33b1921d238428146e6deed00a99, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: SlimeBrick
-    _component: {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: IgnoreBrick
-    _component: {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: TeleportBrick
-    _component: {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: WhiteBrick
-    _component: {fileID: 1708533091770634106, guid: 2c348e231a74f5045a32d0f3665b8982, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: HealBrick
-    _component: {fileID: 1824619304834806856, guid: bf73b28786367574196390cd1711acd8, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: BlackBrick
-    _component: {fileID: -3384781788680756480, guid: de966c7a39a1b0f40a7d91811b707933, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
 --- !u!1 &147145237
 GameObject:
   m_ObjectHideFlags: 0
@@ -5524,9 +5539,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 998555652}
+  - {fileID: 23742498}
   - {fileID: 2000923007}
   - {fileID: 2033836775}
-  - {fileID: 137631891}
   - {fileID: 1870363753}
   - {fileID: 754160305}
   - {fileID: 1049267875}
@@ -17070,7 +17085,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 137631892}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
         m_MethodName: OnSpawnWaveBrickButtonClick
         m_Mode: 1
@@ -17638,7 +17653,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 137631892}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
         m_MethodName: OnWaveStopButtonClick
         m_Mode: 1
@@ -28841,7 +28856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &822551879
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29232,7 +29247,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 137631892}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
         m_MethodName: OnSkipWaveButtonClick
         m_Mode: 1
@@ -29365,7 +29380,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 137631892}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
         m_MethodName: OnSpecialBrickSpawnButtonClick
         m_Mode: 1
@@ -56185,7 +56200,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 137631892}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
         m_MethodName: OnBrickSpawnButtonClick
         m_Mode: 1
@@ -78395,7 +78410,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 137631892}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
         m_MethodName: OnBossSpawnButtonClick
         m_Mode: 1
