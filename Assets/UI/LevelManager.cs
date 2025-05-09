@@ -99,6 +99,8 @@ public partial class LevelManager : MonoBehaviour
             .transform.Find("Description").GetComponent<TMP_Text>();
         Option_1_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material);
         LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material = Option_1_Aura;
+        Option_1_Type = LevelUpPanel.transform.Find("SelectButton_1/Type").GetComponent<TMP_Text>();
+        Option_1_CoolTime = LevelUpPanel.transform.Find("SelectButton_1/CoolTime").GetComponent<TMP_Text>();
 
         Option_2_Name = LevelUpPanel.transform.Find("SelectButton_2").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
@@ -106,6 +108,8 @@ public partial class LevelManager : MonoBehaviour
             .transform.Find("Description").GetComponent<TMP_Text>();
         Option_2_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material);
         LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material = Option_2_Aura;
+        Option_2_Type = LevelUpPanel.transform.Find("SelectButton_2/Type").GetComponent<TMP_Text>();
+        Option_2_CoolTime = LevelUpPanel.transform.Find("SelectButton_2/CoolTime").GetComponent<TMP_Text>();
 
         Option_3_Name = LevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
@@ -113,6 +117,8 @@ public partial class LevelManager : MonoBehaviour
             .transform.Find("Description").GetComponent<TMP_Text>();
         Option_3_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material);
         LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material = Option_3_Aura;
+        Option_3_Type = LevelUpPanel.transform.Find("SelectButton_3/Type").GetComponent<TMP_Text>();
+        Option_3_CoolTime = LevelUpPanel.transform.Find("SelectButton_3/CoolTime").GetComponent<TMP_Text>();
 
         isAlreadyClickedButton = new bool[OptionButtons.Length];
 
@@ -289,14 +295,18 @@ public partial class LevelManager : MonoBehaviour
 
     private TMP_Text Option_1_Name;
     private TMP_Text Option_1_Description;
+    private TMP_Text Option_1_Type;
+    private TMP_Text Option_1_CoolTime;
     private Material Option_1_Aura;
-
     private TMP_Text Option_2_Name;
     private TMP_Text Option_2_Description;
+    private TMP_Text Option_2_Type;
+    private TMP_Text Option_2_CoolTime;
     private Material Option_2_Aura;
-
     private TMP_Text Option_3_Name;
     private TMP_Text Option_3_Description;
+    private TMP_Text Option_3_Type;
+    private TMP_Text Option_3_CoolTime;
     private Material Option_3_Aura;
 
     private List<KeyValuePair<string, int>> randomStats;
@@ -352,9 +362,17 @@ public partial class LevelManager : MonoBehaviour
             SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1, Option_2_Aura);
 
             Option_3_Name.text = randomStats[2].Key;
-            Option_3_Description.text = LevelUpTextWhenStatUp(2);
-            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1, Option_3_Aura);
+            Option_3_Description.text =
+                "Lv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1);
 
+            Option_1_Type.text = "";
+            Option_1_CoolTime.text = "";
+
+            Option_2_Type.text = "";
+            Option_2_CoolTime.text = "";
+
+            Option_3_Type.text = "";
+            Option_3_CoolTime.text = "";
             CheckStatOrAugment = true;
         }
         else
@@ -379,16 +397,19 @@ public partial class LevelManager : MonoBehaviour
             }
             Option_1_Name.text = augmentsSet[0].Name;
             Option_1_Description.text = augmentsSet[0].Description;
+            Option_1_Type.text = augmentsSet[0].Type;
+            Option_1_CoolTime.text = augmentsSet[0].CoolTime == 0 ? "" : (augmentsSet[0].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
             SetMaterialColor_Augment(augmentsSet[0].Rarity, Option_1_Aura);
-
             Option_2_Name.text = augmentsSet[1].Name;
             Option_2_Description.text = augmentsSet[1].Description;
+            Option_2_Type.text = augmentsSet[1].Type;
+            Option_2_CoolTime.text = augmentsSet[1].CoolTime == 0 ? "" : (augmentsSet[1].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
             SetMaterialColor_Augment(augmentsSet[1].Rarity, Option_2_Aura);
-
             Option_3_Name.text = augmentsSet[2].Name;
             Option_3_Description.text = augmentsSet[2].Description;
+            Option_3_Type.text = augmentsSet[2].Type;
+            Option_3_CoolTime.text = augmentsSet[2].CoolTime == 0 ? "" : (augmentsSet[2].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
             SetMaterialColor_Augment(augmentsSet[2].Rarity, Option_3_Aura);
-
             CheckStatOrAugment = false;
         }
     }

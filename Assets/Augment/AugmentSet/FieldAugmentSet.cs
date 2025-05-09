@@ -37,7 +37,7 @@ public class AllDamage : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_1", "Holy Rain", "The holy water damages all bricks", 3);
+        SetAugment("FIELD_1", "Holy Rain", "The holy water damages all bricks", 3, 10);
     }
 
     public override void Apply()
@@ -82,12 +82,12 @@ public class AllDamage : FieldAugment
 public class AngryBall : FieldAugment
 {
     Coroutine Routine = null;
-    float Cooldown = 3f;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown / 10 * 3;
     float Power = 10f;
 
     private void OnEnable()
     {
-        SetAugment("FIELD_2", "Angry Ball", "Balls become enraged and move faster", 3);
+        SetAugment("FIELD_2", "Angry Ball", "Balls become enraged and move faster", 3, 3);
     }
 
     public override void Apply()
@@ -147,12 +147,12 @@ public class PhoenixBall : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for 20 seconds", 4);
+        SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for 20 seconds", 4, 40);
     }
 
     public override void Apply()
     {
-        Routine = StartCoroutine(ChoosingPhoenixBall(20f, 20f + Cooldown));
+        Routine = StartCoroutine(ChoosingPhoenixBall(20f, Cooldown * 4));
     }
 
     public override void Remove()
@@ -193,12 +193,12 @@ public class TargetMark : FieldAugment
     Material TargetMat;
     private void OnEnable()
     {
-        SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 1);
+        SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 1, 15);
     }
 
     public override void Apply()
     {
-        Routine = StartCoroutine(TargetMarking(5f + Cooldown));
+        Routine = StartCoroutine(TargetMarking(Cooldown * 1.5f));
         Target = GameObject.Find("Target");
         TargetMat = Target.GetComponent<Renderer>().material;
         Target.SetActive(false);
@@ -262,11 +262,11 @@ public class TargetMark : FieldAugment
 public class SatelliteBeam : FieldAugment
 {
     Coroutine Routine = null;
-    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 10;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 6;
 
     private void OnEnable()
     {
-        SetAugment("FIELD_5", "Satellite Beam", "Generates a powerful satellite beam", 1);
+        SetAugment("FIELD_5", "Satellite Beam", "Generates a powerful satellite beam", 1, 6);
     }
 
     public override void Apply()
@@ -300,7 +300,7 @@ public class AutoGetExp : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_6", "Meditation", "Automatically gain EXP over time", 5);
+        SetAugment("FIELD_6", "Meditation", "Automatically gain EXP over time", 5, 10);
     }
 
     public override void Apply()
@@ -335,13 +335,12 @@ public class AntiGravity : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_7", "Antigravity", "Reverses gravity at regular intervals", 3);
+        SetAugment("FIELD_7", "Antigravity", "Reverses gravity at regular intervals", 3, 10);
     }
 
     public override void Apply()
     {
-        //12f + Cooldown
-        Routine = StartCoroutine(GetAntiGravity(7f));
+        Routine = StartCoroutine(GetAntiGravity(Cooldown));
         AntiGravityObj = GameObject.Find("AntiGravity");
     }
 
@@ -410,7 +409,7 @@ public class BountyHunter: FieldAugment
     Material BountyHunterMat;
     private void OnEnable()
     {
-        SetAugment("FIELD_8", "Bounty Hunter", "Random brick is wanted\nRewards are earned when breaking it", 4);
+        SetAugment("FIELD_8", "Bounty Hunter", "Random brick is wanted\nRewards are earned when breaking it", 4, 10);
     }
 
     public override void Apply()
@@ -461,6 +460,7 @@ public class BountyHunter: FieldAugment
                     LevelManager.Instance.GetExp(WantedBrick.IsBoss ?
                         Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.1f, LevelManager.Instance.LevelBar.maxValue * 0.2f)
                         : Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.05f, LevelManager.Instance.LevelBar.maxValue * 0.1f));
+                    BountyHunterObj.SetActive(false);
                 }
                 else
                 {
@@ -478,12 +478,12 @@ public class LightningRod: FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_9", "Thunderstrike Zone", "Generates thunderstrike zone where lightning strikes automatically", 2);
+        SetAugment("FIELD_9", "Thunderstrike Zone", "Generates thunderstrike zone where lightning strikes automatically", 2, 10);
     }
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetLightningRod(5));
+        Routine = StartCoroutine(GetLightningRod(Cooldown));
     }
 
     public override void Remove()
@@ -592,7 +592,7 @@ public class DecayZone : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_12", "Decay Zone", "Generate a decay zone where decay happens automatically", 2);
+        SetAugment("FIELD_12", "Decay Zone", "Generate a decay zone where decay happens automatically", 2, 10);
     }
 
     public override void Apply()
@@ -622,15 +622,16 @@ public class DecayZone : FieldAugment
 public class WeatherChange : FieldAugment
 {
     Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
 
     private void OnEnable()
     {
-        SetAugment("FIELD_13", "Constant Disaster", "Random disaster occured causing random effects", 1);
+        SetAugment("FIELD_13", "Constant Disaster", "Random disaster occured causing random effects", 1, 30);
     }
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetWeatherChange(30f));
+        Routine = StartCoroutine(GetWeatherChange(Cooldown * 3));
     }
 
     public override void Remove()
@@ -691,15 +692,16 @@ public class WeatherChange : FieldAugment
 public class DiceGamble : FieldAugment
 {
     Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
 
     private void OnEnable()
     {
-        SetAugment("FIELD_14", "Dice Gamble", "Roll the dice and get rewards based on the result", 2);
+        SetAugment("FIELD_14", "Dice Gamble", "Roll the dice and get rewards based on the result", 2, 60);
     }
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetDiceGamble(60f));
+        Routine = StartCoroutine(GetDiceGamble(Cooldown * 6));
     }
 
     public override void Remove()

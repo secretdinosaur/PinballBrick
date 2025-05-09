@@ -1247,7 +1247,7 @@
     "m_ShaderOutputName": "Edge1",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 0.019999999552965165,
+        "x": 0.009999999776482582,
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
@@ -1763,7 +1763,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Scale",
     "m_StageCapability": 3,
-    "m_Value": 230.5,
+    "m_Value": 236.60000610351563,
     "m_DefaultValue": 500.0,
     "m_Labels": []
 }
@@ -5963,10 +5963,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -216.0000457763672,
-            "y": 1180.0001220703125,
-            "width": 208.00003051757813,
-            "height": 325.9998779296875
+            "x": -258.0,
+            "y": 1176.6666259765625,
+            "width": 209.33334350585938,
+            "height": 328.0
         }
     },
     "m_Slots": [
@@ -6817,7 +6817,7 @@
     "m_ShaderOutputName": "T",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 0.8999999761581421,
+        "x": 0.9900000095367432,
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
