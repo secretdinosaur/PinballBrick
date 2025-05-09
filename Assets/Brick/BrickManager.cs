@@ -113,18 +113,6 @@ public class BrickManager : MonoBehaviour
         {
             SpawnBrickRoutine = StartCoroutine(SpawnBricks());
         }
-
-        if (availablePositions.Count > 0 && CurrentBricks.Count < 5)
-        {
-            try
-            {
-                SpawnBrick(BrickQueue.Dequeue());
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
     }
 
     public void UpdateCurrentBricks(IBrick brick)
@@ -274,8 +262,9 @@ public class BrickManager : MonoBehaviour
                     {
                         SpawnBrick(BrickQueue.Dequeue());
                         yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value)
-                            * BaseSpawnTimeValue *
-                            (0.6f - (Wave * 0.0015f) - (AddPerWave * 0.015f)) <= 0.3f ? 0.3f : (0.6f - (Wave * 0.002f) - (AddPerWave * 0.02f)));
+                            * CurrentBricks.Count < 4 ? 
+                            UnityEngine.Random.Range(0.1f, 0.4f) :
+                            BaseSpawnTimeValue * (0.6f - (Wave * 0.0015f) - (AddPerWave * 0.015f)) <= 0.3f ? 0.3f : (0.6f - (Wave * 0.002f) - (AddPerWave * 0.02f)));
                     }
                     else
                     {
@@ -294,8 +283,9 @@ public class BrickManager : MonoBehaviour
                         SpawnBrick(BrickQueue.Dequeue());
                         //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
                         yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value)
-                            * BaseSpawnTimeValue *
-                            (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)) <= 0.8f ? 0.8f : (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)));
+                            * CurrentBricks.Count < 4 ?
+                            UnityEngine.Random.Range(0.1f, 0.4f) :
+                            BaseSpawnTimeValue * (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)) <= 0.8f ? 0.8f : (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)));
                     }
                     else
                     {
