@@ -8,6 +8,8 @@ public abstract class IAugment : MonoBehaviour
     public string Name;
     public string Description;
     public int Rarity;
+    public int CoolTime = 0;
+    public string Type;
     public virtual void Apply() { }
 
     public virtual void Remove() { }
@@ -42,30 +44,32 @@ public abstract class StatAugment : IAugment
         Name = name;
         Description = description;
         Rarity = rarity;
+        Type = "Stat";
     }
 }
 
 public abstract class FieldAugment : IAugment
 {
-    protected void SetAugment(string id, string name, string description, int rarity)
+    protected void SetAugment(string id, string name, string description, int rarity, int cooltime = 0)
     {
         ID = id;
         Name = name;
         Description = description;
         Rarity = rarity;
+        CoolTime = cooltime;
+        Type = "Field";
     }
 }
 
 public abstract class SpecialAugment : IAugment
 {
-    public string Type;
-
-    protected void SetAugment(string id, string name, string description, string type, int rarity)
+    protected void SetAugment(string id, string name, string description, string type, int rarity, int cooltime = 0, string TypeForPanel = "")
     {
         ID = id;
         Name = name;
         Description = description;
         Type = type;
         Rarity = rarity;
+        CoolTime = cooltime;
     }
 }

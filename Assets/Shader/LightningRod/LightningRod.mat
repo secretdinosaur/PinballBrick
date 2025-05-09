@@ -56,9 +56,9 @@ Material:
     - _EnableExternalAlpha: 0
     - _NoisePower: 8.1
     - _NoiseScale: 8.98
-    - _NoiseSpeed1: -0.5
-    - _NoiseSpeed2: 1
-    - _OuterNoisePower: 2.3
+    - _NoiseSpeed1: -0.89
+    - _NoiseSpeed2: 1.62
+    - _OuterNoisePower: 1.01
     - _OuterNoiseScale: 43.66
     - _OuterNoiseSpeed1: -1
     - _OuterNoiseSpeed2: 1

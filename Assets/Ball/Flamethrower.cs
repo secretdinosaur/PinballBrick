@@ -67,4 +67,9 @@ public class Flamethrower : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
+
+    public void FlamethrowerOff()
+    {
+        gameObject.SetActive(false);
+    }
 }

@@ -8,8 +8,10 @@ using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 using Button = UnityEngine.UI.Button;
+using Color = UnityEngine.Color;
 using UnityEngine.InputSystem;
 using System.Collections;
+using System.Drawing;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -53,16 +55,16 @@ public partial class LevelManager : MonoBehaviour
         ExpGain,
     }
 
-    List<List<float>> StatUpValue = new List<List<float>>
+    public List<List<float>> StatUpValue = new List<List<float>>
     {
-        new List<float> { 0.6f, 1.7f },
-        new List<float> { 0.03f, 0.08f },
-        new List<float> { 0.02f, 0.05f },
-        new List<float> { 0.04f, 1.1f },
-        new List<float> { 0.02f, 0.05f },
-        new List<float> { 0.03f, 0.08f },
-        new List<float> { 0.012f, 0.034f },
-        new List<float> { 0.012f, 0.034f },
+        new List<float> { 0.6f, 1.7f }, //AttackDamage
+        new List<float> { 0.03f, 0.08f }, //CriticalDamage
+        new List<float> { 0.02f, 0.05f }, //CriticalChance
+        new List<float> { 0.04f, 1.1f }, //EffectDamage
+        new List<float> { 0.02f, 0.05f }, //EffectDuration
+        new List<float> { 0.03f, 0.08f }, //EffectCriticalDamage
+        new List<float> { 0.012f, 0.034f }, //GoldGain
+        new List<float> { 0.012f, 0.034f }, //ExpGain
     };
 
     public float BaseStatUpValue;
@@ -94,23 +96,36 @@ public partial class LevelManager : MonoBehaviour
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_1_Description = LevelUpPanel.transform.Find("SelectButton_1").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
-        Option_1_Aura = LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material;
+        Option_1_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material);
+        LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material = Option_1_Aura;
+        Option_1_Type = LevelUpPanel.transform.Find("SelectButton_1/Type").GetComponent<TMP_Text>();
+        Option_1_CoolTime = LevelUpPanel.transform.Find("SelectButton_1/CoolTime").GetComponent<TMP_Text>();
 
         Option_2_Name = LevelUpPanel.transform.Find("SelectButton_2").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_2_Description = LevelUpPanel.transform.Find("SelectButton_2").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
-        Option_2_Aura = LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material;
+        Option_2_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material);
+        LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material = Option_2_Aura;
+        Option_2_Type = LevelUpPanel.transform.Find("SelectButton_2/Type").GetComponent<TMP_Text>();
+        Option_2_CoolTime = LevelUpPanel.transform.Find("SelectButton_2/CoolTime").GetComponent<TMP_Text>();
 
         Option_3_Name = LevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
         Option_3_Description = LevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
-        Option_3_Aura = LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material;
+        Option_3_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material);
+        LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material = Option_3_Aura;
+        Option_3_Type = LevelUpPanel.transform.Find("SelectButton_3/Type").GetComponent<TMP_Text>();
+        Option_3_CoolTime = LevelUpPanel.transform.Find("SelectButton_3/CoolTime").GetComponent<TMP_Text>();
 
         isAlreadyClickedButton = new bool[OptionButtons.Length];
 
         BaseStatUpValue = 1f;
+
+        CustomTime_1 = 0f;
+        CustomTime_2 = 0f;
+        CustomTime_3 = 0f;
     }
     void Start()
     {
@@ -120,9 +135,23 @@ public partial class LevelManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf)
+        if (LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf)
         {
             ShowLevelUpPanel();
+        }
+    }
+
+    private void Update()
+    {
+        if (LevelUpPanel.activeSelf)
+        {
+            CustomTime_1 += Time.unscaledDeltaTime * Random.Range(0.1f, 1f);
+            CustomTime_2 += Time.unscaledDeltaTime * Random.Range(0.1f, 1f);
+            CustomTime_3 += Time.unscaledDeltaTime * Random.Range(0.1f, 1f);
+
+            Option_1_Aura.SetFloat("_CustomTime", CustomTime_1);
+            Option_2_Aura.SetFloat("_CustomTime", CustomTime_2);
+            Option_3_Aura.SetFloat("_CustomTime", CustomTime_3);
         }
     }
 
@@ -185,8 +214,22 @@ public partial class LevelManager : MonoBehaviour
         return selectedStats;
     }
 
+
+
     public void CalculateTemporaryStatWithLevel(int i) // stat formula
     {
+        float chanceSum = StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance;
+
+        float damageValue = BaseStatUpValue *
+            (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0
+              ? StatUpValue[(int)StatName.CriticalDamage][1]
+              : StatUpValue[(int)StatName.CriticalDamage][0]);
+
+        float chanceValue = BaseStatUpValue *
+            (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalChance] % 5 == 0
+              ? StatUpValue[(int)StatName.CriticalChance][1]
+              : StatUpValue[(int)StatName.CriticalChance][0]);
+
         switch (i)
         {
             case (int)StatName.AttackDamage:
@@ -200,12 +243,9 @@ public partial class LevelManager : MonoBehaviour
                     ? StatUpValue[(int)StatName.CriticalDamage][1] : StatUpValue[(int)StatName.CriticalDamage][0]);
                 break;
             case (int)StatName.CriticalChance:
-                StatManager.instance.Temporary_stat.CriticalChance +=
-                    StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance >= 1f ?
-                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0 
-                    ? StatUpValue[(int)StatName.CriticalDamage][1] : StatUpValue[(int)StatName.CriticalDamage][0]) :
-                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalChance] % 5 == 0 
-                    ? StatUpValue[(int)StatName.CriticalChance][1] : StatUpValue[(int)StatName.CriticalChance][0]);
+                _ = chanceSum >= 1f
+                ? StatManager.instance.Temporary_stat.CriticalDamage += damageValue
+                : StatManager.instance.Temporary_stat.CriticalChance += chanceValue;
                 break;
             case (int)StatName.EffectDamage:
                 StatManager.instance.Temporary_stat.EffectDamage +=
@@ -249,21 +289,27 @@ public partial class LevelManager : MonoBehaviour
 
     private TMP_Text Option_1_Name;
     private TMP_Text Option_1_Description;
+    private TMP_Text Option_1_Type;
+    private TMP_Text Option_1_CoolTime;
     private Material Option_1_Aura;
-
     private TMP_Text Option_2_Name;
     private TMP_Text Option_2_Description;
+    private TMP_Text Option_2_Type;
+    private TMP_Text Option_2_CoolTime;
     private Material Option_2_Aura;
-
     private TMP_Text Option_3_Name;
     private TMP_Text Option_3_Description;
+    private TMP_Text Option_3_Type;
+    private TMP_Text Option_3_CoolTime;
     private Material Option_3_Aura;
 
     private List<KeyValuePair<string, int>> randomStats;
     private List<IAugment> augmentsSet;
     private bool CheckStatOrAugment;
 
-    private Coroutine LevelUpMaterialTimeRoutine;
+    private float CustomTime_1;
+    private float CustomTime_2;
+    private float CustomTime_3;
 
     enum AugmentRarity
     {
@@ -303,16 +349,24 @@ public partial class LevelManager : MonoBehaviour
             }
             Option_1_Name.text = randomStats[0].Key;
             Option_1_Description.text = LevelUpTextWhenStatUp(0);
-            Option_1_Aura.SetColor("_Color", SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1));
+            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1, Option_1_Aura);
 
             Option_2_Name.text = randomStats[1].Key;
             Option_2_Description.text = LevelUpTextWhenStatUp(1);
-            Option_2_Aura.SetColor("_Color", SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1));
+            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1, Option_2_Aura);
 
             Option_3_Name.text = randomStats[2].Key;
-            Option_3_Description.text = LevelUpTextWhenStatUp(2);
-            Option_3_Aura.SetColor("_Color", SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1));
+            Option_3_Description.text =
+                "Lv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1);
 
+            Option_1_Type.text = "";
+            Option_1_CoolTime.text = "";
+
+            Option_2_Type.text = "";
+            Option_2_CoolTime.text = "";
+
+            Option_3_Type.text = "";
+            Option_3_CoolTime.text = "";
             CheckStatOrAugment = true;
         }
         else
@@ -337,16 +391,19 @@ public partial class LevelManager : MonoBehaviour
             }
             Option_1_Name.text = augmentsSet[0].Name;
             Option_1_Description.text = augmentsSet[0].Description;
-            Option_1_Aura.SetColor("_Color", SetMaterialColor_Augment(augmentsSet[0].Rarity));
-
+            Option_1_Type.text = augmentsSet[0].Type;
+            Option_1_CoolTime.text = augmentsSet[0].CoolTime == 0 ? "" : (augmentsSet[0].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
+            SetMaterialColor_Augment(augmentsSet[0].Rarity, Option_1_Aura);
             Option_2_Name.text = augmentsSet[1].Name;
             Option_2_Description.text = augmentsSet[1].Description;
-            Option_2_Aura.SetColor("_Color", SetMaterialColor_Augment(augmentsSet[1].Rarity));
-
+            Option_2_Type.text = augmentsSet[1].Type;
+            Option_2_CoolTime.text = augmentsSet[1].CoolTime == 0 ? "" : (augmentsSet[1].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
+            SetMaterialColor_Augment(augmentsSet[1].Rarity, Option_2_Aura);
             Option_3_Name.text = augmentsSet[2].Name;
             Option_3_Description.text = augmentsSet[2].Description;
-            Option_3_Aura.SetColor("_Color", SetMaterialColor_Augment(augmentsSet[2].Rarity));
-
+            Option_3_Type.text = augmentsSet[2].Type;
+            Option_3_CoolTime.text = augmentsSet[2].CoolTime == 0 ? "" : (augmentsSet[2].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
+            SetMaterialColor_Augment(augmentsSet[2].Rarity, Option_3_Aura);
             CheckStatOrAugment = false;
         }
     }
@@ -357,59 +414,67 @@ public partial class LevelManager : MonoBehaviour
         string percent = "%";
         
         return " +" + ((StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1) % 5 == 0 ?
-                StatUpValue[randomStats[i].Value][1] : StatUpValue[randomStats[i].Value][0])
+                BaseStatUpValue * (StatUpValue[randomStats[i].Value][1]) : BaseStatUpValue * (StatUpValue[randomStats[i].Value][0]))
                 + (randomStats[i].Value == 4 ? seconds
                 : (randomStats[i].Value == 2 || randomStats[i].Value == 6 || randomStats[i].Value == 7) ? percent
                 : "")
                 + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
     }
 
-    private Color SetMaterialColor_Stat(int i)
+    private void SetMaterialColor_Stat(int i, Material material)
     {
         if(i >= 25)
         {
-            return Color.cyan;
+            material.SetColor("_AuraColor", Color.cyan);
         }
         else if(i >= 20)
         {
-            return Color.yellow;
+            material.SetColor("_AuraColor", Color.yellow);
         }
         else if(i >= 15)
         {
-            return new Color(1.0f, 0.4f, 0.0f);
+            material.SetColor("_AuraColor", new Color(1.0f, 0.4f, 0.0f));
         }
         else if(i >= 10)
         {
-            return new Color(1.0f, 0.41f, 0.71f);
+            material.SetColor("_AuraColor", new Color(1.0f, 0.41f, 0.71f));
         }
         else if(i >= 5)
         {
-            return new Color(0.78f, 0.63f, 1.0f);
+            material.SetColor("_AuraColor", new Color(0.78f, 0.63f, 1.0f));
         }
         else
         {
-            return Color.white;
+            material.SetColor("_AuraColor", Color.white);
         }
     }
 
-    private Color SetMaterialColor_Augment(int i)
+    private void SetMaterialColor_Augment(int i, Material material)
     {
+        Debug.Log(i);
         switch (i)
         {
             case 0:
-                return Color.cyan;
+                material.SetColor("_AuraColor", Color.cyan);
+                break;
             case 1:
-                return Color.yellow;
+                material.SetColor("_AuraColor", Color.yellow);
+                break;
             case 2:
-                return new Color(1.0f, 0.4f, 0.0f);
+                material.SetColor("_AuraColor", new Color(1.0f, 0.4f, 0.0f));
+                break;
             case 3:
-                return new Color(1.0f, 0.41f, 0.71f);
+                material.SetColor("_AuraColor", new Color(1.0f, 0.41f, 0.71f));
+                break;
             case 4:
-                return new Color(0.78f, 0.63f, 1.0f);
+                material.SetColor("_AuraColor", new Color(0.6f, 0.17f, 0.75f));
+                break;
             case 5:
-                return Color.white;
+                material.SetColor("_AuraColor", Color.white);
+                break;
             default:
-                return Color.white;
+                material.SetColor("_AuraColor", Color.white);
+                break;
         }
     }
 
@@ -482,6 +547,9 @@ public partial class LevelManager : MonoBehaviour
         }
         else
         {
+            CustomTime_1 = 0;
+            CustomTime_2 = 0;
+            CustomTime_3 = 0;
             Time.timeScale = 1f;
             LevelUpPanel.SetActive(false);
         }

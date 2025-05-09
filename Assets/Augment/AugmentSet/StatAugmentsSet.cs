@@ -466,7 +466,7 @@ public class CritChanceToAttackDamage : StatAugment
 
     public void Update()
     {
-        if (isGetAugment && (StatManager.instance.Persistent_stat.CriticalChance > 0 || StatManager.instance.Temporary_stat.CriticalChance > 0))
+        if (isGetAugment && (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0))
         {
             float TotalCritChance = StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance;
             TransferToAttackDamage(TotalCritChance);
@@ -476,6 +476,7 @@ public class CritChanceToAttackDamage : StatAugment
     private void TransferToAttackDamage(float CritChance)
     {
         StatManager.instance.Temporary_stat.AttackDamage += CritChance * 0.4f;
+        StatManager.instance.Temporary_stat.CriticalChance -= CritChance;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
@@ -539,5 +540,91 @@ public class RandomStatUpOrDown : StatAugment
         StatManager.instance.Temporary_stat.CriticalDamage -= ChangeCritDamage;
         StatManager.instance.Temporary_stat.CriticalChance -= ChangeCritChance;
         StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class Trinity : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, CriticalDamage 33% Up", 2);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.33f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.33f;
+        StatManager.instance.Temporary_stat.CriticalDamage += 0.33f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.33f;
+        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.33f;
+        StatManager.instance.Temporary_stat.CriticalDamage -= 0.33f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class Perfectionism : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_24", "Perfectionism", "Critical Chance Becomes 100%,\n Attack Damage -40%", 2);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance = 1 - StatManager.instance.Persistent_stat.CriticalChance;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 0.6f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.Temporary_stat.CriticalChance = 0;
+        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 0.6f;
+        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+    }
+}
+
+public class MassivelyCriticalDamageUp : StatAugment
+{
+    bool isGetAugment;
+    private void OnEnable()
+    {
+        SetAugment("STAT_25", "Waiter", "Max Critical Chance Becomes 20%,\n Critical Damage Upgrade Values Are Doubled After Level Up", 3);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+        LevelManager.Instance.StatUpValue[1][0] *= 2;
+        LevelManager.Instance.StatUpValue[1][1] *= 2;
+    }
+
+    public override void Remove()
+    {
+        isGetAugment = false;
+        LevelManager.Instance.StatUpValue[1][0] /= 2;
+        LevelManager.Instance.StatUpValue[1][1] /= 2;
+    }
+
+    private void Update()
+    {
+        if (isGetAugment)
+        {
+            if(StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0.2f)
+            {
+                float excess = (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) - 0.2f;
+                StatManager.instance.Temporary_stat.CriticalChance -= excess;
+                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            }
+        }
     }
 }
