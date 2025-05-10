@@ -46,7 +46,7 @@ public class Atk50Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_2", "Super Ball III", "Attack damage +30%", 2);
+        SetAugment("STAT_2", "Super Ball III", "Attack damage +50%", 2);
     }
 
     public override void Apply()
@@ -172,21 +172,21 @@ public class AtkUpWhenCritical : StatAugment
     }
 }
 
-public class EffectCritical : StatAugment //교체필요
+public class ExpGain30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_8", "Critical Effect", "Critical is applied to special effects", 4);
+        SetAugment("STAT_8", "Senior", "Exp Gain +30%", 4);
     }
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.EffectCriticalDamage += 0.2f;
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.3f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.EffectCriticalDamage -= 0.2f;
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.3f);
     }
 }
 
@@ -582,5 +582,41 @@ public class MassivelyCriticalDamageUp : StatAugment
                 StatManager.instance.ChangeTemporaryStats_CriticalChance(-excess);
             }
         }
+    }
+}
+
+public class ExpGain10Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_26", "Freshman", "Exp Gain +10%", 5);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.1f);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.1f);
+    }
+}
+
+public class ExpGain50Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_27", "Graduate", "Exp Gain +50%", 2);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.5f);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.5f);
     }
 }
