@@ -177,7 +177,15 @@ public partial class LevelManager : MonoBehaviour
 
     public void LevelBarMaxValueSet(int level)
     {
-        LevelBar.maxValue = Mathf.Round(100 * Mathf.Pow(1.2f, level - 1));
+        LevelBar.maxValue =
+            level > 90 ?
+                110 + 98 * (level - 1) :
+            level > 60 ?
+                100 + 82 * (level - 1) :
+            level > 30 ?
+                80 + 62 * (level - 1) :
+            //level <= 30
+                50 + 27 * (level - 1);
     }
 
     public void GetExp(float value)
@@ -381,8 +389,8 @@ public partial class LevelManager : MonoBehaviour
             SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1, Option_2_Aura);
 
             Option_3_Name.text = randomStats[2].Key;
-            Option_3_Description.text =
-                "Lv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1);
+            Option_3_Description.text = LevelUpTextWhenStatUp(2);
+            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1, Option_3_Aura);
 
             Option_1_Type.text = "";
             Option_1_CoolTime.text = "";
@@ -419,16 +427,19 @@ public partial class LevelManager : MonoBehaviour
             Option_1_Type.text = augmentsSet[0].Type;
             Option_1_CoolTime.text = augmentsSet[0].CoolTime == 0 ? "" : (augmentsSet[0].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
             SetMaterialColor_Augment(augmentsSet[0].Rarity, Option_1_Aura);
+
             Option_2_Name.text = augmentsSet[1].Name;
             Option_2_Description.text = augmentsSet[1].Description;
             Option_2_Type.text = augmentsSet[1].Type;
             Option_2_CoolTime.text = augmentsSet[1].CoolTime == 0 ? "" : (augmentsSet[1].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
             SetMaterialColor_Augment(augmentsSet[1].Rarity, Option_2_Aura);
+
             Option_3_Name.text = augmentsSet[2].Name;
             Option_3_Description.text = augmentsSet[2].Description;
             Option_3_Type.text = augmentsSet[2].Type;
             Option_3_CoolTime.text = augmentsSet[2].CoolTime == 0 ? "" : (augmentsSet[2].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
             SetMaterialColor_Augment(augmentsSet[2].Rarity, Option_3_Aura);
+
             CheckStatOrAugment = false;
         }
     }
@@ -505,7 +516,7 @@ public partial class LevelManager : MonoBehaviour
 
     private bool IsStatOrAugment()
     {
-        return Level % 2 != 0;
+        return Level % 3 != 0;
     }
 
     private int optionIndex = -1;
