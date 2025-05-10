@@ -906,7 +906,7 @@ public class AttackAfterAdditionalBall : SpecialAugment
             attackNumber = value;
             if(attackNumber >= RequiredCount)
             {
-                BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+                BallManager.Instance.CreateBall(1);
                 attackNumber = 0;
             }
         }
@@ -1118,7 +1118,7 @@ public class RebirthBall : SpecialAugment
     {
         if (Random.value < 0.05f)
         {
-            BallManager.Instance.CreateSpecificBall(AugmentManager.instance.SpawnBallAmount, ball.BallType, true);
+            BallManager.Instance.CreateSpecificBall(1, ball.BallType, true);
         }
     }
 
@@ -1129,7 +1129,7 @@ public class BossKillBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_35", "Uprising", "Summons an ball when the boss is defeated", "Special", 5);
+        SetAugment("SPECIAL_35", "Uprising", "Summons an Three ball when the boss is defeated", "Special", 5);
     }
 
     public override void Apply() { }
@@ -1140,7 +1140,7 @@ public class BossKillBall : SpecialAugment
     {
         if (Brick.IsBoss)
         {
-            BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+            BallManager.Instance.CreateBall(3);
         }
     }
 }
@@ -1297,7 +1297,7 @@ public class SuicideBoomBall : SpecialAugment
             ball.BallDied();
             if(Random.value < 0.4f)
             {
-                BallManager.Instance.CreateSpecificBall(AugmentManager.instance.SpawnBallAmount, ball.BallType);
+                BallManager.Instance.CreateSpecificBall(1, ball.BallType);
             }
         }
     }
@@ -2293,7 +2293,7 @@ public class GoalWaveBonus : SpecialAugment
                 Goals[1] = true;
                 for (int i = 0; i < 5; i++)
                 {
-                    BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+                    BallManager.Instance.CreateBall(5);
                 }
             }
             else if (GameManager.instance.Wave == 30 && !Goals[2])
@@ -2315,7 +2315,7 @@ public class GoalWaveBonus : SpecialAugment
                 Goals[4] = true;
                 for (int i = 0; i < 5; i++)
                 {
-                    BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+                    BallManager.Instance.CreateBall(5);
                 }
                 StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
                 StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);

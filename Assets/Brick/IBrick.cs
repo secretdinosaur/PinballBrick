@@ -89,7 +89,7 @@ public partial class IBrick : MonoBehaviour
                         }
                         else if(BrickType == "BallBrick")
                         {
-                            BallManager.Instance.CreateBall(3);
+                            BallManager.Instance.CreateBall(2);
                         }
                     }
                     BrickDie();
