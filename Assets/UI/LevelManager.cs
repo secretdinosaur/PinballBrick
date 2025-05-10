@@ -226,62 +226,81 @@ public partial class LevelManager : MonoBehaviour
     {
         float chanceSum = StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance;
 
-        float damageValue = BaseStatUpValue *
-            (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0
-              ? StatUpValue[(int)StatName.CriticalDamage][1]
-              : StatUpValue[(int)StatName.CriticalDamage][0]);
-
-        float chanceValue = BaseStatUpValue *
-            (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalChance] % 5 == 0
-              ? StatUpValue[(int)StatName.CriticalChance][1]
-              : StatUpValue[(int)StatName.CriticalChance][0]);
-
         switch (i)
         {
             case (int)StatName.AttackDamage:
-                StatManager.instance.Temporary_stat.AttackDamage += 
-                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.AttackDamage] % 5 == 0 
-                    ? StatUpValue[(int)StatName.AttackDamage][1] : StatUpValue[(int)StatName.AttackDamage][0]);
+                StatManager.instance.ChangeTemporaryStats_AttackDamage
+                    (
+                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.AttackDamage] % 5 == 0
+                        ? StatUpValue[(int)StatName.AttackDamage][1] : StatUpValue[(int)StatName.AttackDamage][0])
+                    );
                 break;
             case (int)StatName.CriticalDamage:
-                StatManager.instance.Temporary_stat.CriticalDamage += 
-                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0 
-                    ? StatUpValue[(int)StatName.CriticalDamage][1] : StatUpValue[(int)StatName.CriticalDamage][0]);
+                StatManager.instance.ChangeTemporaryStats_CriticalDamage
+                    (
+                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0
+                        ? StatUpValue[(int)StatName.CriticalDamage][1] : StatUpValue[(int)StatName.CriticalDamage][0])
+                    );
                 break;
             case (int)StatName.CriticalChance:
-                _ = chanceSum >= 1f
-                ? StatManager.instance.Temporary_stat.CriticalDamage += damageValue
-                : StatManager.instance.Temporary_stat.CriticalChance += chanceValue;
+                if(StatManager.instance.Persistent_stat.CriticalChance + 
+                    StatManager.instance.Temporary_stat.CriticalChance >= 1f)
+                {
+                    StatManager.instance.ChangeTemporaryStats_CriticalDamage
+                    (
+                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0
+                        ? StatUpValue[(int)StatName.CriticalDamage][1]
+                        : StatUpValue[(int)StatName.CriticalDamage][0])
+                    );
+                }
+                else
+                {
+                    StatManager.instance.ChangeTemporaryStats_CriticalChance
+                    (
+                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalChance] % 5 == 0
+                        ? StatUpValue[(int)StatName.CriticalChance][1]
+                        : StatUpValue[(int)StatName.CriticalChance][0])
+                    );
+                }
                 break;
             case (int)StatName.EffectDamage:
-                StatManager.instance.Temporary_stat.EffectDamage +=
-                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectDamage] % 5 == 0 
-                    ? StatUpValue[(int)StatName.EffectDamage][1] : StatUpValue[(int)StatName.EffectDamage][0]);
+                StatManager.instance.ChangeTemporaryStats_EffectDamage
+                    (
+                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectDamage] % 5 == 0
+                        ? StatUpValue[(int)StatName.EffectDamage][1] : StatUpValue[(int)StatName.EffectDamage][0])
+                    );
                 break;
             case (int)StatName.EffectDuration:
-                StatManager.instance.Temporary_stat.EffectDuration +=
-                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectDuration] % 5 == 0 
-                    ? StatUpValue[(int)StatName.EffectDuration][1] : StatUpValue[(int)StatName.EffectDuration][0]);
+                StatManager.instance.ChangeTemporaryStats_EffectDuration
+                    (
+                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectDuration] % 5 == 0
+                        ? StatUpValue[(int)StatName.EffectDuration][1] : StatUpValue[(int)StatName.EffectDuration][0])
+                    );
                 break;
             case (int)StatName.EffectCriticalDamage:
-                StatManager.instance.Temporary_stat.EffectCriticalDamage +=
-                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectCriticalDamage] % 5 == 0 
-                    ? StatUpValue[(int)StatName.EffectCriticalDamage][1] : StatUpValue[(int)StatName.EffectCriticalDamage][0]);
+                StatManager.instance.ChangeTemporaryStats_EffectCriticalDamage
+                    (
+                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectCriticalDamage] % 5 == 0
+                        ? StatUpValue[(int)StatName.EffectCriticalDamage][1] : StatUpValue[(int)StatName.EffectCriticalDamage][0])
+                    );
                 break;
             case (int)StatName.GoldGain:
-                StatManager.instance.Temporary_stat.GoldGain +=
-                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.GoldGain] % 5 == 0 
-                    ? StatUpValue[(int)StatName.GoldGain][1] : StatUpValue[(int)StatName.GoldGain][0]);
+                StatManager.instance.ChangeTemporaryStats_GoldGain
+                    (
+                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.GoldGain] % 5 == 0
+                        ? StatUpValue[(int)StatName.GoldGain][1] : StatUpValue[(int)StatName.GoldGain][0])
+                    );
                 break;
             case (int)StatName.ExpGain:
-                StatManager.instance.Temporary_stat.ExpGain +=
-                    BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.ExpGain] % 5 == 0
-                    ? StatUpValue[(int)StatName.ExpGain][1] : StatUpValue[(int)StatName.ExpGain][0]);
+                StatManager.instance.ChangeTemporaryStats_ExpGain
+                    (
+                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.ExpGain] % 5 == 0
+                        ? StatUpValue[(int)StatName.ExpGain][1] : StatUpValue[(int)StatName.ExpGain][0])
+                    );
                 break;
             default:
                 break;
         }
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
     }
 }
 

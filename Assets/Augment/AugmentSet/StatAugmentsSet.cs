@@ -33,14 +33,12 @@ public class Atk30Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.3f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.3f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.3f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.3f);
     }
 }
 
@@ -53,14 +51,12 @@ public class Atk50Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.5f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.5f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.5f);
     }
 }
 
@@ -73,14 +69,12 @@ public class CritChance50Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.CriticalChance += 0.5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.5f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalChance -= 0.5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.5f);
     }
 }
 
@@ -93,14 +87,12 @@ public class CritDamage30Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.CriticalDamage += 0.3f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.3f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalDamage -= 0.3f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.3f);
     }
 }
 
@@ -113,14 +105,12 @@ public class CritDamage50Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.CriticalDamage += 0.5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.5f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalDamage -= 0.5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.5f);
     }
 }
 
@@ -165,7 +155,7 @@ public class AtkUpWhenCritical : StatAugment
     {
         if (Brick.gameObject.activeSelf)
         {
-            RunAttackDamageUpFewSec(3f, 0.2f);
+            RunAttackDamageUpFewSec(3f, 1.2f);
         }
     }
 
@@ -176,15 +166,13 @@ public class AtkUpWhenCritical : StatAugment
     
     IEnumerator AttackDamageUpFewSec(float setTime, float AttackUpValue)
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier += AttackUpValue;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(AttackUpValue);
         yield return new WaitForSeconds(setTime);
-        StatManager.instance.statMultiplier.AttackDamageMultiplier -= AttackUpValue;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-AttackUpValue);
     }
 }
 
-public class EffectCritical : StatAugment
+public class EffectCritical : StatAugment //교체필요
 {
     private void OnEnable()
     {
@@ -211,14 +199,12 @@ public class Atk10Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.1f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.1f);
     }
 }
 
@@ -231,14 +217,12 @@ public class CritChance10Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.CriticalChance += 0.1f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.1f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalChance -= 0.1f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.1f);
     }
 }
 
@@ -251,14 +235,12 @@ public class CritChance20Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.CriticalChance += 0.2f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.2f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalChance -= 0.2f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.2f);
     }
 }
 
@@ -271,14 +253,12 @@ public class GoldGain10Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.GoldGain += 0.1f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_GoldGain(0.1f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalChance -= 0.1f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_GoldGain(-0.1f);
     }
 }
 
@@ -291,14 +271,12 @@ public class GoldGain30Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.GoldGain += 0.3f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_GoldGain(0.3f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalChance -= 0.3f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_GoldGain(-0.3f);
     }
 }
 
@@ -311,14 +289,12 @@ public class GoldGain50Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.GoldGain += 0.5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_GoldGain(0.5f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalChance -= 0.5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_GoldGain(-0.5f);
     }
 }
 
@@ -326,21 +302,19 @@ public class PowerButSlow : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_15", "Heavyweight Ball", "Attack damage +50%\nBall max speed -33%", 4);
+        SetAugment("STAT_15", "Heavyweight Ball", "Attack damage +30%\nBall max speed -33%", 4);
     }
 
     public override void Apply()
     {
         GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 10f;
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.3f);
     }
 
     public override void Remove()
     {
         GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.3f);
     }
 }
 
@@ -354,15 +328,13 @@ public class WeakButFast : StatAugment
     public override void Apply()
     {
         GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 20f;
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 0.7f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.7f);
     }
 
     public override void Remove()
     {
         GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 0.7f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.7f);
     }
 }
 
@@ -375,16 +347,14 @@ public class WeakButStrongEffect : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 0.33f;
-        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.6f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.33f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.6f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 0.33f;
-        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.6f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.33f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.6f);
     }
 }
 
@@ -397,16 +367,14 @@ public class WeakButStrongAtk : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.6f;
-        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 0.33f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.6f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(0.33f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.6f;
-        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 0.33f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.6f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-0.33f);
     }
 }
 
@@ -475,9 +443,8 @@ public class CritChanceToAttackDamage : StatAugment
 
     private void TransferToAttackDamage(float CritChance)
     {
-        StatManager.instance.Temporary_stat.AttackDamage += CritChance * 0.4f;
-        StatManager.instance.Temporary_stat.CriticalChance -= CritChance;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(CritChance * 0.4f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-CritChance);
     }
 }
 
@@ -526,20 +493,18 @@ public class RandomStatUpOrDown : StatAugment
                     break;
             }
         }
-        StatManager.instance.Temporary_stat.AttackDamage += ChangeAttackDamage;
-        StatManager.instance.Temporary_stat.EffectDamage += ChangeEffectDamage;
-        StatManager.instance.Temporary_stat.CriticalDamage += ChangeCritDamage;
-        StatManager.instance.Temporary_stat.CriticalChance += ChangeCritChance;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(ChangeAttackDamage);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(ChangeEffectDamage);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(ChangeCritDamage);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(ChangeCritChance);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.AttackDamage -= ChangeAttackDamage;
-        StatManager.instance.Temporary_stat.EffectDamage -= ChangeEffectDamage;
-        StatManager.instance.Temporary_stat.CriticalDamage -= ChangeCritDamage;
-        StatManager.instance.Temporary_stat.CriticalChance -= ChangeCritChance;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-ChangeAttackDamage);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-ChangeEffectDamage);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-ChangeCritDamage);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-ChangeCritChance);
     }
 }
 
@@ -552,20 +517,16 @@ public class Trinity : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.33f;
-        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.33f;
-        StatManager.instance.Temporary_stat.CriticalDamage += 0.33f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.33f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.33f);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.33f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.33f;
-        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.33f;
-        StatManager.instance.Temporary_stat.CriticalDamage -= 0.33f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.33f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.33f);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.33f);
     }
 }
 
@@ -578,18 +539,14 @@ public class Perfectionism : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.CriticalChance = 1 - StatManager.instance.Persistent_stat.CriticalChance;
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 0.6f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(1 - StatManager.instance.Persistent_stat.CriticalChance);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.6f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.CriticalChance = 0;
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 0.6f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-StatManager.instance.Temporary_stat.CriticalChance);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.6f);
     }
 }
 
@@ -622,8 +579,7 @@ public class MassivelyCriticalDamageUp : StatAugment
             if(StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0.2f)
             {
                 float excess = (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) - 0.2f;
-                StatManager.instance.Temporary_stat.CriticalChance -= excess;
-                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                StatManager.instance.ChangeTemporaryStats_CriticalChance(-excess);
             }
         }
     }
