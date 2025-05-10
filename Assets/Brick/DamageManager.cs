@@ -172,10 +172,12 @@ public static partial class DamageManager //Special Effect Attack
         {
             isCritical = IsCriticalHit(brick);
         }
-        float Percent = isCritical ? Random.Range(0.01f, 0.02f) : Random.Range(0.015f, 0.03f);
-        float plusDamage = brick.HpTemp * Percent;
+        float Percent = isCritical ? 
+              Random.Range(0.01f, 0.02f) * StatManager.instance.Temporary_stat.EffectCriticalDamage
+            : Random.Range(0.01f, 0.02f);
+        float BaseDamage = brick.HpTemp * Percent;
 
-        float FinalDamage = brick.DecayDamageCalculate(plusDamage + DamageAmount);
+        float FinalDamage = brick.DecayDamageCalculate(BaseDamage + DamageAmount);
         brick.HP -= FinalDamage;
 
         VisualEffectManager.Instance.SpawnParticle("Lightning", brick.transform.position, isCritical ? ParticleCount + 4 : ParticleCount);
@@ -184,16 +186,23 @@ public static partial class DamageManager //Special Effect Attack
 
     public static void DamageByCurse(IBrick brick)
     {
+        bool isCritical = true;
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
+        {
+            isCritical = IsCriticalHit(brick);
+        }
         VisualEffectManager.Instance.SpawnParticle("Curse", brick.transform.position, 5);
         float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
             + StatManager.instance.Temporary_stat.AttackDamage
             + brick.RecentlyBall.GrowthAttackDamage)
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
-        float damage = Random.Range(baseDamage * 0.5f, baseDamage * 1.3f);
+        float damage = isCritical ? 
+              Random.Range(baseDamage * 0.5f, baseDamage * 1.3f) * StatManager.instance.Temporary_stat.EffectCriticalDamage
+            : Random.Range(baseDamage * 0.5f, baseDamage * 1.3f);
         float FinalDamage = brick.DecayDamageCalculate(damage);
         brick.HP -= FinalDamage;
-        brick.ShowText(FinalDamage.ToString("F1"), "Curse", false);
+        brick.ShowText(FinalDamage.ToString("F1"), "Curse", isCritical);
     }
 
     public static void ArbitraryDamageAttack(IBrick brick, float damage, bool isCritical, string damageText, string DamageType)
