@@ -518,7 +518,7 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseMiniBossHealthValue * (Mathf.Pow(5 + Wave / 2, UnityEngine.Random.Range(1f, 1.2f)))));
+                HPPool.Add(UnityEngine.Random.Range(5, 10));
             }
         }
         else

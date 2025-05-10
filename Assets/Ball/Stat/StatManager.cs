@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEngine;
 using System.Collections;
-public class StatManager : MonoBehaviour
+public partial class StatManager : MonoBehaviour
 {
     public static StatManager instance;
     
@@ -167,5 +167,76 @@ public class StatManager : MonoBehaviour
     public void GetGold(int Value)
     {
         Persistent_stat.Gold += Value * (Persistent_stat.BonusGold + Temporary_stat.GoldGain);
+    }
+}
+
+
+public partial class StatManager
+{
+    public void ChangeTemporaryStats_AttackDamage(float value)
+    {
+        Temporary_stat.AttackDamage += value;
+        SaveTemporaryStat(Temporary_stat);
+    }
+    public void ChangeTemporaryStats_CriticalDamage(float value)
+    {
+        Temporary_stat.CriticalDamage += value;
+        SaveTemporaryStat(Temporary_stat);
+    }
+    public void ChangeTemporaryStats_CriticalChance(float value)
+    {
+        Temporary_stat.CriticalChance += value;
+        SaveTemporaryStat(Temporary_stat);
+    }
+    public void ChangeTemporaryStats_EffectDamage(float value)
+    {
+        Temporary_stat.EffectDamage += value;
+        SaveTemporaryStat(Temporary_stat);
+    }
+    public void ChangeTemporaryStats_EffectDuration(float value)
+    {
+        Temporary_stat.EffectDuration += value;
+        SaveTemporaryStat(Temporary_stat);
+    }
+    public void ChangeTemporaryStats_EffectCriticalDamage(float value)
+    {
+        Temporary_stat.EffectCriticalDamage += value;
+        SaveTemporaryStat(Temporary_stat);
+    }
+    public void ChangeTemporaryStats_GoldGain(float value)
+    {
+        Temporary_stat.GoldGain += value;
+        SaveTemporaryStat(Temporary_stat);
+    }
+    public void ChangeTemporaryStats_ExpGain(float value)
+    {
+        Temporary_stat.ExpGain += value;
+        SaveTemporaryStat(Temporary_stat);
+    }
+    public void ChangeStatMultiplier_AttackDamageMultiplier(float value)
+    {
+        if(value >= 0)
+        {
+            statMultiplier.AttackDamageMultiplier *= value;
+            SaveStatMultiplier(statMultiplier);
+        }
+        else if(value < 0)
+        {
+            statMultiplier.AttackDamageMultiplier /= -value;
+            SaveStatMultiplier(statMultiplier);
+        }
+    }
+    public void ChangeStatMultiplier_EffectDamageMultiplier(float value)
+    {
+        if(value >= 0)
+        {
+            statMultiplier.EffectDamageMultiplier *= value;
+            SaveStatMultiplier(statMultiplier);
+        }
+        else if(value < 0)
+        {
+            statMultiplier.EffectDamageMultiplier /= -value;
+            SaveStatMultiplier(statMultiplier);
+        }
     }
 }

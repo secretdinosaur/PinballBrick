@@ -76,7 +76,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<BossDamageUp>(),
             gameObject.AddComponent<AtkUpWhenCritical>(),
             gameObject.AddComponent<CritChanceToAttackDamage>(),
-            gameObject.AddComponent<EffectCritical>(),
             gameObject.AddComponent<PowerButSlow>(),
             gameObject.AddComponent<WeakButFast>(),
             gameObject.AddComponent<WeakButStrongEffect>(),
@@ -88,6 +87,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<Trinity>(),
             gameObject.AddComponent<Perfectionism>(),
             gameObject.AddComponent<MassivelyCriticalDamageUp>(),
+            gameObject.AddComponent<ExpGain10Up>(),
+            gameObject.AddComponent<ExpGain30Up>(),
+            gameObject.AddComponent<ExpGain50Up>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -188,7 +190,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<ThunderStrike>(),
+            gameObject.GetComponent<CritChance50Up>(),
         };
 
         foreach (IAugment augment in TestAugments)
