@@ -1,6 +1,9 @@
 using System.IO;
 using UnityEngine;
 using System.Collections;
+using TMPro;
+using NUnit.Framework;
+using System.Collections.Generic;
 public partial class StatManager : MonoBehaviour
 {
     public static StatManager instance;
@@ -46,6 +49,56 @@ public partial class StatManager : MonoBehaviour
         Persistent_stat = LoadPersistentStats();
         Temporary_stat = LoadTemporaryStat();
         statMultiplier = LoadStatMultiplier();
+
+        NoticeChangedStatPanel = GameObject.Find("Canvas").transform.Find("NoticeChangedStatPanel").gameObject;
+
+        AttackDamageStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageStatValueText").GetComponent<TMP_Text>();
+        AttackDamageStatValueText.text = "";
+        AttackDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageChangedStatValueText").GetComponent<TMP_Text>();
+        AttackDamageChangedStatValueText.text = "";
+
+        CriticalDamageStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageStatValueText").GetComponent<TMP_Text>();
+        CriticalDamageStatValueText.text = "";
+        CriticalDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageChangedStatValueText").GetComponent<TMP_Text>();
+        CriticalDamageChangedStatValueText.text = "";
+
+        CriticalChanceStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceStatValueText").GetComponent<TMP_Text>();
+        CriticalChanceStatValueText.text = "";
+        CriticalChanceChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceChangedStatValueText").GetComponent<TMP_Text>();
+        CriticalChanceChangedStatValueText.text = "";
+
+        EffectDamageStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageStatValueText").GetComponent<TMP_Text>();
+        EffectDamageStatValueText.text = "";
+        EffectDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageChangedStatValueText").GetComponent<TMP_Text>();
+        EffectDamageChangedStatValueText.text = "";
+
+        EffectCriticalDamageStatValueText = NoticeChangedStatPanel.transform.Find("EffectCriticalDamageIcon/EffectCriticalDamageStatValueText").GetComponent<TMP_Text>();
+        EffectCriticalDamageStatValueText.text = "";
+        EffectCriticalDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectCriticalDamageIcon/EffectCriticalDamageChangedStatValueText").GetComponent<TMP_Text>();
+        EffectCriticalDamageChangedStatValueText.text = "";
+
+        EffectDurationStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationStatValueText").GetComponent<TMP_Text>();
+        EffectDurationStatValueText.text = "";
+        EffectDurationChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationChangedStatValueText").GetComponent<TMP_Text>();
+        EffectDurationChangedStatValueText.text = "";
+
+        GoldGainStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainStatValueText").GetComponent<TMP_Text>();
+        GoldGainStatValueText.text = "";
+        GoldGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainChangedStatValueText").GetComponent<TMP_Text>();
+        GoldGainChangedStatValueText.text = "";
+
+        ExpGainStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainStatValueText").GetComponent<TMP_Text>();
+        ExpGainStatValueText.text = "";
+        ExpGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainChangedStatValueText").GetComponent<TMP_Text>();
+        ExpGainChangedStatValueText.text = "";
+
+        TotalChangedStatValue = new List<float>
+        {
+            0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+        };
+
+        ShowChangedStatRoutine = null;
+        isChangedStat = false;
     }
     void InitializePersistentStats() // persistent stats
     {
@@ -173,70 +226,296 @@ public partial class StatManager : MonoBehaviour
 
 public partial class StatManager
 {
+    GameObject NoticeChangedStatPanel;
+
+    TMP_Text AttackDamageStatValueText;
+    TMP_Text AttackDamageChangedStatValueText;
+
+    TMP_Text CriticalDamageStatValueText;
+    TMP_Text CriticalDamageChangedStatValueText;
+
+    TMP_Text CriticalChanceStatValueText;
+    TMP_Text CriticalChanceChangedStatValueText;
+
+    TMP_Text EffectDamageStatValueText;
+    TMP_Text EffectDamageChangedStatValueText;
+
+    TMP_Text EffectCriticalDamageStatValueText;
+    TMP_Text EffectCriticalDamageChangedStatValueText;
+
+    TMP_Text EffectDurationStatValueText;
+    TMP_Text EffectDurationChangedStatValueText;
+
+    TMP_Text GoldGainStatValueText;
+    TMP_Text GoldGainChangedStatValueText;
+
+    TMP_Text ExpGainStatValueText;
+    TMP_Text ExpGainChangedStatValueText;
+
+    List<float> TotalChangedStatValue;
+
+    public Coroutine ShowChangedStatRoutine;
+
+    public bool isChangedStat;
+
+    public IEnumerator ShowChangedStat()
+    {
+        CanvasGroup canvasGroup = NoticeChangedStatPanel.GetComponent<CanvasGroup>();
+        RectTransform rectTransform = NoticeChangedStatPanel.GetComponent<RectTransform>();
+
+        AttackDamageStatValueText.text = ((Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * 
+            (Persistent_stat.AttackDamageMultiplier * statMultiplier.AttackDamageMultiplier)).ToString();
+        AttackDamageChangedStatValueText.text = "";
+
+        CriticalDamageStatValueText.text = ((Persistent_stat.CriticalDamage + Temporary_stat.CriticalDamage) * 100).ToString() + "%";
+        CriticalDamageChangedStatValueText.text = "";
+
+        CriticalChanceStatValueText.text = ((Persistent_stat.CriticalChance + Temporary_stat.CriticalChance) * 100).ToString() + "%";
+        CriticalChanceChangedStatValueText.text = "";
+
+        EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) *
+            (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString();
+        EffectDamageChangedStatValueText.text = "";
+
+        EffectCriticalDamageStatValueText.text = (Temporary_stat.EffectCriticalDamage * 100).ToString() + "%";
+        EffectCriticalDamageChangedStatValueText.text = "";
+
+        EffectDurationStatValueText.text = Temporary_stat.EffectDuration.ToString() + "s";
+        EffectDurationChangedStatValueText.text = "";
+
+        GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString() + "%";
+        GoldGainChangedStatValueText.text = "";
+
+        ExpGainStatValueText.text = ((Persistent_stat.BonusExp + Temporary_stat.ExpGain) * 100).ToString() + "%";
+        ExpGainChangedStatValueText.text = "";
+
+        UpdateChangedStatValueText();
+
+        float startTime = Time.realtimeSinceStartup;
+
+        while (Time.realtimeSinceStartup < startTime + 1f)
+        {
+            float t = (Time.realtimeSinceStartup - startTime) / 1f;
+            rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(-165f, 129f), new Vector2(165f, 129f), t);
+            canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
+            yield return null;
+        }
+
+        rectTransform.anchoredPosition = new Vector2(165f, 129f);
+        canvasGroup.alpha = 1f;
+
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        startTime = Time.realtimeSinceStartup;
+
+        while (Time.realtimeSinceStartup < startTime + 1f)
+        {
+            float t = (Time.realtimeSinceStartup - startTime) / 1f;
+
+            rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(165f, 129f), new Vector2(-165f, 129f), t);
+
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
+
+            yield return null;
+        }
+
+        rectTransform.anchoredPosition = new Vector2(-165f, 129f);
+        canvasGroup.alpha = 0f;
+
+        TotalChangedStatValue = new List<float>
+        {
+            0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+        };
+    }
+
+    private void UpdateChangedStatValueText()
+    {
+        for (int i = 0; i < TotalChangedStatValue.Count; i++)
+        {
+            switch (i)
+            {
+                case 0:
+                    if(TotalChangedStatValue[0] != 0)
+                    {
+                        if (TotalChangedStatValue[0] < 0)
+                            AttackDamageChangedStatValueText.text = TotalChangedStatValue[0].ToString();
+                        else if(TotalChangedStatValue[0] > 0)
+                            AttackDamageChangedStatValueText.text = "+" + TotalChangedStatValue[0].ToString();
+                    }
+                    break;
+                case 1:
+                    if (TotalChangedStatValue[1] != 0)
+                    {
+                        if (TotalChangedStatValue[1] < 0)
+                            CriticalDamageChangedStatValueText.text = (TotalChangedStatValue[1] * 100).ToString() + "%";
+                        else if (TotalChangedStatValue[1] > 0)
+                            CriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[1] * 100).ToString() + "%";
+                    }
+                    break;
+                case 2:
+                    if (TotalChangedStatValue[2] != 0)
+                    {
+                        if (TotalChangedStatValue[2] < 0)
+                            CriticalChanceChangedStatValueText.text = (TotalChangedStatValue[2] * 100).ToString() + "%";
+                        else if (TotalChangedStatValue[2] > 0)
+                            CriticalChanceChangedStatValueText.text = "+" + (TotalChangedStatValue[2] * 100).ToString() + "%";
+                    }
+                    break;
+                case 3:
+                    if (TotalChangedStatValue[3] != 0)
+                    {
+                        if (TotalChangedStatValue[3] < 0)
+                            EffectDamageChangedStatValueText.text = TotalChangedStatValue[3].ToString();
+                        else if (TotalChangedStatValue[3] > 0)
+                            EffectDamageChangedStatValueText.text = "+" + TotalChangedStatValue[3].ToString();
+                    }
+                    break;
+                case 4:
+                    if (TotalChangedStatValue[4] != 0)
+                    {
+                        if (TotalChangedStatValue[4] < 0)
+                            EffectCriticalDamageChangedStatValueText.text = (TotalChangedStatValue[4] * 100).ToString() + "%";
+                        else if (TotalChangedStatValue[4] > 0)
+                            EffectCriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[4] * 100).ToString() + "%";
+                    }
+                    break;
+                case 5:
+                    if (TotalChangedStatValue[5] != 0)
+                    {
+                        if (TotalChangedStatValue[5] < 0)
+                            EffectDurationChangedStatValueText.text = TotalChangedStatValue[5].ToString() + "s";
+                        else if (TotalChangedStatValue[5] > 0)
+                            EffectDurationChangedStatValueText.text = "+" + TotalChangedStatValue[5].ToString() + "s";
+                    }
+                    break;
+                case 6:
+                    if (TotalChangedStatValue[6] != 0)
+                    {
+                        if (TotalChangedStatValue[6] < 0)
+                            GoldGainChangedStatValueText.text = (TotalChangedStatValue[6] * 100).ToString() + "%";
+                        else if (TotalChangedStatValue[6] > 0)
+                            GoldGainChangedStatValueText.text = "+" + (TotalChangedStatValue[6] * 100).ToString() + "%";
+                    }
+                    break;
+                case 7:
+                    if (TotalChangedStatValue[7] != 0)
+                    {
+                        if (TotalChangedStatValue[7] < 0)
+                            ExpGainChangedStatValueText.text = (TotalChangedStatValue[7] * 100).ToString() + "%";
+                        else if (TotalChangedStatValue[7] > 0)
+                            ExpGainChangedStatValueText.text = "+" + (TotalChangedStatValue[7] * 100).ToString() + "%";
+                    }
+                    break;
+                case 8:
+                    if (TotalChangedStatValue[8] != 1)
+                    {
+                        if (TotalChangedStatValue[8] < 0)
+                            AttackDamageChangedStatValueText.text = (TotalChangedStatValue[8] * 100).ToString() + "%";
+                        else if (TotalChangedStatValue[8] > 0)
+                            AttackDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[8] * 100).ToString() +"%";
+                    }
+                    break;
+                case 9:
+                    if (TotalChangedStatValue[9] != 1)
+                    {
+                        if (TotalChangedStatValue[9] < 0)
+                            EffectDamageChangedStatValueText.text = (TotalChangedStatValue[9] * 100).ToString() + "%";
+                        else if (TotalChangedStatValue[9] > 0)
+                            EffectDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[9] * 100).ToString() + "%";
+                    }
+                    break;
+                default: 
+                    break;
+            }
+        }
+    }
+
     public void ChangeTemporaryStats_AttackDamage(float value)
     {
         Temporary_stat.AttackDamage += value;
+        TotalChangedStatValue[0] += value;
         SaveTemporaryStat(Temporary_stat);
+        isChangedStat = true;
     }
     public void ChangeTemporaryStats_CriticalDamage(float value)
     {
         Temporary_stat.CriticalDamage += value;
+        TotalChangedStatValue[1] += value;
         SaveTemporaryStat(Temporary_stat);
+        isChangedStat = true;
     }
     public void ChangeTemporaryStats_CriticalChance(float value)
     {
         Temporary_stat.CriticalChance += value;
+        TotalChangedStatValue[2] += value;
         SaveTemporaryStat(Temporary_stat);
+        isChangedStat = true;
     }
     public void ChangeTemporaryStats_EffectDamage(float value)
     {
         Temporary_stat.EffectDamage += value;
+        TotalChangedStatValue[3] += value;
         SaveTemporaryStat(Temporary_stat);
-    }
-    public void ChangeTemporaryStats_EffectDuration(float value)
-    {
-        Temporary_stat.EffectDuration += value;
-        SaveTemporaryStat(Temporary_stat);
+        isChangedStat = true;
     }
     public void ChangeTemporaryStats_EffectCriticalDamage(float value)
     {
         Temporary_stat.EffectCriticalDamage += value;
+        TotalChangedStatValue[4] += value;
         SaveTemporaryStat(Temporary_stat);
+        isChangedStat = true;
+    }
+    public void ChangeTemporaryStats_EffectDuration(float value)
+    {
+        Temporary_stat.EffectDuration += value;
+        TotalChangedStatValue[5] += value;
+        SaveTemporaryStat(Temporary_stat);
+        isChangedStat = true;
     }
     public void ChangeTemporaryStats_GoldGain(float value)
     {
         Temporary_stat.GoldGain += value;
+        TotalChangedStatValue[6] += value;
         SaveTemporaryStat(Temporary_stat);
+        isChangedStat = true;
     }
     public void ChangeTemporaryStats_ExpGain(float value)
     {
         Temporary_stat.ExpGain += value;
+        TotalChangedStatValue[7] += value;
         SaveTemporaryStat(Temporary_stat);
+        isChangedStat = true;
     }
     public void ChangeStatMultiplier_AttackDamageMultiplier(float value)
     {
         if(value >= 0)
         {
             statMultiplier.AttackDamageMultiplier *= value;
+            TotalChangedStatValue[8] *= value;
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
             statMultiplier.AttackDamageMultiplier /= -value;
+            TotalChangedStatValue[8] /= -value;
             SaveStatMultiplier(statMultiplier);
         }
+        isChangedStat = true;
     }
     public void ChangeStatMultiplier_EffectDamageMultiplier(float value)
     {
         if(value >= 0)
         {
             statMultiplier.EffectDamageMultiplier *= value;
+            TotalChangedStatValue[9] *= value;
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
             statMultiplier.EffectDamageMultiplier /= -value;
+            TotalChangedStatValue[9] /= -value;
             SaveStatMultiplier(statMultiplier);
         }
+        isChangedStat = true;
     }
 }

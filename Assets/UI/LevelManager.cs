@@ -448,11 +448,19 @@ public partial class LevelManager : MonoBehaviour
     {
         string seconds = "sec";
         string percent = "%";
-        
-        return " +" + ((StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1) % 5 == 0 ?
-                BaseStatUpValue * (StatUpValue[randomStats[i].Value][1]) : BaseStatUpValue * (StatUpValue[randomStats[i].Value][0]))
-                + (randomStats[i].Value == 4 ? seconds
-                : (randomStats[i].Value == 2 || randomStats[i].Value == 6 || randomStats[i].Value == 7) ? percent
+        bool secondsBool = randomStats[i].Value == 4;
+        bool percentBool = (randomStats[i].Value == 2 || randomStats[i].Value == 6 || randomStats[i].Value == 7);
+
+
+        return " +" + 
+                (
+                    (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1) % 5 == 0 ?
+                    (BaseStatUpValue * StatUpValue[randomStats[i].Value][1] * (percentBool ? 100 : 1)) : 
+                    (BaseStatUpValue * StatUpValue[randomStats[i].Value][0] * (percentBool ? 100 : 1))
+                )
+                + 
+                (secondsBool ? seconds
+                : percentBool ? percent
                 : "")
                 + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
     }
@@ -588,6 +596,11 @@ public partial class LevelManager : MonoBehaviour
             CustomTime_3 = 0;
             Time.timeScale = 1f;
             LevelUpPanel.SetActive(false);
+            if (StatManager.instance.isChangedStat)
+            {
+                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
+                StatManager.instance.isChangedStat = false;
+            }
         }
     }
 }
