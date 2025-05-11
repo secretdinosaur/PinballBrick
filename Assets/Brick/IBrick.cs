@@ -102,7 +102,7 @@ public partial class IBrick : MonoBehaviour
     public void BrickDie()
     {
         Fever.StartFever = true;
-        Fever.Instance.FeverCount *= 2;
+        Fever.Instance.CalFeverCount();
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
         LevelManager.Instance.GetExp(Exp);
