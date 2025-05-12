@@ -9,6 +9,7 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using static UnityEngine.GraphicsBuffer;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
 
 /*
 public class Example : SpecialAugment
@@ -191,8 +192,8 @@ public class FireEffectStackBlast : SpecialAugment
                 nearbyBrick.ArbitraryDamageAttack(BlastDamage
                     ,
                     false,
-                    BlastDamage.ToString("F1"), 
-                    "Fire");
+                    BlastDamage.ToString("F1"),
+                    "Explosion");
                 nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
             }
             VisualEffectManager.Instance.SpawnParticle("FireBlast", Brick.transform.position, 30);
@@ -553,7 +554,7 @@ public class DecayExplosion : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_20", "Decay Explosion", "Brick explode when the decay stack is max", "Effect", 2);
+        SetAugment("SPECIAL_20", "Decay Explosion", "Brick explodes when die with max decay stack", "Effect", 2);
     }
 
     public override void Apply()
@@ -568,14 +569,19 @@ public class DecayExplosion : SpecialAugment
 
     public override void AfterBrickDieEffect(IBrick Brick)
     {
-        if (Brick.BrickEffect.EffectStatusSet["Decay"].EffectStack == Brick.BrickEffect.EffectStatusSet["Decay"].EffectStackLimit)
+        if (Brick.BrickEffect.EffectStatusSet["Decay"].EffectStack + 1 == Brick.BrickEffect.EffectStatusSet["Decay"].EffectStackLimit)
         {
             Brick.IsNeedDelayedDIeForEffect = true;
+            VisualEffectManager.Instance.DecayExplosionPS.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Brick.GetComponent<Renderer>().material.color);
             VisualEffectManager.Instance.SpawnParticle("DecayExplosion", Brick.transform.position, 1);
             float explosionRadius = 3f;
             LayerMask explosionLayer = LayerMask.GetMask("Ball");
             Collider2D[] colliders = Physics2D.OverlapCircleAll(Brick.transform.position, explosionRadius, explosionLayer);
 
+            foreach (IBrick brick in Brick.NearbyBricks)
+            {
+                brick.ArbitraryDamageAttack(Brick.HpTemp / 20, false, (Brick.HpTemp / 20).ToString("F1"), "Explosion");
+            }
             foreach (Collider2D ball in colliders)
             {
                 Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
@@ -785,7 +791,8 @@ public class InfiniteGrowBall : SpecialAugment
 
     public override void AfterBrickDieEffect(IBrick Brick)
     {
-        Brick.RecentlyBall.Grow(Brick);
+        if(Brick.RecentlyBall != null)
+            Brick.RecentlyBall.Grow(Brick);
     }
 }
 
@@ -1086,7 +1093,7 @@ public class RandomEffect : SpecialAugment
 
 public class ThunderStrike : SpecialAugment
 {
-
+    Coroutine routine = null;
     private void OnEnable()
     {
         SetAugment("SPECIAL_33", "Thunder Strike", "ThunderStrike", "Special", 2);
@@ -1094,12 +1101,41 @@ public class ThunderStrike : SpecialAugment
 
     public override void Apply() 
     {
-
+        routine = StartCoroutine(MakeBallThunder());
     }
 
     public override void Remove()
     {
+        StopCoroutine(routine);
+    }
 
+    private IEnumerator MakeBallThunder()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(0.1f);
+
+            List<IBall> Balls = BallManager.Instance.InGameBall;
+            if (Balls.Count >= 2)
+            {
+                VisualEffectManager.Instance.SpawnThunderStrike(Balls);
+
+                for (int i = 0; i < Balls.Count - 1; i++)
+                {
+                    Vector2 start = Balls[i].transform.position;
+                    Vector2 end = Balls[i + 1].transform.position;
+
+                    RaycastHit2D[] hits = Physics2D.LinecastAll(start, end);
+                    for(int j = 0; j < hits.Length; j++)
+                        if (hits[j].collider.CompareTag("Brick"))
+                        {
+                            IBrick brick = hits[j].collider.GetComponent<IBrick>();
+
+                            brick.ArbitraryDamageAttack(1 + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
+                        }
+                }
+            }
+        }
     }
 }
 
@@ -1285,14 +1321,14 @@ public class SuicideBoomBall : SpecialAugment
                     (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier,
                     false,
                     ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier).ToString("F1"),
-                    null);
+                    "Explosion");
             foreach (IBrick brick in Brick.NearbyBricks)
             {
                 brick.ArbitraryDamageAttack(
                     (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier,
                     false,
                     ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier).ToString("F1"),
-                    null);
+                    "Explosion");
             }
             ball.BallDied();
             if(Random.value < 0.4f)

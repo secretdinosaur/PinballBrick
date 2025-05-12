@@ -48,7 +48,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 1f, 0.3f, 0.3f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
@@ -190,7 +190,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<WeakButFast>(),
+            gameObject.GetComponent<WeatherChange>(),
         };
 
         foreach (IAugment augment in TestAugments)

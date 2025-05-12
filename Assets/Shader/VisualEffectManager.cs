@@ -82,7 +82,7 @@ public class VisualEffectManager : MonoBehaviour
 
             case "DecayExplosion":
                 DecayExplosionPS.transform.position = ParticlePosition;
-                DecayExplosionPS.Emit(15);
+                DecayExplosionPS.Emit(50);
                 break;
 
             case "AdditionalAttack":
@@ -214,13 +214,63 @@ public class VisualEffectManager : MonoBehaviour
         }
     }
 
-    public void SetDecayVisualEffect(IBrick brick)
+    public void SpawnThunderStrike(List<IBall> Balls)
     {
-        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 1);
+        ChainLightningPS.Emit(Balls.Count - 1);
+        Particle[] particles = new Particle[ChainLightningPS.particleCount];
+        ChainLightningPS.GetParticles(particles);
+
+        for (int i = 0; i < Balls.Count - 1; i++)
+        {
+            Vector2 StartPosition = Balls[i].transform.position;
+            Vector2 EndPosition = Balls[i + 1].transform.position;
+
+            float Length = (EndPosition - StartPosition).magnitude;
+            Vector2 Direction = (EndPosition - StartPosition).normalized;
+
+            Vector3 size = particles[i].startSize3D;
+            size.x = 1f;
+            size.y = Length;
+
+            particles[i].startSize3D = size;
+            particles[i].position = StartPosition;
+
+            particles[i].rotation3D = new Vector3(0, 0, Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90);
+
+            ChainLightningPS.SetParticles(particles);
+        }
+    }
+    public void SetDecayVisualEffect(IBrick brick) { StartCoroutine(SetDecayVisualEffectC(brick)); }
+    public void UnSetDecayVisualEffect(IBrick brick) { StartCoroutine(UnSetDecayVisualEffectC(brick)); }
+    public IEnumerator SetDecayVisualEffectC(IBrick brick)
+    {
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", t);
+            yield return null;
+        }
+
+        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 1f);
     }
 
-    public void UnSetDecayVisualEffect(IBrick brick)
+    public IEnumerator UnSetDecayVisualEffectC(IBrick brick)
     {
-        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 0);
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = duration / elapsed;
+            brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", t);
+            yield return null;
+        }
+
+        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 0f);
     }
 }

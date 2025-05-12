@@ -47,6 +47,7 @@ public partial class IBrick : MonoBehaviour
         get { return hp; }
         set
         {
+
             hp = value;
             if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
 
@@ -183,6 +184,8 @@ public partial class IBrick : MonoBehaviour
     {
         HPText = GetComponentInChildren<TextMeshPro>();
         HPText.enabled = true;
+        HPText.color = IsBoss ? Color.red : Color.white;
+
     }
     public void OnEnable()
     {
