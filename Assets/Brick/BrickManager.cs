@@ -109,7 +109,7 @@ public class BrickManager : MonoBehaviour
 
     void Update()
     {
-        if(availablePositions.Count > 0 && SpawnBrickRoutine == null && !WavePause && GameManager.instance.isGameEnded)
+        if(availablePositions.Count > 0 && SpawnBrickRoutine == null && !WavePause && !GameManager.instance.isGameEnded)
         {
             SpawnBrickRoutine = StartCoroutine(SpawnBricks());
         }
@@ -236,7 +236,7 @@ public class BrickManager : MonoBehaviour
 
     private IEnumerator SpawnBricks()
     {
-        while (GameManager.instance.isGameEnded)
+        while (!GameManager.instance.isGameEnded)
         {
             int Wave = GameManager.instance.Wave;
             int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
