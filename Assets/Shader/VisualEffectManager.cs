@@ -240,14 +240,37 @@ public class VisualEffectManager : MonoBehaviour
             ChainLightningPS.SetParticles(particles);
         }
     }
-
-    public void SetDecayVisualEffect(IBrick brick)
+    public void SetDecayVisualEffect(IBrick brick) { StartCoroutine(SetDecayVisualEffectC(brick)); }
+    public void UnSetDecayVisualEffect(IBrick brick) { StartCoroutine(UnSetDecayVisualEffectC(brick)); }
+    public IEnumerator SetDecayVisualEffectC(IBrick brick)
     {
-        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 1);
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", t);
+            yield return null;
+        }
+
+        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 1f);
     }
 
-    public void UnSetDecayVisualEffect(IBrick brick)
+    public IEnumerator UnSetDecayVisualEffectC(IBrick brick)
     {
-        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 0);
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = duration / elapsed;
+            brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", t);
+            yield return null;
+        }
+
+        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 0f);
     }
 }

@@ -791,7 +791,8 @@ public class InfiniteGrowBall : SpecialAugment
 
     public override void AfterBrickDieEffect(IBrick Brick)
     {
-        Brick.RecentlyBall.Grow(Brick);
+        if(Brick.RecentlyBall != null)
+            Brick.RecentlyBall.Grow(Brick);
     }
 }
 

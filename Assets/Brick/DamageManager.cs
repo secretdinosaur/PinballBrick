@@ -197,9 +197,15 @@ public static partial class DamageManager //Special Effect Attack
             isCritical = IsCriticalHit(brick);
         }
         VisualEffectManager.Instance.SpawnParticle("Curse", brick.transform.position, 5);
-        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
+        float baseDamage = 0;
+        if (brick.RecentlyBall != null)
+            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
             + StatManager.instance.Temporary_stat.AttackDamage
             + brick.RecentlyBall.GrowthAttackDamage)
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        else
+            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
+            + StatManager.instance.Temporary_stat.AttackDamage)
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
         float damage = isCritical ? 
@@ -276,13 +282,15 @@ public class BrickEffectManager : MonoBehaviour
 
         if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
         {
-            brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
-            brick.lineRenderer.material.SetFloat("_FireHeight", 1f);
+            brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 5f);
+                brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 86 / 255f, 0) * 2f);
+            brick.lineRenderer.material.SetFloat("_FireHeight", 0.7f);
         }
         else
         {
             brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
-            brick.lineRenderer.material.SetFloat("_FireHeight", 2f);
+                brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 181 / 255f, 0) * 2f);
+            brick.lineRenderer.material.SetFloat("_FireHeight", 1.5f);
         }
         brick.lineRenderer.enabled = true;
 
@@ -292,13 +300,15 @@ public class BrickEffectManager : MonoBehaviour
             float EffectAttackDamage;
             if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
             {
-                brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
-                brick.lineRenderer.material.SetFloat("_FireHeight", 1f);
+                brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 5f);
+                brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 86 / 255f, 0) * 2f);
+                brick.lineRenderer.material.SetFloat("_FireHeight", 0.7f);
             }
             else
             {
                 brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(191 / 255f, 8 / 255f, 0) * 5f);
-                brick.lineRenderer.material.SetFloat("_FireHeight", 2f);
+                brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 181 / 255f, 0) * 2f);
+                brick.lineRenderer.material.SetFloat("_FireHeight", 1.5f);
             }
             if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
             {

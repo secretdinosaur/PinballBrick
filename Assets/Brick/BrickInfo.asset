@@ -35,8 +35,8 @@ MonoBehaviour:
   - TwinBrick
   - BlackBrick
   BrickSpawnChance:
-  - 1
-  - 0
+  - 0.5761453
+  - 0.42385468
   - 0
   - 0
   - 0
