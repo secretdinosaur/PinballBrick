@@ -248,4 +248,9 @@ public class GameManager : MonoBehaviour
             })
         );
     }
+
+    public void OnClickGoToMain() //추후 수정
+    {
+        Application.Quit();
+    }
 }
