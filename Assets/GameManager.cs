@@ -2,12 +2,17 @@ using System.Collections;
 using System.Xml;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public bool isGameEnded;
+
     public GameObject PausePanel;
+    public GameObject GameEndPanel;
 
     TMP_Text AttackDamageStatValueText;
     TMP_Text CriticalDamageStatValueText;
@@ -18,19 +23,32 @@ public class GameManager : MonoBehaviour
     TMP_Text GoldGainStatValueText;
     TMP_Text ExpGainStatValueText;
 
-    TMP_Text NoticeLevelText;
-    public TMP_Text NoticePlaytimeText;
-    TMP_Text NoticePointText;
-    TMP_Text NoticeWaveText;
+    TMP_Text NoticeLevelText_Pause;
+    TMP_Text NoticePlaytimeText_Pause;
+    TMP_Text NoticePointText_Pause;
+    TMP_Text NoticeWaveText_Pause;
+
+    TMP_Text NoticeLevelText_End;
+    TMP_Text NoticePlaytimeText_End;
+    TMP_Text NoticePointText_End;
+    TMP_Text NoticeWaveText_End;
+    TMP_Text NoticeDestroyedBricksText_End;
+
+    Sequence GameEndSequence;
 
     public TMP_Text WaveNoticeText;
     public TMP_Text WaveExtraNoticeText;
 
     public int Wave;
+    public int DestroyedBricks; 
     void Awake()
     {
         instance = this;
+
+        isGameEnded = false;
+
         PausePanel = GameObject.Find("Canvas").transform.Find("PausePanel").gameObject;
+        GameEndPanel = GameObject.Find("Canvas").transform.Find("GameEndPanel").gameObject;
 
         AttackDamageStatValueText = PausePanel.transform.Find("Stats/AttackDamageIcon/AttackDamageStatValueText").GetComponent<TMP_Text>();
         CriticalDamageStatValueText = PausePanel.transform.Find("Stats/CriticalDamageIcon/CriticalDamageStatValueText").GetComponent<TMP_Text>();
@@ -41,14 +59,21 @@ public class GameManager : MonoBehaviour
         GoldGainStatValueText = PausePanel.transform.Find("Stats/GoldGainIcon/GoldGainStatValueText").GetComponent<TMP_Text>();
         ExpGainStatValueText = PausePanel.transform.Find("Stats/ExpGainIcon/ExpGainStatValueText").GetComponent<TMP_Text>();
 
-        NoticeLevelText = PausePanel.transform.Find("Level").GetComponent<TMP_Text>();
-        NoticePlaytimeText = PausePanel.transform.Find("Playtime").GetComponent<TMP_Text>();
-        NoticePointText = PausePanel.transform.Find("Point").GetComponent<TMP_Text>();
-        NoticeWaveText = PausePanel.transform.Find("Wave").GetComponent<TMP_Text>();
+        NoticeLevelText_Pause = PausePanel.transform.Find("Level").GetComponent<TMP_Text>();
+        NoticePlaytimeText_Pause = PausePanel.transform.Find("Playtime").GetComponent<TMP_Text>();
+        NoticePointText_Pause = PausePanel.transform.Find("Point").GetComponent<TMP_Text>();
+        NoticeWaveText_Pause = PausePanel.transform.Find("Wave").GetComponent<TMP_Text>();
+
+        NoticeLevelText_End = GameEndPanel.transform.Find("Level").GetComponent<TMP_Text>();
+        NoticePlaytimeText_End = GameEndPanel.transform.Find("Playtime").GetComponent<TMP_Text>();
+        NoticePointText_End = GameEndPanel.transform.Find("Point").GetComponent<TMP_Text>();
+        NoticeWaveText_End = GameEndPanel.transform.Find("Wave").GetComponent<TMP_Text>();
+        NoticeDestroyedBricksText_End = GameEndPanel.transform.Find("DestroyedBricks").GetComponent<TMP_Text>();
 
         WaveNoticeText = GameObject.Find("Canvas").transform.Find("WaveNoticeText").GetComponent<TMP_Text>();
         WaveExtraNoticeText = GameObject.Find("Canvas").transform.Find("WaveExtraNoticeText").GetComponent<TMP_Text>();
         Wave = 0;
+        DestroyedBricks = 0;
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
     }
 
@@ -112,7 +137,8 @@ public class GameManager : MonoBehaviour
     {
         SoundManager.instance.SaveVolume();
 
-        Application.Quit(); //추후에 결과창으로 이동하는걸로 변경, 결과창에서 메인으로 돌아갈 수 있게끔.
+        isGameEnded = true;
+        GameEnd();
     }
 
     public void PausePanelOn()
@@ -120,6 +146,11 @@ public class GameManager : MonoBehaviour
         Persistent_Stat Persistent_stat = StatManager.instance.Persistent_stat;
         Temporary_Stat Temporary_stat = StatManager.instance.Temporary_stat;
         StatMultiplier statMultiplier = StatManager.instance.statMultiplier;
+
+        int days = TimeManager.instance.time / 86400;
+        int hours = (TimeManager.instance.time % 86400) / 3600;
+        int minutes = (TimeManager.instance.time % 3600) / 60;
+        int seconds = TimeManager.instance.time % 60;
 
         AttackDamageStatValueText.text = ((Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) *
             (Persistent_stat.AttackDamageMultiplier * statMultiplier.AttackDamageMultiplier)).ToString();
@@ -139,10 +170,13 @@ public class GameManager : MonoBehaviour
 
         ExpGainStatValueText.text = ((Persistent_stat.BonusExp + Temporary_stat.ExpGain) * 100).ToString() + "%";
 
-        NoticeLevelText.text = "Level " + LevelManager.Instance.Level.ToString();
-        //NoticetimeText is in the TimeManager
-        NoticePointText.text = "Point : " + ScoreManager.Instance.TotalScore.ToString();
-        NoticeWaveText.text = "Wave : " + Wave.ToString();
+        NoticeLevelText_Pause.text = "Level " + LevelManager.Instance.Level.ToString();
+        NoticePlaytimeText_Pause.text = "Playtime : " +
+            (days > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}:{3:D2}", days, hours, minutes, seconds) :
+            hours > 0 ? string.Format("{0:D2}:{1:D2}:{2:D2}", hours, minutes, seconds) :
+            string.Format("{0:D2}:{1:D2}", minutes, seconds));
+        NoticePointText_Pause.text = "Point : " + ScoreManager.Instance.TotalScore.ToString();
+        NoticeWaveText_Pause.text = "Wave : " + Wave.ToString();
 
         Time.timeScale = 0f;
     }
@@ -152,5 +186,71 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.SaveVolume();
         if (!LevelManager.Instance.LevelUpPanel.activeSelf)
             Time.timeScale = 1f;
+    }
+
+    int displayedDestroyedBricksValue = 0;
+    int displayedPointValue = 0;
+    public void GameEnd()
+    {
+        PausePanel.SetActive(false);
+        LevelManager.Instance.LevelUpPanel.SetActive(false);
+        PausePanelOff();
+        GameEndPanel.SetActive(true);
+
+        NoticeLevelText_End.text = "Level  ";
+        NoticeWaveText_End.text = "Wave : ";
+        NoticePlaytimeText_End.text = $"Playtime : {00:D2}:{00:D2}";
+        NoticeDestroyedBricksText_End.text = "Destroyed Bricks : ";
+        NoticePointText_End.text = "Total Point : ";
+
+        GameEndSequence = DOTween.Sequence().SetUpdate(true); ;
+
+        GameEndSequence.Append(
+            DOVirtual.Float(0, LevelManager.Instance.Level, 1f, value =>
+            {
+                NoticeLevelText_End.text = "Level  " + Mathf.RoundToInt(value).ToString();
+            })
+        ).Insert(
+            1.5f,
+            DOVirtual.Float(0, Wave, 1f, value =>
+            {
+                NoticeWaveText_End.text = "Wave : " + Mathf.RoundToInt(value).ToString();
+            })
+        ).Insert(
+            3f,
+            DOVirtual.Float(0, TimeManager.instance.time, 1f, value =>
+            {
+                int totalSeconds = Mathf.RoundToInt(value);
+
+                int days = totalSeconds / 86400;
+                int hours = (totalSeconds % 86400) / 3600;
+                int minutes = (totalSeconds % 3600) / 60;
+                int seconds = totalSeconds % 60;
+
+                if (days > 0)
+                    NoticePlaytimeText_End.text = $"Playtime : {days:D2}:{hours:D2}:{minutes:D2}:{seconds:D2}";
+                else if (hours > 0)
+                    NoticePlaytimeText_End.text = $"Playtime : {hours:D2}:{minutes:D2}:{seconds:D2}";
+                else
+                    NoticePlaytimeText_End.text = $"Playtime : {minutes:D2}:{seconds:D2}";
+            })
+        ).Insert(
+            4.5f,
+            DOVirtual.Float(0, DestroyedBricks, 1f, value =>
+            {
+                NoticeDestroyedBricksText_End.text = "Destroyed Bricks : " + Mathf.RoundToInt(value).ToString();
+            })
+        ).Insert(
+            6f,
+            DOVirtual.Float(0, ScoreManager.Instance.TotalScore, 1f, value =>
+            {
+                NoticePointText_End.text = "Total Point : " + Mathf.RoundToInt(value).ToString();
+            })
+        );
+    }
+
+    public void OnClickGoToMain() //추후 수정
+    {
+        Application.Quit();
     }
 }

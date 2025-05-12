@@ -37,7 +37,7 @@ public partial class LevelManager : MonoBehaviour
             {
                 exp = 0;
             }
-            if (exp >= LevelBar.maxValue)
+            if (exp >= LevelBar.maxValue && GameManager.instance.isGameEnded)
             {
                 LevelUp();
             }
@@ -136,7 +136,7 @@ public partial class LevelManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf)
+        if (LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf && GameManager.instance.isGameEnded)
         {
             ShowLevelUpPanel();
         }
