@@ -654,8 +654,7 @@ public class WeatherChange : FieldAugment
         while (true)
         {
             float elapsedTime = 0;
-            int i = Random.Range(1, 6);
-            switch (i)
+            switch (Random.Range(1, 6))
             {
                 case 1:
                     AugmentManager.instance.effectChance.FireChance += 0.15f;
@@ -664,7 +663,8 @@ public class WeatherChange : FieldAugment
                         for(int j = 0; j < BrickManager.Instance.CurrentBricks.Count; j++)
                         {
                             if(Random.value < FireChance)
-                                BrickManager.Instance.CurrentBricks[j].DamageByFireEffect(3f);
+                                BrickManager.Instance.CurrentBricks[j].
+                                    DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
                         }
                         elapsedTime += 1;
                         yield return new WaitForSeconds(1f);
@@ -678,7 +678,8 @@ public class WeatherChange : FieldAugment
                         for (int j = 0; j < BrickManager.Instance.CurrentBricks.Count; j++)
                         {
                             if (Random.value < PoisonChance)
-                                BrickManager.Instance.CurrentBricks[j].DamageByPoisonEffect(3f);
+                                BrickManager.Instance.CurrentBricks[j].
+                                    DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.PoisonDuration);
                         }
                         elapsedTime += 1;
                         yield return new WaitForSeconds(1f);
@@ -693,7 +694,8 @@ public class WeatherChange : FieldAugment
                         for (int j = 0; j < BrickManager.Instance.CurrentBricks.Count; j++)
                         {
                             if (Random.value < DecayChance)
-                                BrickManager.Instance.CurrentBricks[j].DecayEffect(3f);
+                                BrickManager.Instance.CurrentBricks[j].
+                                    DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
                         }
                         elapsedTime += 1;
                         yield return new WaitForSeconds(1f);
@@ -720,7 +722,7 @@ public class WeatherChange : FieldAugment
                         for (int j = 0; j < BrickManager.Instance.CurrentBricks.Count; j++)
                         {
                             if (Random.value < LightningChance)
-                                BrickManager.Instance.CurrentBricks[j].DamageByLightningEffect(BrickManager.Instance.CurrentBricks[j].HpTemp / 10, 1);
+                                BrickManager.Instance.CurrentBricks[j].DamageByLightningEffect(1, 1);
                         }
                         elapsedTime += 1;
                         yield return new WaitForSeconds(1f);
@@ -782,16 +784,74 @@ public class DiceGamble : FieldAugment
     private void CalDiceSet()
     {
         rolledDiceSet.Sort();
+        int DiceSum = rolledDiceSet[0] + rolledDiceSet[1] + rolledDiceSet[2];
         if (rolledDiceSet[0] == rolledDiceSet[1] && rolledDiceSet[1] == rolledDiceSet[2])
         {
-            foreach (Brick brick in BrickManager.Instance.CurrentBricks)
+            switch (Random.Range(1, 3))
             {
-                brick.BrickDie();
+                case 1:
+                    foreach (Brick brick in BrickManager.Instance.CurrentBricks)
+                    {
+                        brick.BrickDie();
+                    }
+                    break;
+                case 2:
+                    LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue;
+                    break;
+                case 3:
+                    foreach (Brick brick in BrickManager.Instance.CurrentBricks)
+                    {
+                        brick.
+                            DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
+                        brick.
+                            DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.PoisonDuration);
+                        brick.
+                            DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         else if (rolledDiceSet[0] + 1 == rolledDiceSet[1] && rolledDiceSet[1] + 1 == rolledDiceSet[2])
         {
-            LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.25f;
+            switch (Random.Range(1, 3))
+            {
+                case 1:
+                    for(int i = 0; i < DiceSum / 2; i++)
+                    {
+                        BallManager.Instance.CreateSpecificBall(1, "BombBall");
+                    }
+                    break;
+                case 2:
+                    foreach (Brick brick in BrickManager.Instance.CurrentBricks)
+                    {
+                        brick.ArbitraryDamageAttack(brick.HpTemp * 0.1f, false, "10%", "Normal");
+                    }
+                    break;
+                case 3:
+                    LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.25f;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            switch (Random.Range(1, 3))
+            {
+                case 1:
+                    BallManager.Instance.CreateBall(DiceSum / 2);
+                    break;
+                case 2:
+                    BrickManager.Instance.OnSpecialBrickSpawnButtonClick();
+                    break;
+                case 3:
+                    LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.05f;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

@@ -1343,7 +1343,7 @@ public class SplitBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_41", "Diffraction", "A low chance for the ball to split after an attack", "Special", 3);
+        SetAugment("SPECIAL_41", "Diffraction", "A low chance for the ball to split after an attack", "Special", 2);
     }
 
     public override void Apply()
