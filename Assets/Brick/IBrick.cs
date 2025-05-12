@@ -89,7 +89,7 @@ public partial class IBrick : MonoBehaviour
                         }
                         else if(BrickType == "BallBrick")
                         {
-                            BallManager.Instance.CreateBall(3);
+                            BallManager.Instance.CreateBall(2);
                         }
                     }
                     BrickDie();
@@ -101,8 +101,9 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
+        GameManager.instance.DestroyedBricks++;
         Fever.StartFever = true;
-        Fever.Instance.FeverCount *= 2;
+        Fever.Instance.CalFeverCount();
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
         LevelManager.Instance.GetExp(Exp);

@@ -109,7 +109,7 @@ public class BrickManager : MonoBehaviour
 
     void Update()
     {
-        if(availablePositions.Count > 0 && SpawnBrickRoutine == null && !WavePause)
+        if(availablePositions.Count > 0 && SpawnBrickRoutine == null && !WavePause && GameManager.instance.isGameEnded)
         {
             SpawnBrickRoutine = StartCoroutine(SpawnBricks());
         }
@@ -236,7 +236,7 @@ public class BrickManager : MonoBehaviour
 
     private IEnumerator SpawnBricks()
     {
-        while (true)
+        while (GameManager.instance.isGameEnded)
         {
             int Wave = GameManager.instance.Wave;
             int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
@@ -518,7 +518,7 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseMiniBossHealthValue * (Mathf.Pow(5 + Wave / 2, UnityEngine.Random.Range(1f, 1.2f)))));
+                HPPool.Add(UnityEngine.Random.Range(5, 10));
             }
         }
         else

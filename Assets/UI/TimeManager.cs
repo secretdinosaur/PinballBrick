@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections;
 public class TimeManager : MonoBehaviour
 {
+    public static TimeManager instance;
     TMP_Text TimeText;
     Coroutine TimeRoutine;
     public int time;
@@ -11,6 +12,7 @@ public class TimeManager : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
         TimeRoutine = null;
         TimeText = GameObject.Find("Canvas").transform.Find("GameTimeText").GetComponent<TMP_Text>();
 
