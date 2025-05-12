@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public bool isGameEnded;
+    public bool isGameEnded = false;
 
     public GameObject PausePanel;
     public GameObject GameEndPanel;
@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
 
-        isGameEnded = false;
 
         PausePanel = GameObject.Find("Canvas").transform.Find("PausePanel").gameObject;
         GameEndPanel = GameObject.Find("Canvas").transform.Find("GameEndPanel").gameObject;
