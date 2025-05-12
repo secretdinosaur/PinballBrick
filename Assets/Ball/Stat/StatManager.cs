@@ -264,29 +264,29 @@ public partial class StatManager
         RectTransform rectTransform = NoticeChangedStatPanel.GetComponent<RectTransform>();
 
         AttackDamageStatValueText.text = ((Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * 
-            (Persistent_stat.AttackDamageMultiplier * statMultiplier.AttackDamageMultiplier)).ToString();
+            (Persistent_stat.AttackDamageMultiplier * statMultiplier.AttackDamageMultiplier)).ToString("F1");
         AttackDamageChangedStatValueText.text = "";
 
-        CriticalDamageStatValueText.text = ((Persistent_stat.CriticalDamage + Temporary_stat.CriticalDamage) * 100).ToString() + "%";
+        CriticalDamageStatValueText.text = ((Persistent_stat.CriticalDamage + Temporary_stat.CriticalDamage) * 100).ToString("F1") + "%";
         CriticalDamageChangedStatValueText.text = "";
 
-        CriticalChanceStatValueText.text = ((Persistent_stat.CriticalChance + Temporary_stat.CriticalChance) * 100).ToString() + "%";
+        CriticalChanceStatValueText.text = ((Persistent_stat.CriticalChance + Temporary_stat.CriticalChance) * 100).ToString("F1") + "%";
         CriticalChanceChangedStatValueText.text = "";
 
         EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) *
-            (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString();
+            (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString("F1");
         EffectDamageChangedStatValueText.text = "";
 
-        EffectCriticalDamageStatValueText.text = (Temporary_stat.EffectCriticalDamage * 100).ToString() + "%";
+        EffectCriticalDamageStatValueText.text = (Temporary_stat.EffectCriticalDamage * 100).ToString("F1") + "%";
         EffectCriticalDamageChangedStatValueText.text = "";
 
         EffectDurationStatValueText.text = Temporary_stat.EffectDuration.ToString() + "s";
         EffectDurationChangedStatValueText.text = "";
 
-        GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString() + "%";
+        GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString("F1") + "%";
         GoldGainChangedStatValueText.text = "";
 
-        ExpGainStatValueText.text = ((Persistent_stat.BonusExp + Temporary_stat.ExpGain) * 100).ToString() + "%";
+        ExpGainStatValueText.text = ((Persistent_stat.BonusExp + Temporary_stat.ExpGain) * 100).ToString("F1") + "%";
         ExpGainChangedStatValueText.text = "";
 
         UpdateChangedStatValueText();
@@ -338,90 +338,90 @@ public partial class StatManager
                     if(TotalChangedStatValue[0] != 0)
                     {
                         if (TotalChangedStatValue[0] < 0)
-                            AttackDamageChangedStatValueText.text = TotalChangedStatValue[0].ToString();
+                            AttackDamageChangedStatValueText.text = TotalChangedStatValue[0].ToString("F1");
                         else if(TotalChangedStatValue[0] > 0)
-                            AttackDamageChangedStatValueText.text = "+" + TotalChangedStatValue[0].ToString();
+                            AttackDamageChangedStatValueText.text = "+" + TotalChangedStatValue[0].ToString("F1");
                     }
                     break;
                 case 1:
                     if (TotalChangedStatValue[1] != 0)
                     {
                         if (TotalChangedStatValue[1] < 0)
-                            CriticalDamageChangedStatValueText.text = (TotalChangedStatValue[1] * 100).ToString() + "%";
+                            CriticalDamageChangedStatValueText.text = (TotalChangedStatValue[1] * 100).ToString("F1") + "%";
                         else if (TotalChangedStatValue[1] > 0)
-                            CriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[1] * 100).ToString() + "%";
+                            CriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[1] * 100).ToString("F1") + "%";
                     }
                     break;
                 case 2:
                     if (TotalChangedStatValue[2] != 0)
                     {
                         if (TotalChangedStatValue[2] < 0)
-                            CriticalChanceChangedStatValueText.text = (TotalChangedStatValue[2] * 100).ToString() + "%";
+                            CriticalChanceChangedStatValueText.text = (TotalChangedStatValue[2] * 100).ToString("F1") + "%";
                         else if (TotalChangedStatValue[2] > 0)
-                            CriticalChanceChangedStatValueText.text = "+" + (TotalChangedStatValue[2] * 100).ToString() + "%";
+                            CriticalChanceChangedStatValueText.text = "+" + (TotalChangedStatValue[2] * 100).ToString("F1") + "%";
                     }
                     break;
                 case 3:
                     if (TotalChangedStatValue[3] != 0)
                     {
                         if (TotalChangedStatValue[3] < 0)
-                            EffectDamageChangedStatValueText.text = TotalChangedStatValue[3].ToString();
+                            EffectDamageChangedStatValueText.text = TotalChangedStatValue[3].ToString("F1");
                         else if (TotalChangedStatValue[3] > 0)
-                            EffectDamageChangedStatValueText.text = "+" + TotalChangedStatValue[3].ToString();
+                            EffectDamageChangedStatValueText.text = "+" + TotalChangedStatValue[3].ToString("F1");
                     }
                     break;
                 case 4:
                     if (TotalChangedStatValue[4] != 0)
                     {
                         if (TotalChangedStatValue[4] < 0)
-                            EffectCriticalDamageChangedStatValueText.text = (TotalChangedStatValue[4] * 100).ToString() + "%";
+                            EffectCriticalDamageChangedStatValueText.text = (TotalChangedStatValue[4] * 100).ToString("F1") + "%";
                         else if (TotalChangedStatValue[4] > 0)
-                            EffectCriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[4] * 100).ToString() + "%";
+                            EffectCriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[4] * 100).ToString("F1") + "%";
                     }
                     break;
                 case 5:
                     if (TotalChangedStatValue[5] != 0)
                     {
                         if (TotalChangedStatValue[5] < 0)
-                            EffectDurationChangedStatValueText.text = TotalChangedStatValue[5].ToString() + "s";
+                            EffectDurationChangedStatValueText.text = TotalChangedStatValue[5].ToString("F1") + "s";
                         else if (TotalChangedStatValue[5] > 0)
-                            EffectDurationChangedStatValueText.text = "+" + TotalChangedStatValue[5].ToString() + "s";
+                            EffectDurationChangedStatValueText.text = "+" + TotalChangedStatValue[5].ToString("F1") + "s";
                     }
                     break;
                 case 6:
                     if (TotalChangedStatValue[6] != 0)
                     {
                         if (TotalChangedStatValue[6] < 0)
-                            GoldGainChangedStatValueText.text = (TotalChangedStatValue[6] * 100).ToString() + "%";
+                            GoldGainChangedStatValueText.text = (TotalChangedStatValue[6] * 100).ToString("F1") + "%";
                         else if (TotalChangedStatValue[6] > 0)
-                            GoldGainChangedStatValueText.text = "+" + (TotalChangedStatValue[6] * 100).ToString() + "%";
+                            GoldGainChangedStatValueText.text = "+" + (TotalChangedStatValue[6] * 100).ToString("F1") + "%";
                     }
                     break;
                 case 7:
                     if (TotalChangedStatValue[7] != 0)
                     {
                         if (TotalChangedStatValue[7] < 0)
-                            ExpGainChangedStatValueText.text = (TotalChangedStatValue[7] * 100).ToString() + "%";
+                            ExpGainChangedStatValueText.text = (TotalChangedStatValue[7] * 100).ToString("F1") + "%";
                         else if (TotalChangedStatValue[7] > 0)
-                            ExpGainChangedStatValueText.text = "+" + (TotalChangedStatValue[7] * 100).ToString() + "%";
+                            ExpGainChangedStatValueText.text = "+" + (TotalChangedStatValue[7] * 100).ToString("F1") + "%";
                     }
                     break;
                 case 8:
                     if (TotalChangedStatValue[8] != 1)
                     {
                         if (TotalChangedStatValue[8] < 0)
-                            AttackDamageChangedStatValueText.text = (TotalChangedStatValue[8] * 100).ToString() + "%";
+                            AttackDamageChangedStatValueText.text = (TotalChangedStatValue[8] * 100).ToString("F1") + "%";
                         else if (TotalChangedStatValue[8] > 0)
-                            AttackDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[8] * 100).ToString() +"%";
+                            AttackDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[8] * 100).ToString("F1") +"%";
                     }
                     break;
                 case 9:
                     if (TotalChangedStatValue[9] != 1)
                     {
                         if (TotalChangedStatValue[9] < 0)
-                            EffectDamageChangedStatValueText.text = (TotalChangedStatValue[9] * 100).ToString() + "%";
+                            EffectDamageChangedStatValueText.text = (TotalChangedStatValue[9] * 100).ToString("F1") + "%";
                         else if (TotalChangedStatValue[9] > 0)
-                            EffectDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[9] * 100).ToString() + "%";
+                            EffectDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[9] * 100).ToString("F1") + "%";
                     }
                     break;
                 default: 
