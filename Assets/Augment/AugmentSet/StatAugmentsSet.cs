@@ -518,14 +518,14 @@ public class Trinity : StatAugment
     public override void Apply()
     {
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.33f);
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.33f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.33f);
         StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.33f);
     }
 
     public override void Remove()
     {
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.33f);
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.33f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.33f);
         StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.33f);
     }
 }
