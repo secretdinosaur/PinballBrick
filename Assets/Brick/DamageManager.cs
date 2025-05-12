@@ -175,8 +175,8 @@ public static partial class DamageManager //Special Effect Attack
             isCritical = IsCriticalHit(brick);
         }
         float Percent = isCritical ? 
-              Random.Range(0.01f, 0.02f) * StatManager.instance.Temporary_stat.EffectCriticalDamage
-            : Random.Range(0.01f, 0.02f);
+              Random.Range(0.03f, 0.05f) * StatManager.instance.Temporary_stat.EffectCriticalDamage
+            : Random.Range(0.03f, 0.05f);
         float BaseDamage = brick.HpTemp * Percent;
 
         float FinalDamage = GameManager.instance.isGameEnded ? 0

@@ -152,22 +152,22 @@ public class GameManager : MonoBehaviour
         int seconds = TimeManager.instance.time % 60;
 
         AttackDamageStatValueText.text = ((Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) *
-            (Persistent_stat.AttackDamageMultiplier * statMultiplier.AttackDamageMultiplier)).ToString();
+            (Persistent_stat.AttackDamageMultiplier * statMultiplier.AttackDamageMultiplier)).ToString("F1");
 
-        CriticalDamageStatValueText.text = ((Persistent_stat.CriticalDamage + Temporary_stat.CriticalDamage) * 100).ToString() + "%";
+        CriticalDamageStatValueText.text = ((Persistent_stat.CriticalDamage + Temporary_stat.CriticalDamage) * 100).ToString("F1") + "%";
 
-        CriticalChanceStatValueText.text = ((Persistent_stat.CriticalChance + Temporary_stat.CriticalChance) * 100).ToString() + "%";
+        CriticalChanceStatValueText.text = ((Persistent_stat.CriticalChance + Temporary_stat.CriticalChance) * 100).ToString("F1") + "%";
 
         EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) *
-            (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString();
+            (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString("F1");
 
-        EffectCriticalDamageStatValueText.text = (Temporary_stat.EffectCriticalDamage * 100).ToString() + "%";
+        EffectCriticalDamageStatValueText.text = (Temporary_stat.EffectCriticalDamage * 100).ToString("F1") + "%";
 
         EffectDurationStatValueText.text = Temporary_stat.EffectDuration.ToString() + "s";
 
-        GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString() + "%";
+        GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString("F1") + "%";
 
-        ExpGainStatValueText.text = ((Persistent_stat.BonusExp + Temporary_stat.ExpGain) * 100).ToString() + "%";
+        ExpGainStatValueText.text = ((Persistent_stat.BonusExp + Temporary_stat.ExpGain) * 100).ToString("F1") + "%";
 
         NoticeLevelText_Pause.text = "Level " + LevelManager.Instance.Level.ToString();
         NoticePlaytimeText_Pause.text = "Playtime : " +
@@ -191,6 +191,15 @@ public class GameManager : MonoBehaviour
     int displayedPointValue = 0;
     public void GameEnd()
     {
+        if (BallManager.Instance.InGameBall.Count > 0)
+        {
+            foreach (IBall ball in BallManager.Instance.InGameBall)
+            {
+                StartCoroutine(BallRemoveEffect(ball));
+                BallManager.Instance.TakeBall(ball);
+            }
+        }
+
         PausePanel.SetActive(false);
         LevelManager.Instance.LevelUpPanel.SetActive(false);
         PausePanelOff();
@@ -246,6 +255,12 @@ public class GameManager : MonoBehaviour
                 NoticePointText_End.text = "Total Point : " + Mathf.RoundToInt(value).ToString();
             })
         );
+    }
+
+    private IEnumerator BallRemoveEffect(IBall ball)
+    {
+        VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
+        yield return null;
     }
 
     public void OnClickGoToMain() //추후 수정

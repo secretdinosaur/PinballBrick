@@ -419,7 +419,7 @@ public class CritChanceToAttackDamage : StatAugment
     bool isGetAugment = false;
     private void OnEnable()
     {
-        SetAugment("STAT_21", "Risk Management", "Converts 1% critical chance to 0.4 attack damage", 4);
+        SetAugment("STAT_21", "Risk Management", "Critical Chance is fixed at 0%\nConverts 1% critical chance to 0.4 attack damage", 4);
     }
 
     public override void Apply()
@@ -518,14 +518,14 @@ public class Trinity : StatAugment
     public override void Apply()
     {
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.33f);
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.33f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.33f);
         StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.33f);
     }
 
     public override void Remove()
     {
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.33f);
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.33f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.33f);
         StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.33f);
     }
 }
