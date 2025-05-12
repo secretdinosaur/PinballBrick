@@ -101,6 +101,7 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
+        GameManager.instance.DestroyedBricks++;
         Fever.StartFever = true;
         Fever.Instance.CalFeverCount();
         Fever.Instance.FeverGauge = 100;
