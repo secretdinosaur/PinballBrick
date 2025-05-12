@@ -38,6 +38,10 @@ public class DamageText : MonoBehaviour
                 Routine = StartCoroutine(ShowDamageTextRandom());
                 damageText.color = Color.white;
                 break;
+            case "Explosion":
+                Routine = StartCoroutine(ShowDamageTextRandom());
+                damageText.color = Color.red;
+                break;
             case "Additional":
                 Routine = StartCoroutine(ShowDamageTextRandom());
                 damageText.color = new Color(1f, 0.5f, 0f);
@@ -77,7 +81,7 @@ public class DamageText : MonoBehaviour
         Vector2 StartPosition = rectTransform.anchoredPosition;
         while (timer < lifetime)
         {
-            rectTransform.anchoredPosition = StartPosition + (direction * speed * timer - direction * speed * 0.5f * timer * timer);
+            rectTransform.anchoredPosition = StartPosition + (direction * speed * timer - direction * speed * 1f * timer * timer);
             timer += Time.deltaTime;
             yield return null;
         }

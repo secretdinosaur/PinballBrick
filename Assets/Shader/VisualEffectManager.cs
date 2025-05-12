@@ -82,7 +82,7 @@ public class VisualEffectManager : MonoBehaviour
 
             case "DecayExplosion":
                 DecayExplosionPS.transform.position = ParticlePosition;
-                DecayExplosionPS.Emit(15);
+                DecayExplosionPS.Emit(50);
                 break;
 
             case "AdditionalAttack":
@@ -208,6 +208,33 @@ public class VisualEffectManager : MonoBehaviour
             particles[i].startSize3D = size;
             particles[i].position = StartPosition;
             
+            particles[i].rotation3D = new Vector3(0, 0, Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90);
+
+            ChainLightningPS.SetParticles(particles);
+        }
+    }
+
+    public void SpawnThunderStrike(List<IBall> Balls)
+    {
+        ChainLightningPS.Emit(Balls.Count - 1);
+        Particle[] particles = new Particle[ChainLightningPS.particleCount];
+        ChainLightningPS.GetParticles(particles);
+
+        for (int i = 0; i < Balls.Count - 1; i++)
+        {
+            Vector2 StartPosition = Balls[i].transform.position;
+            Vector2 EndPosition = Balls[i + 1].transform.position;
+
+            float Length = (EndPosition - StartPosition).magnitude;
+            Vector2 Direction = (EndPosition - StartPosition).normalized;
+
+            Vector3 size = particles[i].startSize3D;
+            size.x = 1f;
+            size.y = Length;
+
+            particles[i].startSize3D = size;
+            particles[i].position = StartPosition;
+
             particles[i].rotation3D = new Vector3(0, 0, Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90);
 
             ChainLightningPS.SetParticles(particles);

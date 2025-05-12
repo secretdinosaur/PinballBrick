@@ -24,7 +24,7 @@ public partial class IBall : MonoBehaviour
     public bool isOverDeathLine;
 
     public Queue<Vector2> PositionSet = new Queue<Vector2>();
-    public Vector2 StartPosition = new Vector2(0f, -5f);
+    public Vector3 StartPosition = new Vector3(0f, -5f, 35);
     public float linearVelocityYValue = 10;
 
     public Coroutine FusionMoveRoutine = null;

@@ -35,7 +35,7 @@ public class BombBall : IBall
                     100 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
                     false,
                     (100 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
-                    "Fire");
+                    "Explosion");
             }
         }
         VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);
