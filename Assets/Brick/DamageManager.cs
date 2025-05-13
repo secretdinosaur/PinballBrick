@@ -227,7 +227,7 @@ public static partial class DamageManager //Special Effect Attack
             damage = 0;
             brick.ShowText("0", DamageType, isCritical);
         }
-        else if (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
+        else if (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed || brick.IsSpecialBrick)
         {
             damage = 1;
             brick.HP -= damage;

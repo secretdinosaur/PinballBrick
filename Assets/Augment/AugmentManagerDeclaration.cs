@@ -192,7 +192,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<AntiGravity>(),
+            gameObject.GetComponent<AllDamage>(),
         };
 
         foreach (IAugment augment in TestAugments)
