@@ -571,7 +571,6 @@ public class DecayExplosion : SpecialAugment
     {
         if (Brick.BrickEffect.EffectStatusSet["Decay"].EffectStack + 1 == Brick.BrickEffect.EffectStatusSet["Decay"].EffectStackLimit)
         {
-            Brick.IsNeedDelayedDIeForEffect = true;
             VisualEffectManager.Instance.DecayExplosionPS.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Brick.GetComponent<Renderer>().material.color);
             VisualEffectManager.Instance.SpawnParticle("DecayExplosion", Brick.transform.position, 1);
             float explosionRadius = 3f;

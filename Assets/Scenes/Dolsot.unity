@@ -6488,7 +6488,7 @@ MonoBehaviour:
     _container: {fileID: 137631891}
     _nonLazy: 0
   - _name: TwinBrick
-    _component: {fileID: 4506351670689749019, guid: 02cb33b1921d238428146e6deed00a99, type: 3}
+    _component: {fileID: 5816147708443735478, guid: 0879a275d8b9b7145889469f962ecd0e, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
@@ -6507,18 +6507,13 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
-  - _name: WhiteBrick
-    _component: {fileID: 1708533091770634106, guid: 2c348e231a74f5045a32d0f3665b8982, type: 3}
+  - _name: AbsorbBrick
+    _component: {fileID: 1943494403981103725, guid: e41be9370a421834aa79b5b81765f184, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
   - _name: HealBrick
     _component: {fileID: 1824619304834806856, guid: bf73b28786367574196390cd1711acd8, type: 3}
-    _count: 0
-    _container: {fileID: 137631891}
-    _nonLazy: 1
-  - _name: BlackBrick
-    _component: {fileID: -3384781788680756480, guid: de966c7a39a1b0f40a7d91811b707933, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1
