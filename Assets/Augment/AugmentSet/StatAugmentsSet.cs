@@ -555,7 +555,7 @@ public class MassivelyCriticalDamageUp : StatAugment
     bool isGetAugment;
     private void OnEnable()
     {
-        SetAugment("STAT_25", "Waiter", "Max Critical Chance Becomes 20%,\n Critical Damage Upgrade Values Are Doubled After Level Up", 3);
+        SetAugment("STAT_25", "Waiter", "Max Critical Chance Becomes 10%,\n Critical Damage Upgrade Values Are Doubled After Level Up", 2);
     }
 
     public override void Apply()
@@ -576,9 +576,9 @@ public class MassivelyCriticalDamageUp : StatAugment
     {
         if (isGetAugment)
         {
-            if(StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0.2f)
+            if(StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0.1f)
             {
-                float excess = (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) - 0.2f;
+                float excess = (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) - 0.1f;
                 StatManager.instance.ChangeTemporaryStats_CriticalChance(-excess);
             }
         }

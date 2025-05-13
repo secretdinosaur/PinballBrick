@@ -163,6 +163,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SpecialBrickChanceUp>(),
             gameObject.AddComponent<IncreseStatUpValue>(),
             gameObject.AddComponent<GoalWaveBonus>(),
+            gameObject.AddComponent<ReducesExp10>(),
+            gameObject.AddComponent<ReducesExp15>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
