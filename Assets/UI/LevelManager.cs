@@ -69,6 +69,7 @@ public partial class LevelManager : MonoBehaviour
     };
 
     public float BaseStatUpValue;
+    public float BaseMaxExpValue;
 
     void Awake()
     {
@@ -123,6 +124,7 @@ public partial class LevelManager : MonoBehaviour
         isAlreadyClickedButton = new bool[OptionButtons.Length];
 
         BaseStatUpValue = 1f;
+        BaseMaxExpValue = 1f;
 
         CustomTime_1 = 0f;
         CustomTime_2 = 0f;
@@ -177,15 +179,15 @@ public partial class LevelManager : MonoBehaviour
 
     public void LevelBarMaxValueSet(int level)
     {
-        LevelBar.maxValue =
-            level > 90 ?
+        LevelBar.maxValue = BaseMaxExpValue * 
+            (level > 90 ?
                 110 + 98 * (level - 1) :
             level > 60 ?
                 100 + 82 * (level - 1) :
             level > 30 ?
                 80 + 62 * (level - 1) :
             //level <= 30
-                50 + 27 * (level - 1);
+                50 + 27 * (level - 1));
     }
 
     public void GetExp(float value)

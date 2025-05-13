@@ -219,7 +219,7 @@ public class TargetMark : FieldAugment
         while (true)
         {
             yield return new WaitForSeconds(5);
-            if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null)
+            if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null && BrickManager.Instance.CurrentBricks.Count > 0)
             {
                 List<Rigidbody2D> BallRigidBody2D = new List<Rigidbody2D>();
                 foreach(Ball ball in BallManager.Instance.InGameBall)
@@ -237,9 +237,16 @@ public class TargetMark : FieldAugment
                 Target.SetActive(false);
                 foreach (Rigidbody2D ball in BallRigidBody2D)
                 {
-                    Vector2 TargetDirection = (brick.transform.position - ball.transform.position).normalized;
-                    ball.AddForce(TargetDirection * 250f, ForceMode2D.Impulse);
-                    yield return null;
+                    if(!brick.gameObject.activeSelf || brick == null)
+                    {
+                        Vector2 TargetDirection = (brick.transform.position - ball.transform.position).normalized;
+                        ball.AddForce(TargetDirection * 250f, ForceMode2D.Impulse);
+                        yield return null;
+                    }
+                    else
+                    {
+                        yield return null;
+                    }
                     ball.gravityScale = 0.5f;
                 }
             }
@@ -350,6 +357,12 @@ public class AntiGravity : FieldAugment
         {
             StopCoroutine(Routine);
             Routine = null;
+        }
+        BallManager.Instance.isAntiGravity = false;
+        foreach (Ball ball in BallManager.Instance.InGameBall)
+        {
+            Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+            rb.gravityScale = 0.5f;
         }
     }
 

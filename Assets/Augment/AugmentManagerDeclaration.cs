@@ -163,6 +163,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<SpecialBrickChanceUp>(),
             gameObject.AddComponent<IncreseStatUpValue>(),
             gameObject.AddComponent<GoalWaveBonus>(),
+            gameObject.AddComponent<ReducesExp10>(),
+            gameObject.AddComponent<ReducesExp15>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -190,9 +192,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Atk10Up>(),
-            gameObject.GetComponent<Atk30Up>(),
-            gameObject.GetComponent<Atk50Up>(),
+            gameObject.GetComponent<AllDamage>(),
         };
 
         foreach (IAugment augment in TestAugments)

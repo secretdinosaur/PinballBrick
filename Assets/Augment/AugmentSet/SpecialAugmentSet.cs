@@ -2335,8 +2335,8 @@ public class GoalWaveBonus : SpecialAugment
             else if (GameManager.instance.Wave == 30 && !Goals[2])
             {
                 Goals[2] = true;
-                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
-                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);
+                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.05f);
+                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.05f);
             }
             else if (GameManager.instance.Wave == 50 && !Goals[3])
             {
@@ -2353,8 +2353,8 @@ public class GoalWaveBonus : SpecialAugment
                 {
                     BallManager.Instance.CreateBall(5);
                 }
-                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
-                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);
+                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.05f);
+                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.05f);
             }
             else if (GameManager.instance.Wave == 100 && !Goals[5])
             {
@@ -2363,9 +2363,49 @@ public class GoalWaveBonus : SpecialAugment
                 {
                     LevelManager.Instance.GetExp(20);
                 }
-                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.2f);
-                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.2f);
+                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
+                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);
             }
         }
+    }
+}
+
+public class ReducesExp10: SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_70", "Brilliant Idea I", "Reduces exp required to level up by 10%", "Special", 4);
+    }
+
+    public override void Apply()
+    {
+        LevelManager.Instance.BaseMaxExpValue *= 0.9f;
+        LevelManager.Instance.LevelBarMaxValueSet(LevelManager.Instance.Level);
+    }
+
+    public override void Remove()
+    {
+        LevelManager.Instance.BaseMaxExpValue /= 0.9f;
+        LevelManager.Instance.LevelBarMaxValueSet(LevelManager.Instance.Level);
+    }
+}
+
+public class ReducesExp15 : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_71", "Brilliant Idea II", "Reduces exp required to level up by 15%", "Special", 2);
+    }
+
+    public override void Apply()
+    {
+        LevelManager.Instance.BaseMaxExpValue *= 0.85f;
+        LevelManager.Instance.LevelBarMaxValueSet(LevelManager.Instance.Level);
+    }
+
+    public override void Remove()
+    {
+        LevelManager.Instance.BaseMaxExpValue /= 0.85f;
+        LevelManager.Instance.LevelBarMaxValueSet(LevelManager.Instance.Level);
     }
 }
