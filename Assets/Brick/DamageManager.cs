@@ -151,7 +151,7 @@ public static partial class DamageManager //Special Effect Attack
                        StatManager.instance.Temporary_stat.AttackDamage)
                       * StatManager.instance.statMultiplier.AttackDamageMultiplier * DamageMultiflier;
 
-            float FinalAdditionalAttackDamage = GameManager.instance.isGameEnded ? 0
+            float FinalAdditionalAttackDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
                 : DecayDamageCalculate(brick, AdditionalAttackDamage);
@@ -179,7 +179,7 @@ public static partial class DamageManager //Special Effect Attack
             : Random.Range(0.03f, 0.05f);
         float BaseDamage = brick.HpTemp * Percent;
 
-        float FinalDamage = GameManager.instance.isGameEnded ? 0
+        float FinalDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
                 : brick.DecayDamageCalculate(BaseDamage + DamageAmount);
@@ -211,7 +211,7 @@ public static partial class DamageManager //Special Effect Attack
         float damage = isCritical ? 
               Random.Range(baseDamage * 0.5f, baseDamage * 1.3f) * StatManager.instance.Temporary_stat.EffectCriticalDamage
             : Random.Range(baseDamage * 0.5f, baseDamage * 1.3f);
-        float FinalDamage = GameManager.instance.isGameEnded ? 0
+        float FinalDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
                 : brick.DecayDamageCalculate(damage);
@@ -222,12 +222,12 @@ public static partial class DamageManager //Special Effect Attack
     public static void ArbitraryDamageAttack(IBrick brick, float damage, bool isCritical, string damageText, string DamageType)
     {
         damage = DecayDamageCalculate(brick, damage);
-        if (GameManager.instance.isGameEnded)
+        if (GameManager.instance.isGameEnded || brick.IsSpecialBrick)
         {
             damage = 0;
             brick.ShowText("0", DamageType, isCritical);
         }
-        else if (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed || brick.IsSpecialBrick)
+        else if (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
         {
             damage = 1;
             brick.HP -= damage;
@@ -322,7 +322,7 @@ public class BrickEffectManager : MonoBehaviour
                 : (StatManager.instance.Temporary_stat.EffectDamage *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier)
                   * EffectStatusSet["Fire"].EffectStack;
-            float FinalEffectAttackDamage = GameManager.instance.isGameEnded ? 0
+            float FinalEffectAttackDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
                 : brick.DecayDamageCalculate(EffectAttackDamage);
@@ -405,7 +405,7 @@ public class BrickEffectManager : MonoBehaviour
                 : (brick.HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
                          * EffectStatusSet["Poison"].EffectStack));
 
-            float FinalEffectAttackDamage = GameManager.instance.isGameEnded ? 0
+            float FinalEffectAttackDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
                 : brick.DecayDamageCalculate(EffectAttackDamage);
