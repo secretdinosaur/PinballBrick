@@ -351,6 +351,12 @@ public class AntiGravity : FieldAugment
             StopCoroutine(Routine);
             Routine = null;
         }
+        BallManager.Instance.isAntiGravity = false;
+        foreach (Ball ball in BallManager.Instance.InGameBall)
+        {
+            Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+            rb.gravityScale = 0.5f;
+        }
     }
 
     private IEnumerator GetAntiGravity(float Cooldown)
