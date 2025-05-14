@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WhiteHole
-  m_Shader: {fileID: -6465566751694194690, guid: 55cff870c87c1044193b5a6ce145464a, type: 3}
+  m_Name: AbsorbBrick
+  m_Shader: {fileID: -6465566751694194690, guid: c11604cefca484140ba3c19415fb9fa3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -53,16 +53,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Decay: 0
     - _EnableExternalAlpha: 0
-    - _Thickness: 0.07
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 5.9921565, g: 2.089331, b: 0.84705865, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &2571881763683804536
+--- !u!114 &9114553927020804775
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

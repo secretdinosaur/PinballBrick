@@ -4,50 +4,49 @@ using UnityEngine.UI;
 using System.Collections;
 public class TwinBrick : IBrick
 {
-    bool IsWaitingHeal = false;
-    public LowerBrick LowerBrick;
+    public TwinBrick Twin = null;
+    public bool IsHpZero;
     private void OnEnable()
     {
         base.OnEnable();
-        HP = BasicHP * BrickManager.Instance.HPPool[0];
         BrickType = "TwinBrick";
-        GetComponents();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ball") && HP > 0)
+        if (collision.gameObject.CompareTag("Ball") && !IsHpZero)
         {
             TakeDamage(collision.gameObject.GetComponent<IBall>());
         }
     }
 
-    public void CheckBothBrickDead()
+    public IEnumerator StartRebirth()
     {
-        if (HP <= 0 && LowerBrick.HP <= 0)
+        GetComponent<Collider2D>().enabled = false;
+        IsHpZero = true;
+        float Timer = 10;
+        HPText.color = Color.blue;
+
+        while (Timer > 0)
         {
-            IsWaitingHeal = false;
-            BrickDie();
-        }
-        else if (HP <= 0 || LowerBrick.HP <= 0)
-        {
-            if (!IsWaitingHeal)
+            if (Twin.IsHpZero || !Twin.enabled)
             {
-                if (gameObject.activeInHierarchy)
-                {
-                    StartCoroutine(HealAfter10s());
+                IsHpZero = false;
+                Twin.IsHpZero = false;
+                GetComponent<Collider2D>().enabled = true;
 
-                }
+                BrickDie();
+                if(Twin.enabled)
+                    Twin.BrickDie();
             }
+            HPText.text = Timer.ToString();
+            HPText.enabled = true;
+            yield return new WaitForSeconds(1);
+            Timer -= 1;
         }
-    }
+        HP = Twin.HP;
+        GetComponent<Collider2D>().enabled = true;
 
-    public IEnumerator HealAfter10s()
-    {
-        IsWaitingHeal = true;
-        yield return new WaitForSeconds(10);
-
-        if (HP < LowerBrick.HP) HP = LowerBrick.HP;
-        else LowerBrick.HP = HP;
-        IsWaitingHeal = false;
+        HPText.color = IsBoss ? Color.red : Color.white;
+        IsHpZero = false;
     }
 }
