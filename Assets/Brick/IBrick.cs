@@ -65,7 +65,7 @@ public partial class IBrick : MonoBehaviour
                 {
                     GetComponent<ShieldBrick>().DestroyShield();
                 }
-                else if(BrickType == "TwinBrick")
+                else if(BrickType == "TwinBrick" && !GetComponent<TwinBrick>().IsHpZero)
                 {
                     StartCoroutine(GetComponent<TwinBrick>().StartRebirth());
                     HPText.text = "10";
@@ -152,16 +152,19 @@ public partial class IBrick : MonoBehaviour
         {
             return;
         }
-        HPText.color = IsBoss ? Color.red : Color.white;
 
         if (HPText != null)
         {
             HPText.text = ((int)hp).ToString();
+            HPText.color = IsBoss ? Color.red : Color.white;
+
         }
         else
         {
             HPText = GetComponentInChildren<TextMeshPro>();
             HPText.text = ((int)hp).ToString();
+            HPText.color = IsBoss ? Color.red : Color.white;
+
         }
 
         if ((int)hp >= 100000)

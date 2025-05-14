@@ -28,14 +28,15 @@ public class TwinBrick : IBrick
 
         while (Timer > 0)
         {
-            if (Twin.IsHpZero)
+            if (Twin.IsHpZero || !Twin.enabled)
             {
                 IsHpZero = false;
                 Twin.IsHpZero = false;
                 GetComponent<Collider2D>().enabled = true;
 
                 BrickDie();
-                Twin.BrickDie();
+                if(Twin.enabled)
+                    Twin.BrickDie();
             }
             HPText.text = Timer.ToString();
             HPText.enabled = true;
