@@ -281,11 +281,11 @@ public class SatelliteBeam : FieldAugment
     {
         SetAugment("FIELD_5", "Satellite Beam", "Generates a powerful satellite beam", 1, 6);
         SetAdditionalDescription("Touch damage : " + 
-            200 + " + <sprite=0>" + StatManager.instance.Temporary_stat.AttackDamage + 
-            "X <sprite=3>" + (StatManager.instance.Persistent_stat.AttackDamageMultiplier * StatManager.instance.statMultiplier.AttackDamageMultiplier) + "\n" +
+            200 + " + <sprite=0>" + (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) + 
+            " X <sprite=3>" + (StatManager.instance.Persistent_stat.AttackDamageMultiplier * StatManager.instance.statMultiplier.AttackDamageMultiplier) + "\n" +
             "Effect damage : " +
-            2 + " + <sprite=2>" + StatManager.instance.Temporary_stat.EffectDamage + 
-            "X <sprite=7>" + (StatManager.instance.Persistent_stat.EffectDamageMultiplier * StatManager.instance.statMultiplier.EffectDamageMultiplier) + "\n" +
+            2 + " + <sprite=2>" + (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) + 
+            " X <sprite=7>" + (StatManager.instance.Persistent_stat.EffectDamageMultiplier * StatManager.instance.statMultiplier.EffectDamageMultiplier) + "\n" +
             "Cooldown : " + (20f + Cooldown));
     }
 
@@ -665,12 +665,12 @@ public class WeatherChange : FieldAugment
         SetAdditionalDescription(
             "Fire damage : " +
             "<sprite=2>" + (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) + 
-            "X <sprite=7>" + (StatManager.instance.Persistent_stat.EffectDamageMultiplier * StatManager.instance.statMultiplier.EffectDamageMultiplier)
-            + "X 1/2/3/4/5\n" +
+            " X <sprite=7>" + (StatManager.instance.Persistent_stat.EffectDamageMultiplier * StatManager.instance.statMultiplier.EffectDamageMultiplier)
+            + " X 1/2/3/4/5\n" +
 
             "Poison Damage : " +
             "Current brick hp <sprite=7>" + (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f) + "%"
-            + "X 1/2/3\n" +
+            + " X 1/2/3\n" +
 
             "Decay damage : " + "Attack/Effect damage X (" +
             Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, 1) + "/" +
@@ -679,8 +679,8 @@ public class WeatherChange : FieldAugment
 
             "Curse damage : " +
             "<sprite=0>" + (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) +
-            "X <sprite=3>" + (StatManager.instance.Persistent_stat.AttackDamageMultiplier * StatManager.instance.statMultiplier.AttackDamageMultiplier) 
-            + "X 0.5 ~ 1.3\n" +
+            " X <sprite=3>" + (StatManager.instance.Persistent_stat.AttackDamageMultiplier * StatManager.instance.statMultiplier.AttackDamageMultiplier) 
+            + " X 0.5 ~ 1.3\n" +
 
             "Lightning damage : " + "Brick max hp 1% ~ 3%\n" +
 

@@ -368,9 +368,9 @@ public partial class LevelManager : MonoBehaviour
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
         AdditionalDescriptionPanel.SetActive(false);
+        AdditionalDescriptionText.text = "";
         SoundManager.instance.LevelUpSound();
         Level = LevelUpQueue.Dequeue();
-
 
         NoticeLevelText.text = "Now Your Level: " + Level;
         optionIndex = -1;
@@ -538,14 +538,17 @@ public partial class LevelManager : MonoBehaviour
 
         if (augmentsSet[i].AdditionalDescription != null)
         {
+            Debug.Log(augmentsSet[i].AdditionalDescription);
             AdditionalDescriptionPanel.SetActive(true);
             AdditionalDescriptionText.text = augmentsSet[i].AdditionalDescription;
+            AdditionalDescriptionText.ForceMeshUpdate();
             int lineCount = AdditionalDescriptionText.textInfo.lineCount - 1;
             rectTransform.sizeDelta = new Vector2(765, 50 + (lineCount * 50));
             rectTransform.anchoredPosition = new Vector2(0, -275 - (lineCount * 25));
         }
         else
         {
+            Debug.Log("null");
             AdditionalDescriptionPanel.SetActive(false);
             AdditionalDescriptionText.text = null;
         }
@@ -567,9 +570,9 @@ public partial class LevelManager : MonoBehaviour
                 OptionButtons[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
                 OptionButtonShaders[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
                 isAlreadyClickedButton[i] = i == Array.IndexOf(OptionButtons, clickedButton);
-                ShowAdditionalDescription(i);
             }
-
+            if (!CheckStatOrAugment)
+                ShowAdditionalDescription(Array.IndexOf(OptionButtons, clickedButton));
             optionIndex = Array.IndexOf(OptionButtons, clickedButton);
         }
         else
