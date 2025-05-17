@@ -235,14 +235,14 @@ public class ChainLightning : SpecialAugment
             }
             int RandomNumber = Random.Range(0, BrickToBrick.Count);
             
-            BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 + (BrickToBrick[RandomNumber].HpTemp * Random.Range(0.01f, 0.02f)), 
+            BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 + (BrickToBrick[RandomNumber].HpTemp * Random.Range(0.05f, 0.1f)), 
                 false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier).ToString("F1"), "Lightning");
             BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
 
             targetBrick = BrickToBrick[RandomNumber];
 
         }
-        VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks);
+        StartCoroutine(VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks));
     }
 }
 
@@ -1038,7 +1038,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["RandomEffect"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("RandomEffect");
                 int Number = Random.Range(1, 4);
                 if (Number == 1)
                 {
@@ -1095,7 +1094,7 @@ public class ThunderStrike : SpecialAugment
     Coroutine routine = null;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_33", "Thunder Strike", "ThunderStrike", "Special", 2);
+        SetAugment("SPECIAL_33", "Arc Link", "All balls are linked by electricity, dealing electric damage", "Special", 2);
     }
 
     public override void Apply() 
@@ -1110,7 +1109,12 @@ public class ThunderStrike : SpecialAugment
 
     private IEnumerator MakeBallThunder()
     {
-        while(true)
+        Vector2 start;
+        Vector2 end;
+
+        RaycastHit2D[] hits;
+
+        while (true)
         {
             yield return new WaitForSeconds(0.1f);
 
@@ -1121,18 +1125,29 @@ public class ThunderStrike : SpecialAugment
 
                 for (int i = 0; i < Balls.Count - 1; i++)
                 {
-                    Vector2 start = Balls[i].transform.position;
-                    Vector2 end = Balls[i + 1].transform.position;
+                    start = Balls[i].transform.position;
+                    end = Balls[i + 1].transform.position;
 
-                    RaycastHit2D[] hits = Physics2D.LinecastAll(start, end);
+                    hits = Physics2D.LinecastAll(start, end);
                     for(int j = 0; j < hits.Length; j++)
                         if (hits[j].collider.CompareTag("Brick"))
                         {
                             IBrick brick = hits[j].collider.GetComponent<IBrick>();
 
-                            brick.ArbitraryDamageAttack(1 + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
+                            brick.ArbitraryDamageAttack(0.3f + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
                         }
                 }
+                start = Balls[Balls.Count - 1].transform.position;
+                end = Balls[0].transform.position;
+
+                hits = Physics2D.LinecastAll(start, end);
+                for (int j = 0; j < hits.Length; j++)
+                    if (hits[j].collider.CompareTag("Brick"))
+                    {
+                        IBrick brick = hits[j].collider.GetComponent<IBrick>();
+
+                        brick.ArbitraryDamageAttack(0.3f + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
+                    }
             }
         }
     }

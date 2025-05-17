@@ -101,7 +101,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 26260608329336785}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 54a00e155d0820446a07810d24de5e7f, type: 2}
@@ -178,7 +178,7 @@ MonoBehaviour:
   isPhoenix: 0
   flamethrower: {fileID: 0}
   isOverDeathLine: 0
-  StartPosition: {x: 0, y: -5}
+  StartPosition: {x: 0, y: -5, z: 35}
   linearVelocityYValue: 10
   Renderer: {fileID: 0}
   AttackNumber: 0
