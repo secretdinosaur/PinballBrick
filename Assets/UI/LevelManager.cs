@@ -538,7 +538,6 @@ public partial class LevelManager : MonoBehaviour
 
         if (augmentsSet[i].AdditionalDescription != null)
         {
-            Debug.Log(augmentsSet[i].AdditionalDescription);
             AdditionalDescriptionPanel.SetActive(true);
             AdditionalDescriptionText.text = augmentsSet[i].AdditionalDescription;
             AdditionalDescriptionText.ForceMeshUpdate();
@@ -548,7 +547,6 @@ public partial class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("null");
             AdditionalDescriptionPanel.SetActive(false);
             AdditionalDescriptionText.text = null;
         }
