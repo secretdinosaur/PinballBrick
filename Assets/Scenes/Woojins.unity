@@ -6596,7 +6596,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1645783610, guid: db539059259b66848bd8110ccc66e80b, type: 3}
+  m_Sprite: {fileID: -909607167, guid: 7f2b4ddaa729b8d46850b4e3f15f216d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6747,7 +6747,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 535687948, guid: db539059259b66848bd8110ccc66e80b, type: 3}
+  m_Sprite: {fileID: 2096013019, guid: 7f2b4ddaa729b8d46850b4e3f15f216d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -31038,7 +31038,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 213721866, guid: db539059259b66848bd8110ccc66e80b, type: 3}
+  m_Sprite: {fileID: -940820171, guid: 7f2b4ddaa729b8d46850b4e3f15f216d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -31338,7 +31338,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1215953137, guid: db539059259b66848bd8110ccc66e80b, type: 3}
+  m_Sprite: {fileID: -959535706, guid: 7f2b4ddaa729b8d46850b4e3f15f216d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -39025,7 +39025,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 285457458, guid: db539059259b66848bd8110ccc66e80b, type: 3}
+  m_Sprite: {fileID: -1186848985, guid: 7f2b4ddaa729b8d46850b4e3f15f216d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -49681,7 +49681,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -782166385, guid: db539059259b66848bd8110ccc66e80b, type: 3}
+  m_Sprite: {fileID: -599999131, guid: 7f2b4ddaa729b8d46850b4e3f15f216d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -54832,7 +54832,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1925635286, guid: db539059259b66848bd8110ccc66e80b, type: 3}
+  m_Sprite: {fileID: -1610825243, guid: 7f2b4ddaa729b8d46850b4e3f15f216d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -54909,7 +54909,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -996253165, guid: db539059259b66848bd8110ccc66e80b, type: 3}
+  m_Sprite: {fileID: -1853925585, guid: 7f2b4ddaa729b8d46850b4e3f15f216d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -77708,7 +77708,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Lghtning Damage : <sprite=2>5.4 X (Brick HP 1%) \nAttack Damage : <sprite=0>10
+  m_text: "Lghtning Damage : <sprite=3>5.4 X (Brick HP 1%) \nAttack Damage : <sprite=0>10
     X <sprite=2>6.1"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 431f3535a15396c4abb71d9cea6f43ac, type: 2}
@@ -77748,7 +77748,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 29.8
+  m_lineSpacing: 30
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

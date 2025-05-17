@@ -38,8 +38,8 @@ public class AllDamage : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_1", "Holy Rain", "The holy water damages all bricks", 3, 10);
-        SetAdditionalDescription("Holy water damage :" + 10 + " X " + 
-            StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier + "\n"
+        SetAdditionalDescription("Holy water damage :" + 10 + " X <sprite=7>" + 
+            (StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier) + "\n"
             + "Cooldown : " + Cooldown);
     }
 
@@ -281,9 +281,11 @@ public class SatelliteBeam : FieldAugment
     {
         SetAugment("FIELD_5", "Satellite Beam", "Generates a powerful satellite beam", 1, 6);
         SetAdditionalDescription("Touch damage : " + 
-            200 + " + <sprite=0>" + StatManager.instance.Temporary_stat.AttackDamage + "X <sprite=9999>" + StatManager.instance.statMultiplier.AttackDamageMultiplier + "\n" +
+            200 + " + <sprite=0>" + StatManager.instance.Temporary_stat.AttackDamage + 
+            "X <sprite=3>" + (StatManager.instance.Persistent_stat.AttackDamageMultiplier * StatManager.instance.statMultiplier.AttackDamageMultiplier) + "\n" +
             "Effect damage : " +
-            2 + " + <sprite=4>" + StatManager.instance.Temporary_stat.EffectDamage + "X <sprite=9999>" + StatManager.instance.statMultiplier.EffectDamageMultiplier + "\n" +
+            2 + " + <sprite=2>" + StatManager.instance.Temporary_stat.EffectDamage + 
+            "X <sprite=7>" + (StatManager.instance.Persistent_stat.EffectDamageMultiplier * StatManager.instance.statMultiplier.EffectDamageMultiplier) + "\n" +
             "Cooldown : " + (20f + Cooldown));
     }
 
@@ -662,12 +664,12 @@ public class WeatherChange : FieldAugment
         SetAugment("FIELD_13", "Constant Disaster", "Random disaster occured causing random effects", 1, 30);
         SetAdditionalDescription(
             "Fire damage : " +
-            "<sprite=4>" + (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.EffectDamage) + 
-            "X <sprite=9999>" + StatManager.instance.statMultiplier.EffectDamageMultiplier
+            "<sprite=2>" + (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) + 
+            "X <sprite=7>" + (StatManager.instance.Persistent_stat.EffectDamageMultiplier * StatManager.instance.statMultiplier.EffectDamageMultiplier)
             + "X 1/2/3/4/5\n" +
 
             "Poison Damage : " +
-            "Current brick hp <sprite=9999>" + (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f) + "%"
+            "Current brick hp <sprite=7>" + (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f) + "%"
             + "X 1/2/3\n" +
 
             "Decay damage : " + "Attack/Effect damage X (" +
@@ -677,7 +679,7 @@ public class WeatherChange : FieldAugment
 
             "Curse damage : " +
             "<sprite=0>" + (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) +
-            "X <sprite=9999>" + StatManager.instance.statMultiplier.AttackDamageMultiplier 
+            "X <sprite=3>" + (StatManager.instance.Persistent_stat.AttackDamageMultiplier * StatManager.instance.statMultiplier.AttackDamageMultiplier) 
             + "X 0.5 ~ 1.3\n" +
 
             "Lightning damage : " + "Brick max hp 1% ~ 3%\n" +

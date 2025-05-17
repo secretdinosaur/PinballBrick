@@ -36,6 +36,7 @@ public class FireBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_1", "FireBall", "Bricks have a 30% chance to catch fire when struck by a ball", "Effect", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -65,6 +66,7 @@ public class Homing : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_2", "Magnetic Ball", "Ball chases bricks within range", "Special", 1);
+        SetAdditionalDescription(null);
     }
     public override void Apply()
     {
@@ -82,6 +84,7 @@ public class BouncePower: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_3", "Thrust", "Ball gains +5% attack damage for each wall bounce up to a maximum of 25%", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){ }
@@ -100,6 +103,7 @@ public class AdditionalThreeAttack: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_4", "Afterimage", "Rapid three additional attacks follow after ball hits", "Special", 1);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){ }
@@ -120,6 +124,7 @@ public class CriticalAdditionalAttack : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_5", "Deadpoint", "Additional attack follows after critical attack", "Special", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){  }
@@ -140,6 +145,7 @@ public class Execution : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_6", "Execution", "THe ball executes bricks with less than 15% of max HP", "Special", 1);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){ }
@@ -152,6 +158,7 @@ public class PercentDamage : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_7", "Rupture", "The ball deals 1% of brick's HP with each attack", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){ }
@@ -172,6 +179,7 @@ public class FireEffectStackBlast : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_8", "Fire Burst", "An explosion occurs when the brick reaches maximum fire stack", "Effect", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -209,6 +217,7 @@ public class ChainLightning : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_9", "Chain Lightning", "Lightning chains to 3 nearby bricks", "Effect", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){ }
@@ -254,6 +263,7 @@ public class DeathExp : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_10", "Death EXP", "Gain EXP when the ball drops", "Special", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){ }
@@ -274,6 +284,7 @@ public class DeathGold : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_11", "Death Gold", "Gain Gold when the ball drops", "Special", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){ }
@@ -294,6 +305,7 @@ public class SpeedPower : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_12", "Momentum", "Atack damage increases with ball speed", "Special", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){ }
@@ -315,6 +327,7 @@ public class SpeedCritical : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_13", "Quick and Accurate", "Critical chance increases with ball speed", "Special", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){ }
@@ -338,6 +351,7 @@ public class Lightning : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_14", "Lightning Attack", "An additional lightning strike occurs on attack", "Effect", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { }
@@ -358,6 +372,7 @@ public class PoisonBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_15", "Poison Ball", "Chance to poison on hit", "Effect", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -405,6 +420,7 @@ public class InfinitePoison : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_16", "Infinite Poison", "Poison spreads to nearby bricks, on max stacks", "Effect", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -464,6 +480,7 @@ public class DeadlyPoison : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_17", "Deadly Poison", "Increase poison max stacks and chance", "Effect", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -483,6 +500,7 @@ public class Chaos : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_18", "Chaos", "All augment probabilities are equal", "Special", 0);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -510,6 +528,7 @@ public class DecayBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_18", "Decay Ball", "Chance to a decay effect that deals 10% additional damage per stack", "Effect", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -535,6 +554,7 @@ public class PowerfulDecay : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_19", "Powerful Decay", "Increase decay damage increase rate and chance", "Effect", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -555,6 +575,7 @@ public class DecayExplosion : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_20", "Decay Explosion", "Brick explodes when die with max decay stack", "Effect", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -603,6 +624,7 @@ public class ExplosionWithBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_21", "Elasticity", "Balls bounce further when they collide with each other", "Special", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { }
@@ -615,6 +637,7 @@ public class TheFlamethrower : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_22", "Fire Aura", "Deals fire damage around the ball", "Effect", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -644,6 +667,7 @@ public class LevelUpQuest : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_23", "Slayer", "Gain 50% of EXP and accept a quest.\nComplete it to level up", "Quest", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -678,6 +702,7 @@ public class GrowBallQuest : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_24", "Grow Ball", "Accept a grow ball quest.\nComplete it to attack damage up", "Quest", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -776,6 +801,7 @@ public class InfiniteGrowBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_25", "Infinite Grow Ball", "The ball's attack power increases after destroying bricks", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -803,6 +829,7 @@ public class SacrificeQuest1 : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_26", "Sacrifice I", "Accept a sacrifice I.\nComplete it to Receive a weak reward", "Quest", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
@@ -840,6 +867,7 @@ public class SacrificeQuest2 : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_27", "Sacrifice II", "Accept a sacrifice II.\nComplete it to Receive a moderate reward", "Quest", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
@@ -878,6 +906,7 @@ public class SacrificeQuest3 : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_28", "Sacrifice III", "Accept a sacrifice III.\nComplete it to Receive a powerful reward", "Quest", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice III", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
@@ -920,6 +949,7 @@ public class AttackAfterAdditionalBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_29", "Sincerity", "A ball is created every 50 hits", "Special", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sincerity", "Attack", AttackNumber, RequiredCount); }
@@ -938,6 +968,7 @@ public class ShareBallAtk : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_30", "Inheritance", "Fallen ball's 70% attack power\ndivided among current balls", "Special", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { }
@@ -962,6 +993,7 @@ public class StrongAdditionalAttack : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_31", "One in a thousand", "A powerful additional attack triggers at low chance", "Special", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { }
@@ -999,6 +1031,7 @@ public class RandomEffect : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nIt may be positive or negative", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { }
@@ -1096,6 +1129,7 @@ public class ThunderStrike : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_33", "Thunder Strike", "ThunderStrike", "Special", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -1143,6 +1177,7 @@ public class RebirthBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_34", "Immortality", "Adds a low chance to revive after the ball falls", "Special", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { }
@@ -1165,6 +1200,7 @@ public class BossKillBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_35", "Uprising", "Summons an Three ball when the boss is defeated", "Special", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { }
@@ -1185,6 +1221,7 @@ public class SpawnBallAmountMultiple1 : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_36", "2x!", "All summoned balls are doubled", "Special", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -1203,6 +1240,7 @@ public class SpawnBallAmountMultiple2 : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_37", "3x!!", "All summoned balls are tripled", "Special", 1);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1225,6 +1263,7 @@ public class BallSwarm : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_38", "Ball Swarm", "Attack power increases \nwhen 30 or more balls are summoned", "Special", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1264,6 +1303,7 @@ public class LonelyBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_39", "Lonely Ball", "Attack power increases \nwhen 5 or less balls are summoned", "Special", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1304,6 +1344,7 @@ public class SuicideBoomBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_40", "Explosive Ball", "A low chance for the ball to explode after an attack", "Special", 1);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { }
@@ -1343,6 +1384,7 @@ public class SplitBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_41", "Diffraction", "A low chance for the ball to split after an attack", "Special", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1426,6 +1468,7 @@ public class CurseBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_42", "Curse Ball", "When the ball falls, \nit deals curse damage to a random block", "Effect", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1472,6 +1515,7 @@ public class ThreeBrickCurseAttack : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_43", "Deep Grudge", "Deals 3 additional curse attacks", "Effect", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -1505,6 +1549,7 @@ public class CurseTwice : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_44", "Persistent Grudge", "All curse attack are doubled", "Effect", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -1523,6 +1568,7 @@ public class DeathEffectTwice : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_45", "Die again?", "All actions performed after the ball's death are doubled", "Special", 1);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1541,6 +1587,7 @@ public class SpawnBombBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_46", "Bomb Maniac", "Low chance of bomb ball on summon", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1559,6 +1606,7 @@ public class ChangeNormalToGlass : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_47", "Glassification", "The basic ball becomes a glass ball with higher attack", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1579,6 +1627,7 @@ public class RebornBombBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_48", "Bomb Modification", "Bomb ball revive a low chance after explode", "Special", 1);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() { }
@@ -1592,6 +1641,7 @@ public class OneMoreChance : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_49", "One More Chance", "If no balls exist,\nsummon 5 balls at once", "Special", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -1621,6 +1671,7 @@ public class Concentrate : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_50", "Concentrate", "Stats increase massively, \nbut 3 ball fall, it's game over", "Special", 0);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1657,6 +1708,7 @@ public class GroupViolence: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_51", "Group Violence", "Only attacks the brick with the highest health", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1686,6 +1738,7 @@ public class Oneness: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_52", "Oneness", "All balls merge into one\nThe ball becomes stronger as it merges", "Special", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -1782,6 +1835,7 @@ public class HappyBirthday : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_53", "Happy Birth Day", "After the ball is summoned,\ngain a temporary boost in attack damage", "Special", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() {    }
@@ -1808,6 +1862,7 @@ public class MidasHand : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_54", "Midas Hand", "Attacked bricks have a low chance to\ntransform into golden blocks", "Special", 4);
+        SetAdditionalDescription(null);
     }
     Coroutine Routine = null;
     public override void Apply() { }
@@ -1870,6 +1925,7 @@ public class HalfBallSacrifice : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_55", "Mass Sacrifice", "Sacrifice half of the balls,\nand increse corresponding attack damage", "Special", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply() 
@@ -1904,6 +1960,7 @@ public class FreshNewStart : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_54", "Fresh New Start", "Receive a massive reward\nand return to the beginning state", "Special", 0);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1941,6 +1998,7 @@ public class DecayingPoison: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_55", "Decaying Poison", "When poisoned, decay is also applied", "Effect", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1961,6 +2019,7 @@ public class FlammablePoison: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_56", "Flammable Poison", "When poisoned, fire is also applied", "Effect", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -1981,6 +2040,7 @@ public class CritAfterThreeAttack : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_57", "Weakness Detection", "The third attack always triggers a critical hit", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2005,6 +2065,7 @@ public class DamageInfection : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_58", "Miraculous Technique", "Attacks nearby bricks,\nIt count as direct hits by the ball", "Special", 1);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2044,6 +2105,7 @@ public class CriticalOnEffect : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_59", "Effect Catalyst", "Effect attacks can deal critical hits", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2062,6 +2124,7 @@ public class RollDiceBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_60", "Roll the Dice!", "Roll dice instead of summoning balls.\nsummon as many balls as the dice show.", "Special", 1);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2080,6 +2143,7 @@ public class ItemEnhance : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_61", "Item Enhancement", "Increases item spawn rate and enhances them", "Special", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2099,6 +2163,7 @@ public class InfiniteRapid : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_62", "Rapidfire", "Atk Up,\nAll waves appear as transformed rapid waves", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2117,6 +2182,7 @@ public class MoreAndWeakBricks : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_63", "Legion", "Every Bricks appear 50% more frequently, \nbut their health is reduced by 33%", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2145,6 +2211,7 @@ public class LessAndStrongBricks : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_63", "Elite Group", "Every Bricks appear 50% less frequently, \nbut their health is increased by 33%.", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2173,6 +2240,7 @@ public class DoubleBoss : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_64", "Twins!", "The boss splits into two, \neach having 66% the original health.", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2193,6 +2261,7 @@ public class FusionBricks : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health. \nIt is treated as a boss", "Special", 0);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2219,6 +2288,7 @@ public class GainBallAfterLevelUp : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_66", "Promotion Gift", "After level up, roll a dice \nand gain that many balls", "Special", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2237,6 +2307,7 @@ public class SpecialBrickChanceUp : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_67", "Lucky Day", "Mini bosses spawn more frequently.", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2255,6 +2326,7 @@ public class IncreseStatUpValue : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_68", "Stick to the Basics", "Gain 73% More When Selecting Stats After Level Up.", "Special", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2275,6 +2347,7 @@ public class GoalWaveBonus : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_69", "Milestone", "Receive Rewards Upon Reaching Certain Waves.", "Special", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2374,6 +2447,7 @@ public class ReducesExp10: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_70", "Brilliant Idea I", "Reduces exp required to level up by 10%", "Special", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -2394,6 +2468,7 @@ public class ReducesExp15 : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_71", "Brilliant Idea II", "Reduces exp required to level up by 15%", "Special", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()

@@ -13,6 +13,7 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using System.Drawing;
 using static UnityEngine.Analytics.IAnalytic;
+using System.Xml;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -120,6 +121,9 @@ public partial class LevelManager : MonoBehaviour
         LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material = Option_3_Aura;
         Option_3_Type = LevelUpPanel.transform.Find("SelectButton_3/Type").GetComponent<TMP_Text>();
         Option_3_CoolTime = LevelUpPanel.transform.Find("SelectButton_3/CoolTime").GetComponent<TMP_Text>();
+
+        AdditionalDescriptionPanel = LevelUpPanel.transform.Find("AdditionalDescription").gameObject;
+        AdditionalDescriptionText = AdditionalDescriptionPanel.transform.Find("Text").GetComponent<TMP_Text>();
 
         isAlreadyClickedButton = new bool[OptionButtons.Length];
 
@@ -342,6 +346,9 @@ public partial class LevelManager : MonoBehaviour
     private List<IAugment> augmentsSet;
     private bool CheckStatOrAugment;
 
+    private GameObject AdditionalDescriptionPanel;
+    private TMP_Text AdditionalDescriptionText;
+
     private float CustomTime_1;
     private float CustomTime_2;
     private float CustomTime_3;
@@ -360,6 +367,7 @@ public partial class LevelManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
+        AdditionalDescriptionPanel.SetActive(false);
         SoundManager.instance.LevelUpSound();
         Level = LevelUpQueue.Dequeue();
 
@@ -524,6 +532,25 @@ public partial class LevelManager : MonoBehaviour
         }
     }
 
+    private void ShowAdditionalDescription(int i)
+    {
+        RectTransform rectTransform = AdditionalDescriptionPanel.GetComponent<RectTransform>();
+
+        if (augmentsSet[i].AdditionalDescription != null)
+        {
+            AdditionalDescriptionPanel.SetActive(true);
+            AdditionalDescriptionText.text = augmentsSet[i].AdditionalDescription;
+            int lineCount = AdditionalDescriptionText.textInfo.lineCount - 1;
+            rectTransform.sizeDelta = new Vector2(765, 50 + (lineCount * 50));
+            rectTransform.anchoredPosition = new Vector2(0, -275 - (lineCount * 25));
+        }
+        else
+        {
+            AdditionalDescriptionPanel.SetActive(false);
+            AdditionalDescriptionText.text = null;
+        }
+    }
+
     private bool IsStatOrAugment()
     {
         return Level % 3 != 0;
@@ -540,6 +567,7 @@ public partial class LevelManager : MonoBehaviour
                 OptionButtons[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
                 OptionButtonShaders[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
                 isAlreadyClickedButton[i] = i == Array.IndexOf(OptionButtons, clickedButton);
+                ShowAdditionalDescription(i);
             }
 
             optionIndex = Array.IndexOf(OptionButtons, clickedButton);
@@ -597,6 +625,7 @@ public partial class LevelManager : MonoBehaviour
             CustomTime_2 = 0;
             CustomTime_3 = 0;
             Time.timeScale = 1f;
+            AdditionalDescriptionPanel.SetActive(false);
             LevelUpPanel.SetActive(false);
             if (StatManager.instance.isChangedStat)
             {

@@ -1,10 +1,61 @@
 fileFormatVersion: 2
-guid: db539059259b66848bd8110ccc66e80b
+guid: 7f2b4ddaa729b8d46850b4e3f15f216d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1727417112200218534
-    second: StatIcon_0
+      213: -3410929350082879067
+    second: StatIcon 1_0
+  - first:
+      213: 8687246065413481406
+    second: StatIcon 1_1
+  - first:
+      213: -8481846439672395595
+    second: StatIcon 1_2
+  - first:
+      213: -6242122571682540105
+    second: StatIcon 1_3
+  - first:
+      213: -4574465947802659844
+    second: StatIcon 1_4
+  - first:
+      213: 1953750935673289488
+    second: StatIcon 1_5
+  - first:
+      213: 784489055703749858
+    second: StatIcon 1_6
+  - first:
+      213: -8585094401253469612
+    second: StatIcon 1_7
+  - first:
+      213: 1320194041768666880
+    second: StatIcon 1_8
+  - first:
+      213: -4867183964929823976
+    second: StatIcon 1_9
+  - first:
+      213: 6031128307151323698
+    second: StatIcon 1_10
+  - first:
+      213: -5725358221906517708
+    second: StatIcon 1_11
+  - first:
+      213: -8996348223523033767
+    second: StatIcon 1_12
+  - first:
+      213: -4545912497114989337
+    second: StatIcon 1_13
+  - first:
+      213: -3979894363721425939
+    second: StatIcon 1_14
+  - first:
+      213: -5731040862113162210
+    second: StatIcon 1_15
+  - first:
+      213: -2998441921268184326
+    second: StatIcon 1_16
+  - first:
+      213: 4852827366890289872
+    second: StatIcon 1_17
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +75,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -54,7 +105,7 @@ TextureImporter:
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
-  alphaUsage: 0
+  alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
@@ -74,7 +125,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -139,7 +190,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: StatIcon_0
+      name: StatIcon 1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,14 +205,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9da10db7fd0930541ad2e26e8102bec8
-      internalID: -1215953137
+      spriteID: ec681a4a16032b1469fd8dbff304d5a8
+      internalID: -959535706
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: StatIcon_1
+      name: StatIcon 1_1
       rect:
         serializedVersion: 2
         x: 240
@@ -176,14 +227,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f918539f3b153c147b0272f81a1c8987
-      internalID: 213721866
+      spriteID: 755b55eb201be2848bbc4137cb2094d8
+      internalID: -940820171
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: StatIcon_2
+      name: StatIcon 1_2
       rect:
         serializedVersion: 2
         x: 480
@@ -198,14 +249,36 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23187a845d3692e4691b76b33bad8aa4
-      internalID: 285457458
+      spriteID: 3d463c978c7fa0340ad90a6e016424e9
+      internalID: -1186848985
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: StatIcon_3
+      name: StatIcon 1_3
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 480
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6e33debf85acc941964922c6eb2b7f2
+      internalID: -1853925585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StatIcon 1_4
       rect:
         serializedVersion: 2
         x: 0
@@ -220,14 +293,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 887b7d48d4b7fb24fafebf7502e02b44
-      internalID: 1925635286
+      spriteID: 2b7ac07df5558454d9bb6d9193a845f2
+      internalID: -1610825243
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: StatIcon_4
+      name: StatIcon 1_5
       rect:
         serializedVersion: 2
         x: 240
@@ -242,14 +315,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d7d7c79fc95b9d142a216fb74dac779b
-      internalID: -996253165
+      spriteID: d719fc2dfbe9a5142a596542f4a180a8
+      internalID: -95817133
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: StatIcon_5
+      name: StatIcon 1_6
       rect:
         serializedVersion: 2
         x: 480
@@ -264,14 +337,36 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4f689c466774cfa40ba824d245a1fbd9
-      internalID: -1645783610
+      spriteID: d5c9f308f87436b4a885b4f952b11965
+      internalID: -909607167
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: StatIcon_6
+      name: StatIcon 1_7
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 240
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fbb536e27cccbe45b94b6143b21d0b6
+      internalID: -579625946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StatIcon 1_8
       rect:
         serializedVersion: 2
         x: 0
@@ -286,14 +381,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a75c0229e89893641b241b4761c0c98b
-      internalID: -782166385
+      spriteID: 30c39b3d1e4289147ac6e9950f635210
+      internalID: -599999131
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: StatIcon_7
+      name: StatIcon 1_9
       rect:
         serializedVersion: 2
         x: 240
@@ -308,14 +403,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ff653ca2126a36c44908ee74aa330f8c
-      internalID: 535687948
+      spriteID: d42b753850095a24dbb74acd69085515
+      internalID: 2096013019
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: StatIcon_8
+      name: StatIcon 1_10
       rect:
         serializedVersion: 2
         x: 480
@@ -330,8 +425,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6cb48bcd4fbdfa44bf451252c713005
-      internalID: 1528983287
+      spriteID: e31bd9da93c02704cb28ca60633b0aa2
+      internalID: -295460523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StatIcon 1_11
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 0
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7345f8c8eb22cdf448f828deb50d863d
+      internalID: -449415638
       vertices: []
       indices: 
       edges: []
@@ -340,7 +457,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8e25d913dfca1c24c9e0770adccf9b5b
+    spriteID: f64e0eb83f2a6c0408bc9534542e8c5f
     internalID: 0
     vertices: []
     indices: 
@@ -350,15 +467,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      StatIcon_0: -1215953137
-      StatIcon_1: 213721866
-      StatIcon_2: 285457458
-      StatIcon_3: 1925635286
-      StatIcon_4: -996253165
-      StatIcon_5: -1645783610
-      StatIcon_6: -782166385
-      StatIcon_7: 535687948
-      StatIcon_8: 1528983287
+      StatIcon 1_0: -959535706
+      StatIcon 1_1: -940820171
+      StatIcon 1_10: -295460523
+      StatIcon 1_11: -449415638
+      StatIcon 1_2: -1186848985
+      StatIcon 1_3: -1853925585
+      StatIcon 1_4: -1610825243
+      StatIcon 1_5: -95817133
+      StatIcon 1_6: -909607167
+      StatIcon 1_7: -579625946
+      StatIcon 1_8: -599999131
+      StatIcon 1_9: 2096013019
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
