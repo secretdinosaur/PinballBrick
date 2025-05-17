@@ -29,6 +29,7 @@ public class Atk30Up : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_1", "Super Ball II", "Attack damage +30%", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -47,6 +48,7 @@ public class Atk50Up : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_2", "Super Ball III", "Attack damage +50%", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -65,6 +67,7 @@ public class CritChance50Up : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_3", "Sharpness III", "Critical chance +50%", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -83,6 +86,7 @@ public class CritDamage30Up : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_4", "Fatal Attack I", "Critical damage +30%", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -101,6 +105,7 @@ public class CritDamage50Up : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_5", "Fatal Attack II", "Critical damage +50%", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -119,6 +124,7 @@ public class BossDamageUp : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_6", "Boss Killer", "+30% Additional damage to boss", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply(){  }
@@ -139,6 +145,7 @@ public class AtkUpWhenCritical : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +20%\nfor 3 seconds", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -176,7 +183,8 @@ public class ExpGain30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_8", "Senior", "Exp Gain +30%", 4);
+        SetAugment("STAT_8", "Senior", "Exp gain +30%", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -195,6 +203,7 @@ public class Atk10Up : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_9", "Super Ball I", "Attack damage +10%", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -213,6 +222,7 @@ public class CritChance10Up : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_10", "Sharpness I", "Critical chance +10%", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -231,6 +241,7 @@ public class CritChance20Up : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_11", "Sharpness II", "Critical chance +20%", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -248,7 +259,8 @@ public class GoldGain10Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_12", "Gold Rush I", "Gold Gain +10%", 5);
+        SetAugment("STAT_12", "Gold Rush I", "Gold gain +10%", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -266,7 +278,8 @@ public class GoldGain30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_13", "Gold Rush II", "Gold Gain +30%", 4);
+        SetAugment("STAT_13", "Gold Rush II", "Gold gain +30%", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -284,7 +297,8 @@ public class GoldGain50Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_14", "Gold Rush III", "Gold Gain +50%", 3);
+        SetAugment("STAT_14", "Gold Rush III", "Gold gain +50%", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -302,7 +316,8 @@ public class PowerButSlow : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_15", "Heavyweight Ball", "Attack damage +30%\nBall max speed -33%", 4);
+        SetAugment("STAT_15", "Heavyweight Ball", "Attack damage +30%\nBall max speed -33%", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -322,7 +337,8 @@ public class WeakButFast : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_16", "Lightweight Ball", "Attack damage -30%\nBall max speed +33%", 4);
+        SetAugment("STAT_16", "Lightweight Ball", "Attack damage -30%\nBall max speed +33%", 3);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -343,6 +359,7 @@ public class WeakButStrongEffect : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_17", "Magicion", "Attack damage -66%\nEffect damage +60%", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -363,6 +380,7 @@ public class WeakButStrongAtk : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_18", "Fighter", "Attack damage +60%\nEffect damage -66%", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -383,6 +401,8 @@ public class DecreaseFieldCooldown5 : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_19", "Time Accelerator I", "Field effect cooltime -5%", 5);
+        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 5% =" 
+            + AugmentManager.instance.FieldGlobalCooldown * 0.95f);
     }
 
     public override void Apply()
@@ -400,17 +420,19 @@ public class DecreaseFieldCooldown30 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_20", "Time Accelerator II", "Field effect cooltime -30%", 3);
+        SetAugment("STAT_20", "Time Accelerator II", "Field effect cooltime -20%", 3);
+        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 20% ="
+            + AugmentManager.instance.FieldGlobalCooldown * 0.8f);
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.FieldGlobalCooldown *= 0.7f;
+        AugmentManager.instance.FieldGlobalCooldown *= 0.8f;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.FieldGlobalCooldown /= 0.7f;
+        AugmentManager.instance.FieldGlobalCooldown /= 0.8f;
     }
 }
 
@@ -419,7 +441,9 @@ public class CritChanceToAttackDamage : StatAugment
     bool isGetAugment = false;
     private void OnEnable()
     {
-        SetAugment("STAT_21", "Risk Management", "Critical Chance is fixed at 0%\nConverts 1% critical chance to 0.4 attack damage", 4);
+        SetAugment("STAT_21", "Risk Management", "Critical chance is fixed at 0%\nConverts 1% critical chance to 0.4 attack damage", 4);
+        SetAdditionalDescription("<sprite=4>" + (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) +
+            "Convert to <sprite=0>" + (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance * 0.4f));
     }
 
     public override void Apply()
@@ -457,6 +481,7 @@ public class RandomStatUpOrDown : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_22", "Stat Roulette", "Damage, critical stats randomly increase or decrease", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -512,7 +537,8 @@ public class Trinity : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, CriticalDamage 33% Up", 2);
+        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, CriticalDamage 33% up", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -534,7 +560,8 @@ public class Perfectionism : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_24", "Perfectionism", "Critical Chance Becomes 100%,\n Attack Damage -40%", 2);
+        SetAugment("STAT_24", "Perfectionism", "Critical chance becomes 100%,\n Attack damage -40%", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -555,7 +582,8 @@ public class MassivelyCriticalDamageUp : StatAugment
     bool isGetAugment;
     private void OnEnable()
     {
-        SetAugment("STAT_25", "Waiter", "Max Critical Chance Becomes 10%,\n Critical Damage Upgrade Values Are Doubled After Level Up", 2);
+        SetAugment("STAT_25", "Waiter", "Max critical chance becomes 10%,\n Critical damage upgrade values are doubled after level up", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -589,7 +617,8 @@ public class ExpGain10Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_26", "Freshman", "Exp Gain +10%", 5);
+        SetAugment("STAT_26", "Freshman", "Exp gain +10%", 5);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
@@ -607,7 +636,8 @@ public class ExpGain50Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_27", "Graduate", "Exp Gain +50%", 2);
+        SetAugment("STAT_27", "Graduate", "Exp gain +50%", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()

@@ -38,6 +38,9 @@ public class AllDamage : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_1", "Holy Rain", "The holy water damages all bricks", 3, 10);
+        SetAdditionalDescription("Holy water damage :" + 10 + " X " + 
+            StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier + "\n"
+            + "Cooldown : " + Cooldown);
     }
 
     public override void Apply()
@@ -63,7 +66,7 @@ public class AllDamage : FieldAugment
             for (int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
             {
                 IBrick brick = BrickManager.Instance.CurrentBricks[i];
-                Damage = 10 * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
+                Damage = 10 * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier;
                 StartCoroutine(SyncDamageAndEffect(Damage, brick));
             }
         }
@@ -88,6 +91,7 @@ public class AngryBall : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_2", "Angry Ball", "Balls become enraged and move faster", 3, 3);
+        SetAdditionalDescription("Cooldown : " + Cooldown);
     }
 
     public override void Apply()
@@ -148,6 +152,7 @@ public class PhoenixBall : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for 20 seconds", 4, 40);
+        SetAdditionalDescription("Cooldown : " + Cooldown);
     }
 
     public override void Apply()
@@ -194,6 +199,7 @@ public class TargetMark : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 1, 15);
+        SetAdditionalDescription("Cooldown : " + Cooldown);
     }
 
     public override void Apply()
@@ -274,6 +280,11 @@ public class SatelliteBeam : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_5", "Satellite Beam", "Generates a powerful satellite beam", 1, 6);
+        SetAdditionalDescription("Touch damage : " + 
+            200 + " + <sprite=0>" + StatManager.instance.Temporary_stat.AttackDamage + "X <sprite=9999>" + StatManager.instance.statMultiplier.AttackDamageMultiplier + "\n" +
+            "Effect damage : " +
+            2 + " + <sprite=4>" + StatManager.instance.Temporary_stat.EffectDamage + "X <sprite=9999>" + StatManager.instance.statMultiplier.EffectDamageMultiplier + "\n" +
+            "Cooldown : " + (20f + Cooldown));
     }
 
     public override void Apply()
@@ -308,6 +319,7 @@ public class AutoGetExp : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_6", "Meditation", "Automatically gain EXP over time", 5, 10);
+        SetAdditionalDescription("Cooldown : " + (5f + Cooldown));
     }
 
     public override void Apply()
@@ -343,6 +355,7 @@ public class AntiGravity : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_7", "Antigravity", "Reverses gravity at regular intervals", 3, 10);
+        SetAdditionalDescription("Cooldown : " + Cooldown);
     }
 
     public override void Apply()
@@ -423,6 +436,7 @@ public class BountyHunter: FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_8", "Bounty Hunter", "Random brick is wanted\nRewards are earned when breaking it", 4, 10);
+        SetAdditionalDescription("Cooldown : " + Cooldown);
     }
 
     public override void Apply()
@@ -492,6 +506,8 @@ public class LightningRod: FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_9", "Thunderstrike Zone", "Generates thunderstrike zone where lightning strikes automatically", 2, 10);
+        SetAdditionalDescription("Lightning damage : " + "Brick max hp 1% ~ 3%\n" +
+            "Cooldown : " + Cooldown);
     }
 
     public override void Apply()
@@ -525,19 +541,18 @@ public class AttackOrDie : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_11", "Last Breath", "Attack damage +40%\nBalls die if they do not hit any bricks within 2 seconds", 2);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.AttackDamage *= 1.4f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.4f);
         Routine = StartCoroutine(GetAttackOrDie());
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.AttackDamage /= 1.4f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.4f);
         if (Routine != null)
         {
             StopCoroutine(Routine);
@@ -606,6 +621,11 @@ public class DecayZone : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_12", "Decay Zone", "Generate a decay zone where decay happens automatically", 2, 10);
+        SetAdditionalDescription("Decay damage : " + "Attack damage X (" +
+            Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, 1) + "/" +
+            Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, 2) + "/" +
+            Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, 3) + ")\n" +
+            "Cooldown : " + Cooldown);
     }
 
     public override void Apply()
@@ -640,6 +660,29 @@ public class WeatherChange : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_13", "Constant Disaster", "Random disaster occured causing random effects", 1, 30);
+        SetAdditionalDescription(
+            "Fire damage : " +
+            "<sprite=4>" + (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.EffectDamage) + 
+            "X <sprite=9999>" + StatManager.instance.statMultiplier.EffectDamageMultiplier
+            + "X 1/2/3/4/5\n" +
+
+            "Poison Damage : " +
+            "Current brick hp <sprite=9999>" + (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f) + "%"
+            + "X 1/2/3\n" +
+
+            "Decay damage : " + "Attack/Effect damage X (" +
+            Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, 1) + "/" +
+            Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, 2) + "/" +
+            Mathf.Pow(AugmentManager.instance.DecayDamageMultiple, 3) + ")\n" +
+
+            "Curse damage : " +
+            "<sprite=0>" + (StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) +
+            "X <sprite=9999>" + StatManager.instance.statMultiplier.AttackDamageMultiplier 
+            + "X 0.5 ~ 1.3\n" +
+
+            "Lightning damage : " + "Brick max hp 1% ~ 3%\n" +
+
+            "Cooldown : " + Cooldown);
     }
 
     public override void Apply()
@@ -758,6 +801,7 @@ public class DiceGamble : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_14", "Dice Gamble", "Roll the dice and get rewards based on the result", 2, 60);
+        SetAdditionalDescription("Cooldown : " + (Cooldown * 6));
     }
 
     public override void Apply()
