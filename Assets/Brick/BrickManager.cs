@@ -328,10 +328,7 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
-        Brick.Init(
-            brick.IsBoss, false,
-            !brick.IsBoss ? BrickPointSetting(brick.BrickType) : (int)(1.4f * BrickPointSetting(brick.BrickType)),
-            !brick.IsBoss  ? BrickExpSetting(brick.BrickType) : 1.4f * BrickExpSetting(brick.BrickType));
+        Brick.Init(brick.IsBoss, brick.IsSpecialBrick, BrickPointSetting(brick.BrickType), BrickExpSetting(brick.BrickType));
         return Brick;
     }
 
@@ -346,6 +343,42 @@ public class BrickManager : MonoBehaviour
         
         Brick.Init(false, true, 1, 10f);
         return Brick;
+    }
+
+    private IBrick GetBossBrick(IBrick brick)
+    {
+        IBrick Brick = null;
+
+        Type brickType = Type.GetType(BrickInfo.BrickTypes[CalWaveToSpawnBoss()]);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(brickType);
+        Brick = (IBrick)genericMethod.Invoke(PoolManager, null);
+
+        Brick.Init(true, false, (int)(5.3f * BrickPointSetting(brick.BrickType)), 5.3f * BrickExpSetting(brick.BrickType));
+        return Brick;
+    }
+
+    private int CalWaveToSpawnBoss()
+    {
+        int Wave = GameManager.instance.Wave;
+        if (Wave < 11)
+            return (int)BrickType.Brick;
+        else if (Wave < 21)
+            return (int)BrickType.HealBrick;
+        else if (Wave < 31)
+            return (int)BrickType.ShieldBrick;
+        else if (Wave < 41)
+            return (int)BrickType.SlimeBrick;
+        else if (Wave < 51)
+            return (int)BrickType.HardBrick;
+        else if (Wave < 61)
+            return (int)BrickType.TeleportBrick;
+        else if (Wave < 71)
+            return (int)BrickType.TwinBrick;
+        else if (Wave < 81)
+            return (int)BrickType.AbsorbBrick;
+        else
+            return UnityEngine.Random.Range(0, BrickInfo.Bricks.Length);
     }
 
     private int BrickPointSetting(string brickType)
@@ -483,6 +516,8 @@ public class BrickManager : MonoBehaviour
     public IBrick SettingBrick()
     {
         IBrick brick = new IBrick();
+        brick.IsBoss = false;
+        brick.IsSpecialBrick = false;
         return brick;
     }
 
@@ -490,12 +525,14 @@ public class BrickManager : MonoBehaviour
     {
         IBrick brick = new IBrick();
         brick.IsBoss = true;
+        brick.IsSpecialBrick = false;
         return brick;
     }
 
     public IBrick SettingSpecialBrick()
     {
         IBrick brick = new IBrick();
+        brick.IsBoss = false;
         brick.IsSpecialBrick = true;
         return brick;
     }
@@ -511,7 +548,7 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(2f, 3f))));
+                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
             }
         }
         else if (brick.IsSpecialBrick)
@@ -558,7 +595,9 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            if(brick.IsSpecialBrick)
+            if (brick.IsBoss)
+                Brick = GetBossBrick(brick);
+            else if (brick.IsSpecialBrick)
                 Brick = GetSpecialBrick(brick, UnityEngine.Random.Range(0, BrickInfo.SpecialBrickTypes.Length));
             else
                 Brick = GetBrick(brick);
