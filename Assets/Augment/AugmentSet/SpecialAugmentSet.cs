@@ -2094,18 +2094,18 @@ public class ItemEnhance : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_61", "Item Enhancement", "Increases item spawn rate and enhances them", "Special", 2);
+        SetAugment("SPECIAL_61", "Trampoline", "Increases item spawn rate and enhances them", "Special", 2);
     }
 
     public override void Apply()
     {
-        ItemManager.Instance.BaseItemSpawnChance *= 2;
+        //ItemManager.Instance.BaseItemSpawnChance *= 2;
         //todo: think item inhancement
     }
 
     public override void Remove()
     {
-        ItemManager.Instance.BaseItemSpawnChance /= 2;
+        //ItemManager.Instance.BaseItemSpawnChance /= 2;
     }
 }
 
