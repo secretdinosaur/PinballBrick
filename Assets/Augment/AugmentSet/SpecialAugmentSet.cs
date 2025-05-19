@@ -37,7 +37,8 @@ public class FireBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_1", "FireBall", "Bricks have a 30% chance to catch fire when struck by a ball", "Effect", 4);
-        SetAdditionalDescription("Fire damage : deals damage scaling with <sprite=2> and stacks");
+        SetAdditionalDescription("Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
+            "The max stack is 5");
     }
 
     public override void Apply()
@@ -372,7 +373,8 @@ public class PoisonBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_15", "Poison Ball", "Chance to poison on hit", "Effect", 4);
-        SetAdditionalDescription("Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+        SetAdditionalDescription("Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks\n" +
+            "The max stack is 3");
     }
 
     public override void Apply() 
@@ -478,7 +480,9 @@ public class DeadlyPoison : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_17", "Deadly Poison", "Increase poison max stacks and chance", "Effect", 3);
-        SetAdditionalDescription("Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+        SetAdditionalDescription(
+            "Max stack up 3 to 5\n" +
+            "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
     }
 
     public override void Apply()
@@ -524,7 +528,8 @@ public class DecayBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_18", "Decay Ball", "Chance to decay on hit", "Effect", 4);
-        SetAdditionalDescription("Decay effect : increases all damage taken by stacks");
+        SetAdditionalDescription("Decay effect : increases all damage taken by stacks\n" +
+            "The max stack is 3");
     }
 
     public override void Apply() 
@@ -1592,7 +1597,7 @@ public class SpawnBombBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_46", "Bomb Maniac", "Low chance of bomb ball on summon", "Special", 3);
-        SetAdditionalDescription("The summoned bomb ball explodes after a few seconds\n" +
+        SetAdditionalDescription("The summoned bomb ball explodes after 3 seconds\n" +
             "Explosion damage scales with <sprite=2> and hits all nearby bricks");
     }
 

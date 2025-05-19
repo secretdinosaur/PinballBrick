@@ -124,7 +124,6 @@ public partial class LevelManager : MonoBehaviour
         Option_3_CoolTime = LevelUpPanel.transform.Find("SelectButton_3/CoolTime").GetComponent<TMP_Text>();
 
         AdditionalDescriptionPanel = LevelUpPanel.transform.Find("AdditionalDescription").gameObject;
-        AdditionalDescriptionPanel.SetActive(false);
         AdditionalDescriptionText = AdditionalDescriptionPanel.transform.Find("Text").GetComponent<TMP_Text>();
 
         isAlreadyClickedButton = new bool[OptionButtons.Length];
@@ -544,8 +543,8 @@ public partial class LevelManager : MonoBehaviour
             AdditionalDescriptionText.text = augmentsSet[i].AdditionalDescription;
             AdditionalDescriptionText.ForceMeshUpdate();
             int lineCount = AdditionalDescriptionText.textInfo.lineCount - 1;
-            rectTransform.sizeDelta = new Vector2(765, 0 + (lineCount * 50));
-            rectTransform.anchoredPosition = new Vector2(0, -250 - (lineCount * 25f));
+            rectTransform.sizeDelta = new Vector2(765, 50 + (lineCount * 50));
+            rectTransform.anchoredPosition = new Vector2(0, -285 - (lineCount * 25f));
         }
         else
         {
