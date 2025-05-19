@@ -98,8 +98,6 @@ public class BrickManager : MonoBehaviour
         BaseBrickSpawnValue = 1f;
         BaseBrickHealthValue = 1f;
 
-        BaseMiniBossHealthValue = 1f;
-
         BaseBossHealthValue = 1f;
         BaseBossSpawnValue = 1;
 
