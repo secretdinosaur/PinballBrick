@@ -184,8 +184,8 @@ public static partial class DamageManager //Special Effect Attack
                 ? 1
                 : brick.DecayDamageCalculate(BaseDamage + DamageAmount);
         brick.HP -= FinalDamage;
-
-        VisualEffectManager.Instance.SpawnParticle("Lightning", brick.transform.position, isCritical ? ParticleCount + 4 : ParticleCount);
+        if(ParticleCount > 0)
+            VisualEffectManager.Instance.SpawnParticle("Lightning", brick.transform.position, isCritical ? ParticleCount + 4 : ParticleCount);
         brick.ShowText(FinalDamage.ToString("F1"), "Lightning", isCritical);
     }
 

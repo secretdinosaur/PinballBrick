@@ -24,60 +24,79 @@ public class Example : StatAugment
 }
 */
 
-public class Atk30Up : StatAugment
+public class AtkUp2 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_1", "Super Ball II", "Attack damage +30%", 4);
+        SetAugment("STAT_1", "Super Ball II", "Attack damage +1.3", 4);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.3f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(1.3f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.3f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.3f);
     }
 }
 
-public class Atk50Up : StatAugment
+public class AtkUp3 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_2", "Super Ball III", "Attack damage +50%", 2);
+        SetAugment("STAT_2", "Super Ball III", "Attack damage +3.1", 2);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.5f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(3.1f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.5f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-3.1f);
     }
 }
 
-public class CritChance50Up : StatAugment
+public class CritChance35Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_3", "Sharpness III", "Critical chance +50%", 2);
+        SetAugment("STAT_3", "Sharpness III", "Critical chance +35%", 2);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.5f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.35f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.5f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.35f);
+    }
+}
+
+public class CritDamage15Up : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_4", "Fatal Attack I", "Critical damage +15%", 4);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.15f);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.15f);
     }
 }
 
@@ -85,7 +104,7 @@ public class CritDamage30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_4", "Fatal Attack I", "Critical damage +30%", 4);
+        SetAugment("STAT_5", "Fatal Attack II", "Critical damage +30%", 2);
         SetAdditionalDescription(null);
     }
 
@@ -100,30 +119,11 @@ public class CritDamage30Up : StatAugment
     }
 }
 
-public class CritDamage50Up : StatAugment
-{
-    private void OnEnable()
-    {
-        SetAugment("STAT_5", "Fatal Attack II", "Critical damage +50%", 2);
-        SetAdditionalDescription(null);
-    }
-
-    public override void Apply()
-    {
-        StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.5f);
-    }
-
-    public override void Remove()
-    {
-        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.5f);
-    }
-}
-
 public class BossDamageUp : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_6", "Boss Killer", "+30% Additional damage to boss", 4);
+        SetAugment("STAT_6", "Boss Killer", "+10% Additional damage to boss", 4);
         SetAdditionalDescription(null);
     }
 
@@ -135,7 +135,7 @@ public class BossDamageUp : StatAugment
     {
         if (Brick.IsBoss)
         {
-            Brick.TotalMultiple *= 1.3f;
+            Brick.TotalMultiple *= 1.1f;
         }
     }
 }
@@ -144,7 +144,7 @@ public class AtkUpWhenCritical : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +20%\nfor 3 seconds", 4);
+        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +1.0\nfor 3 seconds", 4);
         SetAdditionalDescription(null);
     }
 
@@ -173,9 +173,9 @@ public class AtkUpWhenCritical : StatAugment
     
     IEnumerator AttackDamageUpFewSec(float setTime, float AttackUpValue)
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(AttackUpValue);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(1.0f);
         yield return new WaitForSeconds(setTime);
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-AttackUpValue);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.0f);
     }
 }
 
@@ -198,22 +198,22 @@ public class ExpGain30Up : StatAugment
     }
 }
 
-public class Atk10Up : StatAugment
+public class AtkUp1 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_9", "Super Ball I", "Attack damage +10%", 5);
+        SetAugment("STAT_9", "Super Ball I", "Attack damage +0.8", 5);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(0.8f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.1f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-0.8f);
     }
 }
 
@@ -316,20 +316,20 @@ public class PowerButSlow : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_15", "Heavyweight Ball", "Attack damage +30%\nBall max speed -33%", 3);
+        SetAugment("STAT_15", "Heavyweight Ball", "Attack damage +15%\nBall max speed -33%", 3);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
         GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 10f;
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.3f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.15f);
     }
 
     public override void Remove()
     {
         GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.3f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.15f);
     }
 }
 
@@ -337,20 +337,20 @@ public class WeakButFast : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_16", "Lightweight Ball", "Attack damage -30%\nBall max speed +33%", 3);
+        SetAugment("STAT_16", "Lightweight Ball", "Attack damage -15%\nBall max speed +33%", 3);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
         GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 20f;
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.7f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.85f);
     }
 
     public override void Remove()
     {
         GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.7f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.85f);
     }
 }
 
@@ -416,7 +416,7 @@ public class DecreaseFieldCooldown5 : StatAugment
     }
 }
 
-public class DecreaseFieldCooldown30 : StatAugment
+public class DecreaseFieldCooldown20 : StatAugment
 {
     private void OnEnable()
     {
@@ -486,7 +486,7 @@ public class RandomStatUpOrDown : StatAugment
 
     public override void Apply()
     {
-        float attackDamageMin = -3f, attackDamageMax = 7f;
+        float attackDamageMin = -3f, attackDamageMax = 4f;
         float effectDamageMin = -0.1f, effectDamageMax = 0.2f;
         float critDamageMin = -0.1f, critDamageMax = 0.3f;
         float critChanceMin = -0.05f, critChanceMax = 0.1f;
@@ -648,5 +648,51 @@ public class ExpGain50Up : StatAugment
     public override void Remove()
     {
         StatManager.instance.ChangeTemporaryStats_ExpGain(-0.5f);
+    }
+}
+
+public class LevelUpAttackDamageValueUp : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_25", "Perseverant", "Attack damage upgrade values are doubled after level up", 1);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<LevelUpEffectDamageValueUp>());
+        LevelManager.Instance.StatUpValue[0][0] *= 2;
+        LevelManager.Instance.StatUpValue[0][1] *= 2;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<LevelUpEffectDamageValueUp>());
+        LevelManager.Instance.StatUpValue[0][0] /= 2;
+        LevelManager.Instance.StatUpValue[0][1] /= 2;
+    }
+}
+
+public class LevelUpEffectDamageValueUp : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_25", "Awake", "Effect damage upgrade values are doubled after level up", 1);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<LevelUpAttackDamageValueUp>());
+        LevelManager.Instance.StatUpValue[3][0] *= 2;
+        LevelManager.Instance.StatUpValue[3][1] *= 2;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<LevelUpAttackDamageValueUp>());
+        LevelManager.Instance.StatUpValue[3][0] /= 2;
+        LevelManager.Instance.StatUpValue[3][1] /= 2;
     }
 }

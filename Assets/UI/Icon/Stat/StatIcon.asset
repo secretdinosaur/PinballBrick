@@ -41,57 +41,57 @@ MonoBehaviour:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 9
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_0
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 10
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_1
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 11
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_2
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 12
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_3
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 13
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_4
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 14
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_5
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 15
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_6
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 16
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_7
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 17
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_8
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 18
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_9
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 19
-    m_Scale: 1
+    m_Scale: 1.8
     m_Name: StatIcon 1_10
   - m_ElementType: 2
     m_Unicode: 65534
@@ -247,8 +247,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 0
@@ -263,8 +263,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 240
@@ -279,8 +279,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 480
@@ -295,8 +295,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 720
@@ -311,8 +311,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 0
@@ -327,8 +327,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 240
@@ -343,8 +343,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 480
@@ -359,8 +359,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 720
@@ -375,8 +375,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 0
@@ -391,8 +391,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 240
@@ -407,8 +407,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 240
       m_Height: 240
-      m_HorizontalBearingX: -45
-      m_HorizontalBearingY: 210
+      m_HorizontalBearingX: -15
+      m_HorizontalBearingY: 160
       m_HorizontalAdvance: 240
     m_GlyphRect:
       m_X: 480

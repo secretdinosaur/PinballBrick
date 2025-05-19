@@ -62,7 +62,7 @@ public partial class LevelManager : MonoBehaviour
         new List<float> { 0.6f, 1.7f }, //AttackDamage
         new List<float> { 0.03f, 0.08f }, //CriticalDamage
         new List<float> { 0.02f, 0.05f }, //CriticalChance
-        new List<float> { 0.04f, 1.1f }, //EffectDamage
+        new List<float> { 0.3f, 0.8f }, //EffectDamage
         new List<float> { 0.02f, 0.05f }, //EffectDuration
         new List<float> { 0.03f, 0.08f }, //EffectCriticalDamage
         new List<float> { 0.012f, 0.034f }, //GoldGain
@@ -77,6 +77,7 @@ public partial class LevelManager : MonoBehaviour
         Instance = this;
         LevelBar = GameObject.Find("Canvas").transform.Find("LevelBar").GetComponent<Slider>();
         LevelUpPanel = GameObject.Find("Canvas").transform.Find("LevelUpPanel").gameObject;
+        LevelUpPanel.SetActive(false);
         LevelUpQueue = new Queue<int>();
 
         NoticeLevelText = LevelUpPanel.transform.Find("NoticeLevelText").GetComponent<TMP_Text>();
@@ -123,6 +124,7 @@ public partial class LevelManager : MonoBehaviour
         Option_3_CoolTime = LevelUpPanel.transform.Find("SelectButton_3/CoolTime").GetComponent<TMP_Text>();
 
         AdditionalDescriptionPanel = LevelUpPanel.transform.Find("AdditionalDescription").gameObject;
+        AdditionalDescriptionPanel.SetActive(false);
         AdditionalDescriptionText = AdditionalDescriptionPanel.transform.Find("Text").GetComponent<TMP_Text>();
 
         isAlreadyClickedButton = new bool[OptionButtons.Length];
@@ -542,8 +544,8 @@ public partial class LevelManager : MonoBehaviour
             AdditionalDescriptionText.text = augmentsSet[i].AdditionalDescription;
             AdditionalDescriptionText.ForceMeshUpdate();
             int lineCount = AdditionalDescriptionText.textInfo.lineCount - 1;
-            rectTransform.sizeDelta = new Vector2(765, 50 + (lineCount * 50));
-            rectTransform.anchoredPosition = new Vector2(0, -275 - (lineCount * 25));
+            rectTransform.sizeDelta = new Vector2(765, 0 + (lineCount * 50));
+            rectTransform.anchoredPosition = new Vector2(0, -250 - (lineCount * 25f));
         }
         else
         {

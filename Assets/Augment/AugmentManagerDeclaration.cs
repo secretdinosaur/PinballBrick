@@ -54,7 +54,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
         DecayDamageMultiple = 1.1f;
-        isSacrificeQuest3Cleared = false;
+        isSacrificeQuest3Cleared = true;
         SpawnBallAmount = 1;
         CurseActiveNumber = 1;
         AfterDeathActiveNumber = 1;
@@ -62,14 +62,14 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         augmentsSet = new List<IAugment>
         {
-            gameObject.AddComponent<Atk10Up>(),
-            gameObject.AddComponent<Atk30Up>(),
-            gameObject.AddComponent<Atk50Up>(),
+            gameObject.AddComponent<AtkUp1>(),
+            gameObject.AddComponent<AtkUp2>(),
+            gameObject.AddComponent<AtkUp3>(),
             gameObject.AddComponent<CritChance10Up>(),
             gameObject.AddComponent<CritChance20Up>(),
-            gameObject.AddComponent<CritChance50Up>(),
+            gameObject.AddComponent<CritChance35Up>(),
+            gameObject.AddComponent<CritDamage15Up>(),
             gameObject.AddComponent<CritDamage30Up>(),
-            gameObject.AddComponent<CritDamage50Up>(),
             gameObject.AddComponent<GoldGain10Up>(),
             gameObject.AddComponent<GoldGain30Up>(),
             gameObject.AddComponent<GoldGain50Up>(),
@@ -81,7 +81,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButStrongEffect>(),
             gameObject.AddComponent<WeakButStrongAtk>(),
             gameObject.AddComponent<DecreaseFieldCooldown5>(),
-            gameObject.AddComponent<DecreaseFieldCooldown30>(),
+            gameObject.AddComponent<DecreaseFieldCooldown20>(),
             gameObject.AddComponent<CritChanceToAttackDamage>(),
             gameObject.AddComponent<RandomStatUpOrDown>(),
             gameObject.AddComponent<Trinity>(),
@@ -90,6 +90,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ExpGain10Up>(),
             gameObject.AddComponent<ExpGain30Up>(),
             gameObject.AddComponent<ExpGain50Up>(),
+            gameObject.AddComponent<LevelUpAttackDamageValueUp>(),
+            gameObject.AddComponent<LevelUpEffectDamageValueUp>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -192,7 +194,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<AllDamage>(),
+            gameObject.GetComponent<ChainLightning>(),
         };
 
         foreach (IAugment augment in TestAugments)

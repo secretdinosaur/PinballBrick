@@ -42,7 +42,6 @@ public class BrickManager : MonoBehaviour
     public float BaseBrickSpawnValue;
 
     public float BaseBrickHealthValue;
-    public float BaseMiniBossHealthValue;
     public float BaseBossHealthValue;
 
     public float BaseSpawnTimeValue;
@@ -653,8 +652,7 @@ public class BrickManager : MonoBehaviour
     {
         if(availablePositions.Count > 0)
         {
-            //SpawnBrick(SettingBrick());
-            SpawnSpecificBrick("TwinBrick");
+            SpawnBrick(SettingBrick());
         }
     }
 
