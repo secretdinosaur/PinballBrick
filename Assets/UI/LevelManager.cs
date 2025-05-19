@@ -13,6 +13,7 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using System.Drawing;
 using static UnityEngine.Analytics.IAnalytic;
+using System.Xml;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -61,7 +62,7 @@ public partial class LevelManager : MonoBehaviour
         new List<float> { 0.6f, 1.7f }, //AttackDamage
         new List<float> { 0.03f, 0.08f }, //CriticalDamage
         new List<float> { 0.02f, 0.05f }, //CriticalChance
-        new List<float> { 0.04f, 1.1f }, //EffectDamage
+        new List<float> { 0.3f, 0.8f }, //EffectDamage
         new List<float> { 0.02f, 0.05f }, //EffectDuration
         new List<float> { 0.03f, 0.08f }, //EffectCriticalDamage
         new List<float> { 0.012f, 0.034f }, //GoldGain
@@ -76,6 +77,7 @@ public partial class LevelManager : MonoBehaviour
         Instance = this;
         LevelBar = GameObject.Find("Canvas").transform.Find("LevelBar").GetComponent<Slider>();
         LevelUpPanel = GameObject.Find("Canvas").transform.Find("LevelUpPanel").gameObject;
+        LevelUpPanel.SetActive(false);
         LevelUpQueue = new Queue<int>();
 
         NoticeLevelText = LevelUpPanel.transform.Find("NoticeLevelText").GetComponent<TMP_Text>();
@@ -120,6 +122,10 @@ public partial class LevelManager : MonoBehaviour
         LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material = Option_3_Aura;
         Option_3_Type = LevelUpPanel.transform.Find("SelectButton_3/Type").GetComponent<TMP_Text>();
         Option_3_CoolTime = LevelUpPanel.transform.Find("SelectButton_3/CoolTime").GetComponent<TMP_Text>();
+
+        AdditionalDescriptionPanel = LevelUpPanel.transform.Find("AdditionalDescription").gameObject;
+        AdditionalDescriptionPanel.SetActive(false);
+        AdditionalDescriptionText = AdditionalDescriptionPanel.transform.Find("Text").GetComponent<TMP_Text>();
 
         isAlreadyClickedButton = new bool[OptionButtons.Length];
 
@@ -342,6 +348,9 @@ public partial class LevelManager : MonoBehaviour
     private List<IAugment> augmentsSet;
     private bool CheckStatOrAugment;
 
+    private GameObject AdditionalDescriptionPanel;
+    private TMP_Text AdditionalDescriptionText;
+
     private float CustomTime_1;
     private float CustomTime_2;
     private float CustomTime_3;
@@ -360,9 +369,10 @@ public partial class LevelManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
+        AdditionalDescriptionPanel.SetActive(false);
+        AdditionalDescriptionText.text = "";
         SoundManager.instance.LevelUpSound();
         Level = LevelUpQueue.Dequeue();
-
 
         NoticeLevelText.text = "Now Your Level: " + Level;
         optionIndex = -1;
@@ -524,6 +534,26 @@ public partial class LevelManager : MonoBehaviour
         }
     }
 
+    private void ShowAdditionalDescription(int i)
+    {
+        RectTransform rectTransform = AdditionalDescriptionPanel.GetComponent<RectTransform>();
+
+        if (augmentsSet[i].AdditionalDescription != null)
+        {
+            AdditionalDescriptionPanel.SetActive(true);
+            AdditionalDescriptionText.text = augmentsSet[i].AdditionalDescription;
+            AdditionalDescriptionText.ForceMeshUpdate();
+            int lineCount = AdditionalDescriptionText.textInfo.lineCount - 1;
+            rectTransform.sizeDelta = new Vector2(765, 0 + (lineCount * 50));
+            rectTransform.anchoredPosition = new Vector2(0, -250 - (lineCount * 25f));
+        }
+        else
+        {
+            AdditionalDescriptionPanel.SetActive(false);
+            AdditionalDescriptionText.text = null;
+        }
+    }
+
     private bool IsStatOrAugment()
     {
         return Level % 3 != 0;
@@ -541,7 +571,8 @@ public partial class LevelManager : MonoBehaviour
                 OptionButtonShaders[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
                 isAlreadyClickedButton[i] = i == Array.IndexOf(OptionButtons, clickedButton);
             }
-
+            if (!CheckStatOrAugment)
+                ShowAdditionalDescription(Array.IndexOf(OptionButtons, clickedButton));
             optionIndex = Array.IndexOf(OptionButtons, clickedButton);
         }
         else
@@ -597,6 +628,7 @@ public partial class LevelManager : MonoBehaviour
             CustomTime_2 = 0;
             CustomTime_3 = 0;
             Time.timeScale = 1f;
+            AdditionalDescriptionPanel.SetActive(false);
             LevelUpPanel.SetActive(false);
             if (StatManager.instance.isChangedStat)
             {
