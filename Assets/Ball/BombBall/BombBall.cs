@@ -32,9 +32,11 @@ public class BombBall : IBall
             {
                 if(brick.gameObject.activeInHierarchy)
                 brick.ArbitraryDamageAttack(
-                    100 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
+                    (100 + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) 
+                    * StatManager.instance.statMultiplier.EffectDamageMultiplier,
                     false,
-                    (100 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
+                    ((100 + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
+                    * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
                     "Explosion");
             }
         }
