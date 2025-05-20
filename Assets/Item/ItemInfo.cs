@@ -6,4 +6,6 @@ public class ItemInfo : ScriptableObject
     public float[] ItemSpawnChance;
 
     public string[] ItemName;
+
+    public Item[] Items;
 }
