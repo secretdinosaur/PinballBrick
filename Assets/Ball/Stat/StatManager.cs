@@ -263,8 +263,7 @@ public partial class StatManager
         CanvasGroup canvasGroup = NoticeChangedStatPanel.GetComponent<CanvasGroup>();
         RectTransform rectTransform = NoticeChangedStatPanel.GetComponent<RectTransform>();
 
-        AttackDamageStatValueText.text = ((Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * 
-            (Persistent_stat.AttackDamageMultiplier * statMultiplier.AttackDamageMultiplier)).ToString("F1");
+        AttackDamageStatValueText.text = ((Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier).ToString("F1");
         AttackDamageChangedStatValueText.text = "";
 
         CriticalDamageStatValueText.text = ((Persistent_stat.CriticalDamage + Temporary_stat.CriticalDamage) * 100).ToString("F1") + "%";
@@ -273,8 +272,7 @@ public partial class StatManager
         CriticalChanceStatValueText.text = ((Persistent_stat.CriticalChance + Temporary_stat.CriticalChance) * 100).ToString("F1") + "%";
         CriticalChanceChangedStatValueText.text = "";
 
-        EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) *
-            (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString("F1");
+        EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier).ToString("F1");
         EffectDamageChangedStatValueText.text = "";
 
         EffectCriticalDamageStatValueText.text = (Temporary_stat.EffectCriticalDamage * 100).ToString("F1") + "%";
@@ -338,90 +336,152 @@ public partial class StatManager
                     if(TotalChangedStatValue[0] != 0)
                     {
                         if (TotalChangedStatValue[0] < 0)
-                            AttackDamageChangedStatValueText.text = TotalChangedStatValue[0].ToString("F1");
+                        {
+                            AttackDamageChangedStatValueText.text = TotalChangedStatValue[0].ToString("0.##");
+                            AttackDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }
                         else if(TotalChangedStatValue[0] > 0)
-                            AttackDamageChangedStatValueText.text = "+" + TotalChangedStatValue[0].ToString("F1");
+                        {
+                            AttackDamageChangedStatValueText.text = "+" + TotalChangedStatValue[0].ToString("0.##");
+                            AttackDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }
                     }
                     break;
                 case 1:
                     if (TotalChangedStatValue[1] != 0)
                     {
                         if (TotalChangedStatValue[1] < 0)
-                            CriticalDamageChangedStatValueText.text = (TotalChangedStatValue[1] * 100).ToString("F1") + "%";
+                        {
+                            CriticalDamageChangedStatValueText.text = (TotalChangedStatValue[1] * 100).ToString("0.##") + "%";
+                            CriticalDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }
                         else if (TotalChangedStatValue[1] > 0)
-                            CriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[1] * 100).ToString("F1") + "%";
+                        {
+                            CriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[1] * 100).ToString("0.##") + "%";
+                            CriticalDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }
                     }
                     break;
                 case 2:
                     if (TotalChangedStatValue[2] != 0)
                     {
                         if (TotalChangedStatValue[2] < 0)
-                            CriticalChanceChangedStatValueText.text = (TotalChangedStatValue[2] * 100).ToString("F1") + "%";
+                        {
+                            CriticalChanceChangedStatValueText.text = (TotalChangedStatValue[2] * 100).ToString("0.##") + "%";
+                            CriticalChanceChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }
                         else if (TotalChangedStatValue[2] > 0)
-                            CriticalChanceChangedStatValueText.text = "+" + (TotalChangedStatValue[2] * 100).ToString("F1") + "%";
+                        {
+                            CriticalChanceChangedStatValueText.text = "+" + (TotalChangedStatValue[2] * 100).ToString("0.##") + "%";
+                            CriticalChanceChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        } 
                     }
                     break;
                 case 3:
                     if (TotalChangedStatValue[3] != 0)
                     {
                         if (TotalChangedStatValue[3] < 0)
-                            EffectDamageChangedStatValueText.text = TotalChangedStatValue[3].ToString("F1");
+                        {
+                            EffectDamageChangedStatValueText.text = TotalChangedStatValue[3].ToString("0.##");
+                            EffectDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }                           
                         else if (TotalChangedStatValue[3] > 0)
-                            EffectDamageChangedStatValueText.text = "+" + TotalChangedStatValue[3].ToString("F1");
+                        {
+                            EffectDamageChangedStatValueText.text = "+" + TotalChangedStatValue[3].ToString("0.##");
+                            EffectDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }   
                     }
                     break;
                 case 4:
                     if (TotalChangedStatValue[4] != 0)
                     {
                         if (TotalChangedStatValue[4] < 0)
-                            EffectCriticalDamageChangedStatValueText.text = (TotalChangedStatValue[4] * 100).ToString("F1") + "%";
+                        {
+                            EffectCriticalDamageChangedStatValueText.text = (TotalChangedStatValue[4] * 100).ToString("0.##") + "%";
+                            EffectCriticalDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }                         
                         else if (TotalChangedStatValue[4] > 0)
-                            EffectCriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[4] * 100).ToString("F1") + "%";
+                        {
+                            EffectCriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[4] * 100).ToString("0.##") + "%";
+                            EffectCriticalDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }                     
                     }
                     break;
                 case 5:
                     if (TotalChangedStatValue[5] != 0)
                     {
                         if (TotalChangedStatValue[5] < 0)
-                            EffectDurationChangedStatValueText.text = TotalChangedStatValue[5].ToString("F1") + "s";
+                        {
+                            EffectDurationChangedStatValueText.text = TotalChangedStatValue[5].ToString("0.##") + "s";
+                            EffectDurationChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }                        
                         else if (TotalChangedStatValue[5] > 0)
-                            EffectDurationChangedStatValueText.text = "+" + TotalChangedStatValue[5].ToString("F1") + "s";
+                        {
+                            EffectDurationChangedStatValueText.text = "+" + TotalChangedStatValue[5].ToString("0.##") + "s";
+                            EffectDurationChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }
                     }
                     break;
                 case 6:
                     if (TotalChangedStatValue[6] != 0)
                     {
                         if (TotalChangedStatValue[6] < 0)
-                            GoldGainChangedStatValueText.text = (TotalChangedStatValue[6] * 100).ToString("F1") + "%";
+                        {
+                            GoldGainChangedStatValueText.text = (TotalChangedStatValue[6] * 100).ToString("0.##") + "%";
+                            GoldGainChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }       
                         else if (TotalChangedStatValue[6] > 0)
-                            GoldGainChangedStatValueText.text = "+" + (TotalChangedStatValue[6] * 100).ToString("F1") + "%";
+                        {
+                            GoldGainChangedStatValueText.text = "+" + (TotalChangedStatValue[6] * 100).ToString("0.##") + "%";
+                            GoldGainChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }  
                     }
                     break;
                 case 7:
                     if (TotalChangedStatValue[7] != 0)
                     {
                         if (TotalChangedStatValue[7] < 0)
-                            ExpGainChangedStatValueText.text = (TotalChangedStatValue[7] * 100).ToString("F1") + "%";
+                        {
+                            ExpGainChangedStatValueText.text = (TotalChangedStatValue[7] * 100).ToString("0.##") + "%";
+                            ExpGainChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }                       
                         else if (TotalChangedStatValue[7] > 0)
-                            ExpGainChangedStatValueText.text = "+" + (TotalChangedStatValue[7] * 100).ToString("F1") + "%";
+                        {
+                            ExpGainChangedStatValueText.text = "+" + (TotalChangedStatValue[7] * 100).ToString("0.##") + "%";
+                            ExpGainChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }        
                     }
                     break;
                 case 8:
                     if (TotalChangedStatValue[8] != 1)
                     {
-                        if (TotalChangedStatValue[8] < 0)
-                            AttackDamageChangedStatValueText.text = (TotalChangedStatValue[8] * 100).ToString("F1") + "%";
-                        else if (TotalChangedStatValue[8] > 0)
-                            AttackDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[8] * 100).ToString("F1") +"%";
+                        float beforeAttackDamage = float.Parse(AttackDamageStatValueText.text) - ((float.Parse(AttackDamageStatValueText.text) / TotalChangedStatValue[8]));
+                        if(beforeAttackDamage > 0)
+                        {
+                            AttackDamageChangedStatValueText.text = "+" + beforeAttackDamage.ToString("0.##");
+                            AttackDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }
+                        else
+                        {
+                            AttackDamageChangedStatValueText.text = beforeAttackDamage.ToString("0.##");
+                            AttackDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }             
                     }
                     break;
                 case 9:
                     if (TotalChangedStatValue[9] != 1)
                     {
-                        if (TotalChangedStatValue[9] < 0)
-                            EffectDamageChangedStatValueText.text = (TotalChangedStatValue[9] * 100).ToString("F1") + "%";
-                        else if (TotalChangedStatValue[9] > 0)
-                            EffectDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[9] * 100).ToString("F1") + "%";
+                        float beforeEffectDamage = float.Parse(EffectDamageStatValueText.text) - ((float.Parse(EffectDamageStatValueText.text) / TotalChangedStatValue[9]));
+                        if( beforeEffectDamage > 0)
+                        {
+                            EffectDamageChangedStatValueText.text = "+" + beforeEffectDamage.ToString("0.##");
+                            EffectDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }        
+                        else
+                        {
+                            EffectDamageChangedStatValueText.text = beforeEffectDamage.ToString("0.##");
+                            EffectDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }   
                     }
                     break;
                 default: 

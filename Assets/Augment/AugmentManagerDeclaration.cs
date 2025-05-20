@@ -194,7 +194,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<PortalBall>(),
+            gameObject.GetComponent<WeakButStrongAtk>(),
         };
 
         foreach (IAugment augment in TestAugments)
