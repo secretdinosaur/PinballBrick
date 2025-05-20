@@ -34,6 +34,7 @@ public class BallManager : MonoBehaviour
 
     public void CreateBall(int Num)
     {
+        Num *= AugmentManager.instance.SpawnBallAmount;
         if (AugmentManager.instance.determineAugmentID("SPECIAL_60"))
         {
             DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(Num, OnCreateBall));
@@ -58,6 +59,7 @@ public class BallManager : MonoBehaviour
 
     public void CreateSpecificBall(int Num, string BallType, bool IsRebirth = false)
     {
+        Num *= AugmentManager.instance.SpawnBallAmount;
         for (int i = 0; i < Num; i++)
         {
             IBall ball = GetSpecificBall(BallType, IsRebirth);
@@ -107,7 +109,7 @@ public class BallManager : MonoBehaviour
     {
         ball.GetComponent<Rigidbody2D>().angularVelocity = 0;
         ball.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0, 0);
-        ball.transform.position = new Vector2(0, -5);
+        ball.transform.position = new Vector3(0, -5, 35);
         
         Type ballType = Type.GetType(ball.BallType);
         var method = typeof(PoolManager).GetMethod("TakeToPool");

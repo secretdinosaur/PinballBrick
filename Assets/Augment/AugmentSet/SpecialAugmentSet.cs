@@ -9,6 +9,7 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using static UnityEngine.GraphicsBuffer;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
 
 /*
 public class Example : SpecialAugment
@@ -191,8 +192,8 @@ public class FireEffectStackBlast : SpecialAugment
                 nearbyBrick.ArbitraryDamageAttack(BlastDamage
                     ,
                     false,
-                    BlastDamage.ToString("F1"), 
-                    "Fire");
+                    BlastDamage.ToString("F1"),
+                    "Explosion");
                 nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
             }
             VisualEffectManager.Instance.SpawnParticle("FireBlast", Brick.transform.position, 30);
@@ -234,14 +235,14 @@ public class ChainLightning : SpecialAugment
             }
             int RandomNumber = Random.Range(0, BrickToBrick.Count);
             
-            BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 + (BrickToBrick[RandomNumber].HpTemp * Random.Range(0.01f, 0.02f)), 
+            BrickToBrick[RandomNumber].ArbitraryDamageAttack(1 + (BrickToBrick[RandomNumber].HpTemp * Random.Range(0.05f, 0.1f)), 
                 false, (1 * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier).ToString("F1"), "Lightning");
             BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
 
             targetBrick = BrickToBrick[RandomNumber];
 
         }
-        VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks);
+        StartCoroutine(VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks));
     }
 }
 
@@ -301,7 +302,8 @@ public class SpeedPower : SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
+        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple 
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
     }
 }
 
@@ -321,7 +323,8 @@ public class SpeedCritical : SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
+        Brick.TotalMultiple = Brick.RecentlyBall.TransformationMultiple 
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier * StatManager.instance.Persistent_stat.AttackDamageMultiplier;
 
     }
 }
@@ -551,7 +554,7 @@ public class DecayExplosion : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_20", "Decay Explosion", "Brick explode when the decay stack is max", "Effect", 2);
+        SetAugment("SPECIAL_20", "Decay Explosion", "Brick explodes when die with max decay stack", "Effect", 2);
     }
 
     public override void Apply()
@@ -566,14 +569,18 @@ public class DecayExplosion : SpecialAugment
 
     public override void AfterBrickDieEffect(IBrick Brick)
     {
-        if (Brick.BrickEffect.EffectStatusSet["Decay"].EffectStack == Brick.BrickEffect.EffectStatusSet["Decay"].EffectStackLimit)
+        if (Brick.BrickEffect.EffectStatusSet["Decay"].EffectStack + 1 == Brick.BrickEffect.EffectStatusSet["Decay"].EffectStackLimit)
         {
-            Brick.IsNeedDelayedDIeForEffect = true;
+            VisualEffectManager.Instance.DecayExplosionPS.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Brick.GetComponent<Renderer>().material.color);
             VisualEffectManager.Instance.SpawnParticle("DecayExplosion", Brick.transform.position, 1);
             float explosionRadius = 3f;
             LayerMask explosionLayer = LayerMask.GetMask("Ball");
             Collider2D[] colliders = Physics2D.OverlapCircleAll(Brick.transform.position, explosionRadius, explosionLayer);
 
+            foreach (IBrick brick in Brick.NearbyBricks)
+            {
+                brick.ArbitraryDamageAttack(Brick.HpTemp / 20, false, (Brick.HpTemp / 20).ToString("F1"), "Explosion");
+            }
             foreach (Collider2D ball in colliders)
             {
                 Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
@@ -783,7 +790,8 @@ public class InfiniteGrowBall : SpecialAugment
 
     public override void AfterBrickDieEffect(IBrick Brick)
     {
-        Brick.RecentlyBall.Grow(Brick);
+        if(Brick.RecentlyBall != null)
+            Brick.RecentlyBall.Grow(Brick);
     }
 }
 
@@ -799,7 +807,14 @@ public class SacrificeQuest1 : SpecialAugment
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
 
-    public override void Remove() { }
+    public override void Remove() 
+    {
+        if (isCleared) 
+        {
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-3f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(-1.5f);
+        }
+    }
 
     public override void AfterDeathEffect(IBall ball)
     {
@@ -808,9 +823,8 @@ public class SacrificeQuest1 : SpecialAugment
             QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= ClearRequiredCount && !isCleared)
         {
-            StatManager.instance.Temporary_stat.AttackDamage += 7;
-            StatManager.instance.Temporary_stat.EffectDamage += 1.5f;
-            StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(3f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(1.5f);
 
             AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest2>());
             isCleared = true;
@@ -830,7 +844,14 @@ public class SacrificeQuest2 : SpecialAugment
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
 
-    public override void Remove() { }
+    public override void Remove() 
+    {
+        if (isCleared)
+        {
+            StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.4f);
+            StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.2f);
+        }
+    }
 
     public override void AfterDeathEffect(IBall ball)
     {
@@ -839,10 +860,9 @@ public class SacrificeQuest2 : SpecialAugment
             QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= 50 && !isCleared)
         {
-            StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.4f;
-            StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.2f;
-            StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
-            StatManager.instance.GetGold((int)(50f * StatManager.instance.Temporary_stat.GoldGain));
+            StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.4f);
+            StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.2f);
+            StatManager.instance.GetGold(50);
 
             AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest3>());
             isCleared = true;
@@ -892,7 +912,7 @@ public class AttackAfterAdditionalBall : SpecialAugment
             attackNumber = value;
             if(attackNumber >= RequiredCount)
             {
-                BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+                BallManager.Instance.CreateBall(1);
                 attackNumber = 0;
             }
         }
@@ -1018,7 +1038,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["RandomEffect"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("RandomEffect");
                 int Number = Random.Range(1, 4);
                 if (Number == 1)
                 {
@@ -1070,68 +1089,65 @@ public class RandomEffect : SpecialAugment
     }
 }
 
-public class OneLineBall : SpecialAugment //보류 나중에 없앨 수도
+public class ThunderStrike : SpecialAugment
 {
-    private List<List<Vector3>> PositionSet = new List<List<Vector3>>();
-    bool isGetThisAugment = false;
-    bool turnOn = false;
-
+    Coroutine routine = null;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_33", "OneLineBall", "OneLineBall", "Special", 2);
+        SetAugment("SPECIAL_33", "Arc Link", "All balls are linked by electricity, dealing electric damage", "Special", 2);
     }
 
     public override void Apply() 
     {
-        int BallLayer = LayerMask.NameToLayer("Ball");
-        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, true);
-        isGetThisAugment = true;
+        routine = StartCoroutine(MakeBallThunder());
     }
 
     public override void Remove()
     {
-        int BallLayer = LayerMask.NameToLayer("Ball");
-        Physics2D.IgnoreLayerCollision(BallLayer, BallLayer, false);
+        StopCoroutine(routine);
     }
 
-    private void Update()
+    private IEnumerator MakeBallThunder()
     {
-        if (isGetThisAugment)
+        Vector2 start;
+        Vector2 end;
+
+        RaycastHit2D[] hits;
+
+        while (true)
         {
-            while (PositionSet.Count < BallManager.Instance.inGameBallPosition.Count)
-            {
-                PositionSet.Add(new List<Vector3>());
-            }
-            if (turnOn && BallManager.Instance.inGameBallPosition.Count >= 1)
-            {
-                BallManager.Instance.inGameBallPosition[0].GetComponent<SpriteRenderer>().color = Color.blue;
-                turnOn = false;
-            }
-            if (BallManager.Instance.inGameBallPosition.Count >= 2)
-            {
-                for (int i = 0; i < BallManager.Instance.inGameBallPosition.Count; i++)
-                {
-                    PositionSet[i].Add(BallManager.Instance.inGameBallPosition[i].position);
-                    if (PositionSet[i].Count > Mathf.RoundToInt(0.02f / Time.deltaTime))
-                    {
-                        PositionSet[i].RemoveAt(0);
-                    }
-                }
+            yield return new WaitForSeconds(0.1f);
 
-                for (int i = 1; i < BallManager.Instance.inGameBallPosition.Count; i++)
-                {
-                    int previousIndex = i - 1;
-
-                    if (PositionSet[previousIndex].Count > 0)
-                    {
-                        Vector3 delayedPosition = PositionSet[previousIndex][0];
-                        BallManager.Instance.inGameBallPosition[i].position = delayedPosition;
-                    }
-                }
-            }
-            else
+            List<IBall> Balls = BallManager.Instance.InGameBall;
+            if (Balls.Count >= 2)
             {
-                turnOn = true;
+                VisualEffectManager.Instance.SpawnThunderStrike(Balls);
+
+                for (int i = 0; i < Balls.Count - 1; i++)
+                {
+                    start = Balls[i].transform.position;
+                    end = Balls[i + 1].transform.position;
+
+                    hits = Physics2D.LinecastAll(start, end);
+                    for(int j = 0; j < hits.Length; j++)
+                        if (hits[j].collider.CompareTag("Brick"))
+                        {
+                            IBrick brick = hits[j].collider.GetComponent<IBrick>();
+
+                            brick.ArbitraryDamageAttack(0.3f + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
+                        }
+                }
+                start = Balls[Balls.Count - 1].transform.position;
+                end = Balls[0].transform.position;
+
+                hits = Physics2D.LinecastAll(start, end);
+                for (int j = 0; j < hits.Length; j++)
+                    if (hits[j].collider.CompareTag("Brick"))
+                    {
+                        IBrick brick = hits[j].collider.GetComponent<IBrick>();
+
+                        brick.ArbitraryDamageAttack(0.3f + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
+                    }
             }
         }
     }
@@ -1152,7 +1168,7 @@ public class RebirthBall : SpecialAugment
     {
         if (Random.value < 0.05f)
         {
-            BallManager.Instance.CreateSpecificBall(AugmentManager.instance.SpawnBallAmount, ball.BallType, true);
+            BallManager.Instance.CreateSpecificBall(1, ball.BallType, true);
         }
     }
 
@@ -1163,7 +1179,7 @@ public class BossKillBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_35", "Uprising", "Summons an ball when the boss is defeated", "Special", 5);
+        SetAugment("SPECIAL_35", "Uprising", "Summons an Three ball when the boss is defeated", "Special", 5);
     }
 
     public override void Apply() { }
@@ -1174,7 +1190,7 @@ public class BossKillBall : SpecialAugment
     {
         if (Brick.IsBoss)
         {
-            BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+            BallManager.Instance.CreateBall(3);
         }
     }
 }
@@ -1234,27 +1250,23 @@ public class BallSwarm : SpecialAugment
     public override void Remove()
     {
         isGetAugment = false;
+        if (Upgrade)
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
     }
 
     private void Update()
     {
         if (isGetAugment)
-        {
-            QuestAlarm.Instance.SetQuest("LevelUpQuest", "Killed Enemy", BallManager.Instance.InGameBall.Count, RequiredBall);
-
+        { 
             if (BallManager.Instance.InGameBall.Count >= RequiredBall && !Upgrade)
             {
                 Upgrade = true;
-                StatManager.instance.Temporary_stat.AttackDamage += 2;
-                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
-
-
+                StatManager.instance.ChangeTemporaryStats_AttackDamage(2f);
             }
             else if(BallManager.Instance.InGameBall.Count < 30 && Upgrade)
             {
                 Upgrade = false;
-                StatManager.instance.Temporary_stat.AttackDamage -= 2;
-                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
             }
         }
     }
@@ -1277,6 +1289,8 @@ public class LonelyBall : SpecialAugment
     public override void Remove()
     {
         isGetAugment = false;
+        if (Upgrade)
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
     }
 
     private void Update()
@@ -1286,16 +1300,13 @@ public class LonelyBall : SpecialAugment
             if (BallManager.Instance.InGameBall.Count <= 5 && !Upgrade)
             {
                 Upgrade = true;
-                StatManager.instance.Temporary_stat.AttackDamage += 2;
-                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
-
+                StatManager.instance.ChangeTemporaryStats_AttackDamage(2f);
                 BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(2, 2, 2);
             }
             else if (BallManager.Instance.InGameBall.Count > 5 && Upgrade)
             {
                 Upgrade = false;
-                StatManager.instance.Temporary_stat.AttackDamage -= 2;
-                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
                 BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(1, 1, 1);
             }
         }
@@ -1324,19 +1335,19 @@ public class SuicideBoomBall : SpecialAugment
                     (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier,
                     false,
                     ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier).ToString("F1"),
-                    null);
+                    "Explosion");
             foreach (IBrick brick in Brick.NearbyBricks)
             {
                 brick.ArbitraryDamageAttack(
                     (damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier,
                     false,
                     ((damage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier).ToString("F1"),
-                    null);
+                    "Explosion");
             }
             ball.BallDied();
             if(Random.value < 0.4f)
             {
-                BallManager.Instance.CreateSpecificBall(AugmentManager.instance.SpawnBallAmount, ball.BallType);
+                BallManager.Instance.CreateSpecificBall(1, ball.BallType);
             }
         }
     }
@@ -1346,7 +1357,7 @@ public class SplitBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_41", "Diffraction", "A low chance for the ball to split after an attack", "Special", 3);
+        SetAugment("SPECIAL_41", "Diffraction", "A low chance for the ball to split after an attack", "Special", 2);
     }
 
     public override void Apply()
@@ -1568,15 +1579,13 @@ public class ChangeNormalToGlass : SpecialAugment
     public override void Apply()
     {
         BallManager.Instance.NormalBall = "GlassBall";
-        StatManager.instance.Temporary_stat.AttackDamage += 2f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(2f);
     }
 
     public override void Remove()
     {
         BallManager.Instance.NormalBall = "Ball";
-        StatManager.instance.Temporary_stat.AttackDamage -= 2f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
     }
 }
 
@@ -1632,22 +1641,16 @@ public class Concentrate : SpecialAugment
     public override void Apply()
     {
         QuestAlarm.Instance.SetQuest("Concentrate", "GameOver In",  Count, 0);
-        StatManager.instance.statMultiplier.AttackDamageMultiplier *= 2f;
-        StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.7f;
-        StatManager.instance.Temporary_stat.EffectDuration *= 1.3f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<SpawnBombBall>());
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<RebornBombBall>());
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(2f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.7f);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(StatManager.instance.Temporary_stat.EffectDuration * 0.3f);
     }
 
     public override void Remove() 
     {
-        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 2f;
-        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.7f;
-        StatManager.instance.Temporary_stat.EffectDuration /= 1.3f;
-        StatManager.instance.SaveStatMultiplier(StatManager.instance.statMultiplier);
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-2f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.7f);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(-(StatManager.instance.Temporary_stat.EffectDuration * 0.3f));
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SpawnBombBall>());
     }
 
@@ -1891,10 +1894,9 @@ public class HalfBallSacrifice : SpecialAugment
             for(int i = 0; i < BallManager.Instance.InGameBall.Count / 2; i++)
             {
                 StartCoroutine(BallRemoveEffect(BallManager.Instance.InGameBall[i]));
-                AtkUpValue += 1;
+                AtkUpValue += 0.1f;
             }
-            StatManager.instance.Temporary_stat.AttackDamage += AtkUpValue;
-            StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(AtkUpValue);
         }
     }
 
@@ -1907,8 +1909,7 @@ public class HalfBallSacrifice : SpecialAugment
 
     public override void Remove() 
     {
-        StatManager.instance.Temporary_stat.AttackDamage -= AtkUpValue;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-AtkUpValue);
     }
 }
 
@@ -1926,7 +1927,7 @@ public class FreshNewStart : SpecialAugment
                    + AugmentManager.instance.activeFieldAugments.Count
                    + AugmentManager.instance.activeSpecialAugments.Count;
         AugmentManager.instance.ClearAllAugments();
-        StatManager.instance.Temporary_stat.AttackDamage *= AugmentNum;
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(AugmentNum * 2);
         LevelManager.Instance.LevelSet(1);
         foreach (IBall ball in BallManager.Instance.InGameBall)
         {
@@ -2093,18 +2094,18 @@ public class ItemEnhance : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_61", "Item Enhancement", "Increases item spawn rate and enhances them", "Special", 2);
+        SetAugment("SPECIAL_61", "Trampoline", "Increases item spawn rate and enhances them", "Special", 2);
     }
 
     public override void Apply()
     {
-        ItemManager.Instance.BaseItemSpawnChance *= 2;
+        //ItemManager.Instance.BaseItemSpawnChance *= 2;
         //todo: think item inhancement
     }
 
     public override void Remove()
     {
-        ItemManager.Instance.BaseItemSpawnChance /= 2;
+        //ItemManager.Instance.BaseItemSpawnChance /= 2;
     }
 }
 
@@ -2117,14 +2118,12 @@ public class InfiniteRapid : SpecialAugment
 
     public override void Apply()
     {
-        StatManager.instance.Temporary_stat.AttackDamage += 5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(3f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.Temporary_stat.AttackDamage -= 5f;
-        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-3f);
     }
 }
 
@@ -2309,19 +2308,16 @@ public class GoalWaveBonus : SpecialAugment
                 switch (i)
                 {
                     case 2:
-                        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.1f;
-                        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.1f;
-                        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.1f);
+                        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.1f);
                         break;
                     case 4:
-                        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.1f;
-                        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.1f;
-                        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.1f);
+                        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.1f);
                         break;
                     case 5:
-                        StatManager.instance.statMultiplier.AttackDamageMultiplier /= 1.2f;
-                        StatManager.instance.statMultiplier.EffectDamageMultiplier /= 1.2f;
-                        StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.2f);
+                        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.2f);
                         break;
                     default:
                         break;
@@ -2347,15 +2343,14 @@ public class GoalWaveBonus : SpecialAugment
                 Goals[1] = true;
                 for (int i = 0; i < 5; i++)
                 {
-                    BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+                    BallManager.Instance.CreateBall(5);
                 }
             }
             else if (GameManager.instance.Wave == 30 && !Goals[2])
             {
                 Goals[2] = true;
-                StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
-                StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.1f;
-                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
+                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);
             }
             else if (GameManager.instance.Wave == 50 && !Goals[3])
             {
@@ -2370,11 +2365,10 @@ public class GoalWaveBonus : SpecialAugment
                 Goals[4] = true;
                 for (int i = 0; i < 5; i++)
                 {
-                    BallManager.Instance.CreateBall(AugmentManager.instance.SpawnBallAmount);
+                    BallManager.Instance.CreateBall(5);
                 }
-                StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.1f;
-                StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.1f;
-                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
+                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);
             }
             else if (GameManager.instance.Wave == 100 && !Goals[5])
             {
@@ -2383,9 +2377,8 @@ public class GoalWaveBonus : SpecialAugment
                 {
                     LevelManager.Instance.GetExp(20);
                 }
-                StatManager.instance.statMultiplier.AttackDamageMultiplier *= 1.2f;
-                StatManager.instance.statMultiplier.EffectDamageMultiplier *= 1.2f;
-                StatManager.instance.SaveTemporaryStat(StatManager.instance.Temporary_stat);
+                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.2f);
+                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.2f);
             }
         }
     }

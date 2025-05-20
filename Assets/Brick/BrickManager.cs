@@ -61,7 +61,7 @@ public class BrickManager : MonoBehaviour
         SlimeBrick,
         HardBrick,
         TeleportBrick,
-        WhiteBrick,
+        AbsorbBrick,
         IgnoreBrick,
         TwinBrick,
     }
@@ -109,7 +109,7 @@ public class BrickManager : MonoBehaviour
 
     void Update()
     {
-        if(availablePositions.Count > 0 && SpawnBrickRoutine == null && !WavePause)
+        if(availablePositions.Count > 0 && SpawnBrickRoutine == null && !WavePause && !GameManager.instance.isGameEnded)
         {
             SpawnBrickRoutine = StartCoroutine(SpawnBricks());
         }
@@ -119,13 +119,7 @@ public class BrickManager : MonoBehaviour
     {
         if(!CurrentBricks.Contains(brick))
         {
-            if(brick.BrickType == "TwinBrick")
-            {
-                CurrentBricks.Add(brick.GetComponent<TwinBrick>());
-                CurrentBricks.Add(brick.GetComponentInChildren<LowerBrick>());
-            }
-            else
-                CurrentBricks.Add(brick);
+            CurrentBricks.Add(brick);
         }
     }
     void InitializeGrid()
@@ -197,7 +191,6 @@ public class BrickManager : MonoBehaviour
             var genericMethod = method.MakeGenericMethod(brickType);
             genericMethod.Invoke(PoolManager, new object[] { brick.GetComponent<IBrick>() });
             CurrentBricks.Remove(brick);
-            if(brick.BrickType == "TwinBrick") CurrentBricks.Remove(brick.GetComponentInChildren<LowerBrick>());
         }
 
     }
@@ -236,7 +229,7 @@ public class BrickManager : MonoBehaviour
 
     private IEnumerator SpawnBricks()
     {
-        while (true)
+        while (!GameManager.instance.isGameEnded)
         {
             int Wave = GameManager.instance.Wave;
             int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
@@ -248,25 +241,23 @@ public class BrickManager : MonoBehaviour
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
-                Debug.Log("Wave : " + Wave + " Left Bricks Count : " + BrickQueue.Count);
             }
             else
             {
-                Debug.Log("Wave : " + Wave + " Left Bricks Count : " + BrickQueue.Count);
             }
             /////////////////////////////////------------------------------------------------------------------------------------------
             if (isRapid) // Rapid stages are active after wave 10
             {
-                Debug.Log("Rapid Stage");
                 RapidStageChance = 0;
                 while(BrickQueue.Count > 0)
                 {
                     if(availablePositions.Count > 0 && !WavePause)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
-                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value) 
-                            * BaseSpawnTimeValue * 
-                            (0.6f - (Wave * 0.0015f) - (AddPerWave * 0.015f)) <= 0.3f ? 0.3f : (0.6f - (Wave * 0.002f) - (AddPerWave * 0.02f)));
+                        yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value)
+                            * CurrentBricks.Count < 4 ? 
+                            UnityEngine.Random.Range(0.1f, 0.4f) :
+                            BaseSpawnTimeValue * (0.6f - (Wave * 0.0015f) - (AddPerWave * 0.015f)) <= 0.3f ? 0.3f : (0.6f - (Wave * 0.002f) - (AddPerWave * 0.02f)));
                     }
                     else
                     {
@@ -277,7 +268,6 @@ public class BrickManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Normal Stage");
                 RapidStageChance += RapidStageChanceValue; //Ensure it activates by stage 11 at the latest
                 while (BrickQueue.Count > 0)
                 {
@@ -286,8 +276,9 @@ public class BrickManager : MonoBehaviour
                         SpawnBrick(BrickQueue.Dequeue());
                         //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
                         yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value)
-                            * BaseSpawnTimeValue * 
-                            (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)) <= 0.8f ? 0.8f : (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)));
+                            * CurrentBricks.Count < 4 ?
+                            UnityEngine.Random.Range(0.1f, 0.4f) :
+                            BaseSpawnTimeValue * (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)) <= 0.8f ? 0.8f : (1.5f - (Wave * 0.005f) - (AddPerWave * 0.02f)));
                     }
                     else
                     {
@@ -302,7 +293,7 @@ public class BrickManager : MonoBehaviour
                 GameManager.instance.Wave += 1;
 
                 int WaitingTime = 0;
-                while(WaitingTime < BaseWaitingTimeValue && CurrentBricks.Count > 5)
+                while (WaitingTime < BaseWaitingTimeValue && CurrentBricks.Count > 5)
                 {
                     WaitingTime++;
                     yield return new WaitForSeconds(1f);
@@ -327,6 +318,13 @@ public class BrickManager : MonoBehaviour
                 var method = typeof(PoolManager).GetMethod("GetFromPool");
                 var genericMethod = method.MakeGenericMethod(brickType);
                 Brick = (IBrick)genericMethod.Invoke(PoolManager, null);
+                if (Brick.BrickType == "TwinBrick" && availablePositions.Count < 2)
+                {
+                    Brick = null;
+                    ChanceSum = 0;
+                    RandomNumber = UnityEngine.Random.value;
+                    i = 0;
+                }
                 break;
             }
         }
@@ -368,7 +366,7 @@ public class BrickManager : MonoBehaviour
             return 3;
         else if (brickType == "TwinBrick")
             return 5;
-        else if (brickType == "BlackBrick")
+        else if (brickType == "AbsorbBrick")
             return 1;
         else
             return 1;
@@ -392,7 +390,7 @@ public class BrickManager : MonoBehaviour
             return 15.5f;
         else if (brickType == "TwinBrick")
             return 20f;
-        else if (brickType == "BlackBrick")
+        else if (brickType == "AbsorbBrick")
             return 10f;
         else
             return 10f;
@@ -405,7 +403,7 @@ public class BrickManager : MonoBehaviour
         var method = typeof(PoolManager).GetMethod("GetFromPool");
         var genericMethod = method.MakeGenericMethod(brickType);
         brick = (IBrick)genericMethod.Invoke(PoolManager, null);
-        //UpdateCurrentBricks();
+        UpdateCurrentBricks(brick);
         return brick;
     }
 
@@ -455,7 +453,7 @@ public class BrickManager : MonoBehaviour
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
                 }
-                else if (Wave < 61 && i == (int)BrickType.WhiteBrick)
+                else if (Wave < 61 && i == (int)BrickType.AbsorbBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
@@ -520,7 +518,7 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseMiniBossHealthValue * (Mathf.Pow(5 + Wave / 2, UnityEngine.Random.Range(1f, 1.2f)))));
+                HPPool.Add(UnityEngine.Random.Range(5, 10));
             }
         }
         else
@@ -570,14 +568,15 @@ public class BrickManager : MonoBehaviour
             UpdateCurrentBricks(Brick);
             SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
         }
+        if(Brick.BrickType == "TwinBrick" && Brick.GetComponent<TwinBrick>().Twin == null)
+        {
+            IBrick Twin = SpawnSpecificBrick("TwinBrick");
+            Brick.GetComponent<TwinBrick>().Twin = Twin.GetComponent<TwinBrick>();
+            Twin.GetComponent<TwinBrick>().Twin = Brick.GetComponent <TwinBrick>();
 
-        if (Brick.IsBoss)
-        {
-            Debug.Log("Boss Awake");
-        }
-        else if(Brick.IsSpecialBrick)
-        {
-            Debug.Log("SpecialBrick Awake");
+            float rotation = UnityEngine.Random.value * 3.14f;
+            Brick.spriteRenderer.material.SetFloat("_Rotation", rotation);
+            Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
         }
     }
 
@@ -595,7 +594,7 @@ public class BrickManager : MonoBehaviour
         return brick;
     }
 
-    //Text Button Functions
+    //Test Button Functions
     public void OnSpawnWaveBrickButtonClick()
     {
         try
@@ -615,7 +614,8 @@ public class BrickManager : MonoBehaviour
     {
         if(availablePositions.Count > 0)
         {
-            SpawnBrick(SettingBrick());
+            //SpawnBrick(SettingBrick());
+            SpawnSpecificBrick("TwinBrick");
         }
     }
 

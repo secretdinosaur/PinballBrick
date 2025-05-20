@@ -6,6 +6,7 @@ using static UnityEngine.ParticleSystem;
 using System;
 using System.Drawing;
 using UnityEngine.UIElements;
+using Redcode.Pools;
 
 public class VisualEffectManager : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class VisualEffectManager : MonoBehaviour
 
     public ParticleSystem AddAttack1PS;
 
-    public ParticleSystem ExplosionWithBallPS;
+    public PoolManager PoolManager;
 
     public ParticleSystem SuicideBoomBallPS;
     public ParticleSystem SuicideBoomBallPS2;
@@ -82,7 +83,7 @@ public class VisualEffectManager : MonoBehaviour
 
             case "DecayExplosion":
                 DecayExplosionPS.transform.position = ParticlePosition;
-                DecayExplosionPS.Emit(15);
+                DecayExplosionPS.Emit(50);
                 break;
 
             case "AdditionalAttack":
@@ -159,39 +160,39 @@ public class VisualEffectManager : MonoBehaviour
 
     public void SpawnExplosionWithBallEffect(Vector2 Vec, Vector2 Pos)
     {
-        ExplosionWithBallPS.Emit(3);
-
-        Particle[] ExplosionWithBallParticles = new Particle[ExplosionWithBallPS.particleCount];
-        ExplosionWithBallPS.GetParticles(ExplosionWithBallParticles);
-
-        Array.Sort(ExplosionWithBallParticles, (a, b) => b.remainingLifetime.CompareTo(a.remainingLifetime));
-
-        for (int i = 0; i < 6; i++)
-        {
-            float angle = Mathf.Atan2(Vec.y, Vec.x) * Mathf.Rad2Deg;
-            ExplosionWithBallParticles[i].position = Pos;
-            ExplosionWithBallParticles[i].rotation = angle;
-
-            int Dir = i % 2 == 1 ? 1 : -1;
-
-            float randomAngleRad = UnityEngine.Random.Range(-10f, 10f) * Mathf.Deg2Rad;
-            float cosA = Mathf.Cos(randomAngleRad);
-            float sinA = Mathf.Sin(randomAngleRad);
-
-            Vector3 randomizedVec = new Vector3(
-                Vec.x * sinA + Vec.y * cosA,
-                Vec.x * cosA - Vec.y * sinA
-            ) * Dir;
-
-            ExplosionWithBallParticles[i].velocity = randomizedVec * 10;
-        }
-        ExplosionWithBallPS.SetParticles(ExplosionWithBallParticles);
+        StartCoroutine(SpawnExplosionWithBallEffectCo(Vec, Pos));
     }
-    public void SpawnChainLightning(List<IBrick> Bricks)
+    public IEnumerator SpawnExplosionWithBallEffectCo(Vector2 Vec, Vector2 Pos)
     {
-        ChainLightningPS.Emit(Bricks.Count - 1);
-        Particle[] particles = new Particle[ChainLightningPS.particleCount];
-        ChainLightningPS.GetParticles(particles);
+        float angle = Mathf.Atan2(Vec.y, Vec.x) * Mathf.Rad2Deg;
+        float angle2 = Mathf.Atan2(Vec.x, Vec.y) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.Euler(0f, 0f, angle - 10);
+        Quaternion rotation2 = Quaternion.Euler(0f, 0f, angle2 + 10);
+
+        ExplosionWithBallPS PS = PoolManager.GetFromPool<ExplosionWithBallPS>();
+        ExplosionWithBallPS PS2 = PoolManager.GetFromPool<ExplosionWithBallPS>();
+
+        PS.transform.position = Pos;
+        PS.transform.rotation = rotation;
+
+        PS2.transform.position = Pos;
+        PS2.transform.rotation = rotation2;
+
+        PS.GetComponent<ParticleSystem>().Emit(3);
+        PS2.GetComponent<ParticleSystem>().Emit(3);
+
+        yield return new WaitForSeconds(0.12f);
+
+        PoolManager.TakeToPool<ExplosionWithBallPS>(PS);
+        PoolManager.TakeToPool<ExplosionWithBallPS>(PS2);
+    }
+    public IEnumerator SpawnChainLightning(List<IBrick> Bricks)
+    {
+        ChainLightningPS PS = PoolManager.GetFromPool<ChainLightningPS>();
+
+        PS.GetComponent<ParticleSystem>().Emit(Bricks.Count - 1);
+        Particle[] particles = new Particle[PS.GetComponent<ParticleSystem>().particleCount];
+        PS.GetComponent<ParticleSystem>().GetParticles(particles);
 
         for (int i = 0; i < Bricks.Count - 1; i++)
         {
@@ -210,17 +211,88 @@ public class VisualEffectManager : MonoBehaviour
             
             particles[i].rotation3D = new Vector3(0, 0, Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90);
 
-            ChainLightningPS.SetParticles(particles);
+            PS.GetComponent<ParticleSystem>().SetParticles(particles);
         }
+        yield return new WaitForSeconds(1);
+        PoolManager.TakeToPool<ChainLightningPS>(PS);
     }
 
-    public void SetDecayVisualEffect(IBrick brick)
+    public void SpawnThunderStrike(List<IBall> Balls)
     {
-        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 1);
+        ChainLightningPS.Emit(Balls.Count);
+        Particle[] particles = new Particle[ChainLightningPS.particleCount];
+        ChainLightningPS.GetParticles(particles);
+        Vector2 StartPosition;
+        Vector2 EndPosition;
+        float Length;
+        Vector2 Direction;
+        Vector3 size;
+        for (int i = 0; i < Balls.Count - 1; i++)
+        {
+            StartPosition = Balls[i].transform.position;
+            EndPosition = Balls[i + 1].transform.position;
+
+            Length = (EndPosition - StartPosition).magnitude;
+            Direction = (EndPosition - StartPosition).normalized;
+
+            size = particles[i].startSize3D;
+            size.x = 1f;
+            size.y = Length;
+
+            particles[i].startSize3D = size;
+            particles[i].position = StartPosition;
+
+            particles[i].rotation3D = new Vector3(0, 0, Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90);
+        }
+        StartPosition = Balls[Balls.Count - 1].transform.position;
+        EndPosition = Balls[0].transform.position;
+
+        Length = (EndPosition - StartPosition).magnitude;
+        Direction = (EndPosition - StartPosition).normalized;
+
+        size = particles[Balls.Count - 1].startSize3D;
+        size.x = 1f;
+        size.y = Length;
+
+        particles[Balls.Count - 1].startSize3D = size;
+        particles[Balls.Count - 1].position = StartPosition;
+
+        particles[Balls.Count - 1].rotation3D = new Vector3(0, 0, Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90);
+
+        ChainLightningPS.SetParticles(particles);
+
+    }
+    public void SetDecayVisualEffect(IBrick brick) { StartCoroutine(SetDecayVisualEffectC(brick)); }
+    public void UnSetDecayVisualEffect(IBrick brick) { StartCoroutine(UnSetDecayVisualEffectC(brick)); }
+    public IEnumerator SetDecayVisualEffectC(IBrick brick)
+    {
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", t);
+            yield return null;
+        }
+
+        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 1f);
     }
 
-    public void UnSetDecayVisualEffect(IBrick brick)
+    public IEnumerator UnSetDecayVisualEffectC(IBrick brick)
     {
-        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 0);
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = duration / elapsed;
+            brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", t);
+            yield return null;
+        }
+
+        brick.GetComponent<SpriteRenderer>().material.SetFloat("_Decay", 0f);
     }
 }

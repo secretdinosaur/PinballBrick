@@ -39,14 +39,13 @@ public partial class IBrick : MonoBehaviour
 
     private Collider2D Collider;
 
-    public bool IsNeedDelayedDIeForEffect = false;
-
     public bool isGoldBrick;
     public float HP
     {
         get { return hp; }
         set
         {
+
             hp = value;
             if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
 
@@ -62,17 +61,14 @@ public partial class IBrick : MonoBehaviour
             {
                 hp = 0;
                 HPText.enabled = false;
-                if (BrickType == "TwinBrick")
-                {
-                    GetComponentInParent<TwinBrick>().CheckBothBrickDead();
-                }
-                else if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+                if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
                 {
                     GetComponent<ShieldBrick>().DestroyShield();
                 }
-                else if (BrickType == "BlackBrick")
+                else if(BrickType == "TwinBrick" && !GetComponent<TwinBrick>().IsHpZero)
                 {
-                    GetComponent<BlackBrick>().WhiteBrick.isBlackBrickDied();
+                    StartCoroutine(GetComponent<TwinBrick>().StartRebirth());
+                    HPText.text = "10";
                 }
                 else
                 {
@@ -89,7 +85,7 @@ public partial class IBrick : MonoBehaviour
                         }
                         else if(BrickType == "BallBrick")
                         {
-                            BallManager.Instance.CreateBall(3);
+                            BallManager.Instance.CreateBall(2);
                         }
                     }
                     BrickDie();
@@ -101,8 +97,15 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
+        foreach(IBrick brick in NearbyBricks)
+        {
+            if (brick.BrickType == "AbsorbBrick")
+                brick.GetComponent<AbsorbBrick>().absorbHP(this);
+        }
+
+        GameManager.instance.DestroyedBricks++;
         Fever.StartFever = true;
-        Fever.Instance.FeverCount *= 2;
+        Fever.Instance.CalFeverCount();
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
         LevelManager.Instance.GetExp(Exp);
@@ -144,14 +147,24 @@ public partial class IBrick : MonoBehaviour
 
     public void UpdateHPtext()
     {
+
+        if ((int)hp <= 0 && BrickType == "TwinBrick")
+        {
+            return;
+        }
+
         if (HPText != null)
         {
             HPText.text = ((int)hp).ToString();
+            HPText.color = IsBoss ? Color.red : Color.white;
+
         }
         else
         {
             HPText = GetComponentInChildren<TextMeshPro>();
             HPText.text = ((int)hp).ToString();
+            HPText.color = IsBoss ? Color.red : Color.white;
+
         }
 
         if ((int)hp >= 100000)
@@ -177,18 +190,30 @@ public partial class IBrick : MonoBehaviour
         this.IsSpecialBrick = IsSpecialBrick;
         this.Point = Point;
         this.Exp = Exp;
+
+        if (IsBoss)
+            spriteRenderer.material.SetFloat("_IsBoss", 1);
+        else
+            spriteRenderer.material.SetFloat("_IsBoss", 0);
+
+        HPText.color = IsBoss ? Color.red : Color.white;
     }
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
         HPText.enabled = true;
+
     }
     public void OnEnable()
     {
         HpTemp = 9999999;
-        HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
+        //To sync Twin's HP
+        if(BrickType == "TwinBrick")
+            HP = BasicHP * BrickManager.Instance.HPPool[1];
+        else
+            HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
-        
+
         GetComponents();
         spriteRenderer.enabled = true;
         HPText.enabled = true;
@@ -201,7 +226,7 @@ public partial class IBrick : MonoBehaviour
     public void GetComponents()
     {
         Collider = GetComponent<Collider2D>();
-        boxSize = new Vector2(2f, 2f);
+        boxSize = new Vector2(2f, 1.5f);
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
         camera = Camera.main;
@@ -431,16 +456,5 @@ public partial class IBrick //Detect Nearby Bricks
         ShowText("EXECUTION", null, true);
         Collider.enabled = true;
         BrickDie();
-    }
-}
-
-public partial class IBrick //BlackHole Brick
-{
-    public bool isTouchedBlackHole = false;
-    public GameObject TouchedObject;
-    public void TouchedBlackHole(IBall ball)
-    {
-        isTouchedBlackHole = true;
-        TouchedObject = ball.gameObject;
     }
 }

@@ -24,7 +24,7 @@ public partial class IBall : MonoBehaviour
     public bool isOverDeathLine;
 
     public Queue<Vector2> PositionSet = new Queue<Vector2>();
-    public Vector2 StartPosition = new Vector2(0f, -5f);
+    public Vector3 StartPosition = new Vector3(0f, -5f, 35);
     public float linearVelocityYValue = 10;
 
     public Coroutine FusionMoveRoutine = null;
@@ -45,7 +45,6 @@ public partial class IBall : MonoBehaviour
             Augment.AfterBirthEffect(this);
         }
         gameObject.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-        GetComponent<CircleCollider2D>().enabled = true;
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.position = StartPosition;
@@ -101,26 +100,18 @@ public partial class IBall : MonoBehaviour
                 StopCoroutine(FusionMoveRoutine);
                 FusionMoveRoutine = null;
             }
-
+            GetComponent<Collider2D>().enabled = false;
             BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
         }
     }
 
     private IEnumerator EnableCollider()
     {
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), true);
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), true);
-        foreach (Collider2D collider2D in BallManager.Instance.inGameBallCollider)
+        while(transform.position.y < -2.8)
         {
-            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collider2D, true);
+            yield return null;
         }
-        yield return new WaitForSeconds(0.3f);
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), false);
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), false);
-        foreach (Collider2D collider2D in BallManager.Instance.inGameBallCollider)
-        {
-            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collider2D, false);
-        }
+        GetComponent<Collider2D>().enabled = true;
     }
     
     private IEnumerator CalAttackDelayTime()
@@ -210,13 +201,13 @@ public partial class IBall : MonoBehaviour
             Vector2 TargetDirection = (TartgetRigidBody.position - (Vector2)transform.position).normalized;
             rb.AddForce(RotateVector(TargetDirection, Random.Range(-30f, 30f)) * Random.Range(5f, 11f), ForceMode2D.Impulse);
 
-            for (int i = 0; i < collision.contacts.Length; i++)
+            if(collision.gameObject.GetInstanceID() < GetInstanceID())
             {
-                Vector2 ContactPos = collision.contacts[i].point;
-                Vector2 ContactVec = collision.contacts[i].normal;
+                Vector2 ContactPos = collision.contacts[0].point;
+                Vector2 ContactVec = collision.contacts[0].normal;
 
                 VisualEffectManager.Instance.SpawnExplosionWithBallEffect(ContactVec, ContactPos);
-            }  
+            }
         }
         if (collision.gameObject.CompareTag("Brick") && gameObject.activeSelf)
         {

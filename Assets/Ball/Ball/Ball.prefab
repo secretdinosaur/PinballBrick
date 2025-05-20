@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 26260608329336785}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1, y: 2.2, z: 0}
+  m_LocalPosition: {x: -1.1, y: 2.2, z: 35}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -101,7 +101,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 26260608329336785}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 54a00e155d0820446a07810d24de5e7f, type: 2}
@@ -178,7 +178,7 @@ MonoBehaviour:
   isPhoenix: 0
   flamethrower: {fileID: 0}
   isOverDeathLine: 0
-  StartPosition: {x: 0, y: -5}
+  StartPosition: {x: 0, y: -5, z: 35}
   linearVelocityYValue: 10
   Renderer: {fileID: 0}
   AttackNumber: 0

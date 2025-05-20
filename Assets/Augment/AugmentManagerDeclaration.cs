@@ -48,7 +48,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 1f, 0.3f, 0.3f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
@@ -76,7 +76,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<BossDamageUp>(),
             gameObject.AddComponent<AtkUpWhenCritical>(),
             gameObject.AddComponent<CritChanceToAttackDamage>(),
-            gameObject.AddComponent<EffectCritical>(),
             gameObject.AddComponent<PowerButSlow>(),
             gameObject.AddComponent<WeakButFast>(),
             gameObject.AddComponent<WeakButStrongEffect>(),
@@ -88,6 +87,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<Trinity>(),
             gameObject.AddComponent<Perfectionism>(),
             gameObject.AddComponent<MassivelyCriticalDamageUp>(),
+            gameObject.AddComponent<ExpGain10Up>(),
+            gameObject.AddComponent<ExpGain30Up>(),
+            gameObject.AddComponent<ExpGain50Up>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -127,7 +129,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
             gameObject.AddComponent<RandomEffect>(),
-            gameObject.AddComponent<OneLineBall>(),
+            gameObject.AddComponent<ThunderStrike>(),
             gameObject.AddComponent<RebirthBall>(),
             gameObject.AddComponent<BossKillBall>(),
             gameObject.AddComponent<SpawnBallAmountMultiple1>(),
@@ -188,7 +190,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-
+            gameObject.GetComponent<ThunderStrike>(),
         };
 
         foreach (IAugment augment in TestAugments)
