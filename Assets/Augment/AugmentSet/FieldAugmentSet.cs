@@ -197,13 +197,13 @@ public class TargetMark : FieldAugment
     Material TargetMat;
     private void OnEnable()
     {
-        SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 1, 15);
+        SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 1, 10);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        Routine = StartCoroutine(TargetMarking(Cooldown * 1.5f));
+        Routine = StartCoroutine(TargetMarking(Cooldown));
         Target = GameObject.Find("Target");
         TargetMat = Target.GetComponent<Renderer>().material;
         Target.SetActive(false);
@@ -223,7 +223,7 @@ public class TargetMark : FieldAugment
         
         while (true)
         {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(Cooldown);
             if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null && BrickManager.Instance.CurrentBricks.Count > 0)
             {
                 List<Rigidbody2D> BallRigidBody2D = new List<Rigidbody2D>();
@@ -242,10 +242,10 @@ public class TargetMark : FieldAugment
                 Target.SetActive(false);
                 foreach (Rigidbody2D ball in BallRigidBody2D)
                 {
-                    if(!brick.gameObject.activeSelf || brick == null)
+                    if(!brick.gameObject.activeSelf || brick != null)
                     {
                         Vector2 TargetDirection = (brick.transform.position - ball.transform.position).normalized;
-                        ball.AddForce(TargetDirection * 250f, ForceMode2D.Impulse);
+                        ball.AddForce(TargetDirection * 50f, ForceMode2D.Impulse);
                         yield return null;
                     }
                     else

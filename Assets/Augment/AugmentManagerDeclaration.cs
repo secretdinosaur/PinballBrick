@@ -194,6 +194,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
+            gameObject.GetComponent<TargetMark>(),
             gameObject.GetComponent<ChainLightning>(),
         };
 
@@ -205,7 +206,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<FreshNewStart>());
+        AddAugment(gameObject.GetComponent<RandomStatUpOrDown>());
     }
 }
 

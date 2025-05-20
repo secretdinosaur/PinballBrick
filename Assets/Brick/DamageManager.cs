@@ -472,6 +472,10 @@ public class BrickEffectManager : MonoBehaviour
 
     public IEnumerator DecayEffect(float effectDuration)
     {
+        if(brick.BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+        {
+            yield break;
+        }
         EffectStatusSet["Decay"].IsActive = true;
         DecayEffectDuration = effectDuration;
         int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
