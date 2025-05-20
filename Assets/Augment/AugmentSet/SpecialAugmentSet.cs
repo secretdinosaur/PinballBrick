@@ -260,7 +260,7 @@ public class ChainLightning : SpecialAugment
             targetBrick = BrickToBrick[RandomNumber];
 
         }
-        VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks);
+        StartCoroutine(VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks));
     }
 }
 
@@ -1082,7 +1082,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["RandomEffect"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("RandomEffect");
                 int Number = Random.Range(1, 4);
                 if (Number == 1)
                 {
@@ -1139,7 +1138,7 @@ public class ThunderStrike : SpecialAugment
     Coroutine routine = null;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_33", "Thunder Strike", "ThunderStrike", "Special", 2);
+        SetAugment("SPECIAL_33", "Arc Link", "All balls are linked by electricity, dealing electric damage", "Special", 2);
         SetAdditionalDescription("Lightning damage : deals damage scales with brick's max health");
     }
 
@@ -1155,7 +1154,12 @@ public class ThunderStrike : SpecialAugment
 
     private IEnumerator MakeBallThunder()
     {
-        while(true)
+        Vector2 start;
+        Vector2 end;
+
+        RaycastHit2D[] hits;
+
+        while (true)
         {
             yield return new WaitForSeconds(0.1f);
 
@@ -1166,10 +1170,10 @@ public class ThunderStrike : SpecialAugment
 
                 for (int i = 0; i < Balls.Count - 1; i++)
                 {
-                    Vector2 start = Balls[i].transform.position;
-                    Vector2 end = Balls[i + 1].transform.position;
+                    start = Balls[i].transform.position;
+                    end = Balls[i + 1].transform.position;
 
-                    RaycastHit2D[] hits = Physics2D.LinecastAll(start, end);
+                    hits = Physics2D.LinecastAll(start, end);
                     for(int j = 0; j < hits.Length; j++)
                         if (hits[j].collider.CompareTag("Brick"))
                         {
@@ -1178,6 +1182,17 @@ public class ThunderStrike : SpecialAugment
                             brick.DamageByLightningEffect(10, 0);
                         }
                 }
+                start = Balls[Balls.Count - 1].transform.position;
+                end = Balls[0].transform.position;
+
+                hits = Physics2D.LinecastAll(start, end);
+                for (int j = 0; j < hits.Length; j++)
+                    if (hits[j].collider.CompareTag("Brick"))
+                    {
+                        IBrick brick = hits[j].collider.GetComponent<IBrick>();
+
+                        brick.ArbitraryDamageAttack(0.3f + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
+                    }
             }
         }
     }
@@ -2155,19 +2170,19 @@ public class ItemEnhance : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_61", "Item Enhancement", "Increases item spawn rate and enhances them", "Special", 2);
+        SetAugment("SPECIAL_61", "Trampoline", "Trampoline", "Special", 2);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        ItemManager.Instance.BaseItemSpawnChance *= 2;
+        //ItemManager.Instance.BaseItemSpawnChance *= 2;
         //todo: think item inhancement
     }
 
     public override void Remove()
     {
-        ItemManager.Instance.BaseItemSpawnChance /= 2;
+        //ItemManager.Instance.BaseItemSpawnChance /= 2;
     }
 }
 

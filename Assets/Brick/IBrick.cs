@@ -190,6 +190,13 @@ public partial class IBrick : MonoBehaviour
         this.IsSpecialBrick = IsSpecialBrick;
         this.Point = Point;
         this.Exp = Exp;
+
+        if (IsBoss)
+            spriteRenderer.material.SetFloat("_IsBoss", 1);
+        else
+            spriteRenderer.material.SetFloat("_IsBoss", 0);
+
+        HPText.color = IsBoss ? Color.red : Color.white;
     }
     public void Start()
     {
@@ -219,7 +226,7 @@ public partial class IBrick : MonoBehaviour
     public void GetComponents()
     {
         Collider = GetComponent<Collider2D>();
-        boxSize = new Vector2(2f, 2f);
+        boxSize = new Vector2(2f, 1.5f);
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
         camera = Camera.main;
