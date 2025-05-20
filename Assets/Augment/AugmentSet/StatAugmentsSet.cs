@@ -358,7 +358,7 @@ public class WeakButStrongEffect : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_17", "Magicion", "Attack damage -66%\nEffect damage +60%", 4);
+        SetAugment("STAT_17", "Magician", "Attack damage -66%\nEffect damage +60%", 4);
         SetAdditionalDescription(null);
     }
 

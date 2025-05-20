@@ -885,3 +885,34 @@ public class DiceGamble : FieldAugment
         }
     }
 }
+
+public class Trampoline : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_15", "Trampoline", "Trampoline", 2, 60);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetTrampoline());
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    IEnumerator GetTrampoline()
+    {
+        yield return new WaitForSeconds(Cooldown);
+    }
+}

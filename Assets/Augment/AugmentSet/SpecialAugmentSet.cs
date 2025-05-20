@@ -187,7 +187,8 @@ public class FireEffectStackBlast : SpecialAugment
         SetAugment("SPECIAL_8", "Fire Burst", "An explosion occurs when the brick reaches maximum fire stack", "Effect", 3);
         SetAdditionalDescription(
             "Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
-            "Explosion damage scales with <sprite=2> and hits all nearby bricks");
+            "Explosion damage scales with <sprite=2> \n" +
+            "and hits all nearby bricks");
     }
 
     public override void Apply()
@@ -1613,7 +1614,8 @@ public class SpawnBombBall : SpecialAugment
     {
         SetAugment("SPECIAL_46", "Bomb Maniac", "Low chance of bomb ball on summon", "Special", 3);
         SetAdditionalDescription("The summoned bomb ball explodes after 3 seconds\n" +
-            "Explosion damage scales with <sprite=2> and hits all nearby bricks");
+            "Explosion damage scales with <sprite=2> \n" +
+            "and hits all nearby bricks");
     }
 
     public override void Apply()
@@ -1632,7 +1634,8 @@ public class ChangeNormalToGlass : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_47", "Glassification", "The basic ball becomes a glass ball", "Special", 3);
-        SetAdditionalDescription("The glass ball has higher attack damage than a regular ball");
+        SetAdditionalDescription("The glass ball has higher attack damage" +
+            "\nthan a regular ball");
     }
 
     public override void Apply()
@@ -2166,23 +2169,33 @@ public class RollDiceBall : SpecialAugment
     }
 }
 
-public class ItemEnhance : SpecialAugment
+public class PortalBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_61", "Trampoline", "Trampoline", "Special", 2);
+        SetAugment("SPECIAL_61", "Portal Ball", "Hits may cause the ball to \nteleport to the random brick's position", "Special", 3);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        //ItemManager.Instance.BaseItemSpawnChance *= 2;
-        //todo: think item inhancement
+
     }
 
     public override void Remove()
     {
-        //ItemManager.Instance.BaseItemSpawnChance /= 2;
+
+    }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        if(Brick.RecentlyBall != null && Brick.RecentlyBall.gameObject.activeSelf && BrickManager.Instance.CurrentBricks.Count > 1
+            && 0.05f > Random.value)
+        {
+            IBrick RandomBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+            if(Brick != RandomBrick)
+                Brick.RecentlyBall.transform.position = RandomBrick.transform.position;
+        }
     }
 }
 

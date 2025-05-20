@@ -155,7 +155,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<CritAfterThreeAttack>(),
             gameObject.AddComponent<DamageInfection>(),
             gameObject.AddComponent<RollDiceBall>(),
-            gameObject.AddComponent<ItemEnhance>(),
+            gameObject.AddComponent<PortalBall>(),
             gameObject.AddComponent<InfiniteRapid>(),
             gameObject.AddComponent<MoreAndWeakBricks>(),
             gameObject.AddComponent<LessAndStrongBricks>(),
@@ -194,8 +194,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<TargetMark>(),
-            gameObject.GetComponent<ChainLightning>(),
+            gameObject.GetComponent<PortalBall>(),
         };
 
         foreach (IAugment augment in TestAugments)
