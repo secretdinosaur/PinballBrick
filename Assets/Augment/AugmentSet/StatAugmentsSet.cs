@@ -442,8 +442,7 @@ public class CritChanceToAttackDamage : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_21", "Risk Management", "Critical chance is fixed at 0%\nConverts 1% critical chance to 0.4 attack damage", 4);
-        SetAdditionalDescription("<sprite=4>" + (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) +
-            "Convert to <sprite=0>" + (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance * 0.4f));
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
