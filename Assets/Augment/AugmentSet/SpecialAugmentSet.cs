@@ -2324,7 +2324,7 @@ public class GainBallAfterLevelUp : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_66", "Promotion Gift", "After level up, roll a dice \nand gain that many balls", "Special", 4);
+        SetAugment("SPECIAL_66", "Promotion Gift", "After level up, roll a dice \nand gain that many balls", "Special", 3);
         SetAdditionalDescription(null);
     }
 
