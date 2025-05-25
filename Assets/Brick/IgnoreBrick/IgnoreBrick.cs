@@ -5,7 +5,7 @@ using System.Collections;
 
 public class IgnoreBrick : IBrick
 {
-    private bool Ignoring = false;
+    public bool Ignoring = false;
     public float IgnoreTime;
     private void OnEnable()
     {
