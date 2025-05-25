@@ -38,6 +38,10 @@ public class VisualEffectManager : MonoBehaviour
 
     public ParticleSystem AllDamagePS;
 
+    public ParticleSystem AugmentPanelPS1;
+    public ParticleSystem AugmentPanelPS2;
+    public ParticleSystem AugmentPanelPS3;
+
     Vector2 Vec = Vector2.zero;
     void Start()
     {
@@ -48,6 +52,35 @@ public class VisualEffectManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetActiveAugmentPanelPs(int AugmentPanelNum, UnityEngine.Color Color, int Rarity)
+    {
+        if (Rarity > 5) return;
+        switch(AugmentPanelNum)
+        {
+            case 0:
+                AugmentPanelPS1.gameObject.SetActive(true);
+                AugmentPanelPS1.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Color);
+                break;
+
+            case 1:
+                AugmentPanelPS2.gameObject.SetActive(true);
+                AugmentPanelPS2.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Color);
+                break;
+
+            case 2:
+                AugmentPanelPS3.gameObject.SetActive(true);
+                AugmentPanelPS3.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Color);
+                break;
+        }
+    }
+
+    public void UnsetAugmentPanelPs()
+    {
+        AugmentPanelPS1.gameObject.SetActive(false);
+        AugmentPanelPS2.gameObject.SetActive(false);
+        AugmentPanelPS3.gameObject.SetActive(false);
     }
 
     public void SpawnParticle(string ParticleName, Vector2 ParticlePosition, int ParticleCount)

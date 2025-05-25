@@ -21,6 +21,7 @@ public partial class LevelManager : MonoBehaviour
     public static LevelManager Instance;
     public Slider LevelBar;
     public GameObject LevelUpPanel;
+    public GameObject CanvasForLevelUpPanel;
     public Queue<int> LevelUpQueue;
     public int Level { get; set; }
     private float exp;
@@ -77,53 +78,61 @@ public partial class LevelManager : MonoBehaviour
         Instance = this;
         LevelBar = GameObject.Find("Canvas").transform.Find("LevelBar").GetComponent<Slider>();
         LevelUpPanel = GameObject.Find("Canvas").transform.Find("LevelUpPanel").gameObject;
+        CanvasForLevelUpPanel = GameObject.Find("CanvasForLevelUpPanel");
         LevelUpPanel.SetActive(false);
+        CanvasForLevelUpPanel.SetActive(false);
         LevelUpQueue = new Queue<int>();
 
-        NoticeLevelText = LevelUpPanel.transform.Find("NoticeLevelText").GetComponent<TMP_Text>();
+        NoticeLevelText = CanvasForLevelUpPanel.transform.Find("NoticeLevelText").GetComponent<TMP_Text>();
 
         OptionButtons = new[]
         {
-            LevelUpPanel.transform.Find("SelectButton_1").GetComponent<Button>(),
-            LevelUpPanel.transform.Find("SelectButton_2").GetComponent<Button>(),
-            LevelUpPanel.transform.Find("SelectButton_3").GetComponent<Button>()
+            CanvasForLevelUpPanel.transform.Find("SelectButton_1").GetComponent<Button>(),
+            CanvasForLevelUpPanel.transform.Find("SelectButton_2").GetComponent<Button>(),
+            CanvasForLevelUpPanel.transform.Find("SelectButton_3").GetComponent<Button>()
         };
 
         OptionButtonShaders = new[]
         {
-            LevelUpPanel.transform.Find("RarityShader1").gameObject,
-            LevelUpPanel.transform.Find("RarityShader2").gameObject,
-            LevelUpPanel.transform.Find("RarityShader3").gameObject,
+            CanvasForLevelUpPanel.transform.Find("RarityShader1").gameObject,
+            CanvasForLevelUpPanel.transform.Find("RarityShader2").gameObject,
+            CanvasForLevelUpPanel.transform.Find("RarityShader3").gameObject,
         };
 
-        Option_1_Name = LevelUpPanel.transform.Find("SelectButton_1").gameObject
+        Option_1_Name = CanvasForLevelUpPanel.transform.Find("SelectButton_1").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
-        Option_1_Description = LevelUpPanel.transform.Find("SelectButton_1").gameObject
+        Option_1_Description = CanvasForLevelUpPanel.transform.Find("SelectButton_1").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
-        Option_1_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material);
-        LevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material = Option_1_Aura;
-        Option_1_Type = LevelUpPanel.transform.Find("SelectButton_1/Type").GetComponent<TMP_Text>();
-        Option_1_CoolTime = LevelUpPanel.transform.Find("SelectButton_1/CoolTime").GetComponent<TMP_Text>();
+        Option_1_Aura = Instantiate(CanvasForLevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material);
+        CanvasForLevelUpPanel.transform.Find("RarityShader1").gameObject.GetComponent<Image>().material = Option_1_Aura;
+        Option_1_Panel = Instantiate(CanvasForLevelUpPanel.transform.Find("SelectButton_1").gameObject.GetComponent<Image>().material);
+        CanvasForLevelUpPanel.transform.Find("SelectButton_1").gameObject.GetComponent<Image>().material = Option_1_Panel;
+        Option_1_Type = CanvasForLevelUpPanel.transform.Find("SelectButton_1/Type").GetComponent<TMP_Text>();
+        Option_1_CoolTime = CanvasForLevelUpPanel.transform.Find("SelectButton_1/CoolTime").GetComponent<TMP_Text>();
 
-        Option_2_Name = LevelUpPanel.transform.Find("SelectButton_2").gameObject
+        Option_2_Name = CanvasForLevelUpPanel.transform.Find("SelectButton_2").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
-        Option_2_Description = LevelUpPanel.transform.Find("SelectButton_2").gameObject
+        Option_2_Description = CanvasForLevelUpPanel.transform.Find("SelectButton_2").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
-        Option_2_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material);
-        LevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material = Option_2_Aura;
-        Option_2_Type = LevelUpPanel.transform.Find("SelectButton_2/Type").GetComponent<TMP_Text>();
-        Option_2_CoolTime = LevelUpPanel.transform.Find("SelectButton_2/CoolTime").GetComponent<TMP_Text>();
+        Option_2_Aura = Instantiate(CanvasForLevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material);
+        CanvasForLevelUpPanel.transform.Find("RarityShader2").gameObject.GetComponent<Image>().material = Option_2_Aura;
+        Option_2_Panel = Instantiate(CanvasForLevelUpPanel.transform.Find("SelectButton_2").gameObject.GetComponent<Image>().material);
+        CanvasForLevelUpPanel.transform.Find("SelectButton_2").gameObject.GetComponent<Image>().material = Option_2_Panel;
+        Option_2_Type = CanvasForLevelUpPanel.transform.Find("SelectButton_2/Type").GetComponent<TMP_Text>();
+        Option_2_CoolTime = CanvasForLevelUpPanel.transform.Find("SelectButton_2/CoolTime").GetComponent<TMP_Text>();
 
-        Option_3_Name = LevelUpPanel.transform.Find("SelectButton_3").gameObject
+        Option_3_Name = CanvasForLevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Name").GetComponent<TMP_Text>();
-        Option_3_Description = LevelUpPanel.transform.Find("SelectButton_3").gameObject
+        Option_3_Description = CanvasForLevelUpPanel.transform.Find("SelectButton_3").gameObject
             .transform.Find("Description").GetComponent<TMP_Text>();
-        Option_3_Aura = Instantiate(LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material);
-        LevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material = Option_3_Aura;
-        Option_3_Type = LevelUpPanel.transform.Find("SelectButton_3/Type").GetComponent<TMP_Text>();
-        Option_3_CoolTime = LevelUpPanel.transform.Find("SelectButton_3/CoolTime").GetComponent<TMP_Text>();
+        Option_3_Aura = Instantiate(CanvasForLevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material);
+        CanvasForLevelUpPanel.transform.Find("RarityShader3").gameObject.GetComponent<Image>().material = Option_3_Aura;
+        Option_3_Panel = Instantiate(CanvasForLevelUpPanel.transform.Find("SelectButton_3").gameObject.GetComponent<Image>().material);
+        CanvasForLevelUpPanel.transform.Find("SelectButton_3").gameObject.GetComponent<Image>().material = Option_3_Panel;
+        Option_3_Type = CanvasForLevelUpPanel.transform.Find("SelectButton_3/Type").GetComponent<TMP_Text>();
+        Option_3_CoolTime = CanvasForLevelUpPanel.transform.Find("SelectButton_3/CoolTime").GetComponent<TMP_Text>();
 
-        AdditionalDescriptionPanel = LevelUpPanel.transform.Find("AdditionalDescription").gameObject;
+        AdditionalDescriptionPanel = CanvasForLevelUpPanel.transform.Find("AdditionalDescription").gameObject;
         AdditionalDescriptionPanel.SetActive(false);
         AdditionalDescriptionText = AdditionalDescriptionPanel.transform.Find("Text").GetComponent<TMP_Text>();
 
@@ -133,13 +142,14 @@ public partial class LevelManager : MonoBehaviour
         BaseMaxExpValue = 1f;
 
         CustomTime_1 = 0f;
-        CustomTime_2 = 0f;
-        CustomTime_3 = 0f;
+        CustomTime_2 = 1f;
+        CustomTime_3 = 2f;
     }
     void Start()
     {
         Exp = 0;
         Level = 1;
+
     }
 
     private void FixedUpdate()
@@ -161,6 +171,10 @@ public partial class LevelManager : MonoBehaviour
             Option_1_Aura.SetFloat("_CustomTime", CustomTime_1);
             Option_2_Aura.SetFloat("_CustomTime", CustomTime_2);
             Option_3_Aura.SetFloat("_CustomTime", CustomTime_3);
+
+            Option_1_Panel.SetFloat("_CustomTime", CustomTime_1);
+            Option_2_Panel.SetFloat("_CustomTime", CustomTime_2);
+            Option_3_Panel.SetFloat("_CustomTime", CustomTime_3);
         }
     }
 
@@ -333,16 +347,19 @@ public partial class LevelManager : MonoBehaviour
     private TMP_Text Option_1_Type;
     private TMP_Text Option_1_CoolTime;
     private Material Option_1_Aura;
+    private Material Option_1_Panel;
     private TMP_Text Option_2_Name;
     private TMP_Text Option_2_Description;
     private TMP_Text Option_2_Type;
     private TMP_Text Option_2_CoolTime;
     private Material Option_2_Aura;
+    private Material Option_2_Panel;
     private TMP_Text Option_3_Name;
     private TMP_Text Option_3_Description;
     private TMP_Text Option_3_Type;
     private TMP_Text Option_3_CoolTime;
     private Material Option_3_Aura;
+    private Material Option_3_Panel;
 
     private List<KeyValuePair<string, int>> randomStats;
     private List<IAugment> augmentsSet;
@@ -354,6 +371,16 @@ public partial class LevelManager : MonoBehaviour
     private float CustomTime_1;
     private float CustomTime_2;
     private float CustomTime_3;
+
+    List<Color> RarityColorList = new List<Color>()
+    {
+        Color.cyan * 2,
+        Color.yellow * 2,
+        new Color(1.0f, 0.4f, 0.0f) * 2,
+        new Color(1.0f, 0.41f, 0.71f) * 2,
+        new Color(0.6f, 0.17f, 0.75f) * 2,
+        Color.white * 2
+    };
 
     enum AugmentRarity
     {
@@ -369,6 +396,7 @@ public partial class LevelManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
+        CanvasForLevelUpPanel.SetActive(true);
         AdditionalDescriptionPanel.SetActive(false);
         AdditionalDescriptionText.text = "";
         SoundManager.instance.LevelUpSound();
@@ -381,28 +409,22 @@ public partial class LevelManager : MonoBehaviour
             randomStats = GetRandomStats();
             for (int i = 0; i < 3; i++)
             {
-                OptionButtons[i].gameObject.GetComponent<Image>().sprite =
-                    OptionButtonSprites
-                    [
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 25 ? (int)AugmentRarity.Myth :
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 20 ? (int)AugmentRarity.Epic :
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 15 ? (int)AugmentRarity.Legendary :
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 10 ? (int)AugmentRarity.Unique :
-                        StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1 >= 5 ? (int)AugmentRarity.Rare :
-                        (int)AugmentRarity.Common
-                    ];
+                //VisualEffectManager.Instance.SetActiveAugmentPanelPs(i, RarityColorList[StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1], StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1);
             }
             Option_1_Name.text = randomStats[0].Key;
             Option_1_Description.text = LevelUpTextWhenStatUp(0);
             SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1, Option_1_Aura);
+            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1, Option_1_Panel);
 
             Option_2_Name.text = randomStats[1].Key;
             Option_2_Description.text = LevelUpTextWhenStatUp(1);
             SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1, Option_2_Aura);
+            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1, Option_2_Panel);
 
             Option_3_Name.text = randomStats[2].Key;
             Option_3_Description.text = LevelUpTextWhenStatUp(2);
             SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1, Option_3_Aura);
+            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1, Option_3_Panel);
 
             Option_1_Type.text = "";
             Option_1_CoolTime.text = "";
@@ -422,7 +444,7 @@ public partial class LevelManager : MonoBehaviour
                 for (int i = 0; i < 3; i++)
                 {
                     augmentsSet.Add(AugmentManager.instance.GetRandomAugmentByRarity(1));
-                    OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity];
+                    VisualEffectManager.Instance.SetActiveAugmentPanelPs(i, RarityColorList[augmentsSet[i].Rarity], augmentsSet[i].Rarity);
                 }
                 AugmentManager.instance.isSacrificeQuest3Cleared = false;
             }
@@ -431,7 +453,8 @@ public partial class LevelManager : MonoBehaviour
                 for (int i = 0; i < 3; i++)
                 {
                     augmentsSet.Add(AugmentManager.instance.GetRandomAugment());
-                    OptionButtons[i].gameObject.GetComponent<Image>().sprite = OptionButtonSprites[augmentsSet[i].Rarity];
+                    VisualEffectManager.Instance.SetActiveAugmentPanelPs(i, RarityColorList[augmentsSet[i].Rarity], augmentsSet[i].Rarity);
+
                 }
             }
             Option_1_Name.text = augmentsSet[0].Name;
@@ -439,18 +462,21 @@ public partial class LevelManager : MonoBehaviour
             Option_1_Type.text = augmentsSet[0].Type;
             Option_1_CoolTime.text = augmentsSet[0].CoolTime == 0 ? "" : (augmentsSet[0].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
             SetMaterialColor_Augment(augmentsSet[0].Rarity, Option_1_Aura);
+            SetMaterialColor_Augment(augmentsSet[0].Rarity, Option_1_Panel);
 
             Option_2_Name.text = augmentsSet[1].Name;
             Option_2_Description.text = augmentsSet[1].Description;
             Option_2_Type.text = augmentsSet[1].Type;
             Option_2_CoolTime.text = augmentsSet[1].CoolTime == 0 ? "" : (augmentsSet[1].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
             SetMaterialColor_Augment(augmentsSet[1].Rarity, Option_2_Aura);
+            SetMaterialColor_Augment(augmentsSet[1].Rarity, Option_2_Panel);
 
             Option_3_Name.text = augmentsSet[2].Name;
             Option_3_Description.text = augmentsSet[2].Description;
             Option_3_Type.text = augmentsSet[2].Type;
             Option_3_CoolTime.text = augmentsSet[2].CoolTime == 0 ? "" : (augmentsSet[2].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
             SetMaterialColor_Augment(augmentsSet[2].Rarity, Option_3_Aura);
+            SetMaterialColor_Augment(augmentsSet[2].Rarity, Option_3_Panel);
 
             CheckStatOrAugment = false;
         }
@@ -481,55 +507,80 @@ public partial class LevelManager : MonoBehaviour
     {
         if(i >= 25)
         {
-            material.SetColor("_AuraColor", Color.cyan);
+            material.SetColor("_Color", RarityColorList[0]);
+            material.SetFloat("_OuterFade", 50f);
+            material.SetFloat("_IsCornerEffect", 1);
         }
         else if(i >= 20)
         {
-            material.SetColor("_AuraColor", Color.yellow);
+            material.SetColor("_Color", RarityColorList[1]);
+            material.SetFloat("_OuterFade", 0f);
+            material.SetFloat("_IsCornerEffect", 1);
         }
         else if(i >= 15)
         {
-            material.SetColor("_AuraColor", new Color(1.0f, 0.4f, 0.0f));
+            material.SetColor("_Color", RarityColorList[2]);
+            material.SetFloat("_OuterFade", 0f);
+            material.SetFloat("_IsCornerEffect", 1);
         }
         else if(i >= 10)
         {
-            material.SetColor("_AuraColor", new Color(1.0f, 0.41f, 0.71f));
+            material.SetColor("_Color", RarityColorList[3]);
+            material.SetFloat("_OuterFade", 0f);
+            material.SetFloat("_IsCornerEffect", 0);
         }
         else if(i >= 5)
         {
-            material.SetColor("_AuraColor", new Color(0.78f, 0.63f, 1.0f));
+            material.SetColor("_Color", RarityColorList[4]);
+            material.SetFloat("_OuterFade", 0f);
+            material.SetFloat("_IsCornerEffect", 0);
         }
         else
         {
-            material.SetColor("_AuraColor", Color.white);
+            material.SetColor("_Color", RarityColorList[5]);
+            material.SetFloat("_OuterFade", 0f);
+            material.SetFloat("_IsCornerEffect", 0);
         }
     }
 
     private void SetMaterialColor_Augment(int i, Material material)
     {
-        Debug.Log(i);
         switch (i)
         {
             case 0:
-                material.SetColor("_AuraColor", Color.cyan);
+                material.SetColor("_Color", RarityColorList[0]);
+                material.SetFloat("_OuterFade", 50f);
+                material.SetFloat("_IsCornerEffect", 1);
                 break;
             case 1:
-                material.SetColor("_AuraColor", Color.yellow);
+                material.SetColor("_Color", RarityColorList[1]);
+                material.SetFloat("_OuterFade", 0f);
+                material.SetFloat("_IsCornerEffect", 1);
                 break;
             case 2:
-                material.SetColor("_AuraColor", new Color(1.0f, 0.4f, 0.0f));
+                material.SetColor("_Color", RarityColorList[2]);
+                material.SetFloat("_OuterFade", 0f);
+                material.SetFloat("_IsCornerEffect", 1);
                 break;
             case 3:
-                material.SetColor("_AuraColor", new Color(1.0f, 0.41f, 0.71f));
+                material.SetColor("_Color", RarityColorList[3]);
+                material.SetFloat("_OuterFade", 0f);
+                material.SetFloat("_IsCornerEffect", 0);
                 break;
             case 4:
-                material.SetColor("_AuraColor", new Color(0.6f, 0.17f, 0.75f));
+                material.SetColor("_Color", RarityColorList[4]);
+                material.SetFloat("_OuterFade", 0f);
+                material.SetFloat("_IsCornerEffect", 0);
                 break;
             case 5:
-                material.SetColor("_AuraColor", Color.white);
+                material.SetColor("_Color", RarityColorList[5]);
+                material.SetFloat("_OuterFade", 0f);
+                material.SetFloat("_IsCornerEffect", 0);
                 break;
             default:
-                material.SetColor("_AuraColor", Color.white);
+                material.SetColor("_Color", RarityColorList[5]);
+                material.SetFloat("_OuterFade", 0f);
+                material.SetFloat("_IsCornerEffect", 0);
                 break;
         }
     }
@@ -567,8 +618,8 @@ public partial class LevelManager : MonoBehaviour
         {
             for (int i = 0; i < OptionButtons.Length; i++)
             {
-                OptionButtons[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
-                OptionButtonShaders[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? Vector3.one : new Vector3(0.93f, 0.93f, 0.93f);
+                OptionButtons[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? new Vector3(0.93f, 0.93f, 0.93f) : new Vector3(0.9f, 0.9f, 0.9f);
+                OptionButtonShaders[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? new Vector3(0.93f, 0.93f, 0.93f) : new Vector3(0.9f, 0.9f, 0.9f);
                 isAlreadyClickedButton[i] = i == Array.IndexOf(OptionButtons, clickedButton);
             }
             if (!CheckStatOrAugment)
@@ -615,8 +666,8 @@ public partial class LevelManager : MonoBehaviour
         optionIndex = -1;
         for (int i = 0; i < OptionButtons.Length; i++)
         {
-            OptionButtons[i].transform.localScale = new Vector3(0.93f, 0.93f, 0.93f);
-            OptionButtonShaders[i].transform.localScale = new Vector3(0.93f, 0.93f, 0.93f);
+            OptionButtons[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            OptionButtonShaders[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
         }
         if (LevelUpQueue.Count > 0)
         {
@@ -630,6 +681,8 @@ public partial class LevelManager : MonoBehaviour
             Time.timeScale = 1f;
             AdditionalDescriptionPanel.SetActive(false);
             LevelUpPanel.SetActive(false);
+            CanvasForLevelUpPanel.SetActive(false);
+            VisualEffectManager.Instance.UnsetAugmentPanelPs();
             if (StatManager.instance.isChangedStat)
             {
                 StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
