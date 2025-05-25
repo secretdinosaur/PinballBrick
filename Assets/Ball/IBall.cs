@@ -184,7 +184,7 @@ public partial class IBall : MonoBehaviour
             {
                 if (MaxBounce < 6)
                 {
-                    BounceTime += 0.05f;
+                    BounceTime += 0.02f;
                     MaxBounce++;
                     spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
                 }

@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e473e4ddb063b4f45b69079518f1d074, type: 3}
   m_Name: ItemInfo
   m_EditorClassIdentifier: 
-  Items:
-  - {fileID: -8510176905807851411, guid: c7f1cdcc40b90ce48842b89ca36dc528, type: 3}
-  - {fileID: -8510176905807851411, guid: c7f1cdcc40b90ce48842b89ca36dc528, type: 3}
-  - {fileID: -8510176905807851411, guid: c7f1cdcc40b90ce48842b89ca36dc528, type: 3}
   ItemSpawnChance:
-  - 0
-  - 0
-  - 0
+  - 0.1
+  - 0.05
+  - 0.01
+  - 1
   ItemName:
-  - GoldItem
-  - GoldItem
-  - GoldItem
+  - Gold1
+  - Gold2
+  - Gold3
+  - ExpBead
+  Items:
+  - {fileID: 8817669963516561578, guid: b5613ba4a2e5fe74c9ce3cb012423bf1, type: 3}
+  - {fileID: -183596598524323843, guid: 9367fa029207b5344b5f128f9651b89e, type: 3}
+  - {fileID: -4322750626649543017, guid: ee752ff2c060f3e46ade8c03e444eeef, type: 3}
+  - {fileID: 6319334582718732607, guid: d545cac7179945e49ba7923ca7f0d8c8, type: 3}

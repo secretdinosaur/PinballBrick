@@ -27,11 +27,11 @@ public class Flamethrower : MonoBehaviour
                     continue;
                 }
 
-                float damage = (FlameDamage + StatManager.instance.Temporary_stat.EffectDamage) * 
+                float damage = (FlameDamage + ((StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * 0.3f)) * 
                     StatManager.instance.statMultiplier.EffectDamageMultiplier;
                 brick.ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Fire");
 
-                if (Random.value < 0.1f)
+                if (Random.value < 0.05f)
                 {
                     brick.DamageByFireEffect(1f);
                 }
