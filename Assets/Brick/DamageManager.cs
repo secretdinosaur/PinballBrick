@@ -178,6 +178,8 @@ public static partial class DamageManager //Special Effect Attack
         {
             if (brick.GetComponent<IgnoreBrick>().Ignoring)
                 return;
+            else
+                brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
         }
         float Percent = isCritical ? 
               Random.Range(0.03f, 0.05f) * StatManager.instance.Temporary_stat.EffectCriticalDamage
@@ -205,6 +207,8 @@ public static partial class DamageManager //Special Effect Attack
         {
             if (brick.GetComponent<IgnoreBrick>().Ignoring)
                 return;
+            else
+                brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
         }
         VisualEffectManager.Instance.SpawnParticle("Curse", brick.transform.position, 5);
         float baseDamage = 0;
@@ -243,13 +247,15 @@ public static partial class DamageManager //Special Effect Attack
             brick.HP -= damage;
             brick.ShowText("1", DamageType, isCritical);
         }
-        else if (brick.BrickType == "IgnoreBrick")
-        {
-            if (brick.GetComponent<IgnoreBrick>().Ignoring)
-                return;
-        }
         else
         {
+            if (brick.BrickType == "IgnoreBrick")
+            {
+                if (brick.GetComponent<IgnoreBrick>().Ignoring)
+                    return;
+                else
+                    brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
+            }
             brick.HP -= damage;
             brick.ShowText(damageText, DamageType, isCritical);
         }
@@ -311,6 +317,7 @@ public class BrickEffectManager : MonoBehaviour
             {
                 if (brick.GetComponent<IgnoreBrick>().Ignoring)
                 {
+                    brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
                     brick.lineRenderer.enabled = false;
                     brick.Fire = null;
                     EffectStatusSet["Fire"].EffectStack = 0;
@@ -402,6 +409,7 @@ public class BrickEffectManager : MonoBehaviour
             {
                 if (brick.GetComponent<IgnoreBrick>().Ignoring)
                 {
+                    brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
                     brick.Poison = null;
                     EffectStatusSet["Poison"].IsActive = false;
                     brick.PoisonEffect.SetActive(false);
