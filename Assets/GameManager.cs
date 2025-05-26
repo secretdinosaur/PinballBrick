@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour
         CriticalDamageStatValueText = PausePanel.transform.Find("Stats/CriticalDamageIcon/CriticalDamageStatValueText").GetComponent<TMP_Text>();
         CriticalChanceStatValueText = PausePanel.transform.Find("Stats/CriticalChanceIcon/CriticalChanceStatValueText").GetComponent<TMP_Text>();
         EffectDamageStatValueText = PausePanel.transform.Find("Stats/EffectDamageIcon/EffectDamageStatValueText").GetComponent<TMP_Text>();
-        EffectCriticalDamageStatValueText = PausePanel.transform.Find("Stats/EffectCriticalDamageIcon/EffectCriticalDamageStatValueText").GetComponent<TMP_Text>();
         EffectDurationStatValueText = PausePanel.transform.Find("Stats/EffectDurationIcon/EffectDurationStatValueText").GetComponent<TMP_Text>();
         GoldGainStatValueText = PausePanel.transform.Find("Stats/GoldGainIcon/GoldGainStatValueText").GetComponent<TMP_Text>();
         ExpGainStatValueText = PausePanel.transform.Find("Stats/ExpGainIcon/ExpGainStatValueText").GetComponent<TMP_Text>();
@@ -160,8 +159,6 @@ public class GameManager : MonoBehaviour
 
         EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) *
             (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString("F1");
-
-        EffectCriticalDamageStatValueText.text = (Temporary_stat.EffectCriticalDamage * 100).ToString("F1") + "%";
 
         EffectDurationStatValueText.text = Temporary_stat.EffectDuration.ToString() + "s";
 

@@ -39,7 +39,7 @@ public partial class AugmentManager //Utility
         if (augmentsSet == null || augmentsSet.Count == 0) return null;
 
         var availableAugments = augmentsSet
-            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == targetRarity && a.ID.Contains("FIELD"))
+            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == targetRarity)
             .ToList();
 
         if (availableAugments.Count == 0) return null;
@@ -79,18 +79,18 @@ public partial class AugmentManager
         exceptionAugments.Add(augment);
         if (augment is StatAugment statAugment)
         {
-            augment.Apply();
             activeStatAugments.Add(statAugment);
+            augment.Apply();
         }
         else if (augment is FieldAugment fieldAugment)
         {
-            augment.Apply();
             activeFieldAugments.Add(fieldAugment);
+            augment.Apply();
         }
         else if (augment is SpecialAugment specialAugment)
         {
-            augment.Apply();
             activeSpecialAugments.Add(specialAugment);
+            augment.Apply();
         }
         IAugment OppositeAugment = GetOppositeAugment(augment);
         if (OppositeAugment != null)

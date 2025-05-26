@@ -37,7 +37,8 @@ public class FireBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_1", "FireBall", "Bricks have a 30% chance to catch fire when struck by a ball", "Effect", 4);
-        SetAdditionalDescription("Fire damage : deals damage scaling with <sprite=2> and stacks");
+        SetAdditionalDescription("Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
+            "The max stack is 5");
     }
 
     public override void Apply()
@@ -186,7 +187,8 @@ public class FireEffectStackBlast : SpecialAugment
         SetAugment("SPECIAL_8", "Fire Burst", "An explosion occurs when the brick reaches maximum fire stack", "Effect", 3);
         SetAdditionalDescription(
             "Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
-            "Explosion damage scales with <sprite=2> and hits all nearby bricks");
+            "Explosion damage scales with <sprite=2> \n" +
+            "and hits all nearby bricks");
     }
 
     public override void Apply()
@@ -372,7 +374,8 @@ public class PoisonBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_15", "Poison Ball", "Chance to poison on hit", "Effect", 4);
-        SetAdditionalDescription("Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+        SetAdditionalDescription("Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks\n" +
+            "The max stack is 3");
     }
 
     public override void Apply() 
@@ -478,7 +481,9 @@ public class DeadlyPoison : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_17", "Deadly Poison", "Increase poison max stacks and chance", "Effect", 3);
-        SetAdditionalDescription("Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+        SetAdditionalDescription(
+            "Max stack up 3 to 5\n" +
+            "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
     }
 
     public override void Apply()
@@ -524,7 +529,8 @@ public class DecayBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_18", "Decay Ball", "Chance to decay on hit", "Effect", 4);
-        SetAdditionalDescription("Decay effect : increases all damage taken by stacks");
+        SetAdditionalDescription("Decay effect : increases all damage taken by stacks\n" +
+            "The max stack is 3");
     }
 
     public override void Apply() 
@@ -1607,8 +1613,9 @@ public class SpawnBombBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_46", "Bomb Maniac", "Low chance of bomb ball on summon", "Special", 3);
-        SetAdditionalDescription("The summoned bomb ball explodes after a few seconds\n" +
-            "Explosion damage scales with <sprite=2> and hits all nearby bricks");
+        SetAdditionalDescription("The summoned bomb ball explodes after 3 seconds\n" +
+            "Explosion damage scales with <sprite=2> \n" +
+            "and hits all nearby bricks");
     }
 
     public override void Apply()
@@ -1627,7 +1634,8 @@ public class ChangeNormalToGlass : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_47", "Glassification", "The basic ball becomes a glass ball", "Special", 3);
-        SetAdditionalDescription("The glass ball has higher attack damage than a regular ball");
+        SetAdditionalDescription("The glass ball has higher attack damage" +
+            "\nthan a regular ball");
     }
 
     public override void Apply()
@@ -2161,23 +2169,33 @@ public class RollDiceBall : SpecialAugment
     }
 }
 
-public class ItemEnhance : SpecialAugment
+public class PortalBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_61", "Trampoline", "Trampoline", "Special", 2);
+        SetAugment("SPECIAL_61", "Portal Ball", "Hits may cause the ball to \nteleport to the random brick's position", "Special", 3);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        //ItemManager.Instance.BaseItemSpawnChance *= 2;
-        //todo: think item inhancement
+
     }
 
     public override void Remove()
     {
-        //ItemManager.Instance.BaseItemSpawnChance /= 2;
+
+    }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        if(Brick.RecentlyBall != null && Brick.RecentlyBall.gameObject.activeSelf && BrickManager.Instance.CurrentBricks.Count > 1
+            && 0.05f > Random.value)
+        {
+            IBrick RandomBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+            if(Brick != RandomBrick)
+                Brick.RecentlyBall.transform.position = RandomBrick.transform.position;
+        }
     }
 }
 
@@ -2306,7 +2324,7 @@ public class GainBallAfterLevelUp : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_66", "Promotion Gift", "After level up, roll a dice \nand gain that many balls", "Special", 4);
+        SetAugment("SPECIAL_66", "Promotion Gift", "After level up, roll a dice \nand gain that many balls", "Special", 3);
         SetAdditionalDescription(null);
     }
 

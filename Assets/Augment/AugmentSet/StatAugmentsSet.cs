@@ -358,20 +358,20 @@ public class WeakButStrongEffect : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_17", "Magicion", "Attack damage -66%\nEffect damage +60%", 4);
+        SetAugment("STAT_17", "Magician", "Attack damage -12%\nEffect damage +12%", 4);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.33f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.6f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.88f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.12f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.33f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.6f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.88f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.12f);
     }
 }
 
@@ -379,20 +379,20 @@ public class WeakButStrongAtk : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_18", "Fighter", "Attack damage +60%\nEffect damage -66%", 4);
+        SetAugment("STAT_18", "Fighter", "Attack damage +12%\nEffect damage -12%", 4);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.6f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(0.33f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.12f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(0.88f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.6f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-0.33f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.12f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-0.88f);
     }
 }
 
@@ -438,37 +438,20 @@ public class DecreaseFieldCooldown20 : StatAugment
 
 public class CritChanceToAttackDamage : StatAugment
 {
-    bool isGetAugment = false;
     private void OnEnable()
     {
-        SetAugment("STAT_21", "Risk Management", "Critical chance is fixed at 0%\nConverts 1% critical chance to 0.4 attack damage", 4);
-        SetAdditionalDescription("<sprite=4>" + (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) +
-            "Convert to <sprite=0>" + (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance * 0.4f));
+        SetAugment("STAT_21", "Risk Management", "Critical chance is fixed at 0%\nConverts 1% critical chance to 0.04 attack damage", 4);
+        SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        isGetAugment = true;
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0);
     }
 
     public override void Remove()
     {
-        isGetAugment = false;
-    }
 
-    public void Update()
-    {
-        if (isGetAugment && (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0))
-        {
-            float TotalCritChance = StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance;
-            TransferToAttackDamage(TotalCritChance);
-        }
-    }
-
-    private void TransferToAttackDamage(float CritChance)
-    {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(CritChance * 0.4f);
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(-CritChance);
     }
 }
 

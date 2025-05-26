@@ -82,7 +82,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButStrongAtk>(),
             gameObject.AddComponent<DecreaseFieldCooldown5>(),
             gameObject.AddComponent<DecreaseFieldCooldown20>(),
-            gameObject.AddComponent<CritChanceToAttackDamage>(),
             gameObject.AddComponent<RandomStatUpOrDown>(),
             gameObject.AddComponent<Trinity>(),
             gameObject.AddComponent<Perfectionism>(),
@@ -155,7 +154,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<CritAfterThreeAttack>(),
             gameObject.AddComponent<DamageInfection>(),
             gameObject.AddComponent<RollDiceBall>(),
-            gameObject.AddComponent<ItemEnhance>(),
+            gameObject.AddComponent<PortalBall>(),
             gameObject.AddComponent<InfiniteRapid>(),
             gameObject.AddComponent<MoreAndWeakBricks>(),
             gameObject.AddComponent<LessAndStrongBricks>(),
@@ -194,8 +193,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<TargetMark>(),
-            gameObject.GetComponent<ChainLightning>(),
+
         };
 
         foreach (IAugment augment in TestAugments)
