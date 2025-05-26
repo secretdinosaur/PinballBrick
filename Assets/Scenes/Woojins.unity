@@ -11697,8 +11697,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 316358252}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -31165,7 +31165,7 @@ RectTransform:
   m_Father: {fileID: 1013723582}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -38680,6 +38680,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8099475}
+  - {fileID: 1866361303}
   - {fileID: 1275862363}
   - {fileID: 8009294}
   - {fileID: 1612835189}
@@ -38701,8 +38703,6 @@ RectTransform:
   - {fileID: 396575606}
   - {fileID: 1789974206}
   - {fileID: 1717956438}
-  - {fileID: 8099475}
-  - {fileID: 1866361303}
   - {fileID: 1046270385}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -55433,7 +55433,7 @@ RectTransform:
   m_Father: {fileID: 1365258134}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -77000,8 +77000,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 147145238}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -83537,7 +83537,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1717956438
 RectTransform:
   m_ObjectHideFlags: 0
@@ -101863,7 +101863,6 @@ SceneRoots:
   - {fileID: 218456167}
   - {fileID: 1874502473}
   - {fileID: 1917997162}
-  - {fileID: 983967367}
   - {fileID: 374219221}
   - {fileID: 1735489778}
   - {fileID: 478152990}
@@ -101871,3 +101870,4 @@ SceneRoots:
   - {fileID: 153662570}
   - {fileID: 639729465}
   - {fileID: 444409735}
+  - {fileID: 983967367}

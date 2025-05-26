@@ -195,7 +195,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         List<IAugment> TestAugments = new List<IAugment>
         {
             gameObject.GetComponent<Perfectionism>(),
-            gameObject.GetComponent<CritChance35Up>(),
         };
 
         foreach (IAugment augment in TestAugments)

@@ -89,7 +89,7 @@ public partial class StatManager : MonoBehaviour
 
         TotalChangedStatValue = new List<float>
         {
-            0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+            0, 0, 0, 0, 0, 0, 0, 1, 1
         };
 
         ShowChangedStatRoutine = null;
@@ -429,7 +429,12 @@ public partial class StatManager
                     if (TotalChangedStatValue[7] != 1)
                     {
                         float beforeAttackDamage = float.Parse(AttackDamageStatValueText.text) - ((float.Parse(AttackDamageStatValueText.text) / TotalChangedStatValue[7]));
-                        if(beforeAttackDamage > 0)
+                        Debug.Log(float.Parse(AttackDamageStatValueText.text));
+                        for(int y = 0; y < TotalChangedStatValue.Count; y++)
+                        {
+                            Debug.Log(TotalChangedStatValue[i]);
+                        }
+                        if (beforeAttackDamage > 0)
                         {
                             AttackDamageChangedStatValueText.text = "+" + beforeAttackDamage.ToString("0.##");
                             AttackDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
@@ -509,21 +514,21 @@ public partial class StatManager
     public void ChangeTemporaryStats_EffectDuration(float value)
     {
         Temporary_stat.EffectDuration += value;
-        TotalChangedStatValue[5] += value;
+        TotalChangedStatValue[4] += value;
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_GoldGain(float value)
     {
         Temporary_stat.GoldGain += value;
-        TotalChangedStatValue[6] += value;
+        TotalChangedStatValue[5] += value;
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_ExpGain(float value)
     {
         Temporary_stat.ExpGain += value;
-        TotalChangedStatValue[7] += value;
+        TotalChangedStatValue[6] += value;
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
@@ -532,13 +537,13 @@ public partial class StatManager
         if(value >= 0)
         {
             statMultiplier.AttackDamageMultiplier *= value;
-            TotalChangedStatValue[8] *= value;
+            TotalChangedStatValue[7] *= value;
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
             statMultiplier.AttackDamageMultiplier /= -value;
-            TotalChangedStatValue[8] /= -value;
+            TotalChangedStatValue[7] /= -value;
             SaveStatMultiplier(statMultiplier);
         }
         isChangedStat = true;
@@ -548,13 +553,13 @@ public partial class StatManager
         if(value >= 0)
         {
             statMultiplier.EffectDamageMultiplier *= value;
-            TotalChangedStatValue[9] *= value;
+            TotalChangedStatValue[8] *= value;
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
             statMultiplier.EffectDamageMultiplier /= -value;
-            TotalChangedStatValue[9] /= -value;
+            TotalChangedStatValue[8] /= -value;
             SaveStatMultiplier(statMultiplier);
         }
         isChangedStat = true;
