@@ -37,17 +37,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
-        /*{ 0, 0.015f },
+        { 0, 0.015f },
         { 1, 0.0355f },
         { 2, 0.0865f },
         { 3, 0.1543f },
-        { 4, 0.3087f },
-        { 5, 0.4f }*/
-
-        { 0, 0.3f },
-        { 1, 0.3f },
-        { 2, 0.3f },
-        { 3, 0.1f },
         { 4, 0.3087f },
         { 5, 0.4f }
     };

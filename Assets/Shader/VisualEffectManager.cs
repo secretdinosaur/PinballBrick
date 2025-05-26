@@ -7,6 +7,7 @@ using System;
 using System.Drawing;
 using UnityEngine.UIElements;
 using Redcode.Pools;
+using DG.Tweening;
 
 public class VisualEffectManager : MonoBehaviour
 {
@@ -38,9 +39,8 @@ public class VisualEffectManager : MonoBehaviour
 
     public ParticleSystem AllDamagePS;
 
-    public ParticleSystem AugmentPanelPS1;
-    public ParticleSystem AugmentPanelPS2;
-    public ParticleSystem AugmentPanelPS3;
+    public ParticleSystem[] AugmentPanelPS;
+    public ParticleSystem[] AugmentPanelBurstPS;
 
     Vector2 Vec = Vector2.zero;
     void Start()
@@ -56,31 +56,25 @@ public class VisualEffectManager : MonoBehaviour
 
     public void SetActiveAugmentPanelPs(int AugmentPanelNum, UnityEngine.Color Color, int Rarity)
     {
-        if (Rarity > 5) return;
-        switch(AugmentPanelNum)
+        if (Rarity >= 4)
         {
-            case 0:
-                AugmentPanelPS1.gameObject.SetActive(true);
-                AugmentPanelPS1.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Color);
-                break;
+            AugmentPanelPS[AugmentPanelNum].gameObject.SetActive(false);
+            AugmentPanelPS[AugmentPanelNum].transform.position = new Vector3(AugmentPanelPS[AugmentPanelNum].transform.position.x, 6.8f, 0);
 
-            case 1:
-                AugmentPanelPS2.gameObject.SetActive(true);
-                AugmentPanelPS2.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Color);
-                break;
-
-            case 2:
-                AugmentPanelPS3.gameObject.SetActive(true);
-                AugmentPanelPS3.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Color);
-                break;
+            return;
         }
+
+        AugmentPanelPS[AugmentPanelNum].gameObject.SetActive(true);
+        AugmentPanelPS[AugmentPanelNum].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Color);
     }
 
     public void UnsetAugmentPanelPs()
     {
-        AugmentPanelPS1.gameObject.SetActive(false);
-        AugmentPanelPS2.gameObject.SetActive(false);
-        AugmentPanelPS3.gameObject.SetActive(false);
+        for (int i = 0; i < 3; i++)
+        {
+            AugmentPanelPS[i].transform.position = new Vector3(AugmentPanelPS[i].transform.position.x, 6.8f, 0);
+            AugmentPanelPS[i].gameObject.SetActive(false);
+        }
     }
 
     public void SpawnParticle(string ParticleName, Vector2 ParticlePosition, int ParticleCount)
