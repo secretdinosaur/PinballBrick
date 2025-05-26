@@ -52,7 +52,6 @@ public partial class LevelManager : MonoBehaviour
         CriticalChance,
         EffectDamage,
         EffectDuration,
-        EffectCriticalDamage,
         GoldGain,
         ExpGain,
     }
@@ -64,7 +63,6 @@ public partial class LevelManager : MonoBehaviour
         new List<float> { 0.02f, 0.05f }, //CriticalChance
         new List<float> { 0.3f, 0.8f }, //EffectDamage
         new List<float> { 0.02f, 0.05f }, //EffectDuration
-        new List<float> { 0.03f, 0.08f }, //EffectCriticalDamage
         new List<float> { 0.012f, 0.034f }, //GoldGain
         new List<float> { 0.012f, 0.034f }, //ExpGain
     };
@@ -209,9 +207,8 @@ public partial class LevelManager : MonoBehaviour
             { "Critical\nChance", 2 },
             { "Effect\nDamage", 3 },
             { "Effect\nDuration", 4 },
-            { "Effect\nCritical\nDamage", 5 },
-            { "Gold\nGain", 6 },
-            { "Exp\nGain", 7 }
+            { "Gold\nGain", 5 },
+            { "Exp\nGain", 6 }
         };
         
         List<string> keys = new List<string>(statTable.Keys);
@@ -258,25 +255,12 @@ public partial class LevelManager : MonoBehaviour
                     );
                 break;
             case (int)StatName.CriticalChance:
-                if(StatManager.instance.Persistent_stat.CriticalChance + 
-                    StatManager.instance.Temporary_stat.CriticalChance >= 1f)
-                {
-                    StatManager.instance.ChangeTemporaryStats_CriticalDamage
-                    (
-                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0
-                        ? StatUpValue[(int)StatName.CriticalDamage][1]
-                        : StatUpValue[(int)StatName.CriticalDamage][0])
-                    );
-                }
-                else
-                {
-                    StatManager.instance.ChangeTemporaryStats_CriticalChance
+                StatManager.instance.ChangeTemporaryStats_CriticalChance
                     (
                         BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalChance] % 5 == 0
                         ? StatUpValue[(int)StatName.CriticalChance][1]
                         : StatUpValue[(int)StatName.CriticalChance][0])
                     );
-                }
                 break;
             case (int)StatName.EffectDamage:
                 StatManager.instance.ChangeTemporaryStats_EffectDamage
@@ -290,13 +274,6 @@ public partial class LevelManager : MonoBehaviour
                     (
                         BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectDuration] % 5 == 0
                         ? StatUpValue[(int)StatName.EffectDuration][1] : StatUpValue[(int)StatName.EffectDuration][0])
-                    );
-                break;
-            case (int)StatName.EffectCriticalDamage:
-                StatManager.instance.ChangeTemporaryStats_EffectCriticalDamage
-                    (
-                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectCriticalDamage] % 5 == 0
-                        ? StatUpValue[(int)StatName.EffectCriticalDamage][1] : StatUpValue[(int)StatName.EffectCriticalDamage][0])
                     );
                 break;
             case (int)StatName.GoldGain:
@@ -460,7 +437,7 @@ public partial class LevelManager : MonoBehaviour
         string seconds = "sec";
         string percent = "%";
         bool secondsBool = randomStats[i].Value == 4;
-        bool percentBool = (randomStats[i].Value == 2 || randomStats[i].Value == 6 || randomStats[i].Value == 7);
+        bool percentBool = (randomStats[i].Value == 2 || randomStats[i].Value == 5 || randomStats[i].Value == 6);
 
 
         return " +" + 
