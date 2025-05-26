@@ -484,22 +484,43 @@ public partial class StatManager
     }
     public void ChangeTemporaryStats_CriticalChance(float value)
     {
-        if (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value >= 1f)
+        if (AugmentManager.instance.determineAugmentID("STAT_21"))
         {
-            float x = 1f - (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance);
-            float y = Mathf.Floor((value - x) * 100f) / 100f;
-            Temporary_stat.CriticalChance += x;
-            TotalChangedStatValue[2] += x;
-            if (y > 0)
+            if(Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value != 0)
             {
-                Temporary_stat.CriticalDamage += y;
-                TotalChangedStatValue[1] += y;
+                float x = Persistent_stat.CriticalChance;
+                float y = (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value) * 100;
+                Temporary_stat.CriticalChance = -x;
+                TotalChangedStatValue[2] -= x;
+
+                Temporary_stat.AttackDamage += y * 0.04f;
+                TotalChangedStatValue[0] += y * 0.04f;
+            }
+            else
+            {
+                Temporary_stat.AttackDamage += (value * 100) * 0.04f;
+                TotalChangedStatValue[0] += (value * 100) * 0.04f;
             }
         }
         else
         {
-            Temporary_stat.CriticalChance += value;
-            TotalChangedStatValue[2] += value;
+            if (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value >= 1f)
+            {
+                float x = 1f - (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance);
+                float y = Mathf.Floor((value - x) * 100f) / 100f;
+                Temporary_stat.CriticalChance += x;
+                TotalChangedStatValue[2] += x;
+                if (y > 0)
+                {
+                    Temporary_stat.CriticalDamage += y;
+                    TotalChangedStatValue[1] += y;
+                }
+            }
+            else
+            {
+                Temporary_stat.CriticalChance += value;
+                TotalChangedStatValue[2] += value;
+            }
         }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;

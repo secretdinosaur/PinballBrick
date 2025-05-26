@@ -79,18 +79,18 @@ public partial class AugmentManager
         exceptionAugments.Add(augment);
         if (augment is StatAugment statAugment)
         {
-            augment.Apply();
             activeStatAugments.Add(statAugment);
+            augment.Apply();
         }
         else if (augment is FieldAugment fieldAugment)
         {
-            augment.Apply();
             activeFieldAugments.Add(fieldAugment);
+            augment.Apply();
         }
         else if (augment is SpecialAugment specialAugment)
         {
-            augment.Apply();
             activeSpecialAugments.Add(specialAugment);
+            augment.Apply();
         }
         IAugment OppositeAugment = GetOppositeAugment(augment);
         if (OppositeAugment != null)
