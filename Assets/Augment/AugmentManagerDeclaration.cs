@@ -54,6 +54,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
         DecayDamageMultiple = 1.1f;
+        isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
         CurseActiveNumber = 1;
         AfterDeathActiveNumber = 1;
@@ -81,7 +82,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButStrongAtk>(),
             gameObject.AddComponent<DecreaseFieldCooldown5>(),
             gameObject.AddComponent<DecreaseFieldCooldown20>(),
-            gameObject.AddComponent<CritChanceToAttackDamage>(),
             gameObject.AddComponent<RandomStatUpOrDown>(),
             gameObject.AddComponent<Trinity>(),
             gameObject.AddComponent<Perfectionism>(),
@@ -154,7 +154,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<CritAfterThreeAttack>(),
             gameObject.AddComponent<DamageInfection>(),
             gameObject.AddComponent<RollDiceBall>(),
-            gameObject.AddComponent<ItemEnhance>(),
+            gameObject.AddComponent<PortalBall>(),
             gameObject.AddComponent<InfiniteRapid>(),
             gameObject.AddComponent<MoreAndWeakBricks>(),
             gameObject.AddComponent<LessAndStrongBricks>(),

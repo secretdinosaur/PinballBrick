@@ -5,7 +5,7 @@ using System.Collections;
 
 public class IgnoreBrick : IBrick
 {
-    private bool Ignoring = false;
+    public bool Ignoring = false;
     public float IgnoreTime;
     private void OnEnable()
     {
@@ -32,7 +32,7 @@ public class IgnoreBrick : IBrick
         }
     }
 
-    private IEnumerator IgnoreDamage()
+    public IEnumerator IgnoreDamage()
     {
         Ignoring = true;
         spriteRenderer.material.SetColor("_Color", new Color(130 / 255f, 130 / 255f, 130 / 255f));
@@ -41,7 +41,7 @@ public class IgnoreBrick : IBrick
         spriteRenderer.material.SetColor("_Color", new Color(222 / 255f, 222 / 255f, 222 / 255f));
     }
 
-    private IEnumerator IgnoreDamageEffect()
+    public IEnumerator IgnoreDamageEffect()
     {
         spriteRenderer.material.SetColor("_Color", new Color(150 / 255f, 150 / 255f, 150 / 255f));
         yield return new WaitForSeconds(0.1f);

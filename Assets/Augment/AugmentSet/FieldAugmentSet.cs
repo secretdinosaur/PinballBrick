@@ -229,8 +229,10 @@ public class TargetMark : FieldAugment
                 List<Rigidbody2D> BallRigidBody2D = new List<Rigidbody2D>();
                 foreach(Ball ball in BallManager.Instance.InGameBall)
                 {
+                    CircleCollider2D collider = ball.GetComponent<CircleCollider2D>();
                     Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
                     BallRigidBody2D.Add(rb);
+                    collider.enabled = false;
                     rb.gravityScale = Random.Range(0.01f, 0.03f);
                     rb.linearVelocity = Vector2.zero;
                 }
@@ -242,7 +244,9 @@ public class TargetMark : FieldAugment
                 Target.SetActive(false);
                 foreach (Rigidbody2D ball in BallRigidBody2D)
                 {
-                    if(!brick.gameObject.activeSelf || brick != null)
+                    CircleCollider2D collider = ball.gameObject.GetComponent<CircleCollider2D>();
+                    collider.enabled = true;
+                    if (!brick.gameObject.activeSelf || brick != null)
                     {
                         Vector2 TargetDirection = (brick.transform.position - ball.transform.position).normalized;
                         ball.AddForce(TargetDirection * 50f, ForceMode2D.Impulse);
@@ -883,5 +887,36 @@ public class DiceGamble : FieldAugment
                     break;
             }
         }
+    }
+}
+
+public class Trampoline : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_15", "Trampoline", "Trampoline", 2, 60);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(GetTrampoline());
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    IEnumerator GetTrampoline()
+    {
+        yield return new WaitForSeconds(Cooldown);
     }
 }

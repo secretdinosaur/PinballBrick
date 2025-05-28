@@ -7,6 +7,7 @@ using System;
 using System.Drawing;
 using UnityEngine.UIElements;
 using Redcode.Pools;
+using DG.Tweening;
 
 public class VisualEffectManager : MonoBehaviour
 {
@@ -38,6 +39,9 @@ public class VisualEffectManager : MonoBehaviour
 
     public ParticleSystem AllDamagePS;
 
+    public ParticleSystem[] AugmentPanelPS;
+    public ParticleSystem[] AugmentPanelBurstPS;
+
     Vector2 Vec = Vector2.zero;
     void Start()
     {
@@ -48,6 +52,29 @@ public class VisualEffectManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetActiveAugmentPanelPs(int AugmentPanelNum, UnityEngine.Color Color, int Rarity)
+    {
+        if (Rarity >= 4)
+        {
+            AugmentPanelPS[AugmentPanelNum].gameObject.SetActive(false);
+            AugmentPanelPS[AugmentPanelNum].transform.position = new Vector3(AugmentPanelPS[AugmentPanelNum].transform.position.x, 6.8f, 0);
+
+            return;
+        }
+
+        AugmentPanelPS[AugmentPanelNum].gameObject.SetActive(true);
+        AugmentPanelPS[AugmentPanelNum].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Color);
+    }
+
+    public void UnsetAugmentPanelPs()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            AugmentPanelPS[i].transform.position = new Vector3(AugmentPanelPS[i].transform.position.x, 6.8f, 0);
+            AugmentPanelPS[i].gameObject.SetActive(false);
+        }
     }
 
     public void SpawnParticle(string ParticleName, Vector2 ParticlePosition, int ParticleCount)
