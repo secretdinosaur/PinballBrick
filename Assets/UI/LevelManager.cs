@@ -648,7 +648,7 @@ public partial class LevelManager : MonoBehaviour
         string seconds = "sec";
         string percent = "%";
         bool secondsBool = randomStats[i].Value == 4;
-        bool percentBool = (randomStats[i].Value == 2 || randomStats[i].Value == 5 || randomStats[i].Value == 6);
+        bool percentBool = (randomStats[i].Value == 1 || randomStats[i].Value == 2 || randomStats[i].Value == 5 || randomStats[i].Value == 6);
 
 
         return " +" + 
@@ -755,7 +755,7 @@ public partial class LevelManager : MonoBehaviour
             AdditionalDescriptionPanel.SetActive(true);
             AdditionalDescriptionText.text = augmentsSet[i].AdditionalDescription;
             AdditionalDescriptionText.ForceMeshUpdate();
-            int lineCount = AdditionalDescriptionText.textInfo.lineCount - 1;
+            int lineCount = AdditionalDescriptionText.textInfo.lineCount;
             rectTransform.sizeDelta = new Vector2(765, 50 + (lineCount * 50));
             rectTransform.anchoredPosition = new Vector2(0, -285 - (lineCount * 25f));
         }

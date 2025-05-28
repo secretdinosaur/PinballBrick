@@ -1819,7 +1819,9 @@ public class Oneness: SpecialAugment
             yield return null;
         }
         StartCoroutine(OnenessBallEffect(MainBall));
-        MainBall.GrowthAttackDamage += 0.25f;
+        MainBall.GrowthAttackDamage += ((StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) 
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier)
+            * 0.3f;
         MainBall.transform.localScale *= 1.001f;
         if (obj.AttackOrDieRoutine != null)
         {
