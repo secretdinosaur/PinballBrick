@@ -193,10 +193,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<CriticalAdditionalAttack>(),
-            gameObject.GetComponent<CritChance35Up>(),
-            gameObject.GetComponent<CritChance35Up>(),
-            gameObject.GetComponent<CritChance35Up>(),
+            gameObject.GetComponent<Oneness>(),
 
         };
 
@@ -208,7 +205,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<RandomStatUpOrDown>());
+        AddAugment(gameObject.GetComponent<ChangeNormalToGlass>());
     }
 }
 

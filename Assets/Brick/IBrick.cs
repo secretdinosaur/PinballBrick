@@ -22,6 +22,8 @@ public partial class IBrick : MonoBehaviour
     public float HpTemp;
     public float BallSpeed;
 
+    public BrickDetect detectArea;
+
     public SpriteRenderer spriteRenderer;
     public LineRenderer lineRenderer;
 
@@ -101,7 +103,7 @@ public partial class IBrick : MonoBehaviour
 
     public void BrickDie()
     {
-        foreach(IBrick brick in NearbyBricks)
+        foreach(IBrick brick in detectArea.NearbyBricks)
         {
             if (brick.BrickType == "AbsorbBrick")
                 brick.GetComponent<AbsorbBrick>().absorbHP(this);
@@ -231,7 +233,8 @@ public partial class IBrick : MonoBehaviour
     public void GetComponents()
     {
         Collider = GetComponent<Collider2D>();
-        boxSize = new Vector2(2f, 1.5f);
+        detectArea = GetComponentInChildren<BrickDetect>();
+        detectArea.NearbyBricks.Clear();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
         camera = Camera.main;
@@ -376,42 +379,8 @@ public partial class IBrick
     }
 }
 
-public partial class IBrick //Detect Nearby Bricks
-{
-    public List<IBrick> NearbyBricks = new List<IBrick>();
-    public Vector2 boxSize;
-
-    void Update()
-    {
-        CollectNearbyBricks();
-        RemoveInactiveBricks();
-    }
-
-    void CollectNearbyBricks()
-    {
-        LayerMask detectionLayer = LayerMask.GetMask("Game");
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, boxSize, 0, detectionLayer);
-        foreach (Collider2D collider in colliders)
-        {
-            IBrick obj = collider.gameObject.GetComponent<IBrick>();
-            if (obj != null && collider.gameObject.activeInHierarchy && !NearbyBricks.Contains(obj) && obj != this)
-            {
-                NearbyBricks.Add(obj);
-            }
-        }
-    }
-
-    void RemoveInactiveBricks()
-    {
-        NearbyBricks.RemoveAll(brick => brick == null || !brick.gameObject.activeInHierarchy);
-    }
-    
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position, boxSize);
-    }
-
+public partial class IBrick
+{  
     private IEnumerator Execution()
     {
         ExecutionObject1.SetActive(true);

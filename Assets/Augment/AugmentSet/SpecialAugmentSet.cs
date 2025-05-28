@@ -206,7 +206,7 @@ public class FireEffectStackBlast : SpecialAugment
         if (Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack == Brick.BrickEffect.EffectStatusSet["Fire"].EffectStackLimit)
         {
             Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack = (int)(Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack * 0.3);
-            foreach (IBrick nearbyBrick in Brick.NearbyBricks)
+            foreach (IBrick nearbyBrick in Brick.detectArea.NearbyBricks)
             {
                 nearbyBrick.ArbitraryDamageAttack(BlastDamage
                     ,
@@ -235,31 +235,38 @@ public class ChainLightning : SpecialAugment
 
     public override void Remove(){ }
 
-    public override void AfterMainAttackEffect(IBrick Brick)
+    public override void BeforeAttackEffect(IBrick Brick)
     {
         List<IBrick> OrderedTargetBricks = new List<IBrick>();
-
         IBrick targetBrick = Brick;
-        if (Brick.NearbyBricks.Count == 0)
+        List<IBrick> NearbyBricksOfTargetBrick = targetBrick.detectArea.NearbyBricks;
+
+        if (Brick.detectArea.NearbyBricks.Count == 0)
         {
             return;
         }
         for (int i = 0; i < 4; i++)
         {
-            List<IBrick> BrickToBrick = targetBrick.NearbyBricks;
+            NearbyBricksOfTargetBrick = targetBrick.detectArea.NearbyBricks;
+            NearbyBricksOfTargetBrick.RemoveAll(item => OrderedTargetBricks.Contains(item));
+
             OrderedTargetBricks.Add(targetBrick);
 
-            if (BrickToBrick.Count == 0)
+            if (NearbyBricksOfTargetBrick.Count == 0)
             {
                 break;
             }
-            int RandomNumber = Random.Range(0, BrickToBrick.Count);
+            int RandomNumber = Random.Range(0, NearbyBricksOfTargetBrick.Count);
+            targetBrick = NearbyBricksOfTargetBrick[RandomNumber];
+        }
+        ChainLightningDamageProcess(OrderedTargetBricks);
+    }
 
-            BrickToBrick[RandomNumber].DamageByLightningEffect(1, 0);
-            BrickToBrick[RandomNumber].NearbyBricks.Remove(targetBrick);
-
-            targetBrick = BrickToBrick[RandomNumber];
-
+    public void ChainLightningDamageProcess(List<IBrick> OrderedTargetBricks)
+    {
+        for(int i = 0; i < OrderedTargetBricks.Count; i++)
+        {
+            OrderedTargetBricks[i].DamageByLightningEffect(1, 0);
         }
         StartCoroutine(VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks));
     }
@@ -447,9 +454,9 @@ public class InfinitePoison : SpecialAugment
             {
                 foreach (IBrick brick in AugmentManager.instance.PoisonBrickSet)
                 {
-                    if (brick.NearbyBricks.Count > 0 && Random.value < 0.25f)
+                    if (brick.detectArea.NearbyBricks.Count > 0 && Random.value < 0.25f)
                     {
-                        List<IBrick> ChosenBricks = new List<IBrick>(brick.NearbyBricks);
+                        List<IBrick> ChosenBricks = new List<IBrick>(brick.detectArea.NearbyBricks);
                         int infectionLimit = Random.Range(0, ChosenBricks.Count > 2 ? 2 : ChosenBricks.Count);
                         for (int i = 0; i < ChosenBricks.Count; i++)
                         {
@@ -603,7 +610,7 @@ public class DecayExplosion : SpecialAugment
             LayerMask explosionLayer = LayerMask.GetMask("Ball");
             Collider2D[] colliders = Physics2D.OverlapCircleAll(Brick.transform.position, explosionRadius, explosionLayer);
 
-            foreach (IBrick brick in Brick.NearbyBricks)
+            foreach (IBrick brick in Brick.detectArea.NearbyBricks)
             {
                 brick.ArbitraryDamageAttack(Brick.HpTemp * 0.05f, false, (Brick.HpTemp * 0.05f).ToString("F1"), "Explosion");
             }
@@ -1357,7 +1364,7 @@ public class SuicideBoomBall : SpecialAugment
                     false,
                     ((damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
                     "Explosion");
-            foreach (IBrick brick in Brick.NearbyBricks)
+            foreach (IBrick brick in Brick.detectArea.NearbyBricks)
             {
                 brick.ArbitraryDamageAttack(
                     (damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
@@ -1812,7 +1819,9 @@ public class Oneness: SpecialAugment
             yield return null;
         }
         StartCoroutine(OnenessBallEffect(MainBall));
-        MainBall.GrowthAttackDamage += 0.25f;
+        MainBall.GrowthAttackDamage += ((StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) 
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier)
+            * 0.3f;
         MainBall.transform.localScale *= 1.001f;
         if (obj.AttackOrDieRoutine != null)
         {
@@ -2078,9 +2087,9 @@ public class DamageInfection : SpecialAugment
 
     public override void AfterMainAttackEffect(IBrick Brick)
     {
-        if(Brick.NearbyBricks.Count > 0)
+        if(Brick.detectArea.NearbyBricks.Count > 0)
         {
-            List<IBrick> ChosenBricks = new List<IBrick>(Brick.NearbyBricks);
+            List<IBrick> ChosenBricks = new List<IBrick>(Brick.detectArea.NearbyBricks);
             int infectionLimit = Random.Range(1, ChosenBricks.Count > 5 ? 5 : ChosenBricks.Count);
             for (int i = 0; i < ChosenBricks.Count; i++)
             {

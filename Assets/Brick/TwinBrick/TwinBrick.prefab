@@ -144,6 +144,7 @@ MonoBehaviour:
   BrickTransform: {fileID: 0}
   HpTemp: 0
   BallSpeed: 0
+  detectArea: {fileID: 0}
   spriteRenderer: {fileID: 1280913294406619973}
   lineRenderer: {fileID: 2330458189798778918}
   PoisonEffect: {fileID: 1430400986521459541}
@@ -155,7 +156,5 @@ MonoBehaviour:
   SpecialCriticalChance: 0
   BrickEffect: {fileID: 0}
   RecentReceivedDamage: 0
-  NearbyBricks: []
-  boxSize: {x: 0, y: 0}
   Twin: {fileID: 0}
   IsHpZero: 0
