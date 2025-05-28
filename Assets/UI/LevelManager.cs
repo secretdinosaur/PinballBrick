@@ -78,7 +78,7 @@ public partial class LevelManager : MonoBehaviour
         Instance = this;
         LevelBar = GameObject.Find("Canvas").transform.Find("LevelBar").GetComponent<Slider>();
         LevelUpPanel = GameObject.Find("Canvas").transform.Find("LevelUpPanel").gameObject;
-        CanvasForLevelUpPanel = GameObject.Find("CanvasForLevelUpPanel");
+        CanvasForLevelUpPanel = GameObject.Find("Canvas").transform.Find("CanvasForLevelUpPanel").gameObject;
         LevelUpPanel.SetActive(false);
         CanvasForLevelUpPanel.SetActive(false);
         LevelUpQueue = new Queue<int>();
