@@ -399,7 +399,7 @@ public class BrickManager : MonoBehaviour
         else if (brickType == "TwinBrick")
             return 5;
         else if (brickType == "AbsorbBrick")
-            return 1;
+            return 5;
         else
             return 1;
     }
@@ -616,7 +616,9 @@ public class BrickManager : MonoBehaviour
             float rotation = UnityEngine.Random.value * 3.14f;
             Brick.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
+            Twin.Init(Brick.IsBoss, false, Brick.Point, Brick.Exp);
         }
+        UpdateCurrentBricks(brick);
     }
 
     public IBrick SpawnSpecificBrick(string BrickType)

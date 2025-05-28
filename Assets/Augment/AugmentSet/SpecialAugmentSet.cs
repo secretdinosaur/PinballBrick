@@ -141,7 +141,7 @@ public class CriticalAdditionalAttack : SpecialAugment
     {
         if (Brick.gameObject.activeSelf) //Critical Additional Attack
         {
-            Brick.AdditionalAttack(0.5f, 0.5f, 1);
+            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 1));
         }
     }
 }
@@ -498,6 +498,7 @@ public class DeadlyPoison : SpecialAugment
 }
 public class Chaos : SpecialAugment
 {
+    Dictionary<int, float> rarityWeights;
     private void OnEnable()
     {
         SetAugment("SPECIAL_18", "Chaos", "All augment probabilities are equal", "Special", 0);
@@ -506,6 +507,7 @@ public class Chaos : SpecialAugment
 
     public override void Apply()
     {
+        rarityWeights = AugmentManager.instance.rarityWeights;
         AugmentManager.instance.rarityWeights[0] = 0.001f;
         AugmentManager.instance.rarityWeights[1] = 0.199f;
         AugmentManager.instance.rarityWeights[2] = 0.2f;
@@ -516,12 +518,12 @@ public class Chaos : SpecialAugment
 
     public override void Remove()
     {
-        AugmentManager.instance.rarityWeights[0] = 0.015f;
-        AugmentManager.instance.rarityWeights[1] = 0.0355f;
-        AugmentManager.instance.rarityWeights[2] = 0.0865f;
-        AugmentManager.instance.rarityWeights[3] = 0.1543f;
-        AugmentManager.instance.rarityWeights[4] = 0.3087f;
-        AugmentManager.instance.rarityWeights[5] = 0.4f;
+        AugmentManager.instance.rarityWeights[0] = rarityWeights[0];
+        AugmentManager.instance.rarityWeights[1] = rarityWeights[1];
+        AugmentManager.instance.rarityWeights[2] = rarityWeights[2];
+        AugmentManager.instance.rarityWeights[3] = rarityWeights[3];
+        AugmentManager.instance.rarityWeights[4] = rarityWeights[4];
+        AugmentManager.instance.rarityWeights[5] = rarityWeights[5];
     }
 }
 public class DecayBall : SpecialAugment
@@ -734,7 +736,7 @@ public class GrowBallQuest : SpecialAugment
             QuestProgressing(Brick);
             if(KilledEnemy >= ClearRequiredCount)
             {
-                StatManager.instance.ChangeTemporaryStats_AttackDamage(KeepAtk + 2);
+                StatManager.instance.ChangeTemporaryStats_AttackDamage(KeepAtk + 1);
                 isCleared = true;
                 StartCoroutine(GrowBall());
             }
@@ -764,45 +766,11 @@ public class GrowBallQuest : SpecialAugment
     {
         if (brick.IsBoss)
         {
-            switch (brick.BrickType)
-            {
-                case "HardBrick":
-                    KeepAtk += 0.4f;
-                    break;
-                case "IgnoreBrick":
-                    KeepAtk += 0.45f;
-                    break;
-                case "Twinbrick":
-                    KeepAtk += 0.45f;
-                    break;
-                case "BlackBrick":
-                    KeepAtk += 0.125f;
-                    break;
-                default:
-                    KeepAtk += 0.1f;
-                    break;
-            }
+            KeepAtk += 0.2f;
         }
         else
         {
-            switch (brick.BrickType)
-            {
-                case "HardBrick":
-                    KeepAtk += 0.05f;
-                    break;
-                case "IgnoreBrick":
-                    KeepAtk += 0.06f;
-                    break;
-                case "Twinbrick":
-                    KeepAtk += 0.06f;
-                    break;
-                case "BlackBrick":
-                    KeepAtk += 0.02f;
-                    break;
-                default:
-                    KeepAtk += 0.04f;
-                    break;
-            }
+            KeepAtk += 0.1f;
         }
     }
 }
@@ -1878,9 +1846,9 @@ public class HappyBirthday : SpecialAugment
     {
         yield return null;
         ball.BallBaseDamage += 30;
-        ball.Renderer.material.color = ball.Renderer.material.color * 2;
-        yield return new WaitForSeconds(1f);
-        ball.Renderer.material.color = ball.Renderer.material.color / 2;
+        ball.Renderer.material.color = Color.white * 2;
+        yield return new WaitForSeconds(3f);
+        ball.Renderer.material.color = Color.white;
         ball.BallBaseDamage -= 30;
     }
 }
@@ -1899,7 +1867,7 @@ public class MidasHand : SpecialAugment
 
     public override void AfterMainAttackEffect(IBrick Brick)
     {
-        if(Random.value < 0.1f 
+        if(Random.value < 0.5f 
             && Brick.BrickType != "TwinBrick" && Brick.BrickType != "ShieldBrick" 
             && Brick.BrickType != "TeleportBrick" && Brick.BrickType != "BlackBrick"
             && Brick.BrickType != "IgnoreBrick" && Routine == null)
@@ -2170,9 +2138,6 @@ public class RollDiceBall : SpecialAugment
 
 public class PortalBall : SpecialAugment
 {
-    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
-    GameObject Trampoline;
-    Coroutine routine;
     private void OnEnable()
     {
         SetAugment("SPECIAL_61", "Portal Ball", "Hits may cause the ball to \nteleport to the random brick's position", "Special", 3);
@@ -2181,27 +2146,21 @@ public class PortalBall : SpecialAugment
 
     public override void Apply()
     {
-        Trampoline = GameObject.Find("BangBang");
-        Trampoline.transform.position = new Vector2(-0.75f, -0.55f);
-        Trampoline.SetActive(false);
-
-        routine = StartCoroutine(StartTrampoline(Cooldown));
 
     }
 
     public override void Remove()
     {
-        StopCoroutine(routine);
     }
 
-    private IEnumerator StartTrampoline(float Cooldown)
+    public override void AfterAttackEffect(IBrick Brick)
     {
-        while(true)
+        if (Brick.RecentlyBall != null && Brick.RecentlyBall.gameObject.activeSelf && BrickManager.Instance.CurrentBricks.Count > 1
+            && 0.05f > Random.value)
         {
-            Trampoline.SetActive(false);
-            yield return new WaitForSeconds(Cooldown);
-            Trampoline.SetActive(true);
-            yield return new WaitForSeconds(10);
+            IBrick RandomBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+            if (Brick != RandomBrick)
+                Brick.RecentlyBall.transform.position = RandomBrick.transform.position;
         }
     }
 }

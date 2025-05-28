@@ -79,6 +79,7 @@ public partial class IBall : MonoBehaviour
 
     public void BallDied()
     {
+        Renderer.material.color = Color.white;
         if (isPhoenix)
         {
             gameObject.SetActive(false);

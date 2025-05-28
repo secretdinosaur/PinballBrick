@@ -4,11 +4,13 @@ using UnityEngine.UI;
 using System.Collections;
 public class HealBrick : IBrick
 {
+    public Color startColor;
     private int HealCount = 1;
     private void OnEnable()
     {
         base.OnEnable();
         BrickType = "HealBrick";
+        startColor = spriteRenderer.material.GetColor("_Color");
         BrickHealCoroutine = StartCoroutine(BrickHeal());
     }
     private void OnCollisionEnter2D(Collision2D collision)

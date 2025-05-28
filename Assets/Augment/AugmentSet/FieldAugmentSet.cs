@@ -894,6 +894,7 @@ public class Trampoline : FieldAugment
 {
     Coroutine Routine = null;
     float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+    GameObject TrampolineObj;
 
     private void OnEnable()
     {
@@ -903,7 +904,11 @@ public class Trampoline : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetTrampoline());
+        TrampolineObj = GameObject.Find("BangBang");
+        TrampolineObj.transform.position = new Vector2(-0.75f, -0.55f);
+        TrampolineObj.SetActive(false);
+
+        Routine = StartCoroutine(StartTrampoline(Cooldown));
     }
 
     public override void Remove()
@@ -915,8 +920,14 @@ public class Trampoline : FieldAugment
         }
     }
 
-    IEnumerator GetTrampoline()
+    private IEnumerator StartTrampoline(float Cooldown)
     {
-        yield return new WaitForSeconds(Cooldown);
+        while (true)
+        {
+            TrampolineObj.SetActive(false);
+            yield return new WaitForSeconds(Cooldown);
+            TrampolineObj.SetActive(true);
+            yield return new WaitForSeconds(10);
+        }
     }
 }

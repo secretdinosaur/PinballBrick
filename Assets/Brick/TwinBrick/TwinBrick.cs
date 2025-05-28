@@ -10,6 +10,7 @@ public class TwinBrick : IBrick
     {
         base.OnEnable();
         BrickType = "TwinBrick";
+        IsHpZero = false;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -28,15 +29,21 @@ public class TwinBrick : IBrick
 
         while (Timer > 0)
         {
-            if (Twin.IsHpZero || !Twin.enabled)
+            if (Twin.IsHpZero || !Twin.enabled || Twin == null)
             {
                 IsHpZero = false;
                 Twin.IsHpZero = false;
                 GetComponent<Collider2D>().enabled = true;
 
-                BrickDie();
                 if(Twin.enabled)
+                {
+                    Twin.IsHpZero = false;
+                    Twin.Twin = null;
                     Twin.BrickDie();
+                }
+                Twin = null;
+                IsHpZero = false;
+                BrickDie();
             }
             HPText.text = Timer.ToString();
             HPText.enabled = true;
