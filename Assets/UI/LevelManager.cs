@@ -375,12 +375,6 @@ public partial class LevelManager : MonoBehaviour
         Rare,
         Common
     }
-    public Ease EaseFor5;
-    public Ease EaseFor4;
-    public Ease EaseFor3;
-    public Ease EaseFor2;
-    public Ease EaseFor1;
-    public Ease EaseFor0;
     IEnumerator AugAniCoroutine(int[] rarities, Button[] SelectButtons, bool IsStat)
     {
         if (IsStat)
@@ -409,6 +403,11 @@ public partial class LevelManager : MonoBehaviour
             {
                 case 3:
                     VisualEffectManager.Instance.SetActiveAugmentPanelPs(i, RarityColorList[rarities[i]], rarities[i]);
+                    VisualEffectManager.Instance.AugmentPanelPS[i].transform.DOMove(new Vector3(VisualEffectManager.Instance.AugmentPanelPS[i].transform.position.x, 0, 0), 0.25f)
+                        .SetEase(Ease.OutQuad)
+                        .SetUpdate(true)
+                        .OnComplete(() => isFinished = true);
+                    yield return new WaitUntil(() => isFinished);
                     break;
 
                 case 2:

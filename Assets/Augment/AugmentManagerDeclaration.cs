@@ -28,7 +28,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public float FieldGlobalCooldown = 10f;
 
-    public bool isSacrificeQuest3Cleared;
+    public bool isSacrificeQuest3Cleared = false;
 
     public int SpawnBallAmount;
 
@@ -193,6 +193,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
+            gameObject.GetComponent<CriticalAdditionalAttack>(),
+            gameObject.GetComponent<CritChance35Up>(),
+            gameObject.GetComponent<CritChance35Up>(),
+            gameObject.GetComponent<CritChance35Up>(),
 
         };
 

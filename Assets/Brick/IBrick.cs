@@ -70,6 +70,10 @@ public partial class IBrick : MonoBehaviour
                     StartCoroutine(GetComponent<TwinBrick>().StartRebirth());
                     HPText.text = "10";
                 }
+                else if(BrickType == "TwinBrick")
+                {
+
+                }
                 else
                 {
                     if (BrickType == "HealBrick") StopCoroutine(BrickHealCoroutine);
@@ -102,7 +106,8 @@ public partial class IBrick : MonoBehaviour
             if (brick.BrickType == "AbsorbBrick")
                 brick.GetComponent<AbsorbBrick>().absorbHP(this);
         }
-
+        if(BrickType == "TwinBrick") GetComponent<TwinBrick>().Twin = null;
+        if(BrickType == "HealBrick") spriteRenderer.material.SetColor("_Color", GetComponent<HealBrick>().startColor);
         GameManager.instance.DestroyedBricks++;
         Fever.StartFever = true;
         Fever.Instance.CalFeverCount();

@@ -11299,7 +11299,7 @@ MonoBehaviour:
   RapidStageChanceValue: 0.09
   BaseBrickSpawnValue: 1
   BaseBrickHealthValue: 1
-  BaseBossHealthValue: 1
+  BaseBossHealthValue: 3
   BaseSpawnTimeValue: 0
   BaseWaitingTimeValue: 5
   BaseBossSpawnValue: 1
@@ -17570,12 +17570,6 @@ MonoBehaviour:
   - {fileID: 3556431781438714426, guid: 635b388779d75f34dbe8ecd5b431eb22, type: 3}
   - {fileID: 3788167435311697132, guid: 6f68f645b5373aa49b4bd19637162b1c, type: 3}
   OptionButtons: []
-  EaseFor5: 6
-  EaseFor4: 0
-  EaseFor3: 0
-  EaseFor2: 0
-  EaseFor1: 0
-  EaseFor0: 0
 --- !u!114 &218456170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44067,7 +44061,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -49609,19 +49603,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6019805565070814756, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_Name
-      value: BangBang 1
+      value: BangBang
       objectReference: {fileID: 0}
     - target: {fileID: 6019805565070814756, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7088707080836287785, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7450383
+      value: -10.75
       objectReference: {fileID: 0}
     - target: {fileID: 7088707080836287785, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.53828704
+      value: -0.55
       objectReference: {fileID: 0}
     - target: {fileID: 7088707080836287785, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_LocalPosition.z
@@ -76481,7 +76475,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

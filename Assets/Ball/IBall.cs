@@ -79,6 +79,7 @@ public partial class IBall : MonoBehaviour
 
     public void BallDied()
     {
+        Renderer.material.color = Color.white;
         if (isPhoenix)
         {
             gameObject.SetActive(false);
@@ -241,7 +242,10 @@ public partial class IBall : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Brick") && !IsStucking && gameObject.activeSelf)
         {
-            BallStuckCoroutine = StartCoroutine(BallStuckDamage(collision.gameObject.GetComponent<IBrick>()));
+            if (collision.gameObject.GetComponent<IBrick>().IsBoss)
+                rb.AddForce(new Vector2(Random.value * 3, Random.value * 5));
+            else
+                BallStuckCoroutine = StartCoroutine(BallStuckDamage(collision.gameObject.GetComponent<IBrick>()));
         }
     }
 

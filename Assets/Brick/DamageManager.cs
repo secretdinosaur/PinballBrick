@@ -130,8 +130,15 @@ public static partial class DamageManager //Special Effect Attack
 {
     public static IEnumerator AdditionalAttack(IBrick brick, float MaxAttackTime, float TimeCount, float DamageMultiflier, bool IsStrong = false) // AdditionalAttack Coroutine
     {
+        if (!brick.gameObject.activeSelf)
+        {
+            yield break;
+        }
         yield return new WaitForSeconds(0.5f);
-
+        if (!brick.gameObject.activeSelf)
+        {
+            yield break;
+        }
         while (MaxAttackTime > 0f)
         {
             if (!brick.gameObject.activeSelf)
