@@ -114,7 +114,8 @@ public class BrickManager : MonoBehaviour
 
     public void UpdateCurrentBricks(IBrick brick)
     {
-        if(!CurrentBricks.Contains(brick))
+        CurrentBricks.RemoveAll(item => item == null);
+        if (!CurrentBricks.Contains(brick))
         {
             CurrentBricks.Add(brick);
         }
@@ -586,9 +587,7 @@ public class BrickManager : MonoBehaviour
 
                 Vector2 randomPosition = GenerateRandomPosition();
                 Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
-                UpdateCurrentBricks(Brick);
                 SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
-
                 _FusionBrickHealth = 0;
                 _FusionBrickNum = 0;
             }
@@ -604,7 +603,6 @@ public class BrickManager : MonoBehaviour
 
             Vector2 randomPosition = GenerateRandomPosition();
             Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
-            UpdateCurrentBricks(Brick);
             SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
         }
         if(Brick.BrickType == "TwinBrick" && Brick.GetComponent<TwinBrick>().Twin == null)
@@ -618,7 +616,7 @@ public class BrickManager : MonoBehaviour
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.Init(Brick.IsBoss, false, Brick.Point, Brick.Exp);
         }
-        UpdateCurrentBricks(brick);
+        UpdateCurrentBricks(Brick);
     }
 
     public IBrick SpawnSpecificBrick(string BrickType)

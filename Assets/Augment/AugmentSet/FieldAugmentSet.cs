@@ -227,7 +227,7 @@ public class TargetMark : FieldAugment
             if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null && BrickManager.Instance.CurrentBricks.Count > 0)
             {
                 List<Rigidbody2D> BallRigidBody2D = new List<Rigidbody2D>();
-                foreach(Ball ball in BallManager.Instance.InGameBall)
+                foreach(IBall ball in BallManager.Instance.InGameBall)
                 {
                     CircleCollider2D collider = ball.GetComponent<CircleCollider2D>();
                     Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
@@ -236,26 +236,22 @@ public class TargetMark : FieldAugment
                     rb.gravityScale = Random.Range(0.01f, 0.03f);
                     rb.linearVelocity = Vector2.zero;
                 }
-                IBrick brick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
-                Target.transform.position = brick.transform.position;
+
+                Vector3 TargetPosition = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)].transform.position;
+
+                Target.transform.position = TargetPosition;
                 Target.SetActive(true);
                 StartCoroutine(FindTarget());
                 yield return new WaitForSeconds(1.5f);
+
                 Target.SetActive(false);
                 foreach (Rigidbody2D ball in BallRigidBody2D)
                 {
                     CircleCollider2D collider = ball.gameObject.GetComponent<CircleCollider2D>();
                     collider.enabled = true;
-                    if (!brick.gameObject.activeSelf || brick != null)
-                    {
-                        Vector2 TargetDirection = (brick.transform.position - ball.transform.position).normalized;
-                        ball.AddForce(TargetDirection * 50f, ForceMode2D.Impulse);
-                        yield return null;
-                    }
-                    else
-                    {
-                        yield return null;
-                    }
+                    Vector2 TargetDirection = (TargetPosition - ball.transform.position).normalized;
+                    ball.AddForce(TargetDirection * 50f, ForceMode2D.Impulse);
+                    yield return null;
                     ball.gravityScale = 0.5f;
                 }
             }
