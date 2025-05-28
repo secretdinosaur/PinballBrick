@@ -925,7 +925,6 @@ public class SacrificeQuest3 : SpecialAugment
             QuestAlarm.Instance.SetQuest("Sacrifice III", "Sacrificed", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= 70 && !isCleared)
         {
-            Debug.Log("SacrificeQuest3 Clear");
             AugmentManager.instance.isSacrificeQuest3Cleared = true;
             isCleared = true;
         }
@@ -2163,6 +2162,9 @@ public class RollDiceBall : SpecialAugment
 
 public class ItemEnhance : SpecialAugment
 {
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+    GameObject Trampoline;
+    Coroutine routine;
     private void OnEnable()
     {
         SetAugment("SPECIAL_61", "Trampoline", "Trampoline", "Special", 2);
@@ -2171,13 +2173,28 @@ public class ItemEnhance : SpecialAugment
 
     public override void Apply()
     {
-        //ItemManager.Instance.BaseItemSpawnChance *= 2;
-        //todo: think item inhancement
+        Trampoline = GameObject.Find("BangBang");
+        Trampoline.transform.position = new Vector2(-0.75f, -0.55f);
+        Trampoline.SetActive(false);
+
+        routine = StartCoroutine(StartTrampoline(Cooldown));
+
     }
 
     public override void Remove()
     {
-        //ItemManager.Instance.BaseItemSpawnChance /= 2;
+        StopCoroutine(routine);
+    }
+
+    private IEnumerator StartTrampoline(float Cooldown)
+    {
+        while(true)
+        {
+            Trampoline.SetActive(false);
+            yield return new WaitForSeconds(Cooldown);
+            Trampoline.SetActive(true);
+            yield return new WaitForSeconds(10);
+        }
     }
 }
 

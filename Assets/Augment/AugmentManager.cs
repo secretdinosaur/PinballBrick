@@ -39,9 +39,8 @@ public partial class AugmentManager //Utility
         if (augmentsSet == null || augmentsSet.Count == 0) return null;
 
         var availableAugments = augmentsSet
-            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == targetRarity && a.ID.Contains("FIELD"))
+            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == targetRarity)
             .ToList();
-
         if (availableAugments.Count == 0) return null;
 
         int index = Random.Range(0, availableAugments.Count);

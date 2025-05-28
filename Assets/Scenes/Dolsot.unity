@@ -6454,7 +6454,7 @@ MonoBehaviour:
   RapidStageChanceValue: 0.09
   BaseBrickSpawnValue: 1
   BaseBrickHealthValue: 1
-  BaseBossHealthValue: 1
+  BaseBossHealthValue: 3
   BaseSpawnTimeValue: 0
   BaseWaitingTimeValue: 5
   BaseBossSpawnValue: 1
@@ -40041,19 +40041,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6019805565070814756, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_Name
-      value: BangBang 1
+      value: BangBang
       objectReference: {fileID: 0}
     - target: {fileID: 6019805565070814756, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7088707080836287785, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7450383
+      value: -10.75
       objectReference: {fileID: 0}
     - target: {fileID: 7088707080836287785, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.53828704
+      value: -0.55
       objectReference: {fileID: 0}
     - target: {fileID: 7088707080836287785, guid: 60a1b07cfbfba1f4da5bd49f4246f418, type: 3}
       propertyPath: m_LocalPosition.z

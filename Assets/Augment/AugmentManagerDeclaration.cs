@@ -28,7 +28,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public float FieldGlobalCooldown = 10f;
 
-    public bool isSacrificeQuest3Cleared;
+    public bool isSacrificeQuest3Cleared = false;
 
     public int SpawnBallAmount;
 
@@ -54,7 +54,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
         DecayDamageMultiple = 1.1f;
-        isSacrificeQuest3Cleared = true;
         SpawnBallAmount = 1;
         CurseActiveNumber = 1;
         AfterDeathActiveNumber = 1;
@@ -194,8 +193,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<TargetMark>(),
-            gameObject.GetComponent<ChainLightning>(),
+            gameObject.GetComponent<ItemEnhance>(),
         };
 
         foreach (IAugment augment in TestAugments)

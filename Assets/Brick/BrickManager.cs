@@ -154,7 +154,9 @@ public class BrickManager : MonoBehaviour
     }
     public void TakeBrick(IBrick brick)
     {
-        if(brick.gameObject.activeSelf)
+        if (brick.IsBoss)
+            OnWaveStopButtonClick();
+        if (brick.gameObject.activeSelf)
         {
             if (brick.Fire != null)
             {
@@ -543,6 +545,7 @@ public class BrickManager : MonoBehaviour
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
         if (brick.IsBoss)
         {
+            OnWaveStopButtonClick();
             for (int i = 0; i < 3; i++)
             {
                 HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
