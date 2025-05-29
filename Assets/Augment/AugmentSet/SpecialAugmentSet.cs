@@ -2501,31 +2501,35 @@ public class WaveFourBoss : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_72", "Curse of the Number 4", "All stats 16% Up\nEvery 4 waves, a Rapid Wave activates and a boss appears", "Special", 0);
-        SetAdditionalDescription("Except Gold Gain, EXP Gain");
+        SetAugment("SPECIAL_72", "Curse of the Number 4", "All stats 16% Up\nEvery 4 waves, a Rapid Wave activates and a enhanced boss appears", "Special", 1);
+        SetAdditionalDescription("Except Gold Gain");
     }
 
     public override void Apply()
     {
         BrickManager.Instance.BossSpawnWaveNumber = 4;
         BrickManager.Instance.NextBossSpawnWave = GameManager.instance.Wave + BrickManager.Instance.BossSpawnWaveNumber;
+        BrickManager.Instance.BaseBossHealthValue *= 1.44f;
 
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.16f);
         StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.16f);
         StatManager.instance.ChangeTemporaryStats_CriticalChance(0.16f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.16f);
         StatManager.instance.ChangeTemporaryStats_EffectDuration(0.16f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.16f);
     }
 
     public override void Remove()
     {
         BrickManager.Instance.BossSpawnWaveNumber = 10;
         BrickManager.Instance.NextBossSpawnWave = ((BrickManager.Instance.NextBossSpawnWave / 10) + 1) * 10;
+        BrickManager.Instance.BaseBossHealthValue /= 1.44f;
 
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.16f);
         StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.16f);
         StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.16f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.16f);
         StatManager.instance.ChangeTemporaryStats_EffectDuration(-0.16f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.16f);
     }
 }
