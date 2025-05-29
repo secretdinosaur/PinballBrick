@@ -48,7 +48,8 @@ public class BrickManager : MonoBehaviour
     public int BaseWaitingTimeValue;
 
     public int BaseBossSpawnValue;
-
+    public int NextBossSpawnWave;
+    public int BossSpawnWaveNumber;
 
     private bool WavePause;
 
@@ -100,6 +101,8 @@ public class BrickManager : MonoBehaviour
 
         BaseBossHealthValue = 1f;
         BaseBossSpawnValue = 1;
+        NextBossSpawnWave = 10;
+        BossSpawnWaveNumber = 10;
 
         WavePause = false;
     }
@@ -217,8 +220,9 @@ public class BrickManager : MonoBehaviour
                 }
             }
         }
-        if (Wave % 10 == 0)
+        if (BossSpawnCondition(Wave))
         {
+            NextBossSpawnWave += BossSpawnWaveNumber;
             for (int i = 0; i < BaseBossSpawnValue; i++)
             {
                 brickQueue.Enqueue(SettingBoss());
@@ -236,14 +240,12 @@ public class BrickManager : MonoBehaviour
             if (BrickQueue == null)
             {
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
-                    || AugmentManager.instance.determineAugmentID("SPECIAL_62");
+                    || AugmentManager.instance.determineAugmentID("SPECIAL_62")
+                    || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
                 //SettingBrickSpawnChance();
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
-            }
-            else
-            {
             }
             /////////////////////////////////------------------------------------------------------------------------------------------
             if (isRapid) // Rapid stages are active after wave 10
@@ -631,6 +633,13 @@ public class BrickManager : MonoBehaviour
         }
         SoundManager.instance.SpawnBrickSound(brick.GetComponent<AudioSource>());
         return brick;
+    }
+
+    public bool BossSpawnCondition(int Wave)
+    {
+        bool isBossSpawnCondition = Wave == NextBossSpawnWave;
+
+        return isBossSpawnCondition; 
     }
 
     //Test Button Functions

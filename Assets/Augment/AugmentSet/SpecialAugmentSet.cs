@@ -11,6 +11,7 @@ using static UnityEngine.GraphicsBuffer;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using UnityEngine.U2D;
+using UnityEngine.UI;
 
 /*
 public class Example : SpecialAugment
@@ -2493,5 +2494,38 @@ public class ReducesExp15 : SpecialAugment
     {
         LevelManager.Instance.BaseMaxExpValue /= 0.85f;
         LevelManager.Instance.LevelBarMaxValueSet(LevelManager.Instance.Level);
+    }
+}
+
+public class WaveFourBoss : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_72", "Curse of the Number 4", "All stats 16% Up\nEvery 4 waves, a Rapid Wave activates and a boss appears", "Special", 0);
+        SetAdditionalDescription("Except Gold Gain, EXP Gain");
+    }
+
+    public override void Apply()
+    {
+        BrickManager.Instance.BossSpawnWaveNumber = 4;
+        BrickManager.Instance.NextBossSpawnWave = GameManager.instance.Wave + BrickManager.Instance.BossSpawnWaveNumber;
+
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.16f);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.16f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.16f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.16f);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(0.16f);
+    }
+
+    public override void Remove()
+    {
+        BrickManager.Instance.BossSpawnWaveNumber = 10;
+        BrickManager.Instance.NextBossSpawnWave = ((BrickManager.Instance.NextBossSpawnWave / 10) + 1) * 10;
+
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.16f);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.16f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.16f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.16f);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(-0.16f);
     }
 }

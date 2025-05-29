@@ -166,6 +166,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<GoalWaveBonus>(),
             gameObject.AddComponent<ReducesExp10>(),
             gameObject.AddComponent<ReducesExp15>(),
+            gameObject.AddComponent<WaveFourBoss>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -193,8 +194,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Oneness>(),
-
+            gameObject.GetComponent<WaveFourBoss>(),
+            
         };
 
         foreach (IAugment augment in TestAugments)
@@ -205,7 +206,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<ChangeNormalToGlass>());
+        AddAugment(gameObject.GetComponent<FreshNewStart>());
     }
 }
 
