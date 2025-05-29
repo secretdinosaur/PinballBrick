@@ -27,7 +27,7 @@ public class DecayZoneObj : SpecialObj
                 {
                     if(brick.gameObject.activeInHierarchy && brick.BrickEffect.EffectStatusSet["Decay"].EffectStack < 1)
                     {
-                        brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
+                        brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.DecayDuration);
                     }
                 }
             }

@@ -696,7 +696,7 @@
                             {
                                 if(Random.value < FireChance)
                                     BrickManager.Instance.CurrentBricks[j].
-                                        DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
+                                        DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.FireDuration);
                             }
                             elapsedTime += 1;
                             yield return new WaitForSeconds(1f);
@@ -711,7 +711,7 @@
                             {
                                 if (Random.value < PoisonChance)
                                     BrickManager.Instance.CurrentBricks[j].
-                                        DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.PoisonDuration);
+                                        DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.PoisonDuration);
                             }
                             elapsedTime += 1;
                             yield return new WaitForSeconds(1f);
@@ -727,7 +727,7 @@
                             {
                                 if (Random.value < DecayChance)
                                     BrickManager.Instance.CurrentBricks[j].
-                                        DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
+                                        DecayEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.DecayDuration);
                             }
                             elapsedTime += 1;
                             yield return new WaitForSeconds(1f);
@@ -835,11 +835,11 @@
                         foreach (Brick brick in BrickManager.Instance.CurrentBricks)
                         {
                             brick.
-                                DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
+                                DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.FireDuration);
                             brick.
-                                DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.PoisonDuration);
+                                DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.PoisonDuration);
                             brick.
-                                DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
+                                DecayEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.DecayDuration);
                         }
                         break;
                     default:
