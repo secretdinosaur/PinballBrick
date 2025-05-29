@@ -12,14 +12,19 @@ public class LightningRodObj : SpecialObj
     {
         base.OnEnable();
         SpecialObjType = "LightningRodObj";
-        transform.position = new Vector2(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 4f));
-        Routine = StartCoroutine(LightningRod());
+        
     }
 
-    IEnumerator LightningRod()
+    public void StartAttack(float Duration)
+    {
+        transform.position = new Vector2(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 4f));
+        Routine = StartCoroutine(LightningRod(Duration));
+    }
+
+    IEnumerator LightningRod(float Duration)
     {
         float time = 0;
-        while (time < 3)
+        while (time < Duration)
         {
             if (detectArea.NearbyBricks.Count > 0)
             {
