@@ -18,9 +18,14 @@ public class SpecialObjManager : MonoBehaviour
         PoolManager = GetComponent<PoolManager>();
     }
 
-    public void CreateSpecialObj(string type)
+    public void CreateSpecialObj(string type, float Duration = 0f)
     {
         SpecialObj specialObj = GetSpecificSpecialObj(type);
+
+        if (type == "SatelliteBeamObj") specialObj.GetComponent<SatelliteBeamObj>().StartAttack(Duration);
+        if (type == "LightningRodObj") specialObj.GetComponent<LightningRodObj>().StartAttack(Duration);
+        if (type == "LightningRodObj") specialObj.GetComponent<DecayZoneObj>().StartAttack(Duration); 
+
     }
 
     private SpecialObj GetSpecificSpecialObj(string SpecialObjTypeName)

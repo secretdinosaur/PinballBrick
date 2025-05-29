@@ -1016,7 +1016,7 @@ public class RandomEffect : SpecialAugment
     };
     private void OnEnable()
     {
-        SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nIt may be positive or negative", "Special", 3);
+        SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nit may be positive or negative", "Special", 3);
         SetAdditionalDescription(null);
     }
 
@@ -1740,7 +1740,7 @@ public class Oneness: SpecialAugment
     bool isGetAugment = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_52", "Oneness", "All balls merge into one\nThe ball becomes stronger as it merges", "Special", 2);
+        SetAugment("SPECIAL_52", "Oneness", "All balls merge into one,\nthe ball becomes stronger as it merges", "Special", 2);
         SetAdditionalDescription(null);
     }
 
@@ -2071,7 +2071,7 @@ public class DamageInfection : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_58", "Miraculous Technique", "Attacks nearby bricks,\nIt count as direct hits by the ball", "Special", 1);
+        SetAugment("SPECIAL_58", "Miraculous Technique", "Attacks nearby bricks,\nit count as direct hits by the ball", "Special", 1);
         SetAdditionalDescription("Applies all effects triggered by direct hits");
     }
 
