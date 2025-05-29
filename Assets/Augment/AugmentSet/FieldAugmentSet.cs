@@ -89,7 +89,7 @@ public class AngryBall : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_2", "Angry Ball", "Balls become enraged and move faster", 3, 3);
+        SetAugment("FIELD_2", "Angry Ball", "Balls become enraged and move faster", 5, 3);
         SetAdditionalDescription(null);
     }
 
@@ -150,7 +150,7 @@ public class PhoenixBall : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for 20 seconds", 4, 40);
+        SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for 20 seconds", 5, 40);
         SetAdditionalDescription(null);
     }
 
@@ -197,7 +197,7 @@ public class TargetMark : FieldAugment
     Material TargetMat;
     private void OnEnable()
     {
-        SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 1, 10);
+        SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 2, 10);
         SetAdditionalDescription(null);
     }
 
@@ -349,7 +349,7 @@ public class AntiGravity : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_7", "Antigravity", "Reverses gravity at regular intervals", 3, 10);
+        SetAugment("FIELD_7", "Antigravity", "Reverses gravity at regular intervals", 2, 10);
         SetAdditionalDescription(null);
     }
 
@@ -534,7 +534,7 @@ public class AttackOrDie : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_11", "Last Breath", "Attack damage +40%\nBalls start to die if they don't hit any bricks within 2 seconds.", 2);
+        SetAugment("FIELD_11", "Last Breath", "Attack damage +40%\nBalls start to die if they don't hit any bricks within 2 seconds.", 3);
         SetAdditionalDescription(null);
     }
 

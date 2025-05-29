@@ -602,7 +602,13 @@ public partial class LevelManager : MonoBehaviour
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    augmentsSet.Add(AugmentManager.instance.GetRandomAugmentByRarity(1));
+                    float chance = Random.value;
+                    int rarity;
+                    if (chance < AugmentManager.instance.rarityWeights[0])
+                        rarity = 0;
+                    else
+                        rarity = 1;
+                    augmentsSet.Add(AugmentManager.instance.GetRandomAugmentByRarity(rarity));
                 }
                 AugmentManager.instance.isSacrificeQuest3Cleared = false;
             }

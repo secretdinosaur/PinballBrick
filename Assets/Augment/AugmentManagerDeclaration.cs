@@ -89,8 +89,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ExpGain10Up>(),
             gameObject.AddComponent<ExpGain30Up>(),
             gameObject.AddComponent<ExpGain50Up>(),
-            gameObject.AddComponent<LevelUpAttackDamageValueUp>(),
-            gameObject.AddComponent<LevelUpEffectDamageValueUp>(),
+            gameObject.AddComponent<AttackEffectBothUp>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -194,7 +193,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<WaveFourBoss>(),
+            gameObject.GetComponent<AttackEffectBothUp>(),
             
         };
 
