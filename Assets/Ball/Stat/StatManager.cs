@@ -104,7 +104,7 @@ public partial class StatManager : MonoBehaviour
     {
         Persistent_Stat initialStats = new Persistent_Stat
         {
-            AttackDamage = 2f,
+            AttackDamage = 5f,
             EffectDamage = 5f,
             StartingBall = 1,
             BonusExp = 1f,
