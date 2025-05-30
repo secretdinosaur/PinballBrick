@@ -2535,3 +2535,24 @@ public class WaveFourBoss : SpecialAugment
         StatManager.instance.ChangeTemporaryStats_ExpGain(-0.16f);
     }
 }
+
+public class RerollAugments : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_73", "Reroll", "Refreshes the currently available augments", "Special", 5);
+        SetAdditionalDescription("This augment may appear again after being selected\n" +
+            "and it won't appear again right away after a refresh");
+    }
+
+    public override void Apply()
+    {
+        LevelManager.Instance.isThereRerolled = true;
+        LevelManager.Instance.RerollAugment = this;
+    }
+
+    public override void Remove()
+    {
+        
+    }
+}

@@ -18,13 +18,13 @@ public partial class AugmentManager //Utility
             activeFieldAugments.Any(a => a.ID == ID) || 
             activeSpecialAugments.Any(a => a.ID == ID);
     }
-    private List<IAugment> exceptionAugments = new List<IAugment>();
+    public List<IAugment> exceptionAugments = new List<IAugment>();
     private List<IAugment> alreadyChosenAugments = new List<IAugment>();
     public IAugment GetRandomAugment()
     {
         if (augmentsSet == null || augmentsSet.Count == 0) return null;
         var availableAugments = augmentsSet
-            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == GetTargetRarity())
+            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == 5)
             .ToList();
         if (availableAugments.Count == 0) return null;
 
@@ -88,7 +88,8 @@ public partial class AugmentManager
         }
         else if (augment is SpecialAugment specialAugment)
         {
-            activeSpecialAugments.Add(specialAugment);
+            if(specialAugment.ID != "SPECIAL_73")
+                activeSpecialAugments.Add(specialAugment);
             augment.Apply();
         }
         IAugment OppositeAugment = GetOppositeAugment(augment);
@@ -117,7 +118,7 @@ public partial class AugmentManager
         }
         else if (augment is SpecialAugment specialAugment)
         {
-            if (activeSpecialAugments.Any(a => a.Name == augment.Name))
+            if (activeSpecialAugments.Any(a => a.Name == augment.Name && specialAugment.ID != "SPECIAL_73"))
             {
                 augmentsSet.Remove(specialAugment);
             }
