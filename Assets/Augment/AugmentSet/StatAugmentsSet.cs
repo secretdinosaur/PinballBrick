@@ -401,7 +401,7 @@ public class DecreaseFieldCooldown5 : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_19", "Time Accelerator I", "Field effect cooltime -5%", 5);
-        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 5% =" 
+        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString("F1") + "- 5% =" 
             + AugmentManager.instance.FieldGlobalCooldown * 0.95f);
     }
 
@@ -421,7 +421,7 @@ public class DecreaseFieldCooldown20 : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_20", "Time Accelerator II", "Field effect cooltime -20%", 3);
-        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 20% ="
+        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString("F1") + "- 20% ="
             + AugmentManager.instance.FieldGlobalCooldown * 0.8f);
     }
 

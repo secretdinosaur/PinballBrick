@@ -15,7 +15,6 @@ using System.Drawing;
 using static UnityEngine.Analytics.IAnalytic;
 using System.Xml;
 using DG.Tweening;
-using Unity.Android.Gradle.Manifest;
 
 
 public partial class LevelManager : MonoBehaviour
