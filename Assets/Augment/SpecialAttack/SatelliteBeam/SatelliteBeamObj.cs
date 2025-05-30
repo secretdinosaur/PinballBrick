@@ -20,15 +20,19 @@ public class SatelliteBeamObj : SpecialObj
         base.OnEnable();
         TouchedBricks.Clear();
         SpecialObjType = "SatelliteBeamObj";
+    }
+
+    public void StartAttack(float Duration)
+    {
         StartCoordinate = StartCoordinateSetting();
         transform.position = StartCoordinate;
         FinishCoordinate = FinishCoordinateSetting(StartCoordinate);
-        Routine = StartCoroutine(SatelliteBeam());
+        Routine = StartCoroutine(SatelliteBeam(Duration));
     }
 
-    IEnumerator SatelliteBeam()
+    IEnumerator SatelliteBeam(float Duration)
     {
-        StartCoroutine(MoveSatelliteBeam(StartCoordinate, FinishCoordinate));
+        StartCoroutine(MoveSatelliteBeam(StartCoordinate, FinishCoordinate, Duration));
         while(true)
         {
             yield return new WaitForSeconds(0.1f);
@@ -50,11 +54,11 @@ public class SatelliteBeamObj : SpecialObj
         }
     }
 
-    private IEnumerator MoveSatelliteBeam(Vector2 StartLocation, Vector2 FinishLocation)
+    private IEnumerator MoveSatelliteBeam(Vector2 StartLocation, Vector2 FinishLocation, float Duration)
     {
         float elapsedTime = 0f;
 
-        while (elapsedTime < 12.5f)
+        while (elapsedTime < Duration)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / 12.5f;

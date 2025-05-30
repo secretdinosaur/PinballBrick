@@ -72,11 +72,6 @@ public partial class StatManager : MonoBehaviour
         EffectDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageChangedStatValueText").GetComponent<TMP_Text>();
         EffectDamageChangedStatValueText.text = "";
 
-        EffectCriticalDamageStatValueText = NoticeChangedStatPanel.transform.Find("EffectCriticalDamageIcon/EffectCriticalDamageStatValueText").GetComponent<TMP_Text>();
-        EffectCriticalDamageStatValueText.text = "";
-        EffectCriticalDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectCriticalDamageIcon/EffectCriticalDamageChangedStatValueText").GetComponent<TMP_Text>();
-        EffectCriticalDamageChangedStatValueText.text = "";
-
         EffectDurationStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationStatValueText").GetComponent<TMP_Text>();
         EffectDurationStatValueText.text = "";
         EffectDurationChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationChangedStatValueText").GetComponent<TMP_Text>();
@@ -94,7 +89,7 @@ public partial class StatManager : MonoBehaviour
 
         TotalChangedStatValue = new List<float>
         {
-            0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+            0, 0, 0, 0, 0, 0, 0, 1, 1
         };
 
         ShowChangedStatRoutine = null;
@@ -138,8 +133,7 @@ public partial class StatManager : MonoBehaviour
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
             EffectDamage = 0.5f,
-            EffectDuration = 0.5f,
-            EffectCriticalDamage = 1.1f,
+            EffectDuration = 1f,
             GoldGain = 0.0f,
             ExpGain = 0.0f,
         };
@@ -240,9 +234,6 @@ public partial class StatManager
     TMP_Text EffectDamageStatValueText;
     TMP_Text EffectDamageChangedStatValueText;
 
-    TMP_Text EffectCriticalDamageStatValueText;
-    TMP_Text EffectCriticalDamageChangedStatValueText;
-
     TMP_Text EffectDurationStatValueText;
     TMP_Text EffectDurationChangedStatValueText;
 
@@ -263,8 +254,7 @@ public partial class StatManager
         CanvasGroup canvasGroup = NoticeChangedStatPanel.GetComponent<CanvasGroup>();
         RectTransform rectTransform = NoticeChangedStatPanel.GetComponent<RectTransform>();
 
-        AttackDamageStatValueText.text = ((Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * 
-            (Persistent_stat.AttackDamageMultiplier * statMultiplier.AttackDamageMultiplier)).ToString("F1");
+        AttackDamageStatValueText.text = ((Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier).ToString("F1");
         AttackDamageChangedStatValueText.text = "";
 
         CriticalDamageStatValueText.text = ((Persistent_stat.CriticalDamage + Temporary_stat.CriticalDamage) * 100).ToString("F1") + "%";
@@ -273,14 +263,10 @@ public partial class StatManager
         CriticalChanceStatValueText.text = ((Persistent_stat.CriticalChance + Temporary_stat.CriticalChance) * 100).ToString("F1") + "%";
         CriticalChanceChangedStatValueText.text = "";
 
-        EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) *
-            (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString("F1");
+        EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier).ToString("F1");
         EffectDamageChangedStatValueText.text = "";
 
-        EffectCriticalDamageStatValueText.text = (Temporary_stat.EffectCriticalDamage * 100).ToString("F1") + "%";
-        EffectCriticalDamageChangedStatValueText.text = "";
-
-        EffectDurationStatValueText.text = Temporary_stat.EffectDuration.ToString() + "s";
+        EffectDurationStatValueText.text = ((Temporary_stat.EffectDuration - 1) * 100).ToString() + "%";
         EffectDurationChangedStatValueText.text = "";
 
         GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString("F1") + "%";
@@ -324,7 +310,7 @@ public partial class StatManager
 
         TotalChangedStatValue = new List<float>
         {
-            0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+            0, 0, 0, 0, 0, 0, 0, 1, 1
         };
     }
 
@@ -338,90 +324,142 @@ public partial class StatManager
                     if(TotalChangedStatValue[0] != 0)
                     {
                         if (TotalChangedStatValue[0] < 0)
-                            AttackDamageChangedStatValueText.text = TotalChangedStatValue[0].ToString("F1");
+                        {
+                            AttackDamageChangedStatValueText.text = TotalChangedStatValue[0].ToString("0.##");
+                            AttackDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }
                         else if(TotalChangedStatValue[0] > 0)
-                            AttackDamageChangedStatValueText.text = "+" + TotalChangedStatValue[0].ToString("F1");
+                        {
+                            AttackDamageChangedStatValueText.text = "+" + TotalChangedStatValue[0].ToString("0.##");
+                            AttackDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }
                     }
                     break;
                 case 1:
                     if (TotalChangedStatValue[1] != 0)
                     {
                         if (TotalChangedStatValue[1] < 0)
-                            CriticalDamageChangedStatValueText.text = (TotalChangedStatValue[1] * 100).ToString("F1") + "%";
+                        {
+                            CriticalDamageChangedStatValueText.text = (TotalChangedStatValue[1] * 100).ToString("0.##") + "%";
+                            CriticalDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }
                         else if (TotalChangedStatValue[1] > 0)
-                            CriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[1] * 100).ToString("F1") + "%";
+                        {
+                            CriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[1] * 100).ToString("0.##") + "%";
+                            CriticalDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }
                     }
                     break;
                 case 2:
                     if (TotalChangedStatValue[2] != 0)
                     {
                         if (TotalChangedStatValue[2] < 0)
-                            CriticalChanceChangedStatValueText.text = (TotalChangedStatValue[2] * 100).ToString("F1") + "%";
+                        {
+                            CriticalChanceChangedStatValueText.text = (TotalChangedStatValue[2] * 100).ToString("0.##") + "%";
+                            CriticalChanceChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }
                         else if (TotalChangedStatValue[2] > 0)
-                            CriticalChanceChangedStatValueText.text = "+" + (TotalChangedStatValue[2] * 100).ToString("F1") + "%";
+                        {
+                            CriticalChanceChangedStatValueText.text = "+" + (TotalChangedStatValue[2] * 100).ToString("0.##") + "%";
+                            CriticalChanceChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        } 
                     }
                     break;
                 case 3:
                     if (TotalChangedStatValue[3] != 0)
                     {
                         if (TotalChangedStatValue[3] < 0)
-                            EffectDamageChangedStatValueText.text = TotalChangedStatValue[3].ToString("F1");
+                        {
+                            EffectDamageChangedStatValueText.text = TotalChangedStatValue[3].ToString("0.##");
+                            EffectDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }                           
                         else if (TotalChangedStatValue[3] > 0)
-                            EffectDamageChangedStatValueText.text = "+" + TotalChangedStatValue[3].ToString("F1");
+                        {
+                            EffectDamageChangedStatValueText.text = "+" + TotalChangedStatValue[3].ToString("0.##");
+                            EffectDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }   
                     }
                     break;
                 case 4:
                     if (TotalChangedStatValue[4] != 0)
                     {
                         if (TotalChangedStatValue[4] < 0)
-                            EffectCriticalDamageChangedStatValueText.text = (TotalChangedStatValue[4] * 100).ToString("F1") + "%";
+                        {
+                            EffectDurationChangedStatValueText.text = (TotalChangedStatValue[4] * 100).ToString("0.##") + "%";
+                            EffectDurationChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }                        
                         else if (TotalChangedStatValue[4] > 0)
-                            EffectCriticalDamageChangedStatValueText.text = "+" + (TotalChangedStatValue[4] * 100).ToString("F1") + "%";
+                        {
+                            EffectDurationChangedStatValueText.text = "+" + (TotalChangedStatValue[4] * 100).ToString("0.##") + "%";
+                            EffectDurationChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }
                     }
                     break;
                 case 5:
                     if (TotalChangedStatValue[5] != 0)
                     {
                         if (TotalChangedStatValue[5] < 0)
-                            EffectDurationChangedStatValueText.text = TotalChangedStatValue[5].ToString("F1") + "s";
+                        {
+                            GoldGainChangedStatValueText.text = (TotalChangedStatValue[5] * 100).ToString("0.##") + "%";
+                            GoldGainChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }       
                         else if (TotalChangedStatValue[5] > 0)
-                            EffectDurationChangedStatValueText.text = "+" + TotalChangedStatValue[5].ToString("F1") + "s";
+                        {
+                            GoldGainChangedStatValueText.text = "+" + (TotalChangedStatValue[5] * 100).ToString("0.##") + "%";
+                            GoldGainChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }  
                     }
                     break;
                 case 6:
                     if (TotalChangedStatValue[6] != 0)
                     {
                         if (TotalChangedStatValue[6] < 0)
-                            GoldGainChangedStatValueText.text = (TotalChangedStatValue[6] * 100).ToString("F1") + "%";
+                        {
+                            ExpGainChangedStatValueText.text = (TotalChangedStatValue[6] * 100).ToString("0.##") + "%";
+                            ExpGainChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }                       
                         else if (TotalChangedStatValue[6] > 0)
-                            GoldGainChangedStatValueText.text = "+" + (TotalChangedStatValue[6] * 100).ToString("F1") + "%";
+                        {
+                            ExpGainChangedStatValueText.text = "+" + (TotalChangedStatValue[6] * 100).ToString("0.##") + "%";
+                            ExpGainChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }        
                     }
                     break;
                 case 7:
-                    if (TotalChangedStatValue[7] != 0)
+                    if (TotalChangedStatValue[7] != 1)
                     {
-                        if (TotalChangedStatValue[7] < 0)
-                            ExpGainChangedStatValueText.text = (TotalChangedStatValue[7] * 100).ToString("F1") + "%";
-                        else if (TotalChangedStatValue[7] > 0)
-                            ExpGainChangedStatValueText.text = "+" + (TotalChangedStatValue[7] * 100).ToString("F1") + "%";
+                        float beforeAttackDamage = float.Parse(AttackDamageStatValueText.text) - ((float.Parse(AttackDamageStatValueText.text) / TotalChangedStatValue[7]));
+                        Debug.Log(float.Parse(AttackDamageStatValueText.text));
+                        for(int y = 0; y < TotalChangedStatValue.Count; y++)
+                        {
+                            Debug.Log(TotalChangedStatValue[i]);
+                        }
+                        if (beforeAttackDamage > 0)
+                        {
+                            AttackDamageChangedStatValueText.text = "+" + beforeAttackDamage.ToString("0.##");
+                            AttackDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }
+                        else
+                        {
+                            AttackDamageChangedStatValueText.text = beforeAttackDamage.ToString("0.##");
+                            AttackDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }             
                     }
                     break;
                 case 8:
                     if (TotalChangedStatValue[8] != 1)
                     {
-                        if (TotalChangedStatValue[8] < 0)
-                            AttackDamageChangedStatValueText.text = (TotalChangedStatValue[8] * 100).ToString("F1") + "%";
-                        else if (TotalChangedStatValue[8] > 0)
-                            AttackDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[8] * 100).ToString("F1") +"%";
-                    }
-                    break;
-                case 9:
-                    if (TotalChangedStatValue[9] != 1)
-                    {
-                        if (TotalChangedStatValue[9] < 0)
-                            EffectDamageChangedStatValueText.text = (TotalChangedStatValue[9] * 100).ToString("F1") + "%";
-                        else if (TotalChangedStatValue[9] > 0)
-                            EffectDamageChangedStatValueText.text = "x" + (TotalChangedStatValue[9] * 100).ToString("F1") + "%";
+                        float beforeEffectDamage = float.Parse(EffectDamageStatValueText.text) - ((float.Parse(EffectDamageStatValueText.text) / TotalChangedStatValue[8]));
+                        if( beforeEffectDamage > 0)
+                        {
+                            EffectDamageChangedStatValueText.text = "+" + beforeEffectDamage.ToString("0.##");
+                            EffectDamageChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
+                        }        
+                        else
+                        {
+                            EffectDamageChangedStatValueText.text = beforeEffectDamage.ToString("0.##");
+                            EffectDamageChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
+                        }   
                     }
                     break;
                 default: 
@@ -434,6 +472,11 @@ public partial class StatManager
     {
         Temporary_stat.AttackDamage += value;
         TotalChangedStatValue[0] += value;
+        if (AugmentManager.instance.determineAugmentID("STAT_28"))
+        {
+            Temporary_stat.EffectDamage += value * 0.1f;
+            TotalChangedStatValue[3] += value * 0.1f;
+        }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
@@ -446,8 +489,44 @@ public partial class StatManager
     }
     public void ChangeTemporaryStats_CriticalChance(float value)
     {
-        Temporary_stat.CriticalChance += value;
-        TotalChangedStatValue[2] += value;
+        if (AugmentManager.instance.determineAugmentID("STAT_21"))
+        {
+            if(Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value != 0)
+            {
+                float x = Persistent_stat.CriticalChance;
+                float y = (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value) * 100;
+                Temporary_stat.CriticalChance = -x;
+                TotalChangedStatValue[2] -= x;
+
+                Temporary_stat.AttackDamage += y * 0.04f;
+                TotalChangedStatValue[0] += y * 0.04f;
+            }
+            else
+            {
+                Temporary_stat.AttackDamage += (value * 100) * 0.04f;
+                TotalChangedStatValue[0] += (value * 100) * 0.04f;
+            }
+        }
+        else
+        {
+            if (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value >= 1f)
+            {
+                float x = 1f - (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance);
+                float y = Mathf.Floor((value - x) * 100f) / 100f;
+                Temporary_stat.CriticalChance += x;
+                TotalChangedStatValue[2] += x;
+                if (y > 0)
+                {
+                    Temporary_stat.CriticalDamage += y;
+                    TotalChangedStatValue[1] += y;
+                }
+            }
+            else
+            {
+                Temporary_stat.CriticalChance += value;
+                TotalChangedStatValue[2] += value;
+            }
+        }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
@@ -455,34 +534,32 @@ public partial class StatManager
     {
         Temporary_stat.EffectDamage += value;
         TotalChangedStatValue[3] += value;
-        SaveTemporaryStat(Temporary_stat);
-        isChangedStat = true;
-    }
-    public void ChangeTemporaryStats_EffectCriticalDamage(float value)
-    {
-        Temporary_stat.EffectCriticalDamage += value;
-        TotalChangedStatValue[4] += value;
+        if (AugmentManager.instance.determineAugmentID("STAT_28"))
+        {
+            Temporary_stat.AttackDamage += value * 0.1f;
+            TotalChangedStatValue[0] += value * 0.1f;
+        }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_EffectDuration(float value)
     {
         Temporary_stat.EffectDuration += value;
-        TotalChangedStatValue[5] += value;
+        TotalChangedStatValue[4] += value;
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_GoldGain(float value)
     {
         Temporary_stat.GoldGain += value;
-        TotalChangedStatValue[6] += value;
+        TotalChangedStatValue[5] += value;
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_ExpGain(float value)
     {
         Temporary_stat.ExpGain += value;
-        TotalChangedStatValue[7] += value;
+        TotalChangedStatValue[6] += value;
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
@@ -491,13 +568,13 @@ public partial class StatManager
         if(value >= 0)
         {
             statMultiplier.AttackDamageMultiplier *= value;
-            TotalChangedStatValue[8] *= value;
+            TotalChangedStatValue[7] *= value;
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
             statMultiplier.AttackDamageMultiplier /= -value;
-            TotalChangedStatValue[8] /= -value;
+            TotalChangedStatValue[7] /= -value;
             SaveStatMultiplier(statMultiplier);
         }
         isChangedStat = true;
@@ -507,13 +584,13 @@ public partial class StatManager
         if(value >= 0)
         {
             statMultiplier.EffectDamageMultiplier *= value;
-            TotalChangedStatValue[9] *= value;
+            TotalChangedStatValue[8] *= value;
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
             statMultiplier.EffectDamageMultiplier /= -value;
-            TotalChangedStatValue[9] /= -value;
+            TotalChangedStatValue[8] /= -value;
             SaveStatMultiplier(statMultiplier);
         }
         isChangedStat = true;

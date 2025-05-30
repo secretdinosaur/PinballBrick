@@ -130,8 +130,15 @@ public static partial class DamageManager //Special Effect Attack
 {
     public static IEnumerator AdditionalAttack(IBrick brick, float MaxAttackTime, float TimeCount, float DamageMultiflier, bool IsStrong = false) // AdditionalAttack Coroutine
     {
+        if (!brick.gameObject.activeSelf)
+        {
+            yield break;
+        }
         yield return new WaitForSeconds(0.5f);
-
+        if (!brick.gameObject.activeSelf)
+        {
+            yield break;
+        }
         while (MaxAttackTime > 0f)
         {
             if (!brick.gameObject.activeSelf)
@@ -182,7 +189,7 @@ public static partial class DamageManager //Special Effect Attack
                 brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
         }
         float Percent = isCritical ? 
-              Random.Range(0.03f, 0.05f) * StatManager.instance.Temporary_stat.EffectCriticalDamage
+              Random.Range(0.03f, 0.05f) * CriticalDamage()
             : Random.Range(0.03f, 0.05f);
         float BaseDamage = brick.HpTemp * Percent;
 
@@ -223,7 +230,7 @@ public static partial class DamageManager //Special Effect Attack
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
         float damage = isCritical ? 
-              Random.Range(baseDamage * 0.5f, baseDamage * 1.3f) * StatManager.instance.Temporary_stat.EffectCriticalDamage
+              Random.Range(baseDamage * 0.5f, baseDamage * 1.3f) * CriticalDamage()
             : Random.Range(baseDamage * 0.5f, baseDamage * 1.3f);
         float FinalDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
@@ -347,7 +354,7 @@ public class BrickEffectManager : MonoBehaviour
             EffectAttackDamage = isCritical
                 ? (StatManager.instance.Temporary_stat.EffectDamage *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier)
-                  * EffectStatusSet["Fire"].EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage
+                  * EffectStatusSet["Fire"].EffectStack * DamageManager.CriticalDamage()
                 : (StatManager.instance.Temporary_stat.EffectDamage *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier)
                   * EffectStatusSet["Fire"].EffectStack;
@@ -450,7 +457,7 @@ public class BrickEffectManager : MonoBehaviour
 
             EffectAttackDamage = isCritical
                 ? (brick.HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
-                         * EffectStatusSet["Poison"].EffectStack * StatManager.instance.Temporary_stat.EffectCriticalDamage))
+                         * EffectStatusSet["Poison"].EffectStack * DamageManager.CriticalDamage()))
                 : (brick.HP * (0.01f * StatManager.instance.statMultiplier.EffectDamageMultiplier * 0.8f
                          * EffectStatusSet["Poison"].EffectStack));
 

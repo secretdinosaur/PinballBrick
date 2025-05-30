@@ -192,9 +192,9 @@ public class VisualEffectManager : MonoBehaviour
     public IEnumerator SpawnExplosionWithBallEffectCo(Vector2 Vec, Vector2 Pos)
     {
         float angle = Mathf.Atan2(Vec.y, Vec.x) * Mathf.Rad2Deg;
-        float angle2 = Mathf.Atan2(Vec.x, Vec.y) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.Euler(0f, 0f, angle - 10);
-        Quaternion rotation2 = Quaternion.Euler(0f, 0f, angle2 + 10);
+        float angle2 = (angle + 180f) % 360f;
+        Quaternion rotation = Quaternion.Euler(0f, 0f, angle - 10f);
+        Quaternion rotation2 = Quaternion.Euler(0f, 0f, angle2 - 10f);
 
         ExplosionWithBallPS PS = PoolManager.GetFromPool<ExplosionWithBallPS>();
         ExplosionWithBallPS PS2 = PoolManager.GetFromPool<ExplosionWithBallPS>();

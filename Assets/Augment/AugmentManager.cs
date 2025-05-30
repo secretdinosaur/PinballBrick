@@ -18,13 +18,13 @@ public partial class AugmentManager //Utility
             activeFieldAugments.Any(a => a.ID == ID) || 
             activeSpecialAugments.Any(a => a.ID == ID);
     }
-    private List<IAugment> exceptionAugments = new List<IAugment>();
+    public List<IAugment> exceptionAugments = new List<IAugment>();
     private List<IAugment> alreadyChosenAugments = new List<IAugment>();
     public IAugment GetRandomAugment()
     {
         if (augmentsSet == null || augmentsSet.Count == 0) return null;
         var availableAugments = augmentsSet
-            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == GetTargetRarity())
+            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == 5)
             .ToList();
         if (availableAugments.Count == 0) return null;
 
@@ -39,9 +39,8 @@ public partial class AugmentManager //Utility
         if (augmentsSet == null || augmentsSet.Count == 0) return null;
 
         var availableAugments = augmentsSet
-            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == targetRarity && a.ID.Contains("FIELD"))
+            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == targetRarity)
             .ToList();
-
         if (availableAugments.Count == 0) return null;
 
         int index = Random.Range(0, availableAugments.Count);
@@ -79,18 +78,19 @@ public partial class AugmentManager
         exceptionAugments.Add(augment);
         if (augment is StatAugment statAugment)
         {
-            augment.Apply();
             activeStatAugments.Add(statAugment);
+            augment.Apply();
         }
         else if (augment is FieldAugment fieldAugment)
         {
-            augment.Apply();
             activeFieldAugments.Add(fieldAugment);
+            augment.Apply();
         }
         else if (augment is SpecialAugment specialAugment)
         {
+            if(specialAugment.ID != "SPECIAL_73")
+                activeSpecialAugments.Add(specialAugment);
             augment.Apply();
-            activeSpecialAugments.Add(specialAugment);
         }
         IAugment OppositeAugment = GetOppositeAugment(augment);
         if (OppositeAugment != null)
@@ -118,7 +118,7 @@ public partial class AugmentManager
         }
         else if (augment is SpecialAugment specialAugment)
         {
-            if (activeSpecialAugments.Any(a => a.Name == augment.Name))
+            if (activeSpecialAugments.Any(a => a.Name == augment.Name && specialAugment.ID != "SPECIAL_73"))
             {
                 augmentsSet.Remove(specialAugment);
             }

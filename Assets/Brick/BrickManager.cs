@@ -48,7 +48,8 @@ public class BrickManager : MonoBehaviour
     public int BaseWaitingTimeValue;
 
     public int BaseBossSpawnValue;
-
+    public int NextBossSpawnWave;
+    public int BossSpawnWaveNumber;
 
     private bool WavePause;
 
@@ -100,6 +101,8 @@ public class BrickManager : MonoBehaviour
 
         BaseBossHealthValue = 1f;
         BaseBossSpawnValue = 1;
+        NextBossSpawnWave = 10;
+        BossSpawnWaveNumber = 10;
 
         WavePause = false;
     }
@@ -114,7 +117,8 @@ public class BrickManager : MonoBehaviour
 
     public void UpdateCurrentBricks(IBrick brick)
     {
-        if(!CurrentBricks.Contains(brick))
+        CurrentBricks.RemoveAll(item => item == null);
+        if (!CurrentBricks.Contains(brick))
         {
             CurrentBricks.Add(brick);
         }
@@ -154,7 +158,9 @@ public class BrickManager : MonoBehaviour
     }
     public void TakeBrick(IBrick brick)
     {
-        if(brick.gameObject.activeSelf)
+        if (brick.IsBoss)
+            OnWaveStopButtonClick();
+        if (brick.gameObject.activeSelf)
         {
             if (brick.Fire != null)
             {
@@ -214,8 +220,9 @@ public class BrickManager : MonoBehaviour
                 }
             }
         }
-        if (Wave % 10 == 0)
+        if (BossSpawnCondition(Wave))
         {
+            NextBossSpawnWave += BossSpawnWaveNumber;
             for (int i = 0; i < BaseBossSpawnValue; i++)
             {
                 brickQueue.Enqueue(SettingBoss());
@@ -233,14 +240,12 @@ public class BrickManager : MonoBehaviour
             if (BrickQueue == null)
             {
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
-                    || AugmentManager.instance.determineAugmentID("SPECIAL_62");
-                SettingBrickSpawnChance();
+                    || AugmentManager.instance.determineAugmentID("SPECIAL_62")
+                    || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
+                //SettingBrickSpawnChance();
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
-            }
-            else
-            {
             }
             /////////////////////////////////------------------------------------------------------------------------------------------
             if (isRapid) // Rapid stages are active after wave 10
@@ -397,7 +402,7 @@ public class BrickManager : MonoBehaviour
         else if (brickType == "TwinBrick")
             return 5;
         else if (brickType == "AbsorbBrick")
-            return 1;
+            return 5;
         else
             return 1;
     }
@@ -543,6 +548,7 @@ public class BrickManager : MonoBehaviour
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
         if (brick.IsBoss)
         {
+            OnWaveStopButtonClick();
             for (int i = 0; i < 3; i++)
             {
                 HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
@@ -583,9 +589,7 @@ public class BrickManager : MonoBehaviour
 
                 Vector2 randomPosition = GenerateRandomPosition();
                 Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
-                UpdateCurrentBricks(Brick);
                 SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
-
                 _FusionBrickHealth = 0;
                 _FusionBrickNum = 0;
             }
@@ -601,7 +605,6 @@ public class BrickManager : MonoBehaviour
 
             Vector2 randomPosition = GenerateRandomPosition();
             Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
-            UpdateCurrentBricks(Brick);
             SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
         }
         if(Brick.BrickType == "TwinBrick" && Brick.GetComponent<TwinBrick>().Twin == null)
@@ -613,7 +616,9 @@ public class BrickManager : MonoBehaviour
             float rotation = UnityEngine.Random.value * 3.14f;
             Brick.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
+            Twin.Init(Brick.IsBoss, false, Brick.Point, Brick.Exp);
         }
+        UpdateCurrentBricks(Brick);
     }
 
     public IBrick SpawnSpecificBrick(string BrickType)
@@ -628,6 +633,13 @@ public class BrickManager : MonoBehaviour
         }
         SoundManager.instance.SpawnBrickSound(brick.GetComponent<AudioSource>());
         return brick;
+    }
+
+    public bool BossSpawnCondition(int Wave)
+    {
+        bool isBossSpawnCondition = Wave == NextBossSpawnWave;
+
+        return isBossSpawnCondition; 
     }
 
     //Test Button Functions

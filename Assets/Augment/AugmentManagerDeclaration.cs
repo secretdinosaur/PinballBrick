@@ -28,7 +28,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public float FieldGlobalCooldown = 10f;
 
-    public bool isSacrificeQuest3Cleared;
+    public bool isSacrificeQuest3Cleared = false;
 
     public int SpawnBallAmount;
 
@@ -82,7 +82,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButStrongAtk>(),
             gameObject.AddComponent<DecreaseFieldCooldown5>(),
             gameObject.AddComponent<DecreaseFieldCooldown20>(),
-            gameObject.AddComponent<CritChanceToAttackDamage>(),
             gameObject.AddComponent<RandomStatUpOrDown>(),
             gameObject.AddComponent<Trinity>(),
             gameObject.AddComponent<Perfectionism>(),
@@ -90,8 +89,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ExpGain10Up>(),
             gameObject.AddComponent<ExpGain30Up>(),
             gameObject.AddComponent<ExpGain50Up>(),
-            gameObject.AddComponent<LevelUpAttackDamageValueUp>(),
-            gameObject.AddComponent<LevelUpEffectDamageValueUp>(),
+            gameObject.AddComponent<AttackEffectBothUp>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -128,7 +126,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<InfiniteGrowBall>(),
             gameObject.AddComponent<SacrificeQuest1>(),
             gameObject.AddComponent<AttackAfterAdditionalBall>(),
-            gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
             gameObject.AddComponent<RandomEffect>(),
             gameObject.AddComponent<ThunderStrike>(),
@@ -155,7 +152,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<CritAfterThreeAttack>(),
             gameObject.AddComponent<DamageInfection>(),
             gameObject.AddComponent<RollDiceBall>(),
-            gameObject.AddComponent<ItemEnhance>(),
+            gameObject.AddComponent<PortalBall>(),
             gameObject.AddComponent<InfiniteRapid>(),
             gameObject.AddComponent<MoreAndWeakBricks>(),
             gameObject.AddComponent<LessAndStrongBricks>(),
@@ -167,6 +164,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<GoalWaveBonus>(),
             gameObject.AddComponent<ReducesExp10>(),
             gameObject.AddComponent<ReducesExp15>(),
+            gameObject.AddComponent<WaveFourBoss>(),
+            gameObject.AddComponent<RerollAugments>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -205,7 +204,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<RandomStatUpOrDown>());
+        AddAugment(gameObject.GetComponent<FreshNewStart>());
     }
 }
 

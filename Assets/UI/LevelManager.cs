@@ -15,6 +15,8 @@ using System.Drawing;
 using static UnityEngine.Analytics.IAnalytic;
 using System.Xml;
 using DG.Tweening;
+using Unity.Android.Gradle.Manifest;
+using System.Linq;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -54,7 +56,6 @@ public partial class LevelManager : MonoBehaviour
         CriticalChance,
         EffectDamage,
         EffectDuration,
-        EffectCriticalDamage,
         GoldGain,
         ExpGain,
     }
@@ -65,8 +66,7 @@ public partial class LevelManager : MonoBehaviour
         new List<float> { 0.03f, 0.08f }, //CriticalDamage
         new List<float> { 0.02f, 0.05f }, //CriticalChance
         new List<float> { 0.3f, 0.8f }, //EffectDamage
-        new List<float> { 0.02f, 0.05f }, //EffectDuration
-        new List<float> { 0.03f, 0.08f }, //EffectCriticalDamage
+        new List<float> { 0.05f, 0.1f }, //EffectDuration
         new List<float> { 0.012f, 0.034f }, //GoldGain
         new List<float> { 0.012f, 0.034f }, //ExpGain
     };
@@ -79,7 +79,7 @@ public partial class LevelManager : MonoBehaviour
         Instance = this;
         LevelBar = GameObject.Find("Canvas").transform.Find("LevelBar").GetComponent<Slider>();
         LevelUpPanel = GameObject.Find("Canvas").transform.Find("LevelUpPanel").gameObject;
-        CanvasForLevelUpPanel = GameObject.Find("CanvasForLevelUpPanel");
+        CanvasForLevelUpPanel = GameObject.Find("Canvas").transform.Find("CanvasForLevelUpPanel").gameObject;
         LevelUpPanel.SetActive(false);
         CanvasForLevelUpPanel.SetActive(false);
         LevelUpQueue = new Queue<int>();
@@ -230,9 +230,8 @@ public partial class LevelManager : MonoBehaviour
             { "Critical\nChance", 2 },
             { "Effect\nDamage", 3 },
             { "Effect\nDuration", 4 },
-            { "Effect\nCritical\nDamage", 5 },
-            { "Gold\nGain", 6 },
-            { "Exp\nGain", 7 }
+            { "Gold\nGain", 5 },
+            { "Exp\nGain", 6 }
         };
         
         List<string> keys = new List<string>(statTable.Keys);
@@ -279,25 +278,12 @@ public partial class LevelManager : MonoBehaviour
                     );
                 break;
             case (int)StatName.CriticalChance:
-                if(StatManager.instance.Persistent_stat.CriticalChance + 
-                    StatManager.instance.Temporary_stat.CriticalChance >= 1f)
-                {
-                    StatManager.instance.ChangeTemporaryStats_CriticalDamage
-                    (
-                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalDamage] % 5 == 0
-                        ? StatUpValue[(int)StatName.CriticalDamage][1]
-                        : StatUpValue[(int)StatName.CriticalDamage][0])
-                    );
-                }
-                else
-                {
-                    StatManager.instance.ChangeTemporaryStats_CriticalChance
+                StatManager.instance.ChangeTemporaryStats_CriticalChance
                     (
                         BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.CriticalChance] % 5 == 0
                         ? StatUpValue[(int)StatName.CriticalChance][1]
                         : StatUpValue[(int)StatName.CriticalChance][0])
                     );
-                }
                 break;
             case (int)StatName.EffectDamage:
                 StatManager.instance.ChangeTemporaryStats_EffectDamage
@@ -311,13 +297,6 @@ public partial class LevelManager : MonoBehaviour
                     (
                         BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectDuration] % 5 == 0
                         ? StatUpValue[(int)StatName.EffectDuration][1] : StatUpValue[(int)StatName.EffectDuration][0])
-                    );
-                break;
-            case (int)StatName.EffectCriticalDamage:
-                StatManager.instance.ChangeTemporaryStats_EffectCriticalDamage
-                    (
-                        BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.EffectCriticalDamage] % 5 == 0
-                        ? StatUpValue[(int)StatName.EffectCriticalDamage][1] : StatUpValue[(int)StatName.EffectCriticalDamage][0])
                     );
                 break;
             case (int)StatName.GoldGain:
@@ -397,12 +376,6 @@ public partial class LevelManager : MonoBehaviour
         Rare,
         Common
     }
-    public Ease EaseFor5;
-    public Ease EaseFor4;
-    public Ease EaseFor3;
-    public Ease EaseFor2;
-    public Ease EaseFor1;
-    public Ease EaseFor0;
     IEnumerator AugAniCoroutine(int[] rarities, Button[] SelectButtons, bool IsStat)
     {
         if (IsStat)
@@ -431,6 +404,11 @@ public partial class LevelManager : MonoBehaviour
             {
                 case 3:
                     VisualEffectManager.Instance.SetActiveAugmentPanelPs(i, RarityColorList[rarities[i]], rarities[i]);
+                    VisualEffectManager.Instance.AugmentPanelPS[i].transform.DOMove(new Vector3(VisualEffectManager.Instance.AugmentPanelPS[i].transform.position.x, 0, 0), 0.25f)
+                        .SetEase(Ease.OutQuad)
+                        .SetUpdate(true)
+                        .OnComplete(() => isFinished = true);
+                    yield return new WaitUntil(() => isFinished);
                     break;
 
                 case 2:
@@ -454,7 +432,7 @@ public partial class LevelManager : MonoBehaviour
 
                     VisualEffectManager.Instance.AugmentPanelBurstPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[2]);
                     VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[2]);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(100);
+                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(70);
                     SelectButtons[i].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
                     yield return new WaitUntil(() => isFinished);
                     break;
@@ -497,7 +475,7 @@ public partial class LevelManager : MonoBehaviour
                         .OnComplete(() => isFinished = true);
                     VisualEffectManager.Instance.AugmentPanelBurstPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[1]);
                     VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[1]);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(200);
+                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(150);
                     SelectButtons[i].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
                     yield return new WaitUntil(() => isFinished);
                     break;
@@ -559,7 +537,7 @@ public partial class LevelManager : MonoBehaviour
                         .OnComplete(() => isFinished = true);
                     VisualEffectManager.Instance.AugmentPanelBurstPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[0]);
                     VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[0]);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(300);
+                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(200);
                     SelectButtons[i].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
                     if (i == 0)
                         Option_1_Aura.SetFloat("_OuterFade", 50f);
@@ -584,8 +562,14 @@ public partial class LevelManager : MonoBehaviour
         Level = LevelUpQueue.Dequeue();
 
         NoticeLevelText.text = "Now Your Level: " + Level;
+        ShowStatOrAugment();
+    }
+    public bool isThereRerolled = false;
+    public IAugment RerollAugment = null;
+    public void ShowStatOrAugment()
+    {
         optionIndex = -1;
-        if (IsStatOrAugment())
+        if (false) //IsStatOrAugment()
         {
             randomStats = GetRandomStats();
 
@@ -621,11 +605,18 @@ public partial class LevelManager : MonoBehaviour
         else
         {
             augmentsSet = new List<IAugment>();
+            augmentsSet.Clear();
             if (AugmentManager.instance.isSacrificeQuest3Cleared)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    augmentsSet.Add(AugmentManager.instance.GetRandomAugmentByRarity(1));
+                    float chance = Random.value;
+                    int rarity;
+                    if (chance < AugmentManager.instance.rarityWeights[0])
+                        rarity = 0;
+                    else
+                        rarity = 1;
+                    augmentsSet.Add(AugmentManager.instance.GetRandomAugmentByRarity(rarity));
                 }
                 AugmentManager.instance.isSacrificeQuest3Cleared = false;
             }
@@ -668,10 +659,8 @@ public partial class LevelManager : MonoBehaviour
 
     private string LevelUpTextWhenStatUp(int i)
     {
-        string seconds = "sec";
         string percent = "%";
-        bool secondsBool = randomStats[i].Value == 4;
-        bool percentBool = (randomStats[i].Value == 2 || randomStats[i].Value == 6 || randomStats[i].Value == 7);
+        bool percentBool = (randomStats[i].Value == 1 || randomStats[i].Value == 2 || randomStats[i].Value == 4 || randomStats[i].Value == 5 || randomStats[i].Value == 6);
 
 
         return " +" + 
@@ -681,8 +670,7 @@ public partial class LevelManager : MonoBehaviour
                     (BaseStatUpValue * StatUpValue[randomStats[i].Value][0] * (percentBool ? 100 : 1))
                 )
                 + 
-                (secondsBool ? seconds
-                : percentBool ? percent
+                (percentBool ? percent
                 : "")
                 + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
     }
@@ -778,9 +766,9 @@ public partial class LevelManager : MonoBehaviour
             AdditionalDescriptionPanel.SetActive(true);
             AdditionalDescriptionText.text = augmentsSet[i].AdditionalDescription;
             AdditionalDescriptionText.ForceMeshUpdate();
-            int lineCount = AdditionalDescriptionText.textInfo.lineCount - 1;
-            rectTransform.sizeDelta = new Vector2(765, 0 + (lineCount * 50));
-            rectTransform.anchoredPosition = new Vector2(0, -250 - (lineCount * 25f));
+            int lineCount = AdditionalDescriptionText.textInfo.lineCount;
+            rectTransform.sizeDelta = new Vector2(765, 50 + (lineCount * 50));
+            rectTransform.anchoredPosition = new Vector2(0, -285 - (lineCount * 25f));
         }
         else
         {
@@ -818,62 +806,58 @@ public partial class LevelManager : MonoBehaviour
 
     public void LevelUpEnd()
     {
-        if (CheckStatOrAugment)
+        if (isThereRerolled)
         {
-            if (optionIndex == -1)
-            {
-                int RandomNumber = Random.Range(0, 3);
-                StatManager.instance.Temporary_stat.StatLevel[randomStats[RandomNumber].Value]++;
-                CalculateTemporaryStatWithLevel(randomStats[RandomNumber].Value);
-            }
-            else
+            isThereRerolled = false;
+            ShowStatOrAugment();
+            return;
+        }
+        else
+        {
+            if (CheckStatOrAugment)
             {
                 StatManager.instance.Temporary_stat.StatLevel[randomStats[optionIndex].Value]++;
                 CalculateTemporaryStatWithLevel(randomStats[optionIndex].Value);
             }
-        }
-        else
-        {
-            if (optionIndex == -1)
-            {
-                int RandomNumber = Random.Range(0, 3);
-                AugmentManager.instance.AddAugment(augmentsSet[RandomNumber]);
-                AugmentManager.instance.RemoveAugment(augmentsSet[RandomNumber]);
-            }
             else
             {
+                Debug.Log(optionIndex);
+                for (int i = 0; i < augmentsSet.Count; i++)
+                {
+                    Debug.Log(augmentsSet[i]);
+                }
                 AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
                 AugmentManager.instance.RemoveAugment(augmentsSet[optionIndex]);
             }
-        }
-        isAlreadyClickedButton = new bool[OptionButtons.Length];
-        optionIndex = -1;
-        for (int i = 0; i < OptionButtons.Length; i++)
-        {
-            OptionButtons[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-            OptionButtonShaders[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-        }
-        if (LevelUpQueue.Count > 0)
-        {
-            ShowLevelUpPanel();
-        }
-        else
-        {
-            CustomTime_1 = 0;
-            CustomTime_2 = 0;
-            CustomTime_3 = 0;
-            Time.timeScale = 1f;
-            OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
-            OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
-            OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
-            AdditionalDescriptionPanel.SetActive(false);
-            LevelUpPanel.SetActive(false);
-            CanvasForLevelUpPanel.SetActive(false);
-            VisualEffectManager.Instance.UnsetAugmentPanelPs();
-            if (StatManager.instance.isChangedStat)
+            isAlreadyClickedButton = new bool[OptionButtons.Length];
+            optionIndex = -1;
+            for (int i = 0; i < OptionButtons.Length; i++)
             {
-                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-                StatManager.instance.isChangedStat = false;
+                OptionButtons[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+                OptionButtonShaders[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            }
+            if (LevelUpQueue.Count > 0)
+            {
+                ShowLevelUpPanel();
+            }
+            else
+            {
+                CustomTime_1 = 0;
+                CustomTime_2 = 0;
+                CustomTime_3 = 0;
+                Time.timeScale = 1f;
+                OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
+                OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
+                OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
+                AdditionalDescriptionPanel.SetActive(false);
+                LevelUpPanel.SetActive(false);
+                CanvasForLevelUpPanel.SetActive(false);
+                VisualEffectManager.Instance.UnsetAugmentPanelPs();
+                if (StatManager.instance.isChangedStat)
+                {
+                    StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
+                    StatManager.instance.isChangedStat = false;
+                }
             }
         }
     }
