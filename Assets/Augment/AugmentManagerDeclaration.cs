@@ -188,21 +188,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<CurseTwice>(),
 
             gameObject.AddComponent<RebornBombBall>(),
-            gameObject.AddComponent<RerollAugments>(),
-            gameObject.AddComponent<RerollAugments>(),
-            gameObject.AddComponent<RerollAugments>(),
-            gameObject.AddComponent<RerollAugments>(),
-            gameObject.AddComponent<RerollAugments>(),
-            gameObject.AddComponent<RerollAugments>(),
-            gameObject.AddComponent<RerollAugments>(),
-            gameObject.AddComponent<RerollAugments>(),
             ////////////////////////// Delete These Before Build
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<ExplosionWithBall>(),
-
+            
         };
 
         foreach (IAugment augment in TestAugments)
