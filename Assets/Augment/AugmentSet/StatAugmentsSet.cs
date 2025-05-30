@@ -144,7 +144,7 @@ public class AtkUpWhenCritical : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +1.0\nfor 3 seconds", 4);
+        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +1.0\nfor 3 seconds", 5);
         SetAdditionalDescription(null);
     }
 
@@ -316,7 +316,7 @@ public class PowerButSlow : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_15", "Heavyweight Ball", "Attack damage +15%\nBall max speed -33%", 3);
+        SetAugment("STAT_15", "Heavyweight Ball", "Attack damage +15%\nBall max speed -33%", 4);
         SetAdditionalDescription(null);
     }
 
@@ -337,7 +337,7 @@ public class WeakButFast : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_16", "Lightweight Ball", "Attack damage -15%\nBall max speed +33%", 3);
+        SetAugment("STAT_16", "Lightweight Ball", "Attack damage -15%\nBall max speed +33%", 4);
         SetAdditionalDescription(null);
     }
 
@@ -358,7 +358,7 @@ public class WeakButStrongEffect : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_17", "Magician", "Attack damage -12%\nEffect damage +12%", 4);
+        SetAugment("STAT_17", "Magician", "Attack damage -12%\nEffect damage +12%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -379,7 +379,7 @@ public class WeakButStrongAtk : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_18", "Fighter", "Attack damage +12%\nEffect damage -12%", 4);
+        SetAugment("STAT_18", "Fighter", "Attack damage +12%\nEffect damage -12%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -520,22 +520,22 @@ public class Trinity : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, CriticalDamage 33% up", 2);
+        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, CriticalDamage 33.3% up", 0);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.33f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.33f);
-        StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.33f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.333f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.333f);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.333f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.33f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.33f);
-        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.33f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.333f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.333f);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.333f);
     }
 }
 
@@ -543,7 +543,7 @@ public class Perfectionism : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_24", "Perfectionism", "Critical chance becomes 100%,\n Attack damage -40%", 2);
+        SetAugment("STAT_24", "Perfectionism", "Critical chance becomes 100%,\n Attack damage -50%", 2);
         SetAdditionalDescription(null);
     }
 
@@ -634,48 +634,50 @@ public class ExpGain50Up : StatAugment
     }
 }
 
-public class LevelUpAttackDamageValueUp : StatAugment
+public class AttackEffectBothUp : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_25", "Perseverant", "Attack damage upgrade values are doubled after level up", 1);
+        SetAugment("STAT_28", "Greedy", "Attack, Effect Damage stats share 10% of each other's increase", 1);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<LevelUpEffectDamageValueUp>());
-        LevelManager.Instance.StatUpValue[0][0] *= 2;
-        LevelManager.Instance.StatUpValue[0][1] *= 2;
+        
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<LevelUpEffectDamageValueUp>());
-        LevelManager.Instance.StatUpValue[0][0] /= 2;
-        LevelManager.Instance.StatUpValue[0][1] /= 2;
+        
     }
 }
 
-public class LevelUpEffectDamageValueUp : StatAugment
+public class AllStatUp : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_25", "Awake", "Effect damage upgrade values are doubled after level up", 1);
-        SetAdditionalDescription(null);
+        SetAugment("STAT_28", "Awake", "All Stat Up", 1);
+        SetAdditionalDescription("Except gold gain stat");
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<LevelUpAttackDamageValueUp>());
-        LevelManager.Instance.StatUpValue[3][0] *= 2;
-        LevelManager.Instance.StatUpValue[3][1] *= 2;
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(LevelManager.Instance.StatUpValue[0][0]);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(LevelManager.Instance.StatUpValue[1][0]);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(LevelManager.Instance.StatUpValue[2][0]);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(LevelManager.Instance.StatUpValue[3][0]);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(LevelManager.Instance.StatUpValue[4][0]);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(LevelManager.Instance.StatUpValue[6][0]);
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<LevelUpAttackDamageValueUp>());
-        LevelManager.Instance.StatUpValue[3][0] /= 2;
-        LevelManager.Instance.StatUpValue[3][1] /= 2;
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-LevelManager.Instance.StatUpValue[0][0]);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-LevelManager.Instance.StatUpValue[1][0]);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-LevelManager.Instance.StatUpValue[2][0]);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-LevelManager.Instance.StatUpValue[3][0]);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(-LevelManager.Instance.StatUpValue[4][0]);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-LevelManager.Instance.StatUpValue[6][0]);
     }
 }

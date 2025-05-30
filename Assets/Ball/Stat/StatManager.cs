@@ -472,6 +472,11 @@ public partial class StatManager
     {
         Temporary_stat.AttackDamage += value;
         TotalChangedStatValue[0] += value;
+        if (AugmentManager.instance.determineAugmentID("STAT_28"))
+        {
+            Temporary_stat.EffectDamage += value * 0.1f;
+            TotalChangedStatValue[3] += value * 0.1f;
+        }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
@@ -529,6 +534,11 @@ public partial class StatManager
     {
         Temporary_stat.EffectDamage += value;
         TotalChangedStatValue[3] += value;
+        if (AugmentManager.instance.determineAugmentID("STAT_28"))
+        {
+            Temporary_stat.AttackDamage += value * 0.1f;
+            TotalChangedStatValue[0] += value * 0.1f;
+        }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }

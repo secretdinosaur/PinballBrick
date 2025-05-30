@@ -89,8 +89,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ExpGain10Up>(),
             gameObject.AddComponent<ExpGain30Up>(),
             gameObject.AddComponent<ExpGain50Up>(),
-            gameObject.AddComponent<LevelUpAttackDamageValueUp>(),
-            gameObject.AddComponent<LevelUpEffectDamageValueUp>(),
+            gameObject.AddComponent<AttackEffectBothUp>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -127,7 +126,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<InfiniteGrowBall>(),
             gameObject.AddComponent<SacrificeQuest1>(),
             gameObject.AddComponent<AttackAfterAdditionalBall>(),
-            gameObject.AddComponent<ShareBallAtk>(),
             gameObject.AddComponent<StrongAdditionalAttack>(),
             gameObject.AddComponent<RandomEffect>(),
             gameObject.AddComponent<ThunderStrike>(),
@@ -166,6 +164,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<GoalWaveBonus>(),
             gameObject.AddComponent<ReducesExp10>(),
             gameObject.AddComponent<ReducesExp15>(),
+            gameObject.AddComponent<WaveFourBoss>(),
+            gameObject.AddComponent<RerollAugments>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -193,8 +193,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<ExplosionWithBall>(),
-
+            
         };
 
         foreach (IAugment augment in TestAugments)
@@ -205,7 +204,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<ChangeNormalToGlass>());
+        AddAugment(gameObject.GetComponent<FreshNewStart>());
     }
 }
 

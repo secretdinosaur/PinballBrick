@@ -16,6 +16,7 @@ using static UnityEngine.Analytics.IAnalytic;
 using System.Xml;
 using DG.Tweening;
 using Unity.Android.Gradle.Manifest;
+using System.Linq;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -561,8 +562,14 @@ public partial class LevelManager : MonoBehaviour
         Level = LevelUpQueue.Dequeue();
 
         NoticeLevelText.text = "Now Your Level: " + Level;
+        ShowStatOrAugment();
+    }
+    public bool isThereRerolled = false;
+    public IAugment RerollAugment = null;
+    public void ShowStatOrAugment()
+    {
         optionIndex = -1;
-        if (IsStatOrAugment())
+        if (false) //IsStatOrAugment()
         {
             randomStats = GetRandomStats();
 
@@ -598,11 +605,18 @@ public partial class LevelManager : MonoBehaviour
         else
         {
             augmentsSet = new List<IAugment>();
+            augmentsSet.Clear();
             if (AugmentManager.instance.isSacrificeQuest3Cleared)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    augmentsSet.Add(AugmentManager.instance.GetRandomAugmentByRarity(1));
+                    float chance = Random.value;
+                    int rarity;
+                    if (chance < AugmentManager.instance.rarityWeights[0])
+                        rarity = 0;
+                    else
+                        rarity = 1;
+                    augmentsSet.Add(AugmentManager.instance.GetRandomAugmentByRarity(rarity));
                 }
                 AugmentManager.instance.isSacrificeQuest3Cleared = false;
             }
@@ -792,62 +806,58 @@ public partial class LevelManager : MonoBehaviour
 
     public void LevelUpEnd()
     {
-        if (CheckStatOrAugment)
+        if (isThereRerolled)
         {
-            if (optionIndex == -1)
-            {
-                int RandomNumber = Random.Range(0, 3);
-                StatManager.instance.Temporary_stat.StatLevel[randomStats[RandomNumber].Value]++;
-                CalculateTemporaryStatWithLevel(randomStats[RandomNumber].Value);
-            }
-            else
+            isThereRerolled = false;
+            ShowStatOrAugment();
+            return;
+        }
+        else
+        {
+            if (CheckStatOrAugment)
             {
                 StatManager.instance.Temporary_stat.StatLevel[randomStats[optionIndex].Value]++;
                 CalculateTemporaryStatWithLevel(randomStats[optionIndex].Value);
             }
-        }
-        else
-        {
-            if (optionIndex == -1)
-            {
-                int RandomNumber = Random.Range(0, 3);
-                AugmentManager.instance.AddAugment(augmentsSet[RandomNumber]);
-                AugmentManager.instance.RemoveAugment(augmentsSet[RandomNumber]);
-            }
             else
             {
+                Debug.Log(optionIndex);
+                for (int i = 0; i < augmentsSet.Count; i++)
+                {
+                    Debug.Log(augmentsSet[i]);
+                }
                 AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
                 AugmentManager.instance.RemoveAugment(augmentsSet[optionIndex]);
             }
-        }
-        isAlreadyClickedButton = new bool[OptionButtons.Length];
-        optionIndex = -1;
-        for (int i = 0; i < OptionButtons.Length; i++)
-        {
-            OptionButtons[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-            OptionButtonShaders[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-        }
-        if (LevelUpQueue.Count > 0)
-        {
-            ShowLevelUpPanel();
-        }
-        else
-        {
-            CustomTime_1 = 0;
-            CustomTime_2 = 0;
-            CustomTime_3 = 0;
-            Time.timeScale = 1f;
-            OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
-            OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
-            OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
-            AdditionalDescriptionPanel.SetActive(false);
-            LevelUpPanel.SetActive(false);
-            CanvasForLevelUpPanel.SetActive(false);
-            VisualEffectManager.Instance.UnsetAugmentPanelPs();
-            if (StatManager.instance.isChangedStat)
+            isAlreadyClickedButton = new bool[OptionButtons.Length];
+            optionIndex = -1;
+            for (int i = 0; i < OptionButtons.Length; i++)
             {
-                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-                StatManager.instance.isChangedStat = false;
+                OptionButtons[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+                OptionButtonShaders[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            }
+            if (LevelUpQueue.Count > 0)
+            {
+                ShowLevelUpPanel();
+            }
+            else
+            {
+                CustomTime_1 = 0;
+                CustomTime_2 = 0;
+                CustomTime_3 = 0;
+                Time.timeScale = 1f;
+                OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
+                OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
+                OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
+                AdditionalDescriptionPanel.SetActive(false);
+                LevelUpPanel.SetActive(false);
+                CanvasForLevelUpPanel.SetActive(false);
+                VisualEffectManager.Instance.UnsetAugmentPanelPs();
+                if (StatManager.instance.isChangedStat)
+                {
+                    StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
+                    StatManager.instance.isChangedStat = false;
+                }
             }
         }
     }

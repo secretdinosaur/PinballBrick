@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator WaveNotice()
     {
-        if(Wave % 10 != 0)
+        if(!BrickManager.Instance.BossSpawnCondition(Wave))
         {
             WaveNoticeText.text = "Wave " + Wave;
         }

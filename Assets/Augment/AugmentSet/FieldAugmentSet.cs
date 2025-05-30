@@ -89,7 +89,7 @@
 
         private void OnEnable()
         {
-            SetAugment("FIELD_2", "Angry Ball", "Balls become enraged and move faster", 3, Cooldown);
+            SetAugment("FIELD_2", "Angry Ball", "Balls become enraged and move faster", 5, Cooldown);
             SetAdditionalDescription(null);
         }
 
@@ -150,7 +150,7 @@
         float Duration = StatManager.instance.Temporary_stat.EffectDuration * 20;
         private void OnEnable()
         {
-            SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for " + Duration + " seconds", 4, Cooldown);
+            SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for " + Duration + " seconds", 5, Cooldown);
             SetAdditionalDescription(null);
         }
 
@@ -197,7 +197,7 @@
         Material TargetMat;
         private void OnEnable()
         {
-            SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 1, 10);
+            SetAugment("FIELD_4", "Focused Attack", "All balls target a random brick", 2, 10);
             SetAdditionalDescription(null);
         }
 
@@ -349,7 +349,7 @@
         float Duration = StatManager.instance.Temporary_stat.EffectDuration * 5;
         private void OnEnable()
         {
-            SetAugment("FIELD_7", "Antigravity", "Reverses gravity for " + Duration + " seconds", 3, Cooldown);
+            SetAugment("FIELD_7", "Antigravity", "Reverses gravity for " + Duration + " seconds", 2, Cooldown);
             SetAdditionalDescription(null);
         }
 
@@ -537,7 +537,7 @@
 
         private void OnEnable()
         {
-            SetAugment("FIELD_11", "Last Breath", "Attack damage +40%,\nballs get die if they don't hit any bricks within "+ Duration +" seconds.", 2);
+            SetAugment("FIELD_11", "Last Breath", "Attack damage +40%,\nballs get die if they don't hit any bricks within "+ Duration +" seconds.", 3);
             SetAdditionalDescription(null);
         }
 
