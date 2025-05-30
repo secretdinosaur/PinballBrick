@@ -133,7 +133,7 @@ public partial class StatManager : MonoBehaviour
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
             EffectDamage = 0.5f,
-            EffectDuration = 0.5f,
+            EffectDuration = 1f,
             GoldGain = 0.0f,
             ExpGain = 0.0f,
         };
@@ -266,7 +266,7 @@ public partial class StatManager
         EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier).ToString("F1");
         EffectDamageChangedStatValueText.text = "";
 
-        EffectDurationStatValueText.text = Temporary_stat.EffectDuration.ToString() + "s";
+        EffectDurationStatValueText.text = ((Temporary_stat.EffectDuration - 1) * 100).ToString() + "%";
         EffectDurationChangedStatValueText.text = "";
 
         GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString("F1") + "%";
@@ -385,12 +385,12 @@ public partial class StatManager
                     {
                         if (TotalChangedStatValue[4] < 0)
                         {
-                            EffectDurationChangedStatValueText.text = TotalChangedStatValue[4].ToString("0.##") + "s";
+                            EffectDurationChangedStatValueText.text = (TotalChangedStatValue[4] * 100).ToString("0.##") + "%";
                             EffectDurationChangedStatValueText.color = new Color(1f, 0.588f, 0.588f);
                         }                        
                         else if (TotalChangedStatValue[4] > 0)
                         {
-                            EffectDurationChangedStatValueText.text = "+" + TotalChangedStatValue[4].ToString("0.##") + "s";
+                            EffectDurationChangedStatValueText.text = "+" + (TotalChangedStatValue[4] * 100).ToString("0.##") + "%";
                             EffectDurationChangedStatValueText.color = new Color(0.588f, 1f, 0.588f);
                         }
                     }

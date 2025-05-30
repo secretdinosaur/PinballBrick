@@ -59,7 +59,7 @@ public class FireBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.FireChance)
         {
-            Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration); 
+            Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.FireDuration); 
         }
     }
 }
@@ -214,16 +214,13 @@ public class FireEffectStackBlast : SpecialAugment
                     false,
                     BlastDamage.ToString("F1"),
                     "Explosion");
-                nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
+                nearbyBrick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.FireDuration);
             }
             VisualEffectManager.Instance.SpawnParticle("FireBlast", Brick.transform.position, 30);
         }
     }
 }
 
-/**
- * ���ݹ��� ���� ������ �ֺ� 4���� ������ ���̵Ǵ� ����
- */
 public class ChainLightning : SpecialAugment
 {
     private void OnEnable()
@@ -273,9 +270,6 @@ public class ChainLightning : SpecialAugment
     }
 }
 
-/**
- * ���� ������ ����ġ ȹ��
- */
 public class DeathExp : SpecialAugment
 {
     private void OnEnable()
@@ -294,9 +288,6 @@ public class DeathExp : SpecialAugment
     }
 }
 
-/**
- * ���� ������ ��� ȹ��
- */
 public class DeathGold : SpecialAugment
 {
     private void OnEnable()
@@ -315,9 +306,6 @@ public class DeathGold : SpecialAugment
     }
 }
 
-/**
- * �ӵ��� ���� ���� ���ݷ� ����
- */
 public class SpeedPower : SpecialAugment
 {
     private void OnEnable()
@@ -336,9 +324,6 @@ public class SpeedPower : SpecialAugment
     }
 }
 
-/**
- * �ӵ��� ���� ���� ũ��Ƽ�� Ȯ�� ����
- */
 public class SpeedCritical : SpecialAugment
 {
     private void OnEnable()
@@ -351,10 +336,6 @@ public class SpeedCritical : SpecialAugment
 
     public override void Remove(){ }
 }
-
-/**
- * Ÿ�ݽ� ���� ����
- */
 
 public class Lightning : SpecialAugment
 {
@@ -374,9 +355,6 @@ public class Lightning : SpecialAugment
     }
 }
 
-/*
- * N�ʵ��� M�� �ֱ�� �� ����ü�� ��� ������
- */
 public class PoisonBall : SpecialAugment
 {
     private void OnEnable()
@@ -405,7 +383,7 @@ public class PoisonBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.PoisonChance)
         {
-            Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.PoisonDuration); 
+            Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.PoisonDuration); 
         }
     }
     bool isGetAugment = false;
@@ -433,7 +411,6 @@ public class InfinitePoison : SpecialAugment
         SetAugment("SPECIAL_16", "Infinite Poison", "Poison spreads to nearby bricks, on max stacks", "Effect", 2);
         SetAdditionalDescription("Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
     }
-
     public override void Apply()
     {
         isGetAugment = true;
@@ -473,7 +450,7 @@ public class InfinitePoison : SpecialAugment
                             {
                                 VisualEffectManager.Instance.SpawnParticle("InfinityPoison", transform.position, 1);
                                 Chosen.ShowText("Infection!", null, false);
-                                Chosen.DamageByPoisonEffect(brick.BrickEffect.initialDuration);
+                                Chosen.DamageByPoisonEffect(AugmentManager.instance.effectDuration.PoisonDuration * StatManager.instance.Temporary_stat.EffectDuration);
                             }
                         }
                     }
@@ -556,11 +533,10 @@ public class DecayBall : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick" &&
             Random.value < AugmentManager.instance.effectChance.DecayChance)
         {
-            Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
+            Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.DecayDuration);
         }
     }
 }
-
 public class PowerfulDecay : SpecialAugment
 {
     private void OnEnable()
@@ -579,7 +555,6 @@ public class PowerfulDecay : SpecialAugment
         AugmentManager.instance.DecayDamageMultiple = 1.1f;
     }
 }
-
 public class DecayExplosion : SpecialAugment
 {
     private void OnEnable()
@@ -707,7 +682,6 @@ public class LevelUpQuest : SpecialAugment
         }
     }
 }
-
 public class GrowBallQuest : SpecialAugment
 {
     private int KilledEnemy;
@@ -807,7 +781,6 @@ public class InfiniteGrowBall : SpecialAugment
             Brick.RecentlyBall.Grow(Brick);
     }
 }
-
 public class SacrificeQuest1 : SpecialAugment
 {
     private int SacrificeNumber = 0;
@@ -845,7 +818,6 @@ public class SacrificeQuest1 : SpecialAugment
         }
     }
 }
-
 public class SacrificeQuest2 : SpecialAugment
 {
     private int SacrificeNumber = 0;
@@ -884,7 +856,6 @@ public class SacrificeQuest2 : SpecialAugment
         }
     }
 }
-
 public class SacrificeQuest3 : SpecialAugment
 {
     private int SacrificeNumber = 0;
@@ -948,7 +919,6 @@ public class AttackAfterAdditionalBall : SpecialAugment
         QuestAlarm.Instance.SetQuest("Sincerity", "Attack", AttackNumber, RequiredCount);
     }
 }
-
 public class ShareBallAtk : SpecialAugment
 {
     private void OnEnable()
@@ -970,7 +940,6 @@ public class ShareBallAtk : SpecialAugment
         }
     }
 }
-
 public class StrongAdditionalAttack : SpecialAugment
 {
     float StrongAttackChance = 0.01f;
@@ -1017,7 +986,7 @@ public class RandomEffect : SpecialAugment
     };
     private void OnEnable()
     {
-        SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nIt may be positive or negative", "Special", 3);
+        SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nit may be positive or negative", "Special", 3);
         SetAdditionalDescription(null);
     }
 
@@ -1035,7 +1004,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["WeakAdditionalDamage"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("WeakAdditionalDamage");
                 StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.5f));
                 return;
             }
@@ -1043,7 +1011,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["AdditionalDamage"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("AdditionalDamage");
                 StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.8f));
                 return;
             }
@@ -1051,7 +1018,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["Nothing"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("Nothing");
                 return;
             }
 
@@ -1061,15 +1027,15 @@ public class RandomEffect : SpecialAugment
                 int Number = Random.Range(1, 4);
                 if (Number == 1)
                 {
-                    Brick.BrickEffect.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f);
+                    Brick.BrickEffect.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration);
                 }
                 else if (Number == 2)
                 {
-                    Brick.BrickEffect.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f);
+                    Brick.BrickEffect.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration);
                 }
                 else if (Number == 3)
                 {
-                    Brick.BrickEffect.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + 1f);
+                    Brick.BrickEffect.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration);
                 }
                 return;
             }
@@ -1077,7 +1043,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["FullHealth"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("FullHealth");
                 Brick.HP = Brick.HpTemp;
                 return;
             }
@@ -1085,7 +1050,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["BrickSpawn"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("BrickSpawn");
                 BrickManager.Instance.BrickQueue.Enqueue(BrickManager.Instance.SettingBrick());
                 return;
             }
@@ -1093,7 +1057,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["BossSpawn"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("BossSpawn");
                 BrickManager.Instance.BrickQueue.Enqueue(BrickManager.Instance.SettingBoss());
                 return;
             }
@@ -1101,7 +1064,6 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["Execution"];
             if (RandomValue < accumulatedProbability)
             {
-                Debug.Log("Execution");
                 Brick.HP -= 999999 + Brick.HpTemp;
                 Brick.ShowText("EXECUTION", null, true);
             }
@@ -1173,7 +1135,6 @@ public class ThunderStrike : SpecialAugment
         }
     }
 }
-
 public class RebirthBall : SpecialAugment
 {
     private void OnEnable()
@@ -1255,7 +1216,6 @@ public class SpawnBallAmountMultiple2 : SpecialAugment
         AugmentManager.instance.SpawnBallAmount /= 3;
     }
 }
-
 public class BallSwarm : SpecialAugment
 {
     bool isGetAugment = false;
@@ -1297,7 +1257,6 @@ public class BallSwarm : SpecialAugment
         }
     }
 }
-
 public class LonelyBall : SpecialAugment
 {
     bool isGetAugment = false;
@@ -1339,7 +1298,6 @@ public class LonelyBall : SpecialAugment
         }
     }
 }
-
 public class SuicideBoomBall : SpecialAugment
 {
     float damage = 50;
@@ -1381,7 +1339,6 @@ public class SuicideBoomBall : SpecialAugment
         }
     }
 }
-
 public class SplitBall : SpecialAugment
 {
     private void OnEnable()
@@ -1465,7 +1422,6 @@ public class SplitBall : SpecialAugment
         return ball;
     }
 }
-
 public class CurseBall : SpecialAugment
 {
     private void OnEnable()
@@ -1510,7 +1466,6 @@ public class CurseBall : SpecialAugment
         }
     }
 }
-
 public class ThreeBrickCurseAttack : SpecialAugment
 {
     private void OnEnable()
@@ -1544,7 +1499,6 @@ public class ThreeBrickCurseAttack : SpecialAugment
         }     
     }
 }
-
 public class CurseTwice : SpecialAugment
 {
     private void OnEnable()
@@ -1563,7 +1517,6 @@ public class CurseTwice : SpecialAugment
         AugmentManager.instance.CurseActiveNumber = 1;
     }
 }
-
 public class DeathEffectTwice : SpecialAugment
 {
     private void OnEnable()
@@ -1603,7 +1556,6 @@ public class SpawnBombBall : SpecialAugment
         AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").AddComponent<RebornBombBall>());
     }
 }
-
 public class ChangeNormalToGlass : SpecialAugment
 {
     private void OnEnable()
@@ -1625,7 +1577,6 @@ public class ChangeNormalToGlass : SpecialAugment
         StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
     }
 }
-
 public class RebornBombBall : SpecialAugment
 {
     private void OnEnable()
@@ -1638,7 +1589,6 @@ public class RebornBombBall : SpecialAugment
 
     public override void Remove() { }
 }
-
 public class OneMoreChance : SpecialAugment
 {
     bool isRevived = true;
@@ -1705,7 +1655,6 @@ public class Concentrate : SpecialAugment
         }
     }
 }
-
 public class GroupViolence: SpecialAugment
 {
     bool isGetAugment = false;
@@ -1734,14 +1683,13 @@ public class GroupViolence: SpecialAugment
         }
     }
 }
-
 public class Oneness: SpecialAugment
 {
     IBall MainBall = null;
     bool isGetAugment = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_52", "Oneness", "All balls merge into one\nThe ball becomes stronger as it merges", "Special", 2);
+        SetAugment("SPECIAL_52", "Oneness", "All balls merge into one,\nthe ball becomes stronger as it merges", "Special", 2);
         SetAdditionalDescription(null);
     }
 
@@ -1835,12 +1783,12 @@ public class Oneness: SpecialAugment
         yield break;
     }
 }
-
 public class HappyBirthday : SpecialAugment
 {
+    float Duration = StatManager.instance.Temporary_stat.EffectDuration;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_53", "Happy Birth Day", "After the ball is summoned,\ngain a temporary boost in attack damage", "Special", 4);
+        SetAugment("SPECIAL_53", "Happy Birth Day", "Gain 30 attack damage when ball is summoned for " + Duration + " seconds", "Special", 4);
         SetAdditionalDescription(null);
     }
 
@@ -1857,7 +1805,7 @@ public class HappyBirthday : SpecialAugment
         yield return null;
         ball.BallBaseDamage += 10;
         ball.Renderer.material.color = Color.white * 2;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(Duration);
         ball.Renderer.material.color = Color.white;
         ball.BallBaseDamage -= 10;
     }

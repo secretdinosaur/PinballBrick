@@ -66,7 +66,7 @@ public partial class LevelManager : MonoBehaviour
         new List<float> { 0.03f, 0.08f }, //CriticalDamage
         new List<float> { 0.02f, 0.05f }, //CriticalChance
         new List<float> { 0.3f, 0.8f }, //EffectDamage
-        new List<float> { 0.02f, 0.05f }, //EffectDuration
+        new List<float> { 0.05f, 0.1f }, //EffectDuration
         new List<float> { 0.012f, 0.034f }, //GoldGain
         new List<float> { 0.012f, 0.034f }, //ExpGain
     };
@@ -432,7 +432,7 @@ public partial class LevelManager : MonoBehaviour
 
                     VisualEffectManager.Instance.AugmentPanelBurstPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[2]);
                     VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[2]);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(100);
+                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(70);
                     SelectButtons[i].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
                     yield return new WaitUntil(() => isFinished);
                     break;
@@ -475,7 +475,7 @@ public partial class LevelManager : MonoBehaviour
                         .OnComplete(() => isFinished = true);
                     VisualEffectManager.Instance.AugmentPanelBurstPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[1]);
                     VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[1]);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(200);
+                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(150);
                     SelectButtons[i].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
                     yield return new WaitUntil(() => isFinished);
                     break;
@@ -537,7 +537,7 @@ public partial class LevelManager : MonoBehaviour
                         .OnComplete(() => isFinished = true);
                     VisualEffectManager.Instance.AugmentPanelBurstPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[0]);
                     VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[0]);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(300);
+                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(200);
                     SelectButtons[i].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
                     if (i == 0)
                         Option_1_Aura.SetFloat("_OuterFade", 50f);
@@ -659,10 +659,8 @@ public partial class LevelManager : MonoBehaviour
 
     private string LevelUpTextWhenStatUp(int i)
     {
-        string seconds = "sec";
         string percent = "%";
-        bool secondsBool = randomStats[i].Value == 4;
-        bool percentBool = (randomStats[i].Value == 1 || randomStats[i].Value == 2 || randomStats[i].Value == 5 || randomStats[i].Value == 6);
+        bool percentBool = (randomStats[i].Value == 1 || randomStats[i].Value == 2 || randomStats[i].Value == 4 || randomStats[i].Value == 5 || randomStats[i].Value == 6);
 
 
         return " +" + 
@@ -672,8 +670,7 @@ public partial class LevelManager : MonoBehaviour
                     (BaseStatUpValue * StatUpValue[randomStats[i].Value][0] * (percentBool ? 100 : 1))
                 )
                 + 
-                (secondsBool ? seconds
-                : percentBool ? percent
+                (percentBool ? percent
                 : "")
                 + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
     }

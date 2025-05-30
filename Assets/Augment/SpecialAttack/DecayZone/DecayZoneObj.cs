@@ -8,13 +8,18 @@ public class DecayZoneObj : SpecialObj
     {
         base.OnEnable();
         SpecialObjType = "DecayZoneObj";
-        transform.position = new Vector2(Random.Range(0f, 2.5f), Random.Range(0f, 4.75f));
-        Routine = StartCoroutine(DecayZone());
     }
-    IEnumerator DecayZone()
+
+    public void StartAttack(float Duration)
+    {
+        transform.position = new Vector2(Random.Range(0f, 2.5f), Random.Range(0f, 4.75f));
+        Routine = StartCoroutine(DecayZone(Duration));
+    }
+
+    IEnumerator DecayZone(float Duration)
     {
         float time = 0f;
-        while (time < 5f)
+        while (time < Duration)
         {
             if (detectArea.NearbyBricks.Count > 0)
             {
@@ -22,7 +27,7 @@ public class DecayZoneObj : SpecialObj
                 {
                     if(brick.gameObject.activeInHierarchy && brick.BrickEffect.EffectStatusSet["Decay"].EffectStack < 1)
                     {
-                        brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
+                        brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.DecayDuration);
                     }
                 }
             }
