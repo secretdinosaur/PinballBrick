@@ -141,6 +141,12 @@ public partial class AugmentManager
         activeFieldAugments.Clear();
         activeSpecialAugments.Clear();
     }
+
+    public void RemoveOnExceptAugmentsList(IAugment augment)
+    {
+        if(exceptionAugments.Contains(augment))
+            exceptionAugments.Remove(augment);
+    }
     
     private IAugment GetOppositeAugment(IAugment ChosenAugment)
     {

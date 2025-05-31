@@ -119,24 +119,23 @@ public class CritDamage30Up : StatAugment
     }
 }
 
-public class BossDamageUp : StatAugment
+public class DecreaseFieldCooldown10 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_6", "Boss Killer", "+10% Additional damage to boss", 4);
-        SetAdditionalDescription(null);
+        SetAugment("STAT_6", "Time Accelerator II", "Field effect cooltime -10%", 4);
+        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 10% ="
+            + AugmentManager.instance.FieldGlobalCooldown * 0.9f);
     }
 
-    public override void Apply() { }
-
-    public override void Remove() { }
-
-    public override void BeforeAttackEffect(IBrick Brick)
+    public override void Apply()
     {
-        if (Brick.IsBoss)
-        {
-            Brick.TotalMultiple *= 1.1f;
-        }
+        AugmentManager.instance.FieldGlobalCooldown *= 0.9f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.FieldGlobalCooldown /= 0.9f;
     }
 }
 
@@ -316,20 +315,20 @@ public class AttackAndEffectUp : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_15", "Supreme Ball", "Attack, Effect damage +10%", 3);
+        SetAugment("STAT_15", "Supreme Ball", "Attack, Effect damage +15%", 3);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.15f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.15f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.1f);
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.1f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.15f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.15f);
     }
 }
 
@@ -418,8 +417,8 @@ public class DecreaseFieldCooldown20 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_20", "Time Accelerator II", "Field effect cooltime -20%", 3);
-        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString("F1") + "- 20% ="
+        SetAugment("STAT_20", "Time Accelerator III", "Field effect cooltime -20%", 3);
+        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 20% ="
             + AugmentManager.instance.FieldGlobalCooldown * 0.8f);
     }
 
@@ -518,7 +517,7 @@ public class Trinity : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, CriticalDamage 33.3% up", 0);
+        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, Critical Chance 33.3% up", 0);
         SetAdditionalDescription(null);
     }
 
@@ -526,14 +525,14 @@ public class Trinity : StatAugment
     {
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.333f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.333f);
-        StatManager.instance.ChangeTemporaryStats_CriticalDamage(0.333f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.333f);
     }
 
     public override void Remove()
     {
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.333f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.333f);
-        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-0.333f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.333f);
     }
 }
 
@@ -655,7 +654,7 @@ public class AllStatUp : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_28", "Awake", "All Stat Up", 1);
+        SetAugment("STAT_29", "Awake", "All Stat Up", 1);
         SetAdditionalDescription("Except gold gain stat");
     }
 
@@ -684,7 +683,7 @@ public class EffectDamageUp2 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_29", "Psychic Ball II", "Effect damage +1.3", 4);
+        SetAugment("STAT_30", "Psychic Ball II", "Effect damage +1.3", 4);
         SetAdditionalDescription(null);
     }
 
@@ -703,7 +702,7 @@ public class EffectDamageUp3 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_30", "Psychic Ball III", "Effect damage +2.5", 3);
+        SetAugment("STAT_31", "Psychic Ball III", "Effect damage +2.5", 3);
         SetAdditionalDescription(null);
     }
 
