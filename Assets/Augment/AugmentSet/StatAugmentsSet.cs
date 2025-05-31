@@ -47,18 +47,18 @@ public class AtkUp3 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_2", "Super Ball III", "Attack damage +3.1", 2);
+        SetAugment("STAT_2", "Super Ball III", "Attack damage +2.5", 3);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(3.1f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(2.5f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(-3.1f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-2.5f);
     }
 }
 
@@ -66,18 +66,18 @@ public class CritChance35Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_3", "Sharpness III", "Critical chance +35%", 2);
+        SetAugment("STAT_3", "Sharpness III", "Critical chance +15%", 3);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.35f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.15f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.35f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.15f);
     }
 }
 
@@ -104,7 +104,7 @@ public class CritDamage30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_5", "Fatal Attack II", "Critical damage +30%", 2);
+        SetAugment("STAT_5", "Fatal Attack II", "Critical damage +30%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -183,18 +183,18 @@ public class ExpGain30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_8", "Senior", "Exp gain +30%", 4);
+        SetAugment("STAT_8", "Researcher II", "Exp gain +15%", 4);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_ExpGain(0.3f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.15f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.3f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.15f);
     }
 }
 
@@ -202,18 +202,18 @@ public class AtkUp1 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_9", "Super Ball I", "Attack damage +0.8", 5);
+        SetAugment("STAT_9", "Super Ball I", "Attack damage +1", 5);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(0.8f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(1f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(-0.8f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-1f);
     }
 }
 
@@ -221,18 +221,18 @@ public class CritChance10Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_10", "Sharpness I", "Critical chance +10%", 5);
+        SetAugment("STAT_10", "Sharpness I", "Critical chance +5%", 5);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.1f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.05f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.1f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.05f);
     }
 }
 
@@ -240,18 +240,18 @@ public class CritChance20Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_11", "Sharpness II", "Critical chance +20%", 4);
+        SetAugment("STAT_11", "Sharpness II", "Critical chance +8%", 4);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.2f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(0.08f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.2f);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.08f);
     }
 }
 
@@ -259,18 +259,18 @@ public class GoldGain10Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_12", "Gold Rush I", "Gold gain +10%", 5);
+        SetAugment("STAT_12", "Gold Rush I", "Gold gain +20%", 5);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_GoldGain(0.1f);
+        StatManager.instance.ChangeTemporaryStats_GoldGain(0.2f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_GoldGain(-0.1f);
+        StatManager.instance.ChangeTemporaryStats_GoldGain(-0.2f);
     }
 }
 
@@ -312,45 +312,43 @@ public class GoldGain50Up : StatAugment
     }
 }
 
-public class PowerButSlow : StatAugment
+public class AttackAndEffectUp : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_15", "Heavyweight Ball", "Attack damage +15%\nBall max speed -33%", 4);
+        SetAugment("STAT_15", "Supreme Ball", "Attack, Effect damage +10%", 3);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 10f;
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.15f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
     }
 
     public override void Remove()
     {
-        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.15f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.1f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.1f);
     }
 }
 
-public class WeakButFast : StatAugment
+public class EffectDamageUp1 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_16", "Lightweight Ball", "Attack damage -15%\nBall max speed +33%", 4);
+        SetAugment("STAT_16", "Psychic Ball I", "Effect damage +1", 5);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 20f;
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.85f);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(1f);
     }
 
     public override void Remove()
     {
-        GameObject.Find("SpawnObject").transform.Find("BallSpawner").GetComponent<BallManager>().maxSpeed = 15f;
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.85f);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-1f);
     }
 }
 
@@ -600,7 +598,7 @@ public class ExpGain10Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_26", "Freshman", "Exp gain +10%", 5);
+        SetAugment("STAT_26", "Researcher I", "Exp gain +10%", 5);
         SetAdditionalDescription(null);
     }
 
@@ -619,7 +617,7 @@ public class ExpGain50Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_27", "Graduate", "Exp gain +50%", 2);
+        SetAugment("STAT_27", "Researcher III", "Exp gain +30%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -679,5 +677,43 @@ public class AllStatUp : StatAugment
         StatManager.instance.ChangeTemporaryStats_EffectDamage(-LevelManager.Instance.StatUpValue[3][0]);
         StatManager.instance.ChangeTemporaryStats_EffectDuration(-LevelManager.Instance.StatUpValue[4][0]);
         StatManager.instance.ChangeTemporaryStats_ExpGain(-LevelManager.Instance.StatUpValue[6][0]);
+    }
+}
+
+public class EffectDamageUp2 : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_29", "Psychic Ball II", "Effect damage +1.3", 4);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(1.3f);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-1.3f);
+    }
+}
+
+public class EffectDamageUp3 : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_30", "Psychic Ball III", "Effect damage +2.5", 3);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(2.5f);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-2.5f);
     }
 }
