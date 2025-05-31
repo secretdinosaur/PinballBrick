@@ -17,6 +17,7 @@ using System.Xml;
 using DG.Tweening;
 using Unity.Android.Gradle.Manifest;
 using System.Linq;
+using UnityEditor.VisionOS;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -376,20 +377,181 @@ public partial class LevelManager : MonoBehaviour
         Rare,
         Common
     }
-    IEnumerator AugAniCoroutine(int[] rarities, Button[] SelectButtons, bool IsStat)
+    IEnumerator AugAniCoroutine(int[] rarities, Button[] SelectButtons, List<IAugment> augments)
     {
-        if (IsStat)
-        {
-            rarities[0] = 5 - (rarities[0] / 5);
-            rarities[1] = 5 - (rarities[1] / 5);
-            rarities[2] = 5 - (rarities[2] / 5);
-        }
         Option_1_Aura.SetFloat("_OuterFade", 0f);
         Option_2_Aura.SetFloat("_OuterFade", 0f);
         Option_3_Aura.SetFloat("_OuterFade", 0f);
 
         for (int i = 0; i < 3; i++)
         {
+            switch (rarities[i])
+            {
+                case 5:
+                    yield return StartCoroutine(MovePanel(i));
+                    yield return new WaitForSeconds(0.5f);
+                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
+                    break;
+
+                case 4:
+                    yield return StartCoroutine(MovePanel(i));
+                    yield return new WaitForSeconds(0.5f);
+                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
+                    break;
+
+                case 3:
+                    yield return StartCoroutine(MovePanel(i));
+                    yield return StartCoroutine(SetParticle(3, i));
+                    yield return new WaitForSeconds(0.5f);
+                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
+                    break;
+
+                case 2:
+                    yield return StartCoroutine(MovePanel(i));
+                    yield return StartCoroutine(SetParticle(2, i));
+                    yield return new WaitForSeconds(0.5f);
+                    yield return StartCoroutine(FlashPanel(2, i));
+                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
+                    ParticleBurst(2, i, 50);
+                    break;
+
+                case 1:
+                    int j = Random.Range(0, 2);
+                    if(j == 0)
+                    {
+                        yield return StartCoroutine(MovePanel(i));
+                        yield return StartCoroutine(SetParticle(1, i));
+
+                    }
+                    else
+                    {
+                        yield return StartCoroutine(MovePanel(i));
+                        yield return StartCoroutine(SetParticle(2, i));
+                        yield return StartCoroutine(FlashPanel(2, i));
+                        yield return StartCoroutine(ShakePanel(i));
+                    }
+                    yield return StartCoroutine(FlashPanel(1, i));
+                    yield return new WaitForSeconds(0.5f);
+                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
+                    ParticleBurst(1, i, 100);
+                    break;
+
+
+                case 0:
+
+                    int k = Random.Range(0, 3);
+                    if (k == 0)
+                    {
+                        yield return StartCoroutine(MovePanel(i));
+                        yield return StartCoroutine(SetParticle(0, i));
+                    }
+                    else if(k == 1)
+                    {
+                        yield return StartCoroutine(MovePanel(i));
+                        yield return StartCoroutine(SetParticle(2, i));
+                        yield return StartCoroutine(FlashPanel(2, i));
+                        yield return StartCoroutine(ShakePanel(i));
+                        yield return StartCoroutine(FlashPanel(1, i));
+                        yield return StartCoroutine(ShakePanel(i));
+                    }
+                    else
+                    {
+                        yield return StartCoroutine(MovePanel(i));
+                        yield return StartCoroutine(SetParticle(1, i));
+                        yield return StartCoroutine(FlashPanel(1, i));
+                        yield return StartCoroutine(ShakePanel(i));
+                    }
+
+                    yield return StartCoroutine(FlashPanel(0, i));
+                    yield return new WaitForSeconds(0.5f);
+                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
+                    ParticleBurst(0, i, 150);
+                    SetBackLight(i);
+                    break;
+            }
+        }
+
+        IEnumerator MovePanel(int num)
+        {
+            Vector3 FinalPosition = new Vector3(260 * (num - 1), 0, 0);
+            bool isFinished = false;
+            SelectButtons[num].transform.DOLocalMove(FinalPosition, 0.25f)
+                        .SetEase(Ease.OutQuad)
+                        .SetUpdate(true)
+                        .OnComplete(() => isFinished = true);
+            yield return new WaitUntil(() => isFinished);
+        }
+
+        IEnumerator SetParticle(int rarity, int num)
+        {
+            bool isFinished = false;
+            VisualEffectManager.Instance.SetActiveAugmentPanelPs(num, RarityColorList[rarity], rarity);
+            VisualEffectManager.Instance.AugmentPanelPS[num].transform.DOMove(new Vector3(VisualEffectManager.Instance.AugmentPanelPS[num].transform.position.x, 0, 0), 0.25f)
+                .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
+                .OnComplete(() => isFinished = true);
+            yield return new WaitUntil(() => isFinished);
+        }
+
+        IEnumerator FlashPanel(int rarity, int num)
+        {
+            bool isFinished = false;
+            SelectButtons[num].GetComponent<Image>().material.DOColor(RarityColorList[rarity] * 2, 0.1f)
+                .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
+                .OnComplete(() => isFinished = true);
+            yield return new WaitUntil(() => isFinished);
+            isFinished = false;
+            SelectButtons[num].GetComponent<Image>().material.DOColor(RarityColorList[rarity], 0.1f)
+                .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
+                .OnComplete(() => isFinished = true);
+            yield return new WaitUntil(() => isFinished);
+        }
+
+        void ParticleBurst(int rarity, int num, int Emit)
+        {
+            bool isFinished = false;
+            VisualEffectManager.Instance.AugmentPanelBurstPS[num].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[rarity]);
+            VisualEffectManager.Instance.AugmentPanelPS[num].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[rarity]);
+            VisualEffectManager.Instance.AugmentPanelBurstPS[num].Emit(Emit);
+            SelectButtons[num].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
+        }
+
+        IEnumerator ShakePanel(int num)
+        {
+            bool isFinished = false;
+            SelectButtons[num].transform.transform.DOShakePosition(2, new Vector3(3, 0, 0), 10, 1, false, false)
+                 .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
+                .OnComplete(() => isFinished = true);
+            yield return new WaitUntil(() => isFinished);
+        }
+
+        void SetBackLight(int i)
+        {
+            if (i == 0)
+                Option_1_Aura.SetFloat("_OuterFade", 50f);
+            else if (i == 1)
+                Option_2_Aura.SetFloat("_OuterFade", 50f);
+            else if (i == 2)
+                Option_3_Aura.SetFloat("_OuterFade", 50f);
+        }
+    }
+
+    IEnumerator AugAniCoroutineForStat(int[] rarities, Button[] SelectButtons, List<KeyValuePair<string, int>> stats)
+    {
+
+        Option_1_Aura.SetFloat("_OuterFade", 0f);
+        Option_2_Aura.SetFloat("_OuterFade", 0f);
+        Option_3_Aura.SetFloat("_OuterFade", 0f);
+
+        for (int i = 0; i < 3; i++)
+        {
+            SetAugmentPanel(i, stats[i].Key, LevelUpTextWhenStatUp(i), "", 0);
+            rarities[i] = 5 - (rarities[i] / 5);
+            if (rarities[i] < 0)
+                rarities[i] = 0;
             bool isFinished = false;
             Vector3 FinalPosition = new Vector3(260 * (i - 1), 0, 0);
 
@@ -403,151 +565,75 @@ public partial class LevelManager : MonoBehaviour
             switch (rarities[i])
             {
                 case 3:
-                    VisualEffectManager.Instance.SetActiveAugmentPanelPs(i, RarityColorList[rarities[i]], rarities[i]);
-                    VisualEffectManager.Instance.AugmentPanelPS[i].transform.DOMove(new Vector3(VisualEffectManager.Instance.AugmentPanelPS[i].transform.position.x, 0, 0), 0.25f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
+                    yield return StartCoroutine(SetParticle(3, i));
                     break;
 
                 case 2:
-                    VisualEffectManager.Instance.SetActiveAugmentPanelPs(i, RarityColorList[rarities[i]], rarities[i]);
-                    VisualEffectManager.Instance.AugmentPanelPS[i].transform.DOMove(new Vector3(VisualEffectManager.Instance.AugmentPanelPS[i].transform.position.x, 0, 0), 0.25f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[rarities[i]] * 2, 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[rarities[i]], 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[2]);
-                    VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[2]);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(70);
-                    SelectButtons[i].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
-                    yield return new WaitUntil(() => isFinished);
+                    yield return StartCoroutine(SetParticle(2, i));
+                    yield return StartCoroutine(FlashPanel(2, i));
+                    ParticleBurst(2, i, 50);
                     break;
 
                 case 1:
-                    VisualEffectManager.Instance.SetActiveAugmentPanelPs(i, RarityColorList[2], 2);
-                    VisualEffectManager.Instance.AugmentPanelPS[i].transform.DOMove(new Vector3(VisualEffectManager.Instance.AugmentPanelPS[i].transform.position.x, 0, 0), 0.25f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[2] * 2, 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[2], 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].transform.transform.DOShakePosition(2, new Vector3(3, 0, 0), 10, 1, false, false)
-                         .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[1] * 2, 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[1], 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[1]);
-                    VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[1]);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(150);
-                    SelectButtons[i].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
-                    yield return new WaitUntil(() => isFinished);
+                    yield return StartCoroutine(SetParticle(1, i));
+                    yield return StartCoroutine(FlashPanel(1, i));
+                    ParticleBurst(1, i, 100);
                     break;
 
                 case 0:
-                    VisualEffectManager.Instance.SetActiveAugmentPanelPs(i, RarityColorList[2], 2);
-                    VisualEffectManager.Instance.AugmentPanelPS[i].transform.DOMove(new Vector3(VisualEffectManager.Instance.AugmentPanelPS[i].transform.position.x, 0, 0), 0.25f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[2] * 2, 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[2], 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].transform.transform.DOShakePosition(2, new Vector3(3, 0, 0), 10, 1, false, false)
-                         .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[1]);
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[1] * 2, 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[1], 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].transform.transform.DOShakePosition(3, new Vector3(3, 0, 0), 10, 1, false, false)
-                         .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[0] * 5, 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    yield return new WaitUntil(() => isFinished);
-                    isFinished = false;
-                    SelectButtons[i].GetComponent<Image>().material.DOColor(RarityColorList[0], 0.1f)
-                        .SetEase(Ease.OutQuad)
-                        .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[0]);
-                    VisualEffectManager.Instance.AugmentPanelPS[i].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[0]);
-                    VisualEffectManager.Instance.AugmentPanelBurstPS[i].Emit(200);
-                    SelectButtons[i].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
-                    if (i == 0)
-                        Option_1_Aura.SetFloat("_OuterFade", 50f);
-                    else if (i == 1)
-                        Option_2_Aura.SetFloat("_OuterFade", 50f);
-                    else if (i == 2)
-                        Option_3_Aura.SetFloat("_OuterFade", 50f);
+                    yield return StartCoroutine(SetParticle(0, i));
+                    yield return StartCoroutine(FlashPanel(0, i));
+                    ParticleBurst(0, i, 150);
+                    SetBackLight(i);
                     break;
             }
+        }
 
+        IEnumerator SetParticle(int rarity, int num)
+        {
+            bool isFinished = false;
+            VisualEffectManager.Instance.SetActiveAugmentPanelPs(num, RarityColorList[rarity], rarity);
+            VisualEffectManager.Instance.AugmentPanelPS[num].transform.DOMove(new Vector3(VisualEffectManager.Instance.AugmentPanelPS[num].transform.position.x, 0, 0), 0.25f)
+                .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
+                .OnComplete(() => isFinished = true);
+            yield return new WaitUntil(() => isFinished);
+        }
+
+        IEnumerator FlashPanel(int rarity, int num)
+        {
+            bool isFinished = false;
+            SelectButtons[num].GetComponent<Image>().material.DOColor(RarityColorList[rarity] * 2, 0.1f)
+                .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
+                .OnComplete(() => isFinished = true);
+            yield return new WaitUntil(() => isFinished);
+            isFinished = false;
+            SelectButtons[num].GetComponent<Image>().material.DOColor(RarityColorList[rarity], 0.1f)
+                .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
+                .OnComplete(() => isFinished = true);
+            yield return new WaitUntil(() => isFinished);
+        }
+
+        void ParticleBurst(int rarity, int num, int Emit)
+        {
+            bool isFinished = false;
+            VisualEffectManager.Instance.AugmentPanelBurstPS[num].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[rarity]);
+            VisualEffectManager.Instance.AugmentPanelPS[num].GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", RarityColorList[rarity]);
+            VisualEffectManager.Instance.AugmentPanelBurstPS[num].Emit(Emit);
+            SelectButtons[num].GetComponent<Image>().material.SetFloat("_IsCornerEffect", 1);
+        }
+
+
+        void SetBackLight(int i)
+        {
+            if (i == 0)
+                Option_1_Aura.SetFloat("_OuterFade", 50f);
+            else if (i == 1)
+                Option_2_Aura.SetFloat("_OuterFade", 50f);
+            else if (i == 2)
+                Option_3_Aura.SetFloat("_OuterFade", 50f);
         }
     }
 
@@ -566,33 +652,48 @@ public partial class LevelManager : MonoBehaviour
     }
     public bool isThereRerolled = false;
     public IAugment RerollAugment = null;
+
+    void SetAugmentPanel(int i, string name, string desc, string type, float cooltime)
+    {
+        TMP_Text[] Names = { Option_1_Name, Option_2_Name, Option_3_Name };
+        TMP_Text[] Descs = { Option_1_Description, Option_2_Description, Option_3_Description };
+        TMP_Text[] types = { Option_1_Type, Option_2_Type, Option_3_Type };
+        TMP_Text[] cools = { Option_1_CoolTime, Option_2_CoolTime, Option_3_CoolTime };
+
+        Names[i].text = name;
+        Descs[i].text = desc;
+        types[i].text = type;
+        cools[i].text = cooltime == 0 ? "" : (cooltime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
+    }
+
+    void ClearAugmentPanel()
+    {
+        TMP_Text[] Names = { Option_1_Name, Option_2_Name, Option_3_Name };
+        TMP_Text[] Descs = { Option_1_Description, Option_2_Description, Option_3_Description };
+        TMP_Text[] types = { Option_1_Type, Option_2_Type, Option_3_Type };
+        TMP_Text[] cools = { Option_1_CoolTime, Option_2_CoolTime, Option_3_CoolTime };
+
+        for(int i = 0; i < 3; i++)
+        {
+            Names[i].text = "";
+            Descs[i].text = "";
+            types[i].text = "";
+            cools[i].text = "";
+
+        }
+    }
     public void ShowStatOrAugment()
     {
+        ClearAugmentPanel();
         optionIndex = -1;
-        if (false) //IsStatOrAugment()
+        if (IsStatOrAugment())
         {
             randomStats = GetRandomStats();
+            
+            SetMaterialColor(StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1, Option_1_Panel, true);
+            SetMaterialColor(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1, Option_2_Panel, true);
+            SetMaterialColor(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1, Option_3_Panel, true);
 
-            Option_1_Name.text = randomStats[0].Key;
-            Option_1_Description.text = LevelUpTextWhenStatUp(0);
-            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1, Option_1_Panel);
-
-            Option_2_Name.text = randomStats[1].Key;
-            Option_2_Description.text = LevelUpTextWhenStatUp(1);
-            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[1].Value] + 1, Option_2_Panel);
-
-            Option_3_Name.text = randomStats[2].Key;
-            Option_3_Description.text = LevelUpTextWhenStatUp(2);
-            SetMaterialColor_Stat(StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1, Option_3_Panel);
-
-            Option_1_Type.text = "";
-            Option_1_CoolTime.text = "";
-
-            Option_2_Type.text = "";
-            Option_2_CoolTime.text = "";
-
-            Option_3_Type.text = "";
-            Option_3_CoolTime.text = "";
             CheckStatOrAugment = true;
             int[] levels = new int[] {
                 StatManager.instance.Temporary_stat.StatLevel[randomStats[0].Value] + 1,
@@ -600,7 +701,7 @@ public partial class LevelManager : MonoBehaviour
                 StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1
             };
 
-            StartCoroutine(AugAniCoroutine(levels, OptionButtons, true));
+            StartCoroutine(AugAniCoroutineForStat(levels, OptionButtons, randomStats));
         }
         else
         {
@@ -627,23 +728,9 @@ public partial class LevelManager : MonoBehaviour
                     augmentsSet.Add(AugmentManager.instance.GetRandomAugment());
                 }
             }
-            Option_1_Name.text = augmentsSet[0].Name;
-            Option_1_Description.text = augmentsSet[0].Description;
-            Option_1_Type.text = augmentsSet[0].Type;
-            Option_1_CoolTime.text = augmentsSet[0].CoolTime == 0 ? "" : (augmentsSet[0].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
-            SetMaterialColor_Augment(augmentsSet[0].Rarity, Option_1_Panel);
-
-            Option_2_Name.text = augmentsSet[1].Name;
-            Option_2_Description.text = augmentsSet[1].Description;
-            Option_2_Type.text = augmentsSet[1].Type;
-            Option_2_CoolTime.text = augmentsSet[1].CoolTime == 0 ? "" : (augmentsSet[1].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
-            SetMaterialColor_Augment(augmentsSet[1].Rarity, Option_2_Panel);
-
-            Option_3_Name.text = augmentsSet[2].Name;
-            Option_3_Description.text = augmentsSet[2].Description;
-            Option_3_Type.text = augmentsSet[2].Type;
-            Option_3_CoolTime.text = augmentsSet[2].CoolTime == 0 ? "" : (augmentsSet[2].CoolTime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
-            SetMaterialColor_Augment(augmentsSet[2].Rarity, Option_3_Panel);
+            SetMaterialColor(augmentsSet[0].Rarity, Option_1_Panel, false);
+            SetMaterialColor(augmentsSet[1].Rarity, Option_2_Panel, false);
+            SetMaterialColor(augmentsSet[2].Rarity, Option_3_Panel, false);
 
             CheckStatOrAugment = false;
 
@@ -653,7 +740,7 @@ public partial class LevelManager : MonoBehaviour
                 augmentsSet[2].Rarity
             };
 
-            StartCoroutine(AugAniCoroutine(Rarities, OptionButtons, false));
+            StartCoroutine(AugAniCoroutine(Rarities, OptionButtons, augmentsSet));
         }
     }
 
@@ -675,48 +762,14 @@ public partial class LevelManager : MonoBehaviour
                 + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
     }
 
-    private void SetMaterialColor_Stat(int i, Material material)
+    private void SetMaterialColor(int i, Material material, bool isStat)
     {
-        if(i >= 25)
+        if(isStat)
         {
-            material.SetColor("_Color", RarityColorList[2]);
-            material.SetFloat("_OuterFade", 0f);
-            material.SetFloat("_IsCornerEffect", 0);
+            i = 5 - (i / 5);
+            if (i < 0)
+                i = 0;
         }
-        else if(i >= 20)
-        {
-            material.SetColor("_Color", RarityColorList[2]);
-            material.SetFloat("_OuterFade", 0f);
-            material.SetFloat("_IsCornerEffect", 0);
-        }
-        else if(i >= 15)
-        {
-            material.SetColor("_Color", RarityColorList[2]);
-            material.SetFloat("_OuterFade", 0f);
-            material.SetFloat("_IsCornerEffect", 0);
-        }
-        else if(i >= 10)
-        {
-            material.SetColor("_Color", RarityColorList[3]);
-            material.SetFloat("_OuterFade", 0f);
-            material.SetFloat("_IsCornerEffect", 0);
-        }
-        else if(i >= 5)
-        {
-            material.SetColor("_Color", RarityColorList[4]);
-            material.SetFloat("_OuterFade", 0f);
-            material.SetFloat("_IsCornerEffect", 0);
-        }
-        else
-        {
-            material.SetColor("_Color", RarityColorList[5]);
-            material.SetFloat("_OuterFade", 0f);
-            material.SetFloat("_IsCornerEffect", 0);
-        }
-    }
-
-    private void SetMaterialColor_Augment(int i, Material material)
-    {
         switch (i)
         {
             case 0:
