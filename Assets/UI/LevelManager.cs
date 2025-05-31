@@ -389,27 +389,27 @@ public partial class LevelManager : MonoBehaviour
             {
                 case 5:
                     yield return StartCoroutine(MovePanel(i));
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 4:
                     yield return StartCoroutine(MovePanel(i));
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 3:
                     yield return StartCoroutine(MovePanel(i));
                     yield return StartCoroutine(SetParticle(3, i));
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 2:
                     yield return StartCoroutine(MovePanel(i));
                     yield return StartCoroutine(SetParticle(2, i));
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     yield return StartCoroutine(FlashPanel(2, i));
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     ParticleBurst(2, i, 50);
@@ -431,7 +431,7 @@ public partial class LevelManager : MonoBehaviour
                         yield return StartCoroutine(ShakePanel(i));
                     }
                     yield return StartCoroutine(FlashPanel(1, i));
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     ParticleBurst(1, i, 100);
                     break;
@@ -463,7 +463,7 @@ public partial class LevelManager : MonoBehaviour
                     }
 
                     yield return StartCoroutine(FlashPanel(0, i));
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     ParticleBurst(0, i, 150);
                     SetBackLight(i);
