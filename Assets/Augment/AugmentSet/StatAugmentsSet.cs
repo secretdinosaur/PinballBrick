@@ -127,9 +127,9 @@ public class BossDamageUp : StatAugment
         SetAdditionalDescription(null);
     }
 
-    public override void Apply(){  }
+    public override void Apply() { }
 
-    public override void Remove(){  }
+    public override void Remove() { }
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
@@ -144,17 +144,17 @@ public class AtkUpWhenCritical : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +1.0\nfor 3 seconds", 5);
+        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +1.0\nfor 3 seconds", 4);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
-    { 
+    {
 
     }
 
     public override void Remove()
-    { 
+    {
 
     }
 
@@ -170,7 +170,7 @@ public class AtkUpWhenCritical : StatAugment
     {
         StartCoroutine(AttackDamageUpFewSec(setTime, AttackUpValue));
     }
-    
+
     IEnumerator AttackDamageUpFewSec(float setTime, float AttackUpValue)
     {
         StatManager.instance.ChangeTemporaryStats_AttackDamage(1.0f);
@@ -399,7 +399,7 @@ public class DecreaseFieldCooldown5 : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_19", "Time Accelerator I", "Field effect cooltime -5%", 5);
-        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 5% =" 
+        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString("F1") + "- 5% =" 
             + AugmentManager.instance.FieldGlobalCooldown * 0.95f);
     }
 
@@ -419,7 +419,7 @@ public class DecreaseFieldCooldown20 : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_20", "Time Accelerator II", "Field effect cooltime -20%", 3);
-        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 20% ="
+        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString("F1") + "- 20% ="
             + AugmentManager.instance.FieldGlobalCooldown * 0.8f);
     }
 
@@ -585,7 +585,7 @@ public class MassivelyCriticalDamageUp : StatAugment
     {
         if (isGetAugment)
         {
-            if(StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0.1f)
+            if (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0.1f)
             {
                 float excess = (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) - 0.1f;
                 StatManager.instance.ChangeTemporaryStats_CriticalChance(-excess);
@@ -642,12 +642,12 @@ public class AttackEffectBothUp : StatAugment
 
     public override void Apply()
     {
-        
+
     }
 
     public override void Remove()
     {
-        
+
     }
 }
 
