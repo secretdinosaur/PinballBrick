@@ -239,10 +239,11 @@ public class BrickManager : MonoBehaviour
             int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
             if (BrickQueue == null)
             {
+                yield return new WaitUntil(() => !WavePause);
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
                     || AugmentManager.instance.determineAugmentID("SPECIAL_62")
                     || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
-                //SettingBrickSpawnChance();
+                SettingBrickSpawnChance();
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
