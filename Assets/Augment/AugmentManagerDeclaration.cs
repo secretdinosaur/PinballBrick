@@ -82,6 +82,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeakButStrongEffect>(),
             gameObject.AddComponent<WeakButStrongAtk>(),
             gameObject.AddComponent<DecreaseFieldCooldown5>(),
+            gameObject.AddComponent<DecreaseFieldCooldown10>(),
             gameObject.AddComponent<DecreaseFieldCooldown20>(),
             gameObject.AddComponent<RandomStatUpOrDown>(),
             gameObject.AddComponent<Trinity>(),

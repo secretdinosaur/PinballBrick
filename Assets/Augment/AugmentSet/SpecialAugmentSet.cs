@@ -2504,3 +2504,30 @@ public class RerollAugments : SpecialAugment
         
     }
 }
+
+public class BossDamageUp : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_74", "Boss Killer", "+10% Additional damage to boss", "Special", 4);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    public override void BeforeAttackEffect(IBrick Brick)
+    {
+        if (Brick.IsBoss)
+        {
+            Brick.TotalMultiple *= 1.1f;
+        }
+    }
+}
