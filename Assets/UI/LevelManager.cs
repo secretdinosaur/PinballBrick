@@ -806,58 +806,56 @@ public partial class LevelManager : MonoBehaviour
 
     public void LevelUpEnd()
     {
+        if (CheckStatOrAugment)
+        {
+            StatManager.instance.Temporary_stat.StatLevel[randomStats[optionIndex].Value]++;
+            CalculateTemporaryStatWithLevel(randomStats[optionIndex].Value);
+        }
+        else
+        {
+            Debug.Log(optionIndex);
+            for (int i = 0; i < augmentsSet.Count; i++)
+            {
+                Debug.Log(augmentsSet[i]);
+            }
+            AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
+            AugmentManager.instance.RemoveAugment(augmentsSet[optionIndex]);
+        }
+        isAlreadyClickedButton = new bool[OptionButtons.Length];
+        optionIndex = -1;
         if (isThereRerolled)
         {
             isThereRerolled = false;
             ShowStatOrAugment();
+            AugmentManager.instance.RemoveOnExceptAugmentsList(RerollAugment);
             return;
+        }
+        for (int i = 0; i < OptionButtons.Length; i++)
+        {
+            OptionButtons[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            OptionButtonShaders[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+        }
+        if (LevelUpQueue.Count > 0)
+        {
+            ShowLevelUpPanel();
         }
         else
         {
-            if (CheckStatOrAugment)
+            CustomTime_1 = 0;
+            CustomTime_2 = 0;
+            CustomTime_3 = 0;
+            Time.timeScale = 1f;
+            OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
+            OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
+            OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
+            AdditionalDescriptionPanel.SetActive(false);
+            LevelUpPanel.SetActive(false);
+            CanvasForLevelUpPanel.SetActive(false);
+            VisualEffectManager.Instance.UnsetAugmentPanelPs();
+            if (StatManager.instance.isChangedStat)
             {
-                StatManager.instance.Temporary_stat.StatLevel[randomStats[optionIndex].Value]++;
-                CalculateTemporaryStatWithLevel(randomStats[optionIndex].Value);
-            }
-            else
-            {
-                Debug.Log(optionIndex);
-                for (int i = 0; i < augmentsSet.Count; i++)
-                {
-                    Debug.Log(augmentsSet[i]);
-                }
-                AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
-                AugmentManager.instance.RemoveAugment(augmentsSet[optionIndex]);
-            }
-            isAlreadyClickedButton = new bool[OptionButtons.Length];
-            optionIndex = -1;
-            for (int i = 0; i < OptionButtons.Length; i++)
-            {
-                OptionButtons[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-                OptionButtonShaders[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-            }
-            if (LevelUpQueue.Count > 0)
-            {
-                ShowLevelUpPanel();
-            }
-            else
-            {
-                CustomTime_1 = 0;
-                CustomTime_2 = 0;
-                CustomTime_3 = 0;
-                Time.timeScale = 1f;
-                OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
-                OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
-                OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
-                AdditionalDescriptionPanel.SetActive(false);
-                LevelUpPanel.SetActive(false);
-                CanvasForLevelUpPanel.SetActive(false);
-                VisualEffectManager.Instance.UnsetAugmentPanelPs();
-                if (StatManager.instance.isChangedStat)
-                {
-                    StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-                    StatManager.instance.isChangedStat = false;
-                }
+                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
+                StatManager.instance.isChangedStat = false;
             }
         }
     }

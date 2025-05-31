@@ -73,7 +73,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<GoldGain10Up>(),
             gameObject.AddComponent<GoldGain30Up>(),
             gameObject.AddComponent<GoldGain50Up>(),
-            gameObject.AddComponent<BossDamageUp>(),
             gameObject.AddComponent<AtkUpWhenCritical>(),
             gameObject.AddComponent<CritChanceToAttackDamage>(),
             gameObject.AddComponent<EffectDamageUp1>(),
@@ -168,6 +167,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ReducesExp15>(),
             gameObject.AddComponent<WaveFourBoss>(),
             gameObject.AddComponent<RerollAugments>(),
+            gameObject.AddComponent<BossDamageUp>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
