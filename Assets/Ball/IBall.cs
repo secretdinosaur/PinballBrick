@@ -51,7 +51,6 @@ public partial class IBall : MonoBehaviour
         gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
         linearVelocityYValue = 10;
-        StartCoroutine(EnableCollider());
         spriteRenderer.color = new Color(1f, 1f, 1f);
         TrailRenderer = gameObject.GetComponent<TrailRenderer>();
         BounceTime = 1f;
@@ -75,6 +74,8 @@ public partial class IBall : MonoBehaviour
         AttackDelayTime = 0f;
         StartCoroutine(CalAttackDelayTime());
         AttackNumber = 0;
+        StartCoroutine(EnableCollider());
+
     }
 
     public void BallDied()
@@ -108,7 +109,8 @@ public partial class IBall : MonoBehaviour
 
     private IEnumerator EnableCollider()
     {
-        while(transform.position.y < -2.8)
+        GetComponent<Collider2D>().enabled = false;
+        while (transform.position.y < -2)
         {
             yield return null;
         }

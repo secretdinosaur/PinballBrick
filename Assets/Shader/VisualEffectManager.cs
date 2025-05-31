@@ -53,7 +53,7 @@ public class VisualEffectManager : MonoBehaviour
     {
         
     }
-
+    
     public void SetActiveAugmentPanelPs(int AugmentPanelNum, UnityEngine.Color Color, int Rarity)
     {
         if (Rarity >= 4)

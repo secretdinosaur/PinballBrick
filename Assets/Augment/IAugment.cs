@@ -12,7 +12,7 @@ public abstract class IAugment : MonoBehaviour
     public string Type;
     public string AdditionalDescription;
     public virtual void Apply() { }
-
+    
     public virtual void Remove() { }
     public virtual void BeforeAttackEffect(IBrick Brick) { }
 

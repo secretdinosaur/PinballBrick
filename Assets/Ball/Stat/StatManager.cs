@@ -99,7 +99,7 @@ public partial class StatManager : MonoBehaviour
     {
         Persistent_Stat initialStats = new Persistent_Stat
         {
-            AttackDamage = 2f,
+            AttackDamage = 5f,
             EffectDamage = 5f,
             StartingBall = 1,
             BonusExp = 1f,
@@ -266,7 +266,7 @@ public partial class StatManager
         EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier).ToString("F1");
         EffectDamageChangedStatValueText.text = "";
 
-        EffectDurationStatValueText.text = ((Temporary_stat.EffectDuration - 1) * 100).ToString() + "%";
+        EffectDurationStatValueText.text = ((Temporary_stat.EffectDuration - 1) * 100).ToString("F1") + "%";
         EffectDurationChangedStatValueText.text = "";
 
         GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString("F1") + "%";
@@ -495,16 +495,16 @@ public partial class StatManager
             {
                 float x = Persistent_stat.CriticalChance;
                 float y = (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value) * 100;
-                Temporary_stat.CriticalChance = -x;
-                TotalChangedStatValue[2] -= x;
+                Temporary_stat.CriticalChance = (float)System.Math.Round(-x, 2);
+                TotalChangedStatValue[2] -= (float)System.Math.Round(x, 2);
 
-                Temporary_stat.AttackDamage += y * 0.04f;
-                TotalChangedStatValue[0] += y * 0.04f;
+                Temporary_stat.AttackDamage += (float)System.Math.Round(y * 0.04f, 2);
+                TotalChangedStatValue[0] += (float)System.Math.Round(y * 0.04f, 2);
             }
             else
             {
-                Temporary_stat.AttackDamage += (value * 100) * 0.04f;
-                TotalChangedStatValue[0] += (value * 100) * 0.04f;
+                Temporary_stat.AttackDamage += (float)System.Math.Round((value * 100) * 0.04f, 2);
+                TotalChangedStatValue[0] += (float)System.Math.Round((value * 100) * 0.04f, 2);
             }
         }
         else
@@ -513,18 +513,18 @@ public partial class StatManager
             {
                 float x = 1f - (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance);
                 float y = Mathf.Floor((value - x) * 100f) / 100f;
-                Temporary_stat.CriticalChance += x;
-                TotalChangedStatValue[2] += x;
+                Temporary_stat.CriticalChance += (float)System.Math.Round(x, 2);
+                TotalChangedStatValue[2] += (float)System.Math.Round(x, 2);
                 if (y > 0)
                 {
-                    Temporary_stat.CriticalDamage += y;
-                    TotalChangedStatValue[1] += y;
+                    Temporary_stat.CriticalDamage += (float)System.Math.Round(y, 2);
+                    TotalChangedStatValue[1] += (float)System.Math.Round(y, 2);
                 }
             }
             else
             {
-                Temporary_stat.CriticalChance += value;
-                TotalChangedStatValue[2] += value;
+                Temporary_stat.CriticalChance += (float)System.Math.Round(value, 2);
+                TotalChangedStatValue[2] += (float)System.Math.Round(value, 2);
             }
         }
         SaveTemporaryStat(Temporary_stat);
@@ -532,8 +532,8 @@ public partial class StatManager
     }
     public void ChangeTemporaryStats_EffectDamage(float value)
     {
-        Temporary_stat.EffectDamage += value;
-        TotalChangedStatValue[3] += value;
+        Temporary_stat.EffectDamage += (float)System.Math.Round(value, 2);
+        TotalChangedStatValue[3] += (float)System.Math.Round(value, 2);
         if (AugmentManager.instance.determineAugmentID("STAT_28"))
         {
             Temporary_stat.AttackDamage += value * 0.1f;
@@ -544,22 +544,22 @@ public partial class StatManager
     }
     public void ChangeTemporaryStats_EffectDuration(float value)
     {
-        Temporary_stat.EffectDuration += value;
-        TotalChangedStatValue[4] += value;
+        Temporary_stat.EffectDuration += (float)System.Math.Round(value, 2);
+        TotalChangedStatValue[4] += (float)System.Math.Round(value, 2);
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_GoldGain(float value)
     {
-        Temporary_stat.GoldGain += value;
-        TotalChangedStatValue[5] += value;
+        Temporary_stat.GoldGain += (float)System.Math.Round(value, 2);
+        TotalChangedStatValue[5] += (float)System.Math.Round(value, 2);
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_ExpGain(float value)
     {
-        Temporary_stat.ExpGain += value;
-        TotalChangedStatValue[6] += value;
+        Temporary_stat.ExpGain += (float)System.Math.Round(value, 2);
+        TotalChangedStatValue[6] += (float)System.Math.Round(value, 2);
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
     }
@@ -567,14 +567,14 @@ public partial class StatManager
     {
         if(value >= 0)
         {
-            statMultiplier.AttackDamageMultiplier *= value;
-            TotalChangedStatValue[7] *= value;
+            statMultiplier.AttackDamageMultiplier *= (float)System.Math.Round(value, 2);
+            TotalChangedStatValue[7] *= (float)System.Math.Round(value, 2);
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
-            statMultiplier.AttackDamageMultiplier /= -value;
-            TotalChangedStatValue[7] /= -value;
+            statMultiplier.AttackDamageMultiplier /= (float)System.Math.Round(-value, 2);
+            TotalChangedStatValue[7] /= (float)System.Math.Round(-value, 2);
             SaveStatMultiplier(statMultiplier);
         }
         isChangedStat = true;
@@ -583,14 +583,14 @@ public partial class StatManager
     {
         if(value >= 0)
         {
-            statMultiplier.EffectDamageMultiplier *= value;
-            TotalChangedStatValue[8] *= value;
+            statMultiplier.EffectDamageMultiplier *= (float)System.Math.Round(value, 2);
+            TotalChangedStatValue[8] *= (float)System.Math.Round(value, 2);
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
-            statMultiplier.EffectDamageMultiplier /= -value;
-            TotalChangedStatValue[8] /= -value;
+            statMultiplier.EffectDamageMultiplier /= (float)System.Math.Round(-value, 2);
+            TotalChangedStatValue[8] /= (float)System.Math.Round(-value, 2);
             SaveStatMultiplier(statMultiplier);
         }
         isChangedStat = true;

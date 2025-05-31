@@ -11,7 +11,6 @@ public partial class AugmentManager //Utility
     {
         return activeSpecialAugments.Any(a => a.Type == Type);
     }
-
     public bool determineAugmentID(string ID)
     {
        return activeStatAugments.Any(a => a.ID == ID) || 
@@ -24,7 +23,7 @@ public partial class AugmentManager //Utility
     {
         if (augmentsSet == null || augmentsSet.Count == 0) return null;
         var availableAugments = augmentsSet
-            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == 5)
+            .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == GetTargetRarity())
             .ToList();
         if (availableAugments.Count == 0) return null;
 
