@@ -17646,6 +17646,7 @@ MonoBehaviour:
   SpawnBallAmount: 0
   CurseDamageValue: 0
   AfterDeathActiveNumber: 0
+  isLevelUpOnceAgain: 0
 --- !u!114 &218456172
 MonoBehaviour:
   m_ObjectHideFlags: 0

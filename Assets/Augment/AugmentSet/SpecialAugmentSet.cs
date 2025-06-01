@@ -1189,12 +1189,12 @@ public class SpawnBallAmountMultiple1 : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.SpawnBallAmount *= 2;
+        AugmentManager.instance.SpawnBallAmount = 2;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.SpawnBallAmount /= 2;
+        AugmentManager.instance.SpawnBallAmount = 1;
     }
 }
 
@@ -1208,12 +1208,12 @@ public class SpawnBallAmountMultiple2 : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.SpawnBallAmount *= 3;
+        AugmentManager.instance.SpawnBallAmount = 3;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.SpawnBallAmount /= 3;
+        AugmentManager.instance.SpawnBallAmount = 1;
     }
 }
 public class BallSwarm : SpecialAugment
@@ -2259,6 +2259,11 @@ public class GainBallAfterLevelUp : SpecialAugment
     {
 
     }
+
+    public override void AfterLevelUpEffect()
+    {
+        DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(AugmentManager.instance.SpawnBallAmount, BallManager.Instance.OnCreateBall));
+    }
 }
 
 public class SpecialBrickChanceUp : SpecialAugment
@@ -2544,5 +2549,33 @@ public class ContinuingCurseAttack : SpecialAugment
     public override void Remove()
     {
 
+    }
+}
+
+public class LevelUpAgain : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up", "Special", 0);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    public override void AfterLevelUpEffect()
+    {
+        if (!AugmentManager.instance.isLevelUpOnceAgain)
+        {
+            AugmentManager.instance.isLevelUpOnceAgain = true;
+            LevelManager.Instance.LevelUp();
+        }
     }
 }

@@ -654,7 +654,7 @@ public class AllStatUp : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_29", "Awake", "All Stat Up", 1);
+        SetAugment("STAT_29", "Awake", "All stat up", 1);
         SetAdditionalDescription("Except gold gain stat");
     }
 
@@ -714,5 +714,31 @@ public class EffectDamageUp3 : StatAugment
     public override void Remove()
     {
         StatManager.instance.ChangeTemporaryStats_EffectDamage(-2.5f);
+    }
+}
+
+public class LevelUpMania : StatAugment
+{
+    float TotalUpgradedValue;
+    private void OnEnable()
+    {
+        SetAugment("STAT_32", "Level Up Mania", "After level up, Exp gain +2%", 5);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        TotalUpgradedValue = 0;
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-TotalUpgradedValue);
+    }
+
+    public override void AfterLevelUpEffect()
+    {
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.02f);
+        TotalUpgradedValue += 0.025f;
     }
 }
