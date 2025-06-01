@@ -46,6 +46,7 @@ public abstract class StatAugment : IAugment
         Description = description;
         Rarity = rarity;
         Type = "Stat";
+
     }
 
     protected void SetAdditionalDescription(string additionalDescription)
@@ -64,6 +65,8 @@ public abstract class FieldAugment : IAugment
         Rarity = rarity;
         CoolTime = cooltime;
         Type = "Field";
+
+
     }
 
     protected void SetAdditionalDescription(string additionalDescription)
@@ -82,6 +85,8 @@ public abstract class SpecialAugment : IAugment
         Type = type;
         Rarity = rarity;
         CoolTime = cooltime;
+        AugmentManager.instance.S("Special" + "   " + rarity + "   " + name + "   " + description + "\n");
+
     }
 
     protected void SetAdditionalDescription(string additionalDescription)
