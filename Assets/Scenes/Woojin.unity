@@ -17673,6 +17673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGameEnded: 0
+  OnChaos: 0
   PausePanel: {fileID: 0}
   GameEndPanel: {fileID: 0}
   WaveNoticeText: {fileID: 0}
@@ -36529,7 +36530,7 @@ GameObject:
   - component: {fileID: 784325063}
   - component: {fileID: 784325062}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Curtain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36567,7 +36568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
