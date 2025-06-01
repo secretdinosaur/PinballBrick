@@ -2527,3 +2527,22 @@ public class BossDamageUp : SpecialAugment
         }
     }
 }
+
+public class ContinuingCurseAttack : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_75", "Possession", "Transforms Curse Damage into a damage-over-time attack", "Special", 2);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+
+    }
+}

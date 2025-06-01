@@ -33,6 +33,7 @@ public partial class IBrick : MonoBehaviour
     public Coroutine Fire = null;
     public Coroutine Poison = null;
     public Coroutine Decay = null;
+    public Coroutine Curse = null;
     public Coroutine ExecutionCor = null;
     public Coroutine BrickHealCoroutine = null;
 
@@ -360,7 +361,13 @@ public partial class IBrick
 
     public void DamageByCurse()
     {
-        DamageManager.DamageByCurse(this);
+        if(AugmentManager.instance.determineAugmentID("SPECIAL_75"))
+            if(Curse == null)
+            {
+                Curse = StartCoroutine(BrickEffect.DamageByCurse2());
+            }
+        else
+            DamageManager.DamageByCurse(this);
     }
 
     public float DecayDamageCalculate(float Damage)

@@ -190,6 +190,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
             gameObject.AddComponent<SummonGhostBall>(),
             gameObject.AddComponent<EnhanceCurseAttack>(),
+            gameObject.AddComponent<ContinuingCurseAttack>(),
 
             gameObject.AddComponent<RebornBombBall>(),
             ////////////////////////// Delete These Before Build
@@ -197,7 +198,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<Bombardment>()
+            gameObject.GetComponent<CurseBall>(),
+            gameObject.GetComponent<ContinuingCurseAttack>(),
         };
 
         foreach (IAugment augment in TestAugments)

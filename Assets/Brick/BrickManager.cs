@@ -180,6 +180,11 @@ public class BrickManager : MonoBehaviour
                 brick.Decay = null;
                 VisualEffectManager.Instance.UnSetDecayVisualEffect(brick);
             }
+            if (brick.Curse != null)
+            {
+                brick.StopCoroutine(brick.Curse);
+                brick.Curse = null;
+            }
             if (brick.ExecutionCor != null)
             {
                 brick.StopCoroutine(brick.ExecutionCor);
