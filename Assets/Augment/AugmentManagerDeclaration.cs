@@ -32,8 +32,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public int SpawnBallAmount;
 
-    public int CurseActiveNumber;
+    public float CurseDamageValue;
     public int AfterDeathActiveNumber;
+
+    public bool isLevelUpOnceAgain;
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
@@ -56,8 +58,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         DecayDamageMultiple = 1.1f;
         isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
-        CurseActiveNumber = 1;
+        CurseDamageValue = 1f;
         AfterDeathActiveNumber = 1;
+        isLevelUpOnceAgain = false;
         ClearAllAugments();
 
         augmentsSet = new List<IAugment>
@@ -91,6 +94,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ExpGain30Up>(),
             gameObject.AddComponent<ExpGain50Up>(),
             gameObject.AddComponent<AttackEffectBothUp>(),
+            gameObject.AddComponent<LevelUpMania>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -105,6 +109,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WeatherChange>(),
             gameObject.AddComponent<DiceGamble>(),
             gameObject.AddComponent<Trampoline>(),
+            gameObject.AddComponent<Bombardment>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -169,6 +174,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<WaveFourBoss>(),
             gameObject.AddComponent<RerollAugments>(),
             gameObject.AddComponent<BossDamageUp>(),
+            gameObject.AddComponent<LevelUpAgain>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -188,7 +194,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ShareBallAtk>(),
 
             gameObject.AddComponent<SummonGhostBall>(),
-            gameObject.AddComponent<CurseTwice>(),
+            gameObject.AddComponent<EnhanceCurseAttack>(),
+            gameObject.AddComponent<ContinuingCurseAttack>(),
 
             gameObject.AddComponent<RebornBombBall>(),
             ////////////////////////// Delete These Before Build
@@ -196,7 +203,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<SummonGhostBall>(),
+            gameObject.GetComponent<GroupViolence>(),
+            gameObject.GetComponent<DamageInfection>(),
         };
 
         foreach (IAugment augment in TestAugments)
@@ -207,9 +215,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<SpawnBombBall>());
-        AddAugment(gameObject.GetComponent<ChangeNormalToGlass>());
-        AddAugment(gameObject.GetComponent<SummonGhostBall>());
+        AddAugment(gameObject.GetComponent<Chaos>());
     }
 }
 

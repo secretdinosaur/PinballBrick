@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4895539536944960113}
   - component: {fileID: 5368739640230251868}
   - component: {fileID: -2231093413387828345}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: GhostBall
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -181,6 +181,7 @@ MonoBehaviour:
   StartPosition: {x: 0, y: -5, z: 35}
   linearVelocityYValue: 10
   Renderer: {fileID: 0}
+  BrickColor: {r: 0, g: 0, b: 0, a: 0}
   AttackNumber: 0
   rb: {fileID: 0}
   TransformationMultiple: 1
@@ -409,7 +410,7 @@ GameObject:
   - component: {fileID: 1157475124098437019}
   - component: {fileID: 6598040097742510224}
   - component: {fileID: 6832919151671175762}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DetectArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +494,7 @@ GameObject:
   - component: {fileID: 5509094702745881992}
   - component: {fileID: 3509347304175653776}
   - component: {fileID: 291838562286687295}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flamethrower
   m_TagString: Flamethrower
   m_Icon: {fileID: 0}

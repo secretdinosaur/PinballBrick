@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Random = UnityEngine.Random;
 using TMPro;
 using TrailRenderer = UnityEngine.TrailRenderer;
+using Unity.VisualScripting;
 
 public partial class IBall : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public partial class IBall : MonoBehaviour
     public Coroutine FusionMoveRoutine = null;
 
     public Renderer Renderer;
+    public Color BrickColor;
 
     public int AttackNumber;
 
@@ -75,12 +77,39 @@ public partial class IBall : MonoBehaviour
         StartCoroutine(CalAttackDelayTime());
         AttackNumber = 0;
         StartCoroutine(EnableCollider());
+        BrickColor = spriteRenderer.color;
+
+        if(!BallManager.Instance.InGameBall.Contains(this) && BallManager.Instance.BallList.Contains(BallType))
+        {
+            BallManager.Instance.InGameBall.Add(this);
+            BallManager.Instance.inGameBallPosition.Add(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameBallCollider.Add(gameObject.GetComponent<Collider2D>());
+        }
+        else if (!BallManager.Instance.InGameSpecialBall.Contains(this) && BallManager.Instance.SpecialBallList.Contains(BallType))
+        {
+            BallManager.Instance.InGameSpecialBall.Add(this);
+            BallManager.Instance.inGameSpecialBallPosition.Add(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameSpecialBallCollider.Add(gameObject.GetComponent<Collider2D>());
+        }
 
     }
 
     public void BallDied()
     {
-        if(BallType != "GhostBall")
+        if (BallManager.Instance.InGameBall.Contains(this))
+        {
+            BallManager.Instance.InGameBall.Remove(this);
+            BallManager.Instance.inGameBallPosition.Remove(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameBallCollider.Remove(gameObject.GetComponent<Collider2D>());
+        }
+        else if (BallManager.Instance.InGameSpecialBall.Contains(this))
+        {
+            BallManager.Instance.InGameSpecialBall.Remove(this);
+            BallManager.Instance.inGameSpecialBallPosition.Remove(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameSpecialBallCollider.Remove(gameObject.GetComponent<Collider2D>());
+        }
+
+        if (BallType != "GhostBall")
         {
             Renderer.material.color = Color.white;
             if (isPhoenix)
@@ -104,6 +133,7 @@ public partial class IBall : MonoBehaviour
                     FusionMoveRoutine = null;
                 }
                 GetComponent<Collider2D>().enabled = false;
+                GameManager.instance.DiedBalls += 1;
                 BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
             }
         }
@@ -197,7 +227,7 @@ public partial class IBall : MonoBehaviour
             else if (collision.gameObject.CompareTag("Brick"))
             {
                 MaxBounce = 0;
-                spriteRenderer.color = new Color(1f, 1f, 1f);
+                spriteRenderer.color = BrickColor;
             }
         }
         if (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball"))

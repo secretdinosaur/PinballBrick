@@ -8,29 +8,30 @@
     using System.Security.Cryptography.X509Certificates;
     using System.Drawing;
     using Color = UnityEngine.Color;
+using Redcode.Pools;
 
-    /*
-    public class Example : FieldAugment
+/*
+public class Example : FieldAugment
+{
+    private void OnEnable()
     {
-        private void OnEnable()
-        {
-            SetAugment("Field_N", "Example", "Example", 3);
-        }
-
-        public override void Apply(){  }
-
-        public override void Remove(){ }
-
-        public virtual void BeforeAttackEffect(IBrick Brick) { }
-    
-        public virtual void AfterAttackEffect(IBrick Brick) { }
-
-        public virtual void CriticalAttackEffect(IBrick Brick) { }
+        SetAugment("Field_N", "Example", "Example", 3);
     }
-     */
+
+    public override void Apply(){  }
+
+    public override void Remove(){ }
+
+    public virtual void BeforeAttackEffect(IBrick Brick) { }
+
+    public virtual void AfterAttackEffect(IBrick Brick) { }
+
+    public virtual void CriticalAttackEffect(IBrick Brick) { }
+}
+ */
 
     public class AllDamage : FieldAugment
-    {
+{
         Coroutine Routine = null;
         float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
         float Damage;
@@ -117,6 +118,14 @@
                     Vector3 forceDirection = rb.linearVelocity.normalized;
                     rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
                 }
+                foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
+                {
+                    StartCoroutine(AngryBallEffect(ball));
+                    Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                    Vector3 forceDirection = rb.linearVelocity.normalized;
+                    rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
+                }
+
                 yield return new WaitForSeconds(period);
             }
         }
@@ -233,13 +242,22 @@
                         rb.gravityScale = Random.Range(0.01f, 0.03f);
                         rb.linearVelocity = Vector2.zero;
                     }
+                    foreach (IBall ball in BallManager.Instance.InGameSpecialBall)
+                    {
+                        CircleCollider2D collider = ball.GetComponent<CircleCollider2D>();
+                        Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
+                        BallRigidBody2D.Add(rb);
+                        collider.enabled = false;
+                        rb.gravityScale = Random.Range(0.01f, 0.03f);
+                        rb.linearVelocity = Vector2.zero;
+                    }
 
                     Vector3 TargetPosition = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)].transform.position;
 
                     Target.transform.position = TargetPosition;
                     Target.SetActive(true);
                     StartCoroutine(FindTarget());
-                    yield return new WaitForSeconds(1.5f);
+                    yield return new WaitForSeconds(1f);
 
                     Target.SetActive(false);
                     foreach (Rigidbody2D ball in BallRigidBody2D)
@@ -259,11 +277,11 @@
         private IEnumerator FindTarget()
         {
             float elapsedTime = 0f;
-            while (elapsedTime < 1.5f)
+            while (elapsedTime < 1f)
             {
                 elapsedTime += Time.deltaTime;
-                TargetMat.SetFloat("_Alpha", Mathf.Lerp(1, 0, elapsedTime / 1.5f));
-                TargetMat.SetFloat("_Color", Mathf.Lerp(0, 1, elapsedTime / 1.5f));
+                TargetMat.SetFloat("_Alpha", Mathf.Lerp(1, 0, elapsedTime / 1f));
+                TargetMat.SetFloat("_Color", Mathf.Lerp(0, 1, elapsedTime / 1f));
                 yield return null;
             }
         }
@@ -370,6 +388,11 @@
                 Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
                 rb.gravityScale = 0.5f;
             }
+            foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
+            {
+                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                rb.gravityScale = 0.5f;
+            }
         }
 
         private IEnumerator GetAntiGravity(float Cooldown, float Duration)
@@ -377,6 +400,7 @@
             while (true)
             {
                 BallManager.Instance.isAntiGravity = true;
+
                 foreach (Ball ball in BallManager.Instance.InGameBall)
                 {
                     Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
@@ -384,15 +408,30 @@
                     Vector3 forceDirection = rb.linearVelocity.normalized;
                     rb.AddForce(forceDirection * 1f, ForceMode2D.Impulse);
                 }
+                foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
+                {
+                    Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                    rb.gravityScale = -1f;
+                    Vector3 forceDirection = rb.linearVelocity.normalized;
+                    rb.AddForce(forceDirection * 1f, ForceMode2D.Impulse);
+                }
+
                 StartCoroutine(AntiGravityEffect(true));
                 yield return new WaitForSeconds(Duration);
                 StartCoroutine(AntiGravityEffect(false));
                 BallManager.Instance.isAntiGravity = false;
+
                 foreach (Ball ball in BallManager.Instance.InGameBall)
                 {
                     Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
                     rb.gravityScale = 0.5f;
                 }
+                foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
+                {
+                    Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                    rb.gravityScale = 0.5f;
+                }
+
                 yield return new WaitForSeconds(Cooldown);
             }
         }
@@ -852,7 +891,7 @@
                     case 1:
                         for(int i = 0; i < DiceSum / 2; i++)
                         {
-                            BallManager.Instance.CreateSpecificBall(1, "BombBall");
+                            BallManager.Instance.CreateBombBall(1);
                         }
                         break;
                     case 2:
@@ -930,3 +969,68 @@
             }
         }
     }
+
+public class Bombardment : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 1.5f;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_16", "Air Strike", "Summons 5 bombs that fall from above", 2, (float)System.Math.Round(Cooldown, 2));
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(StartAirStrike(Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator StartAirStrike(float Cooldown)
+    {
+        while (true)
+        {      
+            CreateAirStrikeBombBall(new Vector3(-1.8f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(-0.9f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(0f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(0.9f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(1.8f, 4.725f, 0));
+
+            yield return new WaitForSeconds(Cooldown);
+        }
+    }
+
+    void CreateAirStrikeBombBall(Vector3 position)
+    {
+        IBall BombBall = GetSpecificBall("BombBall");
+        BombBall.gameObject.SetActive(false);
+        BombBall.StartPosition.x = Random.Range(position.x - 0.2f, position.x + 0.2f);
+        BombBall.StartPosition.y = position.y;
+        BombBall.linearVelocityYValue -= 1f;
+        BombBall.gameObject.SetActive(true);
+    }
+
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
+    }
+}

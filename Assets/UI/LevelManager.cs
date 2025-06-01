@@ -156,7 +156,7 @@ public partial class LevelManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf && !GameManager.instance.isGameEnded)
+        if (LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf && !GameManager.instance.isGameEnded && !GameManager.instance.OnChaos)
         {
             ShowLevelUpPanel();
         }
@@ -187,14 +187,14 @@ public partial class LevelManager : MonoBehaviour
 
     public void LevelUp()
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_66"))
-        {
-            DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(AugmentManager.instance.SpawnBallAmount, BallManager.Instance.OnCreateBall));
-        }
         Exp -= LevelBar.maxValue;
         Level++;
         LevelBarMaxValueSet(Level);
         LevelUpQueue.Enqueue(Level);
+        foreach (IAugment augment in AugmentManager.instance.activeStatAugments)
+            augment.AfterLevelUpEffect();
+        foreach (IAugment augment in AugmentManager.instance.activeSpecialAugments)
+            augment.AfterLevelUpEffect();
     }
 
     public void LevelSet(int value)
@@ -904,6 +904,8 @@ public partial class LevelManager : MonoBehaviour
             AdditionalDescriptionPanel.SetActive(false);
             LevelUpPanel.SetActive(false);
             CanvasForLevelUpPanel.SetActive(false);
+            if (AugmentManager.instance.isLevelUpOnceAgain)
+                AugmentManager.instance.isLevelUpOnceAgain = false;
             VisualEffectManager.Instance.UnsetAugmentPanelPs();
             if (StatManager.instance.isChangedStat)
             {

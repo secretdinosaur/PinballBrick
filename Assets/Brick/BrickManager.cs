@@ -180,6 +180,11 @@ public class BrickManager : MonoBehaviour
                 brick.Decay = null;
                 VisualEffectManager.Instance.UnSetDecayVisualEffect(brick);
             }
+            if (brick.Curse != null)
+            {
+                brick.StopCoroutine(brick.Curse);
+                brick.Curse = null;
+            }
             if (brick.ExecutionCor != null)
             {
                 brick.StopCoroutine(brick.ExecutionCor);
@@ -643,6 +648,24 @@ public class BrickManager : MonoBehaviour
         return isBossSpawnCondition; 
     }
 
+    public void WaveSkip(int Num)
+    {
+        if (BrickQueue.Count > 0)
+        {
+            BrickQueue.Clear();
+        }
+        if (BrickQueue != null)
+        {
+            BrickQueue = null;
+        }
+        if (SpawnBrickRoutine != null)
+        {
+            StopCoroutine(SpawnBrickRoutine);
+            SpawnBrickRoutine = null;
+        }
+        GameManager.instance.Wave += Num;
+    }
+
     //Test Button Functions
     public void OnSpawnWaveBrickButtonClick()
     {
@@ -691,20 +714,7 @@ public class BrickManager : MonoBehaviour
 
     public void OnSkipWaveButtonClick()
     {
-        if(BrickQueue.Count > 0)
-        {
-            BrickQueue.Clear();
-        }
-        if(BrickQueue != null)
-        {
-            BrickQueue = null;
-        }
-        if(SpawnBrickRoutine != null)
-        {
-            StopCoroutine(SpawnBrickRoutine);
-            SpawnBrickRoutine = null;
-        }
-        GameManager.instance.Wave += 1;
+        WaveSkip(1);
     }
     //*******************************************************
 }

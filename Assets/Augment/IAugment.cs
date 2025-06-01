@@ -34,6 +34,8 @@ public abstract class IAugment : MonoBehaviour
     public virtual void AfterAttackEffect(IBrick Brick) { }
 
     public virtual void AfterBrickDieEffect(IBrick Brick) { }
+
+    public virtual void AfterLevelUpEffect() { }
     
 }
 

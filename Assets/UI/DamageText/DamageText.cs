@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using Random = UnityEngine.Random;
+using static UnityEngine.UI.Image;
 
 public class DamageText : MonoBehaviour
 {
@@ -61,6 +62,10 @@ public class DamageText : MonoBehaviour
             case "Curse":
                 Routine = StartCoroutine(ShowDamageTextPoison());
                 damageText.color = new Color(110 / 255f, 0, 2 / 255f);
+                Color.RGBToHSV(damageText.color, out float h, out float s, out float v);
+                v = Mathf.Clamp01(v + 0.3f);
+                Color brighter = Color.HSVToRGB(h, s, v);
+
                 break;
             case "Heal":
                 Routine = StartCoroutine(ShowDamageTextPoison());

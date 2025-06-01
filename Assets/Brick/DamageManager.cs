@@ -8,38 +8,18 @@ public static partial class DamageManager //Normal Attack
 {
     public static void TakeDamage(IBrick brick, IBall ball)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_51"))
-        {
-            BrickManager.Instance.MainBrick.RecentlyBall = ball;
-            BrickManager.Instance.MainBrick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
-            BrickManager.Instance.MainBrick.SpecialCriticalChance = ball.SpecialCriticalChance;
-            DamageProcess(BrickManager.Instance.MainBrick);
-        }
-        else
-        {
-            brick.RecentlyBall = ball;
-            brick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
-            brick.SpecialCriticalChance = ball.SpecialCriticalChance;
-            DamageProcess(brick);
-        }
+        brick.RecentlyBall = ball;
+        brick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        brick.SpecialCriticalChance = ball.SpecialCriticalChance;
+        DamageProcess(brick);
     }
 
     public static void TakeDamageWithoutMainAttack(IBrick brick, IBall ball)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_51"))
-        {
-            BrickManager.Instance.MainBrick.RecentlyBall = ball;
-            BrickManager.Instance.MainBrick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
-            BrickManager.Instance.MainBrick.SpecialCriticalChance = ball.SpecialCriticalChance;
-            DamageProcessWithoutMainAttack(BrickManager.Instance.MainBrick);
-        }
-        else
-        {
-            brick.RecentlyBall = ball;
-            brick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
-            brick.SpecialCriticalChance = ball.SpecialCriticalChance;
-            DamageProcessWithoutMainAttack(brick);
-        }
+        brick.RecentlyBall = ball;
+        brick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        brick.SpecialCriticalChance = ball.SpecialCriticalChance;
+        DamageProcessWithoutMainAttack(brick);
     }
 
     private static void DamageProcess(IBrick brick)
@@ -230,8 +210,8 @@ public static partial class DamageManager //Special Effect Attack
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
         float damage = isCritical ? 
-              Random.Range(baseDamage * 0.5f, baseDamage * 1.3f) * CriticalDamage()
-            : Random.Range(baseDamage * 0.5f, baseDamage * 1.3f);
+              Random.Range(baseDamage * 0.85f, baseDamage * 1.4f) * AugmentManager.instance.CurseDamageValue * CriticalDamage()
+            : Random.Range(baseDamage * 0.85f, baseDamage * 1.4f) * AugmentManager.instance.CurseDamageValue;
         float FinalDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
@@ -239,7 +219,7 @@ public static partial class DamageManager //Special Effect Attack
         brick.HP -= FinalDamage;
         brick.ShowText(FinalDamage.ToString("F1"), "Curse", isCritical);
     }
-
+    
     public static void ArbitraryDamageAttack(IBrick brick, float damage, bool isCritical, string damageText, string DamageType)
     {
         damage = DecayDamageCalculate(brick, damage);
@@ -549,6 +529,50 @@ public class BrickEffectManager : MonoBehaviour
         brick.Decay = null;
         EffectStatusSet["Decay"].EffectStack = 0;
         VisualEffectManager.Instance.UnSetDecayVisualEffect(brick);
+    }
+
+    public IEnumerator DamageByCurse2()
+    {
+        bool isCritical = true;
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
+        {
+            isCritical = DamageManager.IsCriticalHit(brick);
+        }
+        if (brick.BrickType == "IgnoreBrick")
+        {
+            if (brick.GetComponent<IgnoreBrick>().Ignoring)
+                yield break;
+            else
+                brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
+        }
+        VisualEffectManager.Instance.SpawnParticle("Curse", brick.transform.position, 5);
+        float baseDamage = 0;
+        if (brick.RecentlyBall != null)
+            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
+            + StatManager.instance.Temporary_stat.AttackDamage
+            + brick.RecentlyBall.GrowthAttackDamage)
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        else
+            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
+            + StatManager.instance.Temporary_stat.AttackDamage)
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
+
+        float damage = isCritical ?
+              (baseDamage * 0.44f) * AugmentManager.instance.CurseDamageValue * DamageManager.CriticalDamage()
+            : (baseDamage * 0.44f) * AugmentManager.instance.CurseDamageValue;
+        float FinalDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
+                : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
+                ? 1
+                : brick.DecayDamageCalculate(damage);
+
+        float Chance = 1;
+        while (Random.value < Chance)
+        {
+            brick.HP -= FinalDamage;
+            brick.ShowText(FinalDamage.ToString("F1"), "Curse", isCritical);
+            Chance *= 0.8f;
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     public void FireTimeUpdate(float effectDuration) { FireEffectDuration = effectDuration; }

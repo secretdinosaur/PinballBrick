@@ -13,6 +13,8 @@ public class BombBall : IBall
         BoomCount = 3;
         BallType = "BombBall";
         BallBaseDamage = 0;
+        GameManager.instance.SummonedBalls += 1;
+        gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
         StartCoroutine(StartBoomCount());
     }
 
@@ -45,7 +47,7 @@ public class BombBall : IBall
         {
             if(Random.value < 0.5f)
             {
-                BallManager.Instance.CreateSpecificBall(1, "BombBall");
+                BallManager.Instance.CreateBombBall(1);
             }
         }
         BallDied();

@@ -11,7 +11,9 @@ public partial class StatManager : MonoBehaviour
     public Persistent_Stat Persistent_stat; // If you want to use it elsewhere, use this variable
     public Temporary_Stat Temporary_stat; //
     public StatMultiplier statMultiplier; //
-    
+    public static float AttackDamage;
+    public static float EffectDamage;
+
     private string persistent_stat_filePath;
     private string temporary_stat_filePath;
     private string stat_Multiplier_filePath;
@@ -94,6 +96,9 @@ public partial class StatManager : MonoBehaviour
 
         ShowChangedStatRoutine = null;
         isChangedStat = false;
+
+        AttackDamage = (Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier;
+        EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
     }
     void InitializePersistentStats() // persistent stats
     {
@@ -180,6 +185,9 @@ public partial class StatManager : MonoBehaviour
         
         json = File.ReadAllText(temporary_stat_filePath);
         Temporary_stat = JsonUtility.FromJson<Temporary_Stat>(json);
+
+        AttackDamage = (Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier;
+        EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
     }
     
     public StatMultiplier LoadStatMultiplier() // Just Load
@@ -195,6 +203,9 @@ public partial class StatManager : MonoBehaviour
         
         json = File.ReadAllText(stat_Multiplier_filePath);
         statMultiplier = JsonUtility.FromJson<StatMultiplier>(json);
+
+        AttackDamage = (Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier;
+        EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
     }
 
     public void RunAttackDamageUpFewSec(float setTime, float AttackUpValue)
@@ -474,8 +485,8 @@ public partial class StatManager
         TotalChangedStatValue[0] += value;
         if (AugmentManager.instance.determineAugmentID("STAT_28"))
         {
-            Temporary_stat.EffectDamage += value * 0.1f;
-            TotalChangedStatValue[3] += value * 0.1f;
+            Temporary_stat.EffectDamage += value * 0.2f;
+            TotalChangedStatValue[3] += value * 0.2f;
         }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
@@ -536,8 +547,8 @@ public partial class StatManager
         TotalChangedStatValue[3] += (float)System.Math.Round(value, 2);
         if (AugmentManager.instance.determineAugmentID("STAT_28"))
         {
-            Temporary_stat.AttackDamage += value * 0.1f;
-            TotalChangedStatValue[0] += value * 0.1f;
+            Temporary_stat.AttackDamage += value * 0.2f;
+            TotalChangedStatValue[0] += value * 0.2f;
         }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;

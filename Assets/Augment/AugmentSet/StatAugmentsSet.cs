@@ -633,20 +633,30 @@ public class ExpGain50Up : StatAugment
 
 public class AttackEffectBothUp : StatAugment
 {
+    float UpgradeAttackStat;
+    float UpgradeEffectStat;
     private void OnEnable()
     {
-        SetAugment("STAT_28", "Greedy", "Attack, Effect Damage stats share 10% of each other's increase", 1);
+        SetAugment("STAT_28", "Greedy", "Attack, Effect Damage stats share 20% of each other's increase", 1);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
+        UpgradeAttackStat = ((StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
+            * StatManager.instance.statMultiplier.EffectDamageMultiplier) * 0.2f;
+        
+        UpgradeEffectStat = ((StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage)
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier) * 0.2f;
 
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(UpgradeAttackStat);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(UpgradeEffectStat);
     }
 
     public override void Remove()
     {
-
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-UpgradeAttackStat);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-UpgradeEffectStat);
     }
 }
 
@@ -654,7 +664,7 @@ public class AllStatUp : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_29", "Awake", "All Stat Up", 1);
+        SetAugment("STAT_29", "Awake", "All stat up", 1);
         SetAdditionalDescription("Except gold gain stat");
     }
 
@@ -714,5 +724,31 @@ public class EffectDamageUp3 : StatAugment
     public override void Remove()
     {
         StatManager.instance.ChangeTemporaryStats_EffectDamage(-2.5f);
+    }
+}
+
+public class LevelUpMania : StatAugment
+{
+    float TotalUpgradedValue;
+    private void OnEnable()
+    {
+        SetAugment("STAT_32", "Level Up Mania", "After level up, Exp gain +2%", 5);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        TotalUpgradedValue = 0;
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-TotalUpgradedValue);
+    }
+
+    public override void AfterLevelUpEffect()
+    {
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.02f);
+        TotalUpgradedValue += 0.025f;
     }
 }

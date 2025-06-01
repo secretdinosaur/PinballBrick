@@ -10,6 +10,7 @@ TagManager:
   - Brick
   - Flamethrower
   - Pin
+  - GhostBall
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Ball
   - Pin
   - Laser
-  - 
+  - Ghost
   - 
   - 
   - 

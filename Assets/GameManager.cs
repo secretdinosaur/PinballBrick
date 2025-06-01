@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public bool isGameEnded = false;
+    public bool OnChaos = false;
 
     public GameObject PausePanel;
     public GameObject GameEndPanel;
@@ -40,7 +41,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text WaveExtraNoticeText;
 
     public int Wave;
-    public int DestroyedBricks; 
+    public int DestroyedBricks;
+    public int SummonedBalls;
+    public int DiedBalls;
     void Awake()
     {
         instance = this;
@@ -72,6 +75,8 @@ public class GameManager : MonoBehaviour
         WaveExtraNoticeText = GameObject.Find("Canvas").transform.Find("WaveExtraNoticeText").GetComponent<TMP_Text>();
         Wave = 0;
         DestroyedBricks = 0;
+        SummonedBalls = 0;
+        DiedBalls = 0;
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
     }
 
