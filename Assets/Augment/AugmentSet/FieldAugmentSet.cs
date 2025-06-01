@@ -59,8 +59,6 @@
         {
             while (true)
             {
-                yield return new WaitForSeconds(period);
-
                 for (int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
                 {
                     IBrick brick = BrickManager.Instance.CurrentBricks[i];
@@ -68,6 +66,7 @@
                         * (StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier);
                     StartCoroutine(SyncDamageAndEffect(Damage, brick));
                 }
+                yield return new WaitForSeconds(period);
             }
         }
 
@@ -111,8 +110,6 @@
         {
             while(true)
             {
-                yield return new WaitForSeconds(period);
-
                 foreach (Ball ball in BallManager.Instance.InGameBall)
                 {
                     StartCoroutine(AngryBallEffect(ball));
@@ -120,6 +117,7 @@
                     Vector3 forceDirection = rb.linearVelocity.normalized;
                     rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
                 }
+                yield return new WaitForSeconds(period);
             }
         }
 
@@ -223,7 +221,6 @@
         
             while (true)
             {
-                yield return new WaitForSeconds(Cooldown);
                 if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null && BrickManager.Instance.CurrentBricks.Count > 0)
                 {
                     List<Rigidbody2D> BallRigidBody2D = new List<Rigidbody2D>();
@@ -255,6 +252,7 @@
                         ball.gravityScale = 0.5f;
                     }
                 }
+                yield return new WaitForSeconds(Cooldown);
             }
         }
 
@@ -300,8 +298,8 @@
         {
             while (true)
             {
-                yield return new WaitForSeconds(Cooldown);
                 SpecialObjManager.Instance.CreateSpecialObj("SatelliteBeamObj", Duration);
+                yield return new WaitForSeconds(Cooldown);
             }
         }
     }
@@ -335,8 +333,8 @@
         {
             while (true)
             {
-                yield return new WaitForSeconds(Cooldown);
                 LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.01f;
+                yield return new WaitForSeconds(Cooldown);
             }
         }
     }
@@ -378,7 +376,6 @@
         {
             while (true)
             {
-                yield return new WaitForSeconds(Cooldown);
                 BallManager.Instance.isAntiGravity = true;
                 foreach (Ball ball in BallManager.Instance.InGameBall)
                 {
@@ -396,6 +393,7 @@
                     Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
                     rb.gravityScale = 0.5f;
                 }
+                yield return new WaitForSeconds(Cooldown);
             }
         }
 
@@ -456,7 +454,6 @@
         {
             while (true)
             {
-                yield return new WaitForSeconds(Cooldown);
                 if(BrickManager.Instance.CurrentBricks.Count >= 1)
                 {
                     IBrick WantedBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
@@ -490,6 +487,7 @@
                         WantedBrick.HP += WantedBrick.HpTemp * 0.1f;
                     }
                 }
+                yield return new WaitForSeconds(Cooldown);
             }
         }
     }
@@ -524,8 +522,8 @@
         {
             while (true)
             {
-                yield return new WaitForSeconds(Cooldown);
                 SpecialObjManager.Instance.CreateSpecialObj("LightningRodObj", Duration);
+                yield return new WaitForSeconds(Cooldown);
             }
         }
     }
@@ -638,8 +636,8 @@
         {
             while (true)
             {
-                yield return new WaitForSeconds(Cooldown);
                 SpecialObjManager.Instance.CreateSpecialObj("DecayZoneObj", Duration);
+                yield return new WaitForSeconds(Cooldown);
             }
         }
     }
@@ -800,12 +798,13 @@
             {
                 rolledDiceSet = new List<int>();
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.2f);
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.2f);
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return null;
+                yield return new WaitForSeconds(2f);
                 CalDiceSet();
+                yield return new WaitForSeconds(Cooldown);
             }
         }
 
@@ -924,10 +923,10 @@
         {
             while (true)
             {
-                TrampolineObj.SetActive(false);
-                yield return new WaitForSeconds(Cooldown);
                 TrampolineObj.SetActive(true);
                 yield return new WaitForSeconds(Duration);
+                TrampolineObj.SetActive(false);
+                yield return new WaitForSeconds(Cooldown);
             }
         }
     }
