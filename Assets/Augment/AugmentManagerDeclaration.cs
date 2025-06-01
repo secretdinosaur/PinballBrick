@@ -104,6 +104,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<AttackOrDie>(),
             gameObject.AddComponent<WeatherChange>(),
             gameObject.AddComponent<DiceGamble>(),
+            gameObject.AddComponent<Trampoline>(),
             ///////////////////////// Field
             gameObject.AddComponent<FireBall>(),
             gameObject.AddComponent<Homing>(),
@@ -186,7 +187,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
             gameObject.AddComponent<ShareBallAtk>(),
 
-            gameObject.AddComponent<ThreeBrickCurseAttack>(),
+            gameObject.AddComponent<SummonGhostBall>(),
             gameObject.AddComponent<CurseTwice>(),
 
             gameObject.AddComponent<RebornBombBall>(),
@@ -195,7 +196,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<DiceGamble>(),
+            gameObject.GetComponent<SummonGhostBall>(),
         };
 
         foreach (IAugment augment in TestAugments)
@@ -206,7 +207,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<FreshNewStart>());
+        AddAugment(gameObject.GetComponent<SpawnBombBall>());
+        AddAugment(gameObject.GetComponent<ChangeNormalToGlass>());
+        AddAugment(gameObject.GetComponent<SummonGhostBall>());
     }
 }
 

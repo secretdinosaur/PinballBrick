@@ -798,11 +798,11 @@
             {
                 rolledDiceSet = new List<int>();
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.2f);
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.2f);
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return null;
+                yield return new WaitForSeconds(2f);
                 CalDiceSet();
                 yield return new WaitForSeconds(Cooldown);
             }

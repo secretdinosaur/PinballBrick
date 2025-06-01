@@ -704,7 +704,7 @@ public class GrowBallQuest : SpecialAugment
         if (isCleared)
         {
             isCleared = false;
-            StatManager.instance.ChangeTemporaryStats_AttackDamage(-(KeepAtk + 2));
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-(KeepAtk + 1));
         }
     }
 
@@ -798,8 +798,8 @@ public class SacrificeQuest1 : SpecialAugment
     {
         if (isCleared) 
         {
-            StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.0f);
-            StatManager.instance.ChangeTemporaryStats_EffectDamage(-0.5f);
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-1f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(-1f);
         }
     }
 
@@ -811,7 +811,7 @@ public class SacrificeQuest1 : SpecialAugment
         if (SacrificeNumber >= ClearRequiredCount && !isCleared)
         {
             StatManager.instance.ChangeTemporaryStats_AttackDamage(1f);
-            StatManager.instance.ChangeTemporaryStats_EffectDamage(0.5f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(1f);
 
             AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest2>());
             isCleared = true;
@@ -876,7 +876,7 @@ public class SacrificeQuest3 : SpecialAugment
         SacrificeNumber++;
         if (SacrificeNumber <= ClearRequiredCount)
             QuestAlarm.Instance.SetQuest("Sacrifice III", "Sacrificed", SacrificeNumber, ClearRequiredCount);
-        if (SacrificeNumber >= 70 && !isCleared)
+        if (SacrificeNumber >= 100 && !isCleared)
         {
             AugmentManager.instance.isSacrificeQuest3Cleared = true;
             isCleared = true;
@@ -1432,13 +1432,13 @@ public class CurseBall : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<ThreeBrickCurseAttack>());
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SummonGhostBall>());
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<CurseTwice>());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<ThreeBrickCurseAttack>());
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<SummonGhostBall>());
         AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<CurseTwice>());
     }
 
@@ -1466,37 +1466,30 @@ public class CurseBall : SpecialAugment
         }
     }
 }
-public class ThreeBrickCurseAttack : SpecialAugment
+public class SummonGhostBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_43", "Deep Grudge", "Deals 3 additional curse attacks", "Effect", 3);
-        SetAdditionalDescription("Curse damage : deals random damage based on <sprite=0>");
+        SetAugment("SPECIAL_43", "Revenant", "When the ball falls, \nSummon Ghost Ball at low chance", "Effect", 3);
+        SetAdditionalDescription("Summoned Ghost Balls do not collide with each balls \n" +
+            "and disappear after 10 seconds\n" +
+            "When a Ghost Ball is disappear, Curse Attack activates with a 100% chance");
     }
 
     public override void Apply() 
     {
-        AugmentManager.instance.effectChance.CurseChance += 0.1f;
+        
     }
 
-    public override void Remove() 
+    public override void Remove()
     {
-        AugmentManager.instance.effectChance.CurseChance -= 0.1f;
+        
     }
 
     public override void AfterDeathEffect(IBall ball)
     {
-        if(Random.value < AugmentManager.instance.effectChance.CurseChance)
-        {
-            for (int i = 0; i < AugmentManager.instance.CurseActiveNumber * 2; i++)
-            {
-                int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-                if (BrickManager.Instance.CurrentBricks.Count != 0)
-                {
-                    BrickManager.Instance.CurrentBricks[index].DamageByCurse();
-                }
-            }
-        }     
+        if(Random.value < 0.15f)
+            BallManager.Instance.CreateGhostBall(1, ball);
     }
 }
 public class CurseTwice : SpecialAugment
@@ -2134,13 +2127,13 @@ public class InfiniteRapid : SpecialAugment
     public override void Apply()
     {
         StatManager.instance.ChangeTemporaryStats_AttackDamage(0.3f);
-        StatManager.instance.ChangeTemporaryStats_EffectDamage(0.15f);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(0.3f);
     }
 
     public override void Remove()
     {
         StatManager.instance.ChangeTemporaryStats_AttackDamage(-0.3f);
-        StatManager.instance.ChangeTemporaryStats_EffectDamage(-0.15f);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-0.3f);
     }
 }
 

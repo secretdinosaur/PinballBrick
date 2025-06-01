@@ -69,7 +69,17 @@ public class BallManager : MonoBehaviour
             }
         }
     }
-    
+
+    public void CreateGhostBall(int Num, IBall DeadBall, bool IsRebirth = false)
+    {
+        Num *= AugmentManager.instance.SpawnBallAmount;
+        for (int i = 0; i < Num; i++)
+        {
+            IBall ball = GetSpecificBall("GhostBall", IsRebirth);
+            ball.GetComponent<GhostBall>().Init(DeadBall.GetComponent<SpriteRenderer>().sprite, DeadBall.BallBaseDamage);
+        }
+    }
+
     private IBall GetSpecificBall(string ballTypeName, bool IsRebirth = false)
     {
         IBall ball = null;
@@ -155,7 +165,7 @@ public class BallManager : MonoBehaviour
         foreach (Collider2D collider in colliders)
         {
             IBall obj = collider.gameObject.GetComponent<IBall>();
-            if (obj != null && collider.gameObject.activeInHierarchy && !InGameBall.Contains(obj) && obj != this)
+            if (obj != null && collider.gameObject.activeInHierarchy && !InGameBall.Contains(obj) && obj != this && obj.BallType != "GhostBall")
             {
                 InGameBall.Add(obj);
                 inGameBallPosition.Add(obj.gameObject.GetComponent<Transform>());
