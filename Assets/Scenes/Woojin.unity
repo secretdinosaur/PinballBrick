@@ -17644,7 +17644,7 @@ MonoBehaviour:
   FieldGlobalCooldown: 10
   isSacrificeQuest3Cleared: 0
   SpawnBallAmount: 0
-  CurseActiveNumber: 0
+  CurseDamageValue: 0
   AfterDeathActiveNumber: 0
 --- !u!114 &218456172
 MonoBehaviour:
@@ -17678,6 +17678,8 @@ MonoBehaviour:
   WaveExtraNoticeText: {fileID: 0}
   Wave: 0
   DestroyedBricks: 0
+  SummonedBalls: 0
+  DiedBalls: 0
 --- !u!1 &239445828
 GameObject:
   m_ObjectHideFlags: 0

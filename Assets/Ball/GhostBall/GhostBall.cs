@@ -7,11 +7,13 @@ using System;
 
 public class GhostBall : IBall
 {
+    int DurationTime;
     void OnEnable()
     {
         base.OnEnable();
         BallType = "GhostBall";
         BallBaseDamage = 0;
+        DurationTime = 8;
         spriteRenderer.color = Color.cyan;
         StartCoroutine(StartGhostBall());
     }
@@ -26,7 +28,7 @@ public class GhostBall : IBall
     {
         int time = 0;
         bool isFallen = false;
-        DOVirtual.Int(0, 10, 10, value =>
+        DOVirtual.Int(0, DurationTime, DurationTime, value =>
         {
             time = value;
         }).OnComplete(() => isFallen = true);
@@ -38,22 +40,19 @@ public class GhostBall : IBall
 
     void GhostBallDisappearProcess()
     {
-        for (int i = 0; i < AugmentManager.instance.CurseActiveNumber; i++)
+        int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+        if (BrickManager.Instance.CurrentBricks.Count != 0)
+            while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
+            {
+                index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+            }
+        try
         {
-            int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-            if (BrickManager.Instance.CurrentBricks.Count != 0)
-                while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
-                {
-                    index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-                }
-            try
-            {
-                BrickManager.Instance.CurrentBricks[index].DamageByCurse();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                Debug.Log("There are no Bricks");
-            }
+            BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            Debug.Log("There are no Bricks");
         }
         BallManager.Instance.TakeBall(this);
     }

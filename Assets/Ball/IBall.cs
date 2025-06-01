@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Random = UnityEngine.Random;
 using TMPro;
 using TrailRenderer = UnityEngine.TrailRenderer;
+using Unity.VisualScripting;
 
 public partial class IBall : MonoBehaviour
 {
@@ -105,6 +106,7 @@ public partial class IBall : MonoBehaviour
                     FusionMoveRoutine = null;
                 }
                 GetComponent<Collider2D>().enabled = false;
+                GameManager.instance.DiedBalls += 1;
                 BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
             }
         }

@@ -7,5 +7,6 @@ public class GlassBall : IBall
         base.OnEnable();
         BallType = "GlassBall";
         BallBaseDamage = 1;
+        GameManager.instance.SummonedBalls += 1;
     }
 }

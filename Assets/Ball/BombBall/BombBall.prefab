@@ -31,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 26260608329336785}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1, y: 2.2, z: 35}
-  m_LocalScale: {x: 0.68, y: 0.68, z: 0.68}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4670151733937622760}
@@ -181,6 +181,7 @@ MonoBehaviour:
   StartPosition: {x: 0, y: -5, z: 35}
   linearVelocityYValue: 10
   Renderer: {fileID: 0}
+  BrickColor: {r: 0, g: 0, b: 0, a: 0}
   AttackNumber: 0
   rb: {fileID: 0}
   TransformationMultiple: 1

@@ -1433,35 +1433,32 @@ public class CurseBall : SpecialAugment
     public override void Apply()
     {
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SummonGhostBall>());
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<CurseTwice>());
+        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<EnhanceCurseAttack>());
     }
 
     public override void Remove()
     {
         AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<SummonGhostBall>());
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<CurseTwice>());
+        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<EnhanceCurseAttack>());
     }
 
     public override void AfterDeathEffect(IBall ball)
     {
         if (Random.value < AugmentManager.instance.effectChance.CurseChance)
         {
-            for (int i = 0; i < AugmentManager.instance.CurseActiveNumber; i++)
+            int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+            if (BrickManager.Instance.CurrentBricks.Count != 0)
+                while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
+                {
+                    index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+                }
+            try
             {
-                int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-                if (BrickManager.Instance.CurrentBricks.Count != 0)
-                    while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
-                    {
-                        index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-                    }
-                try
-                {
-                    BrickManager.Instance.CurrentBricks[index].DamageByCurse();
-                }
-                catch(ArgumentOutOfRangeException)
-                {
-                    Debug.Log("There are no Bricks");
-                }
+                BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+            }
+            catch(ArgumentOutOfRangeException)
+            {
+                Debug.Log("There are no Bricks");
             }
         }
     }
@@ -1470,9 +1467,9 @@ public class SummonGhostBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_43", "Revenant", "When the ball falls, \nSummon Ghost Ball at low chance", "Effect", 3);
-        SetAdditionalDescription("Summoned Ghost Balls do not collide with each balls \n" +
-            "and disappear after 10 seconds\n" +
+        SetAugment("SPECIAL_43", "Revenant", "When the ball falls, \nSummon ghost ball at low chance", "Effect", 3);
+        SetAdditionalDescription("Summoned ghost balls do not collide with each balls \n" +
+            "and disappear after 8 seconds\n" +
             "When a Ghost Ball is disappear, Curse Attack activates with a 100% chance");
     }
 
@@ -1492,29 +1489,35 @@ public class SummonGhostBall : SpecialAugment
             BallManager.Instance.CreateGhostBall(1, ball);
     }
 }
-public class CurseTwice : SpecialAugment
+public class EnhanceCurseAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_44", "Persistent Grudge", "All curse attack are doubled", "Effect", 2);
-        SetAdditionalDescription("Curse damage : deals random damage based on <sprite=0>");
+        SetAugment("SPECIAL_44", "Endless Revenge", "Curse damage increases by 1% whenever the ball dies", "Effect", 2);
+        SetAdditionalDescription("30% of the balls that died \n" +
+            "before acquiring this augment will be counted");
     }
 
     public override void Apply() 
     {
-        AugmentManager.instance.CurseActiveNumber = 2;
+        AugmentManager.instance.CurseDamageValue += (GameManager.instance.DiedBalls * 0.3f) * 0.01f;
     }
 
     public override void Remove() 
     {
-        AugmentManager.instance.CurseActiveNumber = 1;
+        AugmentManager.instance.CurseDamageValue = 1f;
+    }
+
+    public override void AfterDeathEffect(IBall ball)
+    {
+        AugmentManager.instance.CurseDamageValue += 0.01f;
     }
 }
 public class DeathEffectTwice : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_45", "Die again?", "All actions performed after the ball's death are doubled", "Special", 1);
+        SetAugment("SPECIAL_45", "Die Again?", "All actions performed after the ball's death are doubled", "Special", 1);
         SetAdditionalDescription(null);
     }
 

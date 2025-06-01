@@ -8,29 +8,30 @@
     using System.Security.Cryptography.X509Certificates;
     using System.Drawing;
     using Color = UnityEngine.Color;
+using Redcode.Pools;
 
-    /*
-    public class Example : FieldAugment
+/*
+public class Example : FieldAugment
+{
+    private void OnEnable()
     {
-        private void OnEnable()
-        {
-            SetAugment("Field_N", "Example", "Example", 3);
-        }
-
-        public override void Apply(){  }
-
-        public override void Remove(){ }
-
-        public virtual void BeforeAttackEffect(IBrick Brick) { }
-    
-        public virtual void AfterAttackEffect(IBrick Brick) { }
-
-        public virtual void CriticalAttackEffect(IBrick Brick) { }
+        SetAugment("Field_N", "Example", "Example", 3);
     }
-     */
+
+    public override void Apply(){  }
+
+    public override void Remove(){ }
+
+    public virtual void BeforeAttackEffect(IBrick Brick) { }
+
+    public virtual void AfterAttackEffect(IBrick Brick) { }
+
+    public virtual void CriticalAttackEffect(IBrick Brick) { }
+}
+ */
 
     public class AllDamage : FieldAugment
-    {
+{
         Coroutine Routine = null;
         float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
         float Damage;
@@ -930,3 +931,68 @@
             }
         }
     }
+
+public class Bombardment : FieldAugment
+{
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 1.5f;
+
+    private void OnEnable()
+    {
+        SetAugment("FIELD_16", "Air Strike", "Summons 5 bombs that fall from above", 2, (float)System.Math.Round(Cooldown, 2));
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(StartAirStrike(Cooldown));
+    }
+
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
+
+    private IEnumerator StartAirStrike(float Cooldown)
+    {
+        while (true)
+        {      
+            CreateAirStrikeBombBall(new Vector3(-1.8f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(-0.9f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(0f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(0.9f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(1.8f, 4.725f, 0));
+
+            yield return new WaitForSeconds(Cooldown);
+        }
+    }
+
+    void CreateAirStrikeBombBall(Vector3 position)
+    {
+        IBall BombBall = GetSpecificBall("BombBall");
+        BombBall.gameObject.SetActive(false);
+        BombBall.StartPosition.x = Random.Range(position.x - 0.2f, position.x + 0.2f);
+        BombBall.StartPosition.y = position.y;
+        BombBall.linearVelocityYValue -= 1f;
+        BombBall.gameObject.SetActive(true);
+    }
+
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
+    }
+}

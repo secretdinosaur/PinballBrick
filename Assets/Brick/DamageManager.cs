@@ -230,8 +230,8 @@ public static partial class DamageManager //Special Effect Attack
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
         float damage = isCritical ? 
-              Random.Range(baseDamage * 0.5f, baseDamage * 1.3f) * CriticalDamage()
-            : Random.Range(baseDamage * 0.5f, baseDamage * 1.3f);
+              Random.Range(baseDamage * 0.85f, baseDamage * 1.4f) * AugmentManager.instance.CurseDamageValue * CriticalDamage()
+            : Random.Range(baseDamage * 0.85f, baseDamage * 1.4f) * AugmentManager.instance.CurseDamageValue;
         float FinalDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
