@@ -203,7 +203,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<AttackEffectBothUp>(),
+            gameObject.GetComponent<BallSwarm>()
         };
 
         foreach (IAugment augment in TestAugments)
@@ -214,8 +214,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<CurseBall>());
-        AddAugment(gameObject.GetComponent<EnhanceCurseAttack>());
+        AddAugment(gameObject.GetComponent<LonelyBall>());
     }
 }
 

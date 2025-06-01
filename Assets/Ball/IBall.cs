@@ -78,11 +78,38 @@ public partial class IBall : MonoBehaviour
         AttackNumber = 0;
         StartCoroutine(EnableCollider());
         BrickColor = spriteRenderer.color;
+
+        if(!BallManager.Instance.InGameBall.Contains(this) && BallManager.Instance.BallList.Contains(BallType))
+        {
+            BallManager.Instance.InGameBall.Add(this);
+            BallManager.Instance.inGameBallPosition.Add(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameBallCollider.Add(gameObject.GetComponent<Collider2D>());
+        }
+        else if (!BallManager.Instance.InGameSpecialBall.Contains(this) && BallManager.Instance.SpecialBallList.Contains(BallType))
+        {
+            BallManager.Instance.InGameSpecialBall.Add(this);
+            BallManager.Instance.inGameSpecialBallPosition.Add(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameSpecialBallCollider.Add(gameObject.GetComponent<Collider2D>());
+        }
+
     }
 
     public void BallDied()
     {
-        if(BallType != "GhostBall")
+        if (BallManager.Instance.InGameBall.Contains(this))
+        {
+            BallManager.Instance.InGameBall.Remove(this);
+            BallManager.Instance.inGameBallPosition.Remove(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameBallCollider.Remove(gameObject.GetComponent<Collider2D>());
+        }
+        else if (BallManager.Instance.InGameSpecialBall.Contains(this))
+        {
+            BallManager.Instance.InGameSpecialBall.Remove(this);
+            BallManager.Instance.inGameSpecialBallPosition.Remove(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameSpecialBallCollider.Remove(gameObject.GetComponent<Collider2D>());
+        }
+
+        if (BallType != "GhostBall")
         {
             Renderer.material.color = Color.white;
             if (isPhoenix)

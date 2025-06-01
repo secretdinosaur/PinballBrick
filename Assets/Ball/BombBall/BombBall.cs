@@ -47,7 +47,7 @@ public class BombBall : IBall
         {
             if(Random.value < 0.5f)
             {
-                BallManager.Instance.CreateSpecificBall(1, "BombBall");
+                BallManager.Instance.CreateBombBall(1);
             }
         }
         BallDied();

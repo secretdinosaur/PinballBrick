@@ -118,6 +118,14 @@ public class Example : FieldAugment
                     Vector3 forceDirection = rb.linearVelocity.normalized;
                     rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
                 }
+                foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
+                {
+                    StartCoroutine(AngryBallEffect(ball));
+                    Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                    Vector3 forceDirection = rb.linearVelocity.normalized;
+                    rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
+                }
+
                 yield return new WaitForSeconds(period);
             }
         }
@@ -234,13 +242,22 @@ public class Example : FieldAugment
                         rb.gravityScale = Random.Range(0.01f, 0.03f);
                         rb.linearVelocity = Vector2.zero;
                     }
+                    foreach (IBall ball in BallManager.Instance.InGameSpecialBall)
+                    {
+                        CircleCollider2D collider = ball.GetComponent<CircleCollider2D>();
+                        Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
+                        BallRigidBody2D.Add(rb);
+                        collider.enabled = false;
+                        rb.gravityScale = Random.Range(0.01f, 0.03f);
+                        rb.linearVelocity = Vector2.zero;
+                    }
 
                     Vector3 TargetPosition = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)].transform.position;
 
                     Target.transform.position = TargetPosition;
                     Target.SetActive(true);
                     StartCoroutine(FindTarget());
-                    yield return new WaitForSeconds(1.5f);
+                    yield return new WaitForSeconds(1f);
 
                     Target.SetActive(false);
                     foreach (Rigidbody2D ball in BallRigidBody2D)
@@ -260,11 +277,11 @@ public class Example : FieldAugment
         private IEnumerator FindTarget()
         {
             float elapsedTime = 0f;
-            while (elapsedTime < 1.5f)
+            while (elapsedTime < 1f)
             {
                 elapsedTime += Time.deltaTime;
-                TargetMat.SetFloat("_Alpha", Mathf.Lerp(1, 0, elapsedTime / 1.5f));
-                TargetMat.SetFloat("_Color", Mathf.Lerp(0, 1, elapsedTime / 1.5f));
+                TargetMat.SetFloat("_Alpha", Mathf.Lerp(1, 0, elapsedTime / 1f));
+                TargetMat.SetFloat("_Color", Mathf.Lerp(0, 1, elapsedTime / 1f));
                 yield return null;
             }
         }
@@ -371,6 +388,11 @@ public class Example : FieldAugment
                 Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
                 rb.gravityScale = 0.5f;
             }
+            foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
+            {
+                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                rb.gravityScale = 0.5f;
+            }
         }
 
         private IEnumerator GetAntiGravity(float Cooldown, float Duration)
@@ -378,6 +400,7 @@ public class Example : FieldAugment
             while (true)
             {
                 BallManager.Instance.isAntiGravity = true;
+
                 foreach (Ball ball in BallManager.Instance.InGameBall)
                 {
                     Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
@@ -385,15 +408,30 @@ public class Example : FieldAugment
                     Vector3 forceDirection = rb.linearVelocity.normalized;
                     rb.AddForce(forceDirection * 1f, ForceMode2D.Impulse);
                 }
+                foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
+                {
+                    Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                    rb.gravityScale = -1f;
+                    Vector3 forceDirection = rb.linearVelocity.normalized;
+                    rb.AddForce(forceDirection * 1f, ForceMode2D.Impulse);
+                }
+
                 StartCoroutine(AntiGravityEffect(true));
                 yield return new WaitForSeconds(Duration);
                 StartCoroutine(AntiGravityEffect(false));
                 BallManager.Instance.isAntiGravity = false;
+
                 foreach (Ball ball in BallManager.Instance.InGameBall)
                 {
                     Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
                     rb.gravityScale = 0.5f;
                 }
+                foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
+                {
+                    Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                    rb.gravityScale = 0.5f;
+                }
+
                 yield return new WaitForSeconds(Cooldown);
             }
         }
@@ -853,7 +891,7 @@ public class Example : FieldAugment
                     case 1:
                         for(int i = 0; i < DiceSum / 2; i++)
                         {
-                            BallManager.Instance.CreateSpecificBall(1, "BombBall");
+                            BallManager.Instance.CreateBombBall(1);
                         }
                         break;
                     case 2:
