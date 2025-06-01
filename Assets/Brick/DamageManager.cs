@@ -8,38 +8,18 @@ public static partial class DamageManager //Normal Attack
 {
     public static void TakeDamage(IBrick brick, IBall ball)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_51"))
-        {
-            BrickManager.Instance.MainBrick.RecentlyBall = ball;
-            BrickManager.Instance.MainBrick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
-            BrickManager.Instance.MainBrick.SpecialCriticalChance = ball.SpecialCriticalChance;
-            DamageProcess(BrickManager.Instance.MainBrick);
-        }
-        else
-        {
-            brick.RecentlyBall = ball;
-            brick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
-            brick.SpecialCriticalChance = ball.SpecialCriticalChance;
-            DamageProcess(brick);
-        }
+        brick.RecentlyBall = ball;
+        brick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        brick.SpecialCriticalChance = ball.SpecialCriticalChance;
+        DamageProcess(brick);
     }
 
     public static void TakeDamageWithoutMainAttack(IBrick brick, IBall ball)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_51"))
-        {
-            BrickManager.Instance.MainBrick.RecentlyBall = ball;
-            BrickManager.Instance.MainBrick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
-            BrickManager.Instance.MainBrick.SpecialCriticalChance = ball.SpecialCriticalChance;
-            DamageProcessWithoutMainAttack(BrickManager.Instance.MainBrick);
-        }
-        else
-        {
-            brick.RecentlyBall = ball;
-            brick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
-            brick.SpecialCriticalChance = ball.SpecialCriticalChance;
-            DamageProcessWithoutMainAttack(brick);
-        }
+        brick.RecentlyBall = ball;
+        brick.TotalMultiple = StatManager.instance.statMultiplier.AttackDamageMultiplier;
+        brick.SpecialCriticalChance = ball.SpecialCriticalChance;
+        DamageProcessWithoutMainAttack(brick);
     }
 
     private static void DamageProcess(IBrick brick)

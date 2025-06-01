@@ -1784,8 +1784,15 @@ public class GroupViolence: SpecialAugment
         if (isGetAugment && BrickManager.Instance.CurrentBricks.Count > 0)
         {
             float maxHp = BrickManager.Instance.CurrentBricks.Max(b => b.HP);
-            BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp);
+            BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp && b.BrickType != "IgnoreBrick");
         }
+    }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        if(Brick != BrickManager.Instance.MainBrick)
+            DamageManager.ArbitraryDamageAttack
+                (BrickManager.Instance.MainBrick, StatManager.AttackDamage * 0.1f, false, (StatManager.AttackDamage * 0.1f).ToString("F1"), "Additional");
     }
 }
 public class Oneness: SpecialAugment

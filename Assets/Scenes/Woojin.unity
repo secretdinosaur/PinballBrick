@@ -43543,11 +43543,21 @@ MonoBehaviour:
   PoolManager: {fileID: 0}
   NormalBall: 
   BallInfo: {fileID: 11400000, guid: afd326ac66493b34c9396ea59079a1d7, type: 2}
+  LeftBallCount: 0
   InGameBall: []
+  InGameSpecialBall: []
   inGameBallPosition: []
+  inGameSpecialBallPosition: []
   inGameBallCollider: []
+  inGameSpecialBallCollider: []
   thereISPhoenix: 0
   boxSize: {x: 5, y: 10}
+  SpecialBallList:
+  - GhostBall
+  - BombBall
+  BallList:
+  - GlassBall
+  - Ball
 --- !u!114 &998555654
 MonoBehaviour:
   m_ObjectHideFlags: 0
