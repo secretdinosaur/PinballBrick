@@ -12,6 +12,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using UnityEngine.U2D;
 using UnityEngine.UI;
+using DG.Tweening;
+using Sequence = DG.Tweening.Sequence;
+using static UnityEngine.Rendering.DebugUI;
 
 /*
 public class Example : SpecialAugment
@@ -483,32 +486,113 @@ public class DeadlyPoison : SpecialAugment
 }
 public class Chaos : SpecialAugment
 {
-    Dictionary<int, float> rarityWeights;
+    GameObject Curtain;
+    List<float> TotalChangedStatValue;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_18", "Chaos", "All augment probabilities are equal", "Special", 0);
+        SetAugment("SPECIAL_18", "Chaos", "Random stat up or down\nThen, randomly teleport to a wave between the current wave +5 and +20", "Special", 1);
         SetAdditionalDescription(null);
+        Curtain = GameObject.Find("Canvas").transform.Find("Curtain").gameObject;
+        Curtain.SetActive(false);
+        TotalChangedStatValue = new List<float>
+        {
+            0, 0, 0, 0, 0
+        };
     }
 
     public override void Apply()
     {
-        rarityWeights = AugmentManager.instance.rarityWeights;
-        AugmentManager.instance.rarityWeights[0] = 0.001f;
-        AugmentManager.instance.rarityWeights[1] = 0.199f;
-        AugmentManager.instance.rarityWeights[2] = 0.2f;
-        AugmentManager.instance.rarityWeights[3] = 0.2f;
-        AugmentManager.instance.rarityWeights[4] = 0.2f;
-        AugmentManager.instance.rarityWeights[5] = 0.2f;
+        int RandomNumber = Random.Range(3, 5);
+        for(int i = 0; i < RandomNumber; i++)
+        {
+            int RandomStat = Random.Range(1, 5);
+            switch (RandomStat)
+            {
+                case 1:
+                    float RandomAttack = (float)System.Math.Round(Random.Range(-1f, 4f), 2);
+                    StatManager.instance.ChangeTemporaryStats_AttackDamage(RandomAttack);
+                    TotalChangedStatValue[0] += RandomAttack;
+                    Debug.Log("RandomAttack : " + RandomAttack);
+                    break;
+                case 2:
+                    float RandomCritDamage = (float)System.Math.Round(Random.Range(-2f, 5f) / 100, 2) ;
+                    StatManager.instance.ChangeTemporaryStats_CriticalDamage(RandomCritDamage);
+                    TotalChangedStatValue[1] += RandomCritDamage;
+                    Debug.Log("RandomCritDamage : " + RandomCritDamage);
+                    break;
+                case 3:
+                    float RandomCritChance = (float)System.Math.Round(Random.Range(-1f, 8f) / 100, 2);
+                    StatManager.instance.ChangeTemporaryStats_CriticalChance(RandomCritChance);
+                    TotalChangedStatValue[2] += RandomCritChance;
+                    Debug.Log("RandomCritChance : " + RandomCritChance);
+                    break;
+                case 4:
+                    float RandomEffect = (float)System.Math.Round(Random.Range(-1f, 4f), 2);
+                    StatManager.instance.ChangeTemporaryStats_EffectDamage(RandomEffect);
+                    TotalChangedStatValue[3] += RandomEffect;
+                    Debug.Log("RandomEffect : " + RandomEffect);
+                    break;
+                case 5:
+                    float RandomEffectDuration = (float)System.Math.Round(Random.Range(-5f, 12f) / 100, 2);
+                    StatManager.instance.ChangeTemporaryStats_EffectDuration(RandomEffectDuration);
+                    TotalChangedStatValue[4] += RandomEffectDuration;
+                    Debug.Log("RandomEffectDuration : " + RandomEffectDuration);
+                    break;
+                default:
+                    break;
+            }
+        }
+        Sequence seq = DOTween.Sequence();
+        seq.AppendCallback(() => {
+            Curtain.SetActive(true);
+            GameManager.instance.OnChaos = true;
+        });
+        seq.Append(Curtain.GetComponent<Image>().DOFade(1f, 0.5f));
+        seq.AppendInterval(0.5f);
+        seq.Append(Curtain.GetComponent<Image>().DOFade(0.4f, 0.4f));
+        seq.AppendCallback(() => {
+            BrickManager.Instance.WaveSkip(Random.Range(5, 20));
+        });
+        seq.Append(Curtain.GetComponent<Image>().DOFade(0f, 0.6f));
+        seq.AppendCallback(() => {
+            Curtain.SetActive(false);
+            GameManager.instance.OnChaos = false;
+            BallManager.Instance.CreateBall(3);
+            StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
+            StatManager.instance.isChangedStat = false;
+        });
+        
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.rarityWeights[0] = rarityWeights[0];
-        AugmentManager.instance.rarityWeights[1] = rarityWeights[1];
-        AugmentManager.instance.rarityWeights[2] = rarityWeights[2];
-        AugmentManager.instance.rarityWeights[3] = rarityWeights[3];
-        AugmentManager.instance.rarityWeights[4] = rarityWeights[4];
-        AugmentManager.instance.rarityWeights[5] = rarityWeights[5];
+        for(int i = 0; i < TotalChangedStatValue.Count; i++)
+        {
+            switch (i)
+            {
+                case 0:
+                    StatManager.instance.ChangeTemporaryStats_AttackDamage(TotalChangedStatValue[0]);
+                    break;
+                case 1:
+                    StatManager.instance.ChangeTemporaryStats_CriticalDamage(TotalChangedStatValue[1]);
+                    break;
+                case 2:
+                    StatManager.instance.ChangeTemporaryStats_CriticalChance(TotalChangedStatValue[2]);
+                    break;
+                case 3:
+                    StatManager.instance.ChangeTemporaryStats_EffectDamage(TotalChangedStatValue[3]);
+                    break;
+                case 4:
+                    StatManager.instance.ChangeTemporaryStats_EffectDuration(TotalChangedStatValue[4]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        TotalChangedStatValue = new List<float>
+        {
+            0, 0, 0, 0, 0
+        };
     }
 }
 public class DecayBall : SpecialAugment

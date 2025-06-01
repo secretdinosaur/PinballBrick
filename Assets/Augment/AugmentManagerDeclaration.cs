@@ -215,7 +215,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<LonelyBall>());
+        AddAugment(gameObject.GetComponent<Chaos>());
     }
 }
 

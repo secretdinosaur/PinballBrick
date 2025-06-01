@@ -156,7 +156,7 @@ public partial class LevelManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf && !GameManager.instance.isGameEnded)
+        if (LevelUpQueue.Count > 0 && !LevelUpPanel.activeSelf && !GameManager.instance.isGameEnded && !GameManager.instance.OnChaos)
         {
             ShowLevelUpPanel();
         }

@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public bool isGameEnded = false;
+    public bool OnChaos = false;
 
     public GameObject PausePanel;
     public GameObject GameEndPanel;

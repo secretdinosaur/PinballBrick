@@ -229,6 +229,8 @@ public partial class IBrick : MonoBehaviour
         ExecutionObject2.transform.position = transform.position;
         isGoldBrick = false;
         spriteRenderer.material.SetFloat("_Decay", 0);
+        if (detectArea.NearbyBricks.Contains(this))
+            detectArea.NearbyBricks.Remove(this);
     }
 
     public void GetComponents()
