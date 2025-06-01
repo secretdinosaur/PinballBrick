@@ -474,8 +474,8 @@ public partial class StatManager
         TotalChangedStatValue[0] += value;
         if (AugmentManager.instance.determineAugmentID("STAT_28"))
         {
-            Temporary_stat.EffectDamage += value * 0.1f;
-            TotalChangedStatValue[3] += value * 0.1f;
+            Temporary_stat.EffectDamage += value * 0.2f;
+            TotalChangedStatValue[3] += value * 0.2f;
         }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
@@ -536,8 +536,8 @@ public partial class StatManager
         TotalChangedStatValue[3] += (float)System.Math.Round(value, 2);
         if (AugmentManager.instance.determineAugmentID("STAT_28"))
         {
-            Temporary_stat.AttackDamage += value * 0.1f;
-            TotalChangedStatValue[0] += value * 0.1f;
+            Temporary_stat.AttackDamage += value * 0.2f;
+            TotalChangedStatValue[0] += value * 0.2f;
         }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;

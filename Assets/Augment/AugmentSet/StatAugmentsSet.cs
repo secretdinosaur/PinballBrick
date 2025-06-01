@@ -633,20 +633,30 @@ public class ExpGain50Up : StatAugment
 
 public class AttackEffectBothUp : StatAugment
 {
+    float UpgradeAttackStat;
+    float UpgradeEffectStat;
     private void OnEnable()
     {
-        SetAugment("STAT_28", "Greedy", "Attack, Effect Damage stats share 10% of each other's increase", 1);
+        SetAugment("STAT_28", "Greedy", "Attack, Effect Damage stats share 20% of each other's increase", 1);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
+        UpgradeAttackStat = ((StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
+            * StatManager.instance.statMultiplier.EffectDamageMultiplier) * 0.2f;
+        
+        UpgradeEffectStat = ((StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage)
+            * StatManager.instance.statMultiplier.AttackDamageMultiplier) * 0.2f;
 
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(UpgradeAttackStat);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(UpgradeEffectStat);
     }
 
     public override void Remove()
     {
-
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-UpgradeAttackStat);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-UpgradeEffectStat);
     }
 }
 

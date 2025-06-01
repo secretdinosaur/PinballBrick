@@ -203,9 +203,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<LevelUpAgain>(),
-            gameObject.GetComponent<LevelUpMania>(),
-            gameObject.GetComponent<GainBallAfterLevelUp>(),
+            gameObject.GetComponent<AttackEffectBothUp>(),
         };
 
         foreach (IAugment augment in TestAugments)
