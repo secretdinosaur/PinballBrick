@@ -12,7 +12,7 @@ public class GhostBall : IBall
         base.OnEnable();
         BallType = "GhostBall";
         BallBaseDamage = 0;
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.cyan;
         StartCoroutine(StartGhostBall());
     }
 

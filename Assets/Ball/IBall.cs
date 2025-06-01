@@ -30,6 +30,7 @@ public partial class IBall : MonoBehaviour
     public Coroutine FusionMoveRoutine = null;
 
     public Renderer Renderer;
+    public Color BrickColor;
 
     public int AttackNumber;
 
@@ -75,7 +76,7 @@ public partial class IBall : MonoBehaviour
         StartCoroutine(CalAttackDelayTime());
         AttackNumber = 0;
         StartCoroutine(EnableCollider());
-
+        BrickColor = spriteRenderer.color;
     }
 
     public void BallDied()
@@ -197,7 +198,7 @@ public partial class IBall : MonoBehaviour
             else if (collision.gameObject.CompareTag("Brick"))
             {
                 MaxBounce = 0;
-                spriteRenderer.color = new Color(1f, 1f, 1f);
+                spriteRenderer.color = BrickColor;
             }
         }
         if (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball"))
