@@ -309,7 +309,7 @@ public class DeathGold : SpecialAugment
     }
 }
 
-public class SpeedPower : SpecialAugment
+public class BigBoss : SpecialAugment
 {
     private void OnEnable()
     {
@@ -317,9 +317,41 @@ public class SpeedPower : SpecialAugment
         SetAdditionalDescription("Despite being called the Big Boss,\nit is not treated as an actual boss");
     }
 
-    public override void Apply(){ }
+    public override void Apply()
+    {
+        StartCoroutine(SettingBigBoss());
+    }
 
-    public override void Remove(){ }
+    public override void Remove()
+    {
+
+    }
+
+    IEnumerator SettingBigBoss()
+    {
+        if (BrickManager.Instance.availablePositions.Count > 0)
+        {
+            BrickManager.Instance.SpawnBrick(BrickManager.Instance.SettingBigBoss());
+        }
+        else
+        {
+            yield return new WaitUntil(() => BrickManager.Instance.BrickQueue != null);
+            BrickManager.Instance.BrickQueue.Enqueue(BrickManager.Instance.SettingBigBoss());
+        }
+        StartCoroutine(BigBossAbility());
+    }
+
+    IEnumerator BigBossAbility()
+    {
+        yield return new WaitUntil(() => BrickManager.Instance.BigBossBrick != null);
+        while (BrickManager.Instance.BigBossBrick != null)
+        {
+            yield return new WaitForSeconds(30f);
+            BrickManager.Instance.TeleportBrickPosition(BrickManager.Instance.BigBossBrick);
+        }
+        AugmentManager.instance.AddAugment(gameObject.GetComponent<LevelUpAgain>());
+        AugmentManager.instance.RemoveAugment(gameObject.GetComponent<LevelUpAgain>());
+    }
 }
 
 public class SpeedCritical : SpecialAugment
@@ -2754,9 +2786,10 @@ public class ContinuingCurseAttack : SpecialAugment
 
 public class LevelUpAgain : SpecialAugment
 {
+    int LevelUpCount = 0;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up", "Special", 0);
+        SetAugment("SPECIAL_76", "Blessing", "Level up once more every 3 times level up", "Special", 6);
         SetAdditionalDescription(null);
     }
 
@@ -2767,15 +2800,17 @@ public class LevelUpAgain : SpecialAugment
 
     public override void Remove()
     {
-
+        AugmentManager.instance.augmentsSet.Add(gameObject.AddComponent<LevelUpAgain>());
     }
 
     public override void AfterLevelUpEffect()
     {
-        if (!AugmentManager.instance.isLevelUpOnceAgain)
+        LevelUpCount++;
+        if (!AugmentManager.instance.isLevelUpOnceAgain && LevelUpCount == 3)
         {
             AugmentManager.instance.isLevelUpOnceAgain = true;
             LevelManager.Instance.LevelUp();
+            LevelUpCount = 0;
         }
     }
 }

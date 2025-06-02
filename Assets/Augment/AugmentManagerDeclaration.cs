@@ -123,7 +123,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ChainLightning>(),
             gameObject.AddComponent<DeathExp>(),
             gameObject.AddComponent<DeathGold>(),
-            gameObject.AddComponent<SpeedPower>(),
+            gameObject.AddComponent<BigBoss>(),
             gameObject.AddComponent<SpeedCritical>(),
             gameObject.AddComponent<Lightning>(),
             gameObject.AddComponent<PoisonBall>(),
@@ -206,8 +206,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<AtkUpWhenCritical>(),
-            gameObject.GetComponent<Perfectionism>(),
+
         };
 
         foreach (IAugment augment in TestAugments)
@@ -218,7 +217,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<Chaos>());
+        AddAugment(gameObject.GetComponent<BigBoss>());
+        AddAugment(gameObject.GetComponent<LevelUpAgain>());
     }
 }
 

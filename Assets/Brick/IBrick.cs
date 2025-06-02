@@ -14,6 +14,7 @@ public partial class IBrick : MonoBehaviour
     private float hp;
     public bool IsBoss = false;
     public bool IsSpecialBrick = false;
+    public bool IsBigBoss = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -192,10 +193,11 @@ public partial class IBrick : MonoBehaviour
             HPText.fontSize = 5f;
         }
     }
-    public void Init(bool IsBoss, bool IsSpecialBrick, int Point, float Exp)
+    public void Init(bool IsBoss, bool IsSpecialBrick, bool IsBigBoss, int Point, float Exp)
     {
         this.IsBoss = IsBoss;
         this.IsSpecialBrick = IsSpecialBrick;
+        this.IsBigBoss = IsBigBoss;
         this.Point = Point;
         this.Exp = Exp;
 
