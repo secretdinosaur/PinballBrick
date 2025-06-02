@@ -11303,6 +11303,8 @@ MonoBehaviour:
   BaseSpawnTimeValue: 0
   BaseWaitingTimeValue: 5
   BaseBossSpawnValue: 1
+  NextBossSpawnWave: 0
+  BossSpawnWaveNumber: 0
 --- !u!114 &137631893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17570,6 +17572,8 @@ MonoBehaviour:
   - {fileID: 3556431781438714426, guid: 635b388779d75f34dbe8ecd5b431eb22, type: 3}
   - {fileID: 3788167435311697132, guid: 6f68f645b5373aa49b4bd19637162b1c, type: 3}
   OptionButtons: []
+  isThereRerolled: 0
+  RerollAugment: {fileID: 0}
 --- !u!114 &218456170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17626,6 +17630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 350071e32e8a418a8fe1fe82613f90dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  exceptionAugments: []
   augmentsSet: []
   RouletteAugmentsSet: []
   activeStatAugments: []
@@ -17639,8 +17644,9 @@ MonoBehaviour:
   FieldGlobalCooldown: 10
   isSacrificeQuest3Cleared: 0
   SpawnBallAmount: 0
-  CurseActiveNumber: 0
+  CurseDamageValue: 0
   AfterDeathActiveNumber: 0
+  isLevelUpOnceAgain: 0
 --- !u!114 &218456172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17667,12 +17673,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGameEnded: 0
+  OnChaos: 0
   PausePanel: {fileID: 0}
   GameEndPanel: {fileID: 0}
   WaveNoticeText: {fileID: 0}
   WaveExtraNoticeText: {fileID: 0}
   Wave: 0
   DestroyedBricks: 0
+  SummonedBalls: 0
+  DiedBalls: 0
 --- !u!1 &239445828
 GameObject:
   m_ObjectHideFlags: 0
@@ -43464,11 +43473,21 @@ MonoBehaviour:
   PoolManager: {fileID: 0}
   NormalBall: 
   BallInfo: {fileID: 0}
+  LeftBallCount: 0
   InGameBall: []
+  InGameSpecialBall: []
   inGameBallPosition: []
+  inGameSpecialBallPosition: []
   inGameBallCollider: []
+  inGameSpecialBallCollider: []
   thereISPhoenix: 0
   boxSize: {x: 5, y: 10}
+  SpecialBallList:
+  - GhostBall
+  - BombBall
+  BallList:
+  - GlassBall
+  - Ball
 --- !u!114 &998555654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76518,7 +76537,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.695476, y: -3.712813, z: 0}
-  m_LocalScale: {x: 1.0500001, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 374219221}
@@ -89302,7 +89321,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 1.9045238, y: -3.712813, z: 0}
-  m_LocalScale: {x: 1.05, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 374219221}

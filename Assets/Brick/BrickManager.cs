@@ -248,7 +248,7 @@ public class BrickManager : MonoBehaviour
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
                     || AugmentManager.instance.determineAugmentID("SPECIAL_62")
                     || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
-                SettingBrickSpawnChance();
+                //SettingBrickSpawnChance();
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
@@ -557,7 +557,7 @@ public class BrickManager : MonoBehaviour
             OnWaveStopButtonClick();
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
+                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.2f) * UnityEngine.Random.Range(10f, 11f))));
             }
         }
         else if (brick.IsSpecialBrick)
@@ -569,9 +569,9 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, UnityEngine.Random.Range(0.9f, 1.1f))));
+            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, UnityEngine.Random.Range(1.1f, 1.15f))));
             //need to adjust
-            for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
+            for (int j = HPBase; j < 3 + HPBase; j++)
             {
                 HPPool.Add(j);
             }

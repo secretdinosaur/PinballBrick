@@ -598,7 +598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Point: 10
   Exp: 0
-  BasicHP: 2
+  BasicHP: 5
   IsBoss: 0
   IsSpecialBrick: 0
   HPText: {fileID: 0}
