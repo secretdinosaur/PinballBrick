@@ -139,25 +139,22 @@ public class DecreaseFieldCooldown10 : StatAugment
     }
 }
 
-public class idk : StatAugment
+public class EffectDuration10 : StatAugment
 {
-    Coroutine Routine;
-    int setTime = 3;
-
     private void OnEnable()
     {
-        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +1.8\nfor 3 seconds", 4);
+        SetAugment("STAT_7", "Sticky Ball I", "Effect duration +10%", 5);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        Routine = null;
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(0.1f);
     }
 
     public override void Remove()
     {
-
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(-0.1f);
     }
 }
 
@@ -733,5 +730,43 @@ public class LevelUpMania : StatAugment
     {
         StatManager.instance.ChangeTemporaryStats_ExpGain(0.02f);
         TotalUpgradedValue += 0.025f;
+    }
+}
+
+public class EffectDuration15 : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_33", "Sticky Ball II", "Effect duration +15%", 4);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(0.15f);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(-0.15f);
+    }
+}
+
+public class EffectDuration30 : StatAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("STAT_34", "Sticky Ball II", "Effect duration +30%", 3);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(0.3f);
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(-0.3f);
     }
 }

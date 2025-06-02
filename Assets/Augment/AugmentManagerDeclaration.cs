@@ -94,6 +94,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ExpGain50Up>(),
             gameObject.AddComponent<AttackEffectBothUp>(),
             gameObject.AddComponent<LevelUpMania>(),
+            gameObject.AddComponent<EffectDuration10>(),
+            gameObject.AddComponent<EffectDuration15>(),
+            gameObject.AddComponent<EffectDuration30>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
