@@ -7,6 +7,12 @@ using UnityEngine;
 
 public partial class AugmentManager //Utility
 {
+    string str = null;
+    public void S(string s)
+    {
+        str += s;
+        print(str);
+    }
     public bool determineSpecialAugmentType(string Type)
     {
         return activeSpecialAugments.Any(a => a.Type == Type);
