@@ -2784,3 +2784,50 @@ public class LevelUpAgain : SpecialAugment
         }
     }
 }
+
+public class AtkUpWhenCritical : SpecialAugment
+{
+    Coroutine Routine;
+    int setTime = 3;
+
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_77", "Lucky Streak", "When critical attack hits, attack damage +1.8\nfor 3 seconds", "Special", 4);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        Routine = null;
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    public override void CriticalAttackEffect(IBrick Brick)
+    {
+        if (Routine == null)
+        {
+            Routine = StartCoroutine(AttackDamageUpFewSec(1.8f));
+        }
+        else
+        {
+            setTime = 3;
+        }
+    }
+
+    IEnumerator AttackDamageUpFewSec(float AttackUpValue)
+    {
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(AttackUpValue);
+        while (setTime > 0)
+        {
+            yield return new WaitForSeconds(1);
+            setTime--;
+        }
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-AttackUpValue);
+        setTime = 3;
+        Routine = null;
+    }
+}

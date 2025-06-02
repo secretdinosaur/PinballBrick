@@ -83,6 +83,10 @@ public static partial class DamageManager //Normal Attack
             {
                 Augment.CriticalAttackEffect(brick);
             }
+            foreach (IAugment Augment in AugmentManager.instance.activeStatAugments)
+            {
+                Augment.CriticalAttackEffect(brick);
+            }
         }
 
         float FinalDamage = GameManager.instance.isGameEnded ? 0

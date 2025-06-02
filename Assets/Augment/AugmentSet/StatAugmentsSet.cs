@@ -139,42 +139,25 @@ public class DecreaseFieldCooldown10 : StatAugment
     }
 }
 
-public class AtkUpWhenCritical : StatAugment
+public class idk : StatAugment
 {
+    Coroutine Routine;
+    int setTime = 3;
+
     private void OnEnable()
     {
-        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +1.0\nfor 3 seconds", 4);
+        SetAugment("STAT_7", "Lucky Streak", "When critical attack hits, attack damage +1.8\nfor 3 seconds", 4);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-
+        Routine = null;
     }
 
     public override void Remove()
     {
 
-    }
-
-    public override void CriticalAttackEffect(IBrick Brick)
-    {
-        if (Brick.gameObject.activeSelf)
-        {
-            RunAttackDamageUpFewSec(3f, 1.2f);
-        }
-    }
-
-    public void RunAttackDamageUpFewSec(float setTime, float AttackUpValue)
-    {
-        StartCoroutine(AttackDamageUpFewSec(setTime, AttackUpValue));
-    }
-
-    IEnumerator AttackDamageUpFewSec(float setTime, float AttackUpValue)
-    {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(1.0f);
-        yield return new WaitForSeconds(setTime);
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.0f);
     }
 }
 
