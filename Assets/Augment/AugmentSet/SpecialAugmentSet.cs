@@ -558,8 +558,6 @@ public class Chaos : SpecialAugment
             Curtain.SetActive(false);
             GameManager.instance.OnChaos = false;
             BallManager.Instance.CreateBall(3);
-            StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-            StatManager.instance.isChangedStat = false;
         });
         
     }
@@ -1849,8 +1847,8 @@ public class GroupViolence: SpecialAugment
     bool isGetAugment = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_51", "Group Violence", "Only attacks the brick with the highest health", "Special", 3);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_51", "Group Violence", "After attack, transfers 10% of Attack damage to the brick with the highest HP", "Special", 3);
+        SetAdditionalDescription("Applies only to normal attacks and specific effects attacks");
     }
 
     public override void Apply()
