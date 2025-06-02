@@ -756,7 +756,7 @@ public class EffectDuration30 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_34", "Sticky Ball II", "Effect duration +30%", 3);
+        SetAugment("STAT_34", "Sticky Ball III", "Effect duration +30%", 3);
         SetAdditionalDescription(null);
     }
 

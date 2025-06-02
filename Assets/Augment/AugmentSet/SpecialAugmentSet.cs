@@ -313,18 +313,13 @@ public class SpeedPower : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_12", "Momentum", "Atack damage increases with ball speed", "Special", 4);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_12", "Big Boss", "Summons a 'Big Boss' with extremely high HP\nDefeating it grants great rewards", "Special", 2);
+        SetAdditionalDescription("Despite being called the Big Boss,\nit is not treated as an actual boss");
     }
 
     public override void Apply(){ }
 
     public override void Remove(){ }
-
-    public override void BeforeAttackEffect(IBrick Brick)
-    {
-        Brick.TotalMultiple *= Brick.RecentlyBall.TransformationMultiple;
-    }
 }
 
 public class SpeedCritical : SpecialAugment
