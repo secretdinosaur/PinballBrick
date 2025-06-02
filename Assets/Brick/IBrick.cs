@@ -348,6 +348,10 @@ public partial class IBrick
                 (BrickEffect.EffectStatusSet["Decay"].EffectStack != BrickEffect.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
         if (Decay == null)
         {
+            if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+            {
+                return;
+            }
             Decay = StartCoroutine(BrickEffect.DecayEffect(effectDuration));
         }
         else

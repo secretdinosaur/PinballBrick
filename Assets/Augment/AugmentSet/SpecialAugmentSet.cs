@@ -1168,9 +1168,11 @@ public class RandomEffect : SpecialAugment
 public class ThunderStrike : SpecialAugment
 {
     Coroutine routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown / 10 * 5;
+    float Duration = StatManager.instance.Temporary_stat.EffectDuration * 3;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_33", "Arc Link", "All balls are linked by electricity, dealing electric damage", "Special", 1);
+        SetAugment("SPECIAL_33", "Arc Link", "All balls are linked by electricity for " + Duration + "seconds", "Special", 1, Cooldown);
         SetAdditionalDescription("Lightning damage : deals damage scales with brick's max health");
     }
 
@@ -1193,51 +1195,56 @@ public class ThunderStrike : SpecialAugment
 
         while (true)
         {
-            yield return new WaitForSeconds(0.1f);
-
-            List<IBall> Balls = new List<IBall>();
-
-            foreach(IBall ball in BallManager.Instance.InGameBall)
+            float elapsed = 0;
+            while(elapsed < Duration)
             {
-                if(!Balls.Contains(ball))
-                    Balls.Add(ball);
-            }
-            foreach (IBall ball in BallManager.Instance.InGameSpecialBall)
-            {
-                if (!Balls.Contains(ball))
-                    Balls.Add(ball);
-            }
+                List<IBall> Balls = new List<IBall>();
 
-            if (Balls.Count >= 2)
-            {
-                VisualEffectManager.Instance.SpawnThunderStrike(Balls);
-
-                for (int i = 0; i < Balls.Count - 1; i++)
+                foreach (IBall ball in BallManager.Instance.InGameBall)
                 {
-                    start = Balls[i].transform.position;
-                    end = Balls[i + 1].transform.position;
+                    if (!Balls.Contains(ball))
+                        Balls.Add(ball);
+                }
+                foreach (IBall ball in BallManager.Instance.InGameSpecialBall)
+                {
+                    if (!Balls.Contains(ball))
+                        Balls.Add(ball);
+                }
+
+                if (Balls.Count >= 2)
+                {
+                    VisualEffectManager.Instance.SpawnThunderStrike(Balls);
+
+                    for (int i = 0; i < Balls.Count - 1; i++)
+                    {
+                        start = Balls[i].transform.position;
+                        end = Balls[i + 1].transform.position;
+
+                        hits = Physics2D.LinecastAll(start, end);
+                        for (int j = 0; j < hits.Length; j++)
+                            if (hits[j].collider.CompareTag("Brick"))
+                            {
+                                IBrick brick = hits[j].collider.GetComponent<IBrick>();
+
+                                brick.DamageByLightningEffect(10, 0);
+                            }
+                    }
+                    start = Balls[Balls.Count - 1].transform.position;
+                    end = Balls[0].transform.position;
 
                     hits = Physics2D.LinecastAll(start, end);
-                    for(int j = 0; j < hits.Length; j++)
+                    for (int j = 0; j < hits.Length; j++)
                         if (hits[j].collider.CompareTag("Brick"))
                         {
                             IBrick brick = hits[j].collider.GetComponent<IBrick>();
 
-                            brick.DamageByLightningEffect(10, 0);
+                            brick.ArbitraryDamageAttack(0.3f + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
                         }
                 }
-                start = Balls[Balls.Count - 1].transform.position;
-                end = Balls[0].transform.position;
-
-                hits = Physics2D.LinecastAll(start, end);
-                for (int j = 0; j < hits.Length; j++)
-                    if (hits[j].collider.CompareTag("Brick"))
-                    {
-                        IBrick brick = hits[j].collider.GetComponent<IBrick>();
-
-                        brick.ArbitraryDamageAttack(0.3f + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
-                    }
+                yield return new WaitForSeconds(0.1f);
+                elapsed += 0.1f;
             }
+            yield return new WaitForSeconds(Cooldown);
         }
     }
 }

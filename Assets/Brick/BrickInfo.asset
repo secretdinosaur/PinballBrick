@@ -33,15 +33,15 @@ MonoBehaviour:
   - IgnoreBrick
   - AbsorbBrick
   BrickSpawnChance:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
   - 1
+  - 0.02832832
+  - 0.17137635
+  - 0.3814051
+  - 0.31226808
+  - 0.094053335
+  - 0.0104214065
+  - 0
+  - 0
   SpecialBricks:
   - {fileID: -7027782104363891570, guid: 7939d13e8e8fc5748bca7056835515e9, type: 3}
   - {fileID: 5734178081787487032, guid: 8546d68879e3f4c478aa9a716abef5b2, type: 3}
