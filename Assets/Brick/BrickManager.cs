@@ -160,7 +160,7 @@ public class BrickManager : MonoBehaviour
     public void TakeBrick(IBrick brick)
     {
         if (brick.IsBoss)
-            OnWaveStopButtonClick();
+            WavePause = false;
         if (brick.gameObject.activeSelf)
         {
             if (brick.Fire != null)
@@ -337,7 +337,7 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
-        Brick.Init(brick.IsBoss, brick.IsSpecialBrick, brick.IsBigBoss, BrickPointSetting(brick.BrickType), BrickExpSetting(brick.BrickType));
+        Brick.Init(brick.IsBoss, brick.IsSpecialBrick, false, BrickPointSetting(brick.BrickType), BrickExpSetting(brick.BrickType));
         return Brick;
     }
 
@@ -364,6 +364,19 @@ public class BrickManager : MonoBehaviour
         Brick = (IBrick)genericMethod.Invoke(PoolManager, null);
 
         Brick.Init(true, false, false, (int)(5.3f * BrickPointSetting(brick.BrickType)), 5.3f * BrickExpSetting(brick.BrickType));
+        return Brick;
+    }
+
+    private IBrick GetBigBossBrick(IBrick brick)
+    {
+        IBrick Brick = null;
+
+        Type brickType = Type.GetType(BrickInfo.BrickTypes[0]);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(brickType);
+        Brick = (IBrick)genericMethod.Invoke(PoolManager, null);
+
+        Brick.Init(false, false, true, BrickPointSetting(brick.BrickType), BrickExpSetting(brick.BrickType));
         return Brick;
     }
 
@@ -596,8 +609,7 @@ public class BrickManager : MonoBehaviour
                 Brick = GetSpecialBrick(brick, UnityEngine.Random.Range(0, BrickInfo.SpecialBrickTypes.Length));
             else if (brick.IsBigBoss)
             {
-                Brick = GetSpecificBrick("Brick");
-                Brick.Init(false, false, true, brick.Point, brick.Exp);
+                Brick = GetBigBossBrick(brick);
                 BigBossBrick = Brick;
             }
             else
@@ -639,7 +651,7 @@ public class BrickManager : MonoBehaviour
     {
         if (brick.IsBoss)
         {
-            OnWaveStopButtonClick();
+            WavePause = true;
             for (int i = 0; i < 3; i++)
             {
                 HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
@@ -679,10 +691,6 @@ public class BrickManager : MonoBehaviour
 
     public void WaveSkip(int Num)
     {
-        if (BrickQueue.Count > 0)
-        {
-            BrickQueue.Clear();
-        }
         if (BrickQueue != null)
         {
             BrickQueue = null;
@@ -693,6 +701,27 @@ public class BrickManager : MonoBehaviour
             SpawnBrickRoutine = null;
         }
         GameManager.instance.Wave += Num;
+    }
+
+    public void DestroyBricksNum(int Num, bool isBrickDied = false)
+    {
+        var bricksCopy = CurrentBricks.ToList();
+        if (isBrickDied)
+        {
+            for (int i = 0; i < Mathf.Min(Num, bricksCopy.Count); i++)
+            {
+                if (!CurrentBricks[i].IsBigBoss)
+                    CurrentBricks[i].BrickDie();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Mathf.Min(Num, bricksCopy.Count); i++)
+            {
+                if (!bricksCopy[i].IsBigBoss)
+                    TakeBrick(bricksCopy[i]);
+            }
+        }
     }
 
     //Test Button Functions

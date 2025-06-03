@@ -26,14 +26,14 @@ public static partial class DamageManager //Normal Attack
     {
         if (!brick.IsSpecialBrick)
         {
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.BeforeAttackEffect(brick);
             }
 
             brick.HP -= FinalDamage(brick);
 
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.AfterMainAttackEffect(brick);
                 Augment.AfterAttackEffect(brick);
@@ -49,14 +49,14 @@ public static partial class DamageManager //Normal Attack
     {
         if (!brick.IsSpecialBrick)
         {
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.BeforeAttackEffect(brick);
             }
 
             brick.HP -= FinalDamage(brick);
 
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.AfterAttackEffect(brick);
             }
@@ -79,11 +79,7 @@ public static partial class DamageManager //Normal Attack
         {
             CriticalHit = true;
             brick.TotalMultiple *= CriticalDamage();
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-            {
-                Augment.CriticalAttackEffect(brick);
-            }
-            foreach (IAugment Augment in AugmentManager.instance.activeStatAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.CriticalAttackEffect(brick);
             }
@@ -150,7 +146,7 @@ public static partial class DamageManager //Special Effect Attack
             if (brick.BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(brick.GetComponent<TeleportBrick>());
             brick.HP -= FinalAdditionalAttackDamage;
             brick.ShowText(FinalAdditionalAttackDamage.ToString("F1"), "Additional", CriticalHit);
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.AfterAttackEffect(brick);
             }

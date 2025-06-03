@@ -191,9 +191,7 @@ public partial class LevelManager : MonoBehaviour
         Level++;
         LevelBarMaxValueSet(Level);
         LevelUpQueue.Enqueue(Level);
-        foreach (IAugment augment in AugmentManager.instance.activeStatAugments)
-            augment.AfterLevelUpEffect();
-        foreach (IAugment augment in AugmentManager.instance.activeSpecialAugments)
+        foreach (IAugment augment in AugmentManager.instance.activeAugments)
             augment.AfterLevelUpEffect();
     }
 
@@ -872,7 +870,7 @@ public partial class LevelManager : MonoBehaviour
                 Debug.Log(augmentsSet[i]);
             }
             AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
-            AugmentManager.instance.RemoveAugment(augmentsSet[optionIndex]);
+            AugmentManager.instance.RemoveOnAugmentsSetAugment(augmentsSet[optionIndex]);
         }
         isAlreadyClickedButton = new bool[OptionButtons.Length];
         optionIndex = -1;

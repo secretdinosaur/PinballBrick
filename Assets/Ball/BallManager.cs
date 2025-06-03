@@ -7,6 +7,7 @@ using UnityEditor;
 using Random = UnityEngine.Random;
 using System.Collections;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class BallManager : MonoBehaviour
 {
@@ -150,6 +151,33 @@ public class BallManager : MonoBehaviour
                 yield return null;
             }
         }
+    }
+
+    public void DestroyBallNum(int Num, bool isBallDied = false)
+    {
+        var ballsCopy = InGameBall.ToList();
+        if (isBallDied)
+        {
+            for (int i = 0; i < Mathf.Min(Num, ballsCopy.Count); i++)
+            {
+                StartCoroutine(BallRemoveEffect(InGameBall[i]));
+                InGameBall[i].BallDied();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Mathf.Min(Num, ballsCopy.Count); i++)
+            {
+                StartCoroutine(BallRemoveEffect(InGameBall[i]));
+                TakeBall(InGameBall[i]);
+            }
+        }  
+    }
+
+    private IEnumerator BallRemoveEffect(IBall ball)
+    {
+        VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
+        yield return null;
     }
 
     public void TakeBall(IBall ball)

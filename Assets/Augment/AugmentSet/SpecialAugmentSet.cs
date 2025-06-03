@@ -350,7 +350,7 @@ public class BigBoss : SpecialAugment
             BrickManager.Instance.TeleportBrickPosition(BrickManager.Instance.BigBossBrick);
         }
         AugmentManager.instance.AddAugment(gameObject.GetComponent<LevelUpAgain>());
-        AugmentManager.instance.RemoveAugment(gameObject.GetComponent<LevelUpAgain>());
+        AugmentManager.instance.RemoveOnAugmentsSetAugment(gameObject.GetComponent<LevelUpAgain>());
     }
 }
 
@@ -2129,44 +2129,31 @@ public class HalfBallSacrifice : SpecialAugment
     }
 }
 
-public class FreshNewStart : SpecialAugment
+public class Chronobreak : SpecialAugment
 {
-    int AugmentNum = 0;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_54", "Fresh New Start", "Receive a massive reward\nand return to the beginning state", "Special", 0);
-        SetAdditionalDescription("Gain Attack, Effect Damage based on the number of augments acquired");
+        SetAugment("SPECIAL_54", "Chronobreak", "lose half of augment, Attack and Effect Damage\nThen, return to Wave 1", "Special", 0);
+        SetAdditionalDescription("The minimum wave to return to is Wave 1\n" +
+            "All bricks are destroyed\n" +
+            "All balls are destroyed, then 10 balls are summoned \n" +
+            "Certain bricks and balls are excluded");
     }
 
     public override void Apply()
     {
-        AugmentNum = AugmentManager.instance.activeStatAugments.Count
-                   + AugmentManager.instance.activeFieldAugments.Count
-                   + AugmentManager.instance.activeSpecialAugments.Count;
-        AugmentManager.instance.ClearAllAugments();
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(AugmentNum * 2);
-        LevelManager.Instance.LevelSet(1);
-
-        foreach (IBall ball in BallManager.Instance.InGameBall)
+        BrickManager.Instance.WaveSkip(-(GameManager.instance.Wave + 2));
+        for (int i = 0; i < AugmentManager.instance.activeAugments.Count / 2; i++)
         {
-            StartCoroutine(BallRemoveEffect(ball));
-            BallManager.Instance.TakeBall(ball);
-        }
-        foreach (IBall ball in BallManager.Instance.InGameSpecialBall)
-        {
-            StartCoroutine(BallRemoveEffect(ball));
-            BallManager.Instance.TakeBall(ball);
-        }
+            int RandomIndex = Random.Range(0, AugmentManager.instance.activeAugments.Count);
+            AugmentManager.instance.RemoveAugment(AugmentManager.instance.activeAugments[RandomIndex]);
 
-        BallManager.Instance.CreateBall(1);
-        QuestAlarm.Instance.ClearQuest();
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<FreshNewStart>());
-    }
-
-    private IEnumerator BallRemoveEffect(IBall ball)
-    {
-        VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
-        yield return null;
+        }
+        BallManager.Instance.DestroyBallNum(BallManager.Instance.InGameBall.Count);
+        BrickManager.Instance.DestroyBricksNum(BrickManager.Instance.CurrentBricks.Count);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-(StatManager.AttackDamage / 2));
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-(StatManager.EffectDamage / 2));
+        BallManager.Instance.CreateBall(10);
     }
 
     public override void Remove()

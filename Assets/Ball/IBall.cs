@@ -42,7 +42,7 @@ public partial class IBall : MonoBehaviour
 
     public void OnEnable()
     {
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        foreach (IAugment Augment in AugmentManager.instance.activeAugments)
         {
             Augment.AfterBirthEffect(this);
         }
@@ -120,7 +120,7 @@ public partial class IBall : MonoBehaviour
             {
                 for (int i = 0; i < AugmentManager.instance.AfterDeathActiveNumber; i++)
                 {
-                    foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+                    foreach (IAugment Augment in AugmentManager.instance.activeAugments)
                     {
                         Augment.AfterDeathEffect(this);
                     }
