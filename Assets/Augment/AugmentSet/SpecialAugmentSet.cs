@@ -2446,8 +2446,8 @@ public class FusionBricks : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health. \nIt is treated as a boss", "Special", 0);
-        SetAdditionalDescription("Together we survive, Divided we will die");
+        SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health.", "Special", 2);
+        SetAdditionalDescription("It is treated as a boss");
     }
 
     public override void Apply()
@@ -2781,10 +2781,9 @@ public class ContinuingCurseAttack : SpecialAugment
 
 public class LevelUpAgain : SpecialAugment
 {
-    int LevelUpCount = 0;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_76", "Blessing", "Level up once more every 3 times level up", "Special", 6);
+        SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up", "Special", 6);
         SetAdditionalDescription(null);
     }
 
@@ -2800,12 +2799,10 @@ public class LevelUpAgain : SpecialAugment
 
     public override void AfterLevelUpEffect()
     {
-        LevelUpCount++;
-        if (!AugmentManager.instance.isLevelUpOnceAgain && LevelUpCount == 3)
+        if (!AugmentManager.instance.isLevelUpOnceAgain)
         {
             AugmentManager.instance.isLevelUpOnceAgain = true;
             LevelManager.Instance.LevelUp();
-            LevelUpCount = 0;
         }
     }
 }
