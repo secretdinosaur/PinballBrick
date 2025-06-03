@@ -650,22 +650,22 @@ public class AllStatUp : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(LevelManager.Instance.StatUpValue[0][0]);
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(LevelManager.Instance.StatUpValue[1][0]);
-        StatManager.instance.ChangeTemporaryStats_CriticalDamage(LevelManager.Instance.StatUpValue[2][0]);
-        StatManager.instance.ChangeTemporaryStats_EffectDamage(LevelManager.Instance.StatUpValue[3][0]);
-        StatManager.instance.ChangeTemporaryStats_EffectDuration(LevelManager.Instance.StatUpValue[4][0]);
-        StatManager.instance.ChangeTemporaryStats_ExpGain(LevelManager.Instance.StatUpValue[6][0]);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(2 * LevelManager.Instance.StatUpValue[0][1]);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(1.2f * LevelManager.Instance.StatUpValue[1][1]);
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(2 * LevelManager.Instance.StatUpValue[2][1]);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(2 * LevelManager.Instance.StatUpValue[3][1]);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(1.2f * LevelManager.Instance.StatUpValue[4][1]);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(1.2f * LevelManager.Instance.StatUpValue[6][1]);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(-LevelManager.Instance.StatUpValue[0][0]);
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(-LevelManager.Instance.StatUpValue[1][0]);
-        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-LevelManager.Instance.StatUpValue[2][0]);
-        StatManager.instance.ChangeTemporaryStats_EffectDamage(-LevelManager.Instance.StatUpValue[3][0]);
-        StatManager.instance.ChangeTemporaryStats_EffectDuration(-LevelManager.Instance.StatUpValue[4][0]);
-        StatManager.instance.ChangeTemporaryStats_ExpGain(-LevelManager.Instance.StatUpValue[6][0]);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-(2 * LevelManager.Instance.StatUpValue[0][1]));
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-(1.2f * LevelManager.Instance.StatUpValue[1][1]));
+        StatManager.instance.ChangeTemporaryStats_CriticalDamage(-(2 * LevelManager.Instance.StatUpValue[2][1]));
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-(2 * LevelManager.Instance.StatUpValue[3][1]));
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(-(1.2f * LevelManager.Instance.StatUpValue[4][1]));
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-(1.2f * LevelManager.Instance.StatUpValue[6][1]));
     }
 }
 
