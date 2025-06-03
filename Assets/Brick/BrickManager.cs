@@ -158,7 +158,7 @@ public class BrickManager : MonoBehaviour
     }
     public void TakeBrick(IBrick brick)
     {
-        if (brick.IsBoss)
+        if (brick.IsBoss && WavePause)
             OnWaveStopButtonClick();
         if (brick.gameObject.activeSelf)
         {
