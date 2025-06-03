@@ -367,13 +367,15 @@ public partial class IBrick
 
     public void DamageByCurse()
     {
-        if(AugmentManager.instance.determineAugmentID("SPECIAL_75"))
-            if(Curse == null)
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_75"))
+            if (Curse == null)
             {
                 Curse = StartCoroutine(BrickEffect.DamageByCurse2());
             }
         else
+        {
             DamageManager.DamageByCurse(this);
+        }
     }
 
     public float DecayDamageCalculate(float Damage)

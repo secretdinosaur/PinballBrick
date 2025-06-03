@@ -50,7 +50,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 1f, 0.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 1f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 5;
         PoisonStackLimit = 3;
@@ -65,6 +65,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         augmentsSet = new List<IAugment>
         {
+            
             gameObject.AddComponent<AtkUp1>(),
             gameObject.AddComponent<AtkUp2>(),
             gameObject.AddComponent<AtkUp3>(),
@@ -213,7 +214,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<Chaos>());
+        AddAugment(gameObject.GetComponent<Oneness>());
     }
 }
 

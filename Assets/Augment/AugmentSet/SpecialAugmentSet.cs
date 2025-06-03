@@ -512,31 +512,26 @@ public class Chaos : SpecialAugment
                     float RandomAttack = (float)System.Math.Round(Random.Range(-1f, 4f), 2);
                     StatManager.instance.ChangeTemporaryStats_AttackDamage(RandomAttack);
                     TotalChangedStatValue[0] += RandomAttack;
-                    Debug.Log("RandomAttack : " + RandomAttack);
                     break;
                 case 2:
                     float RandomCritDamage = (float)System.Math.Round(Random.Range(-2f, 5f) / 100, 2) ;
                     StatManager.instance.ChangeTemporaryStats_CriticalDamage(RandomCritDamage);
                     TotalChangedStatValue[1] += RandomCritDamage;
-                    Debug.Log("RandomCritDamage : " + RandomCritDamage);
                     break;
                 case 3:
                     float RandomCritChance = (float)System.Math.Round(Random.Range(-1f, 8f) / 100, 2);
                     StatManager.instance.ChangeTemporaryStats_CriticalChance(RandomCritChance);
                     TotalChangedStatValue[2] += RandomCritChance;
-                    Debug.Log("RandomCritChance : " + RandomCritChance);
                     break;
                 case 4:
                     float RandomEffect = (float)System.Math.Round(Random.Range(-1f, 4f), 2);
                     StatManager.instance.ChangeTemporaryStats_EffectDamage(RandomEffect);
                     TotalChangedStatValue[3] += RandomEffect;
-                    Debug.Log("RandomEffect : " + RandomEffect);
                     break;
                 case 5:
                     float RandomEffectDuration = (float)System.Math.Round(Random.Range(-5f, 12f) / 100, 2);
                     StatManager.instance.ChangeTemporaryStats_EffectDuration(RandomEffectDuration);
                     TotalChangedStatValue[4] += RandomEffectDuration;
-                    Debug.Log("RandomEffectDuration : " + RandomEffectDuration);
                     break;
                 default:
                     break;
@@ -1890,20 +1885,39 @@ public class Oneness: SpecialAugment
 {
     IBall MainBall = null;
     bool isGetAugment = false;
+    Coroutine routine;
     private void OnEnable()
     {
         SetAugment("SPECIAL_52", "Oneness", "All balls merge into one,\nthe ball becomes stronger as it merges", "Special", 2);
         SetAdditionalDescription(null);
     }
 
+    private void Update()
+    {
+        if(isGetAugment == true && MainBall == null)
+            StartCoroutine(WaitforMainBall());
+        else if(isGetAugment)
+        {
+            for (int i = 0; i < BallManager.Instance.InGameBall.Count; i++)
+            {
+                if (BallManager.Instance.InGameBall[i] != MainBall && BallManager.Instance.InGameBall[i].FusionMoveRoutine == null)
+                    BallManager.Instance.InGameBall[i].FusionMoveRoutine = StartCoroutine(MoveToPosition(BallManager.Instance.InGameBall[i], MainBall, 5f, 5f));
+            }
+        }
+    }
+
     public override void Apply() 
     {
+        IBall MainBall = null;
         isGetAugment = true;
+        routine = StartCoroutine(WaitforMainBall());
     }
 
     public override void Remove()
     {
+        IBall MainBall = null;
         isGetAugment = false;
+        StopCoroutine(routine);
     }
 
     IEnumerator OnenessBallEffect(IBall RecentlyBall)
@@ -1925,39 +1939,27 @@ public class Oneness: SpecialAugment
         }
     }
 
-    public void Update()
+    IEnumerator WaitforMainBall()
     {
-        if (BallManager.Instance.InGameBall.Count > 0 && isGetAugment)
+        while(MainBall == null)
         {
-            if (BallManager.Instance.InGameBall.Count == 1)
+            for (int i = 0; i < BallManager.Instance.InGameBall.Count; i++)
             {
-                MainBall = BallManager.Instance.InGameBall[0];
-            }
-            else if (BallManager.Instance.InGameBall.Count >= 2)
-            {
-                if (MainBall == null)
-                    MainBall = BallManager.Instance.InGameBall[0];
-                for (int i = 1; i < BallManager.Instance.InGameBall.Count; i++)
+                IBall ball = BallManager.Instance.InGameBall[i];
+                if (ball.transform.position.y > -1 && ball.rb.linearVelocityY > 0)
                 {
-                    IBall ball = BallManager.Instance.InGameBall[i];
-                    if (ball.FusionMoveRoutine == null && MainBall != null)
-                    {
-                        ball.FusionMoveRoutine = StartCoroutine(MoveToPosition(ball, MainBall, 5f, 5f));
-                    }
+                    MainBall = ball;
                 }
             }
-            else if(BallManager.Instance.InGameBall.Count <= 0)
-            {
-                MainBall = null;
-            }
+            yield return null;
         }
     }
 
     IEnumerator MoveToPosition(IBall obj, IBall target, float duration, float smoothTime)
     {
-        obj.gameObject.GetComponent<CircleCollider2D>().enabled = false;
-        yield return new WaitForSeconds(1f);
-        while (Vector3.Distance(obj.transform.position, target.transform.position) > 0.28f)
+        yield return new WaitForSeconds(0.5f);
+        obj.gameObject.GetComponent<Collider2D>().enabled = false;
+        while (Vector3.Distance(obj.transform.position, target.transform.position) > 0.35f)
         {
             if (target != null)
             {
@@ -2006,11 +2008,11 @@ public class HappyBirthday : SpecialAugment
     IEnumerator AtkUp(IBall ball)
     {
         yield return null;
-        ball.BallBaseDamage += 10;
+        ball.BallBaseDamage += 30;
         ball.Renderer.material.color = Color.white * 2;
         yield return new WaitForSeconds(Duration);
         ball.Renderer.material.color = Color.white;
-        ball.BallBaseDamage -= 10;
+        ball.BallBaseDamage -= 30;
     }
 }
 
