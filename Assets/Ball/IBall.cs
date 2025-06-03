@@ -49,10 +49,9 @@ public partial class IBall : MonoBehaviour
         gameObject.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        transform.position = StartPosition;
+        transform.position = BallManager.StartPosition;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
-        linearVelocityYValue = 10;
         spriteRenderer.color = new Color(1f, 1f, 1f);
         BounceTime = 1f;
         MaxBounce = 0;
@@ -90,7 +89,6 @@ public partial class IBall : MonoBehaviour
             BallManager.Instance.inGameSpecialBallPosition.Add(gameObject.GetComponent<Transform>());
             BallManager.Instance.inGameSpecialBallCollider.Add(gameObject.GetComponent<Collider2D>());
         }
-
     }
 
     public void BallDied()

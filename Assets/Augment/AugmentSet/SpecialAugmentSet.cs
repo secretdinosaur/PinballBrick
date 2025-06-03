@@ -354,17 +354,25 @@ public class BigBoss : SpecialAugment
     }
 }
 
-public class SpeedCritical : SpecialAugment
+public class ChangeBallSpawnPosition : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_13", "Quick and Accurate", "Critical chance increases with ball speed", "Special", 4);
+        SetAugment("SPECIAL_13", "Unexpected Strategy", "A ball is summoned from top", "Special", 3);
         SetAdditionalDescription(null);
     }
 
-    public override void Apply(){ }
+    public override void Apply()
+    {
+        BallManager.StartPosition = new Vector3(0f, 5f, 35);
+        BallManager.linearVelocityYValue = -10;
+    }
 
-    public override void Remove(){ }
+    public override void Remove()
+    {
+        BallManager.StartPosition = new Vector3(0f, -5f, 35);
+        BallManager.linearVelocityYValue = 10;
+    }
 }
 
 public class Lightning : SpecialAugment
