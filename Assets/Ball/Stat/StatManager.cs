@@ -133,7 +133,7 @@ public partial class StatManager : MonoBehaviour
     {
         Temporary_Stat initialStats = new Temporary_Stat
         {
-            StatLevel = new []{1, 1, 1, 1, 1, 1, 1, 1},
+            StatLevel = new[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             AttackDamage = 0f,
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
@@ -141,6 +141,7 @@ public partial class StatManager : MonoBehaviour
             EffectDuration = 1f,
             GoldGain = 0.0f,
             ExpGain = 0.0f,
+            SummonBall = 5
         };
         
         string json = JsonUtility.ToJson(initialStats, true);
