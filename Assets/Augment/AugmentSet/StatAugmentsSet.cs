@@ -770,3 +770,59 @@ public class EffectDuration30 : StatAugment
         StatManager.instance.ChangeTemporaryStats_EffectDuration(-0.3f);
     }
 }
+
+public class LateBloomer : StatAugment
+{
+    public int PassedWave = 0;
+    Coroutine Routine;
+    private void OnEnable()
+    {
+        SetAugment("STAT_35", "Late Bloomer", "Attack, Effect Damage -50% and Gain +3% Attack, Effect Damage each time Wave 1 is cleared (up to 75%)", 3);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        Routine = StartCoroutine(StatUpRoutine());
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.5f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(0.5f);
+    }
+
+    public override void Remove()
+    {
+        if(Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.5f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-0.5f);
+        if(PassedWave >= 1)
+        {
+            for (int i = 0; i < PassedWave; i++)
+            {
+                StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.0374f);
+                StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.0374f);
+            }
+        }
+    }
+
+    IEnumerator StatUpRoutine()
+    {
+        int PreviousWave = GameManager.instance.Wave;
+        while (PassedWave <= 25)
+        {
+            yield return new WaitUntil(() => GameManager.instance.Wave != PreviousWave);
+            if (GameManager.instance.Wave > PreviousWave)
+            {
+                for (int i = 0; i < GameManager.instance.Wave - PreviousWave; i++)
+                {
+                    StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.0374f);
+                    StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.0374f);
+                    PassedWave++;
+                }
+            }
+            PreviousWave = GameManager.instance.Wave;
+        }
+    }
+}

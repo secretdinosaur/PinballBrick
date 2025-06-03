@@ -97,6 +97,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<EffectDuration10>(),
             gameObject.AddComponent<EffectDuration15>(),
             gameObject.AddComponent<EffectDuration30>(),
+            gameObject.AddComponent<LateBloomer>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -206,8 +207,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<ChangeBallSpawnPosition>(),
-            gameObject.GetComponent<Bombardment>(),
+            gameObject.GetComponent<LateBloomer>(),
         };
 
         foreach (IAugment augment in TestAugments)
@@ -218,7 +218,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<Chronobreak>());
+        AddAugment(gameObject.GetComponent<WeakButStrongEffect>());
     }
 }
 
