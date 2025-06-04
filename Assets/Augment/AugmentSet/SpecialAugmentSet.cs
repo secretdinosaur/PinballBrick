@@ -309,35 +309,70 @@ public class DeathGold : SpecialAugment
     }
 }
 
-public class SpeedPower : SpecialAugment
+public class BigBoss : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_12", "Momentum", "Atack damage increases with ball speed", "Special", 4);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_12", "Big Boss", "Summons a 'Big Boss' with extremely high HP\nDefeating it grants great rewards", "Special", 2);
+        SetAdditionalDescription("Despite being called the Big Boss,\nit is not treated as an actual boss");
     }
 
-    public override void Apply(){ }
-
-    public override void Remove(){ }
-
-    public override void BeforeAttackEffect(IBrick Brick)
+    public override void Apply()
     {
-        Brick.TotalMultiple *= Brick.RecentlyBall.TransformationMultiple;
+        StartCoroutine(SettingBigBoss());
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    IEnumerator SettingBigBoss()
+    {
+        if (BrickManager.Instance.availablePositions.Count > 0)
+        {
+            BrickManager.Instance.SpawnBrick(BrickManager.Instance.SettingBigBoss());
+        }
+        else
+        {
+            yield return new WaitUntil(() => BrickManager.Instance.BrickQueue != null);
+            BrickManager.Instance.BrickQueue.Enqueue(BrickManager.Instance.SettingBigBoss());
+        }
+        StartCoroutine(BigBossAbility());
+    }
+
+    IEnumerator BigBossAbility()
+    {
+        yield return new WaitUntil(() => BrickManager.Instance.BigBossBrick != null);
+        while (BrickManager.Instance.BigBossBrick != null)
+        {
+            yield return new WaitForSeconds(30f);
+            BrickManager.Instance.TeleportBrickPosition(BrickManager.Instance.BigBossBrick);
+        }
+        AugmentManager.instance.AddAugment(gameObject.GetComponent<LevelUpAgain>());
+        AugmentManager.instance.RemoveOnAugmentsSetAugment(gameObject.GetComponent<LevelUpAgain>());
     }
 }
 
-public class SpeedCritical : SpecialAugment
+public class ChangeBallSpawnPosition : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_13", "Quick and Accurate", "Critical chance increases with ball speed", "Special", 4);
+        SetAugment("SPECIAL_13", "Unexpected Strategy", "A ball is summoned from top", "Special", 3);
         SetAdditionalDescription(null);
     }
 
-    public override void Apply(){ }
+    public override void Apply()
+    {
+        BallManager.StartPosition = new Vector3(0f, 5f, 35);
+        BallManager.linearVelocityYValue = -10;
+    }
 
-    public override void Remove(){ }
+    public override void Remove()
+    {
+        BallManager.StartPosition = new Vector3(0f, -5f, 35);
+        BallManager.linearVelocityYValue = 10;
+    }
 }
 
 public class Lightning : SpecialAugment
@@ -553,8 +588,6 @@ public class Chaos : SpecialAugment
             Curtain.SetActive(false);
             GameManager.instance.OnChaos = false;
             BallManager.Instance.CreateBall(3);
-            StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-            StatManager.instance.isChangedStat = false;
         });
         
     }
@@ -1642,23 +1675,9 @@ public class CurseBall : SpecialAugment
 
     public override void AfterDeathEffect(IBall ball)
     {
-        if (Random.value < AugmentManager.instance.effectChance.CurseChance)
+        if (Random.value < AugmentManager.instance.effectChance.CurseChance && BrickManager.Instance.CurrentBricks.Count > 0)
         {
-            int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-            /*
-            if (BrickManager.Instance.CurrentBricks.Count != 0)
-                while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
-                {
-                    index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-                }*/
-            try
-            {
-                BrickManager.Instance.CurrentBricks[index].DamageByCurse();
-            }
-            catch(ArgumentOutOfRangeException)
-            {
-                Debug.Log("There are no Bricks");
-            }
+            BrickManager.Instance.GetRandomBrick().DamageByCurse();
         }
     }
 }
@@ -1855,8 +1874,8 @@ public class GroupViolence: SpecialAugment
     bool isGetAugment = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_51", "Group Violence", "Only attacks the brick with the highest health", "Special", 3);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_51", "Group Violence", "After attack, transfers 10% of Attack damage to the brick with the highest HP", "Special", 3);
+        SetAdditionalDescription("Applies only to normal attacks and specific effects attacks");
     }
 
     public override void Apply()
@@ -2117,44 +2136,31 @@ public class HalfBallSacrifice : SpecialAugment
     }
 }
 
-public class FreshNewStart : SpecialAugment
+public class Chronobreak : SpecialAugment
 {
-    int AugmentNum = 0;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_54", "Fresh New Start", "Receive a massive reward\nand return to the beginning state", "Special", 0);
-        SetAdditionalDescription("Gain Attack, Effect Damage based on the number of augments acquired");
+        SetAugment("SPECIAL_54", "Chronobreak", "lose half of augment, Attack and Effect Damage\nThen, return to Wave 1", "Special", 0);
+        SetAdditionalDescription("The minimum wave to return to is Wave 1\n" +
+            "All bricks are destroyed\n" +
+            "All balls are destroyed, then 10 balls are summoned \n" +
+            "Certain bricks and balls are excluded");
     }
 
     public override void Apply()
     {
-        AugmentNum = AugmentManager.instance.activeStatAugments.Count
-                   + AugmentManager.instance.activeFieldAugments.Count
-                   + AugmentManager.instance.activeSpecialAugments.Count;
-        AugmentManager.instance.ClearAllAugments();
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(AugmentNum * 2);
-        LevelManager.Instance.LevelSet(1);
-
-        foreach (IBall ball in BallManager.Instance.InGameBall)
+        BrickManager.Instance.WaveSkip(-(GameManager.instance.Wave + 2));
+        for (int i = 0; i < AugmentManager.instance.activeAugments.Count / 2; i++)
         {
-            StartCoroutine(BallRemoveEffect(ball));
-            BallManager.Instance.TakeBall(ball);
-        }
-        foreach (IBall ball in BallManager.Instance.InGameSpecialBall)
-        {
-            StartCoroutine(BallRemoveEffect(ball));
-            BallManager.Instance.TakeBall(ball);
-        }
+            int RandomIndex = Random.Range(0, AugmentManager.instance.activeAugments.Count);
+            AugmentManager.instance.RemoveAugment(AugmentManager.instance.activeAugments[RandomIndex]);
 
-        BallManager.Instance.CreateBall(1);
-        QuestAlarm.Instance.ClearQuest();
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<FreshNewStart>());
-    }
-
-    private IEnumerator BallRemoveEffect(IBall ball)
-    {
-        VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
-        yield return null;
+        }
+        BallManager.Instance.DestroyBallNum(BallManager.Instance.InGameBall.Count);
+        BrickManager.Instance.DestroyBricksNum(BrickManager.Instance.CurrentBricks.Count);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-(StatManager.AttackDamage / 2));
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-(StatManager.EffectDamage / 2));
+        BallManager.Instance.CreateBall(10);
     }
 
     public override void Remove()
@@ -2439,8 +2445,8 @@ public class FusionBricks : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health. \nIt is treated as a boss", "Special", 0);
-        SetAdditionalDescription("Together we survive, Divided we will die");
+        SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health.", "Special", 2);
+        SetAdditionalDescription("It is treated as a boss");
     }
 
     public override void Apply()
@@ -2776,7 +2782,7 @@ public class LevelUpAgain : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up", "Special", 0);
+        SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up", "Special", 6);
         SetAdditionalDescription(null);
     }
 
@@ -2787,7 +2793,7 @@ public class LevelUpAgain : SpecialAugment
 
     public override void Remove()
     {
-
+        AugmentManager.instance.augmentsSet.Add(gameObject.AddComponent<LevelUpAgain>());
     }
 
     public override void AfterLevelUpEffect()
@@ -2797,5 +2803,52 @@ public class LevelUpAgain : SpecialAugment
             AugmentManager.instance.isLevelUpOnceAgain = true;
             LevelManager.Instance.LevelUp();
         }
+    }
+}
+
+public class AtkUpWhenCritical : SpecialAugment
+{
+    Coroutine Routine;
+    int setTime = 3;
+
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_77", "Lucky Streak", "When critical attack hits, attack damage +1.8\nfor 3 seconds", "Special", 4);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        Routine = null;
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    public override void CriticalAttackEffect(IBrick Brick)
+    {
+        if (Routine == null)
+        {
+            Routine = StartCoroutine(AttackDamageUpFewSec(1.8f));
+        }
+        else
+        {
+            setTime = 3;
+        }
+    }
+
+    IEnumerator AttackDamageUpFewSec(float AttackUpValue)
+    {
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(AttackUpValue);
+        while (setTime > 0)
+        {
+            yield return new WaitForSeconds(1);
+            setTime--;
+        }
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-AttackUpValue);
+        setTime = 3;
+        Routine = null;
     }
 }

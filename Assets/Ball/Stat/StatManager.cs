@@ -133,7 +133,7 @@ public partial class StatManager : MonoBehaviour
     {
         Temporary_Stat initialStats = new Temporary_Stat
         {
-            StatLevel = new []{1, 1, 1, 1, 1, 1, 1, 1},
+            StatLevel = new[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             AttackDamage = 0f,
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
@@ -141,6 +141,7 @@ public partial class StatManager : MonoBehaviour
             EffectDuration = 1f,
             GoldGain = 0.0f,
             ExpGain = 0.0f,
+            SummonBall = 5
         };
         
         string json = JsonUtility.ToJson(initialStats, true);
@@ -583,13 +584,13 @@ public partial class StatManager
     {
         if(value >= 0)
         {
-            statMultiplier.AttackDamageMultiplier *= (float)System.Math.Round(value, 2);
+            statMultiplier.AttackDamageMultiplier *= (float)System.Math.Round(value, 3);
             TotalChangedStatValue[7] *= (float)System.Math.Round(value, 2);
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
-            statMultiplier.AttackDamageMultiplier /= (float)System.Math.Round(-value, 2);
+            statMultiplier.AttackDamageMultiplier /= (float)System.Math.Round(-value, 3);
             TotalChangedStatValue[7] /= (float)System.Math.Round(-value, 2);
             SaveStatMultiplier(statMultiplier);
         }
@@ -599,13 +600,13 @@ public partial class StatManager
     {
         if(value >= 0)
         {
-            statMultiplier.EffectDamageMultiplier *= (float)System.Math.Round(value, 2);
+            statMultiplier.EffectDamageMultiplier *= (float)System.Math.Round(value, 3);
             TotalChangedStatValue[8] *= (float)System.Math.Round(value, 2);
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
-            statMultiplier.EffectDamageMultiplier /= (float)System.Math.Round(-value, 2);
+            statMultiplier.EffectDamageMultiplier /= (float)System.Math.Round(-value, 3);
             TotalChangedStatValue[8] /= (float)System.Math.Round(-value, 2);
             SaveStatMultiplier(statMultiplier);
         }

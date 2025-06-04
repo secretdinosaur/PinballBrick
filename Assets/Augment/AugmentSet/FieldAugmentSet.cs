@@ -853,7 +853,7 @@ public class Example : FieldAugment
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(5f);    
+                yield return new WaitUntil(() => rolledDiceSet.Count == 3);
                 CalDiceSet();
                 yield return new WaitForSeconds(Cooldown);
             }

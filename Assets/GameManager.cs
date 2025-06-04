@@ -40,7 +40,13 @@ public class GameManager : MonoBehaviour
     public TMP_Text WaveNoticeText;
     public TMP_Text WaveExtraNoticeText;
 
-    public int Wave;
+    private int wave;
+    public int Wave
+    {
+        get {  return wave; }
+        set { wave = Mathf.Max(1, value); ; }
+    }
+
     public int DestroyedBricks;
     public int SummonedBalls;
     public int DiedBalls;

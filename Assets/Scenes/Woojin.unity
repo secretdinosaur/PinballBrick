@@ -11292,6 +11292,7 @@ MonoBehaviour:
   availablePositions: []
   usingPositions: []
   MainBrick: {fileID: 0}
+  BigBossBrick: {fileID: 0}
   SpecialBrickSpawnChance: 0
   SpecialBrickSpawnChanceValue: 0
   isRapid: 0
@@ -17614,6 +17615,7 @@ MonoBehaviour:
     EffectDuration: 0
     GoldGain: 0
     ExpGain: 0
+    SummonBall: 0
   statMultiplier:
     AttackDamageMultiplier: 0
     EffectDamageMultiplier: 0
@@ -17633,9 +17635,8 @@ MonoBehaviour:
   exceptionAugments: []
   augmentsSet: []
   RouletteAugmentsSet: []
-  activeStatAugments: []
-  activeFieldAugments: []
-  activeSpecialAugments: []
+  ActivatedAugmentNumber: 0
+  activeAugments: []
   FireStackLimit: 0
   PoisonStackLimit: 0
   DecayStackLimit: 0
@@ -17678,7 +17679,6 @@ MonoBehaviour:
   GameEndPanel: {fileID: 0}
   WaveNoticeText: {fileID: 0}
   WaveExtraNoticeText: {fileID: 0}
-  Wave: 0
   DestroyedBricks: 0
   SummonedBalls: 0
   DiedBalls: 0

@@ -26,14 +26,14 @@ public static partial class DamageManager //Normal Attack
     {
         if (!brick.IsSpecialBrick)
         {
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.BeforeAttackEffect(brick);
             }
 
             brick.HP -= FinalDamage(brick);
 
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.AfterMainAttackEffect(brick);
                 Augment.AfterAttackEffect(brick);
@@ -49,14 +49,14 @@ public static partial class DamageManager //Normal Attack
     {
         if (!brick.IsSpecialBrick)
         {
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.BeforeAttackEffect(brick);
             }
 
             brick.HP -= FinalDamage(brick);
 
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.AfterAttackEffect(brick);
             }
@@ -79,7 +79,7 @@ public static partial class DamageManager //Normal Attack
         {
             CriticalHit = true;
             brick.TotalMultiple *= CriticalDamage();
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.CriticalAttackEffect(brick);
             }
@@ -146,7 +146,7 @@ public static partial class DamageManager //Special Effect Attack
             if (brick.BrickType == "TeleportBrick") BrickManager.Instance.TeleportBrickPosition(brick.GetComponent<TeleportBrick>());
             brick.HP -= FinalAdditionalAttackDamage;
             brick.ShowText(FinalAdditionalAttackDamage.ToString("F1"), "Additional", CriticalHit);
-            foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+            foreach (IAugment Augment in AugmentManager.instance.activeAugments)
             {
                 Augment.AfterAttackEffect(brick);
             }
@@ -199,14 +199,7 @@ public static partial class DamageManager //Special Effect Attack
                 brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
         }
         VisualEffectManager.Instance.SpawnParticle("Curse", brick.transform.position, 5);
-        float baseDamage = 0;
-        if (brick.RecentlyBall != null)
-            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
-            + StatManager.instance.Temporary_stat.AttackDamage
-            + brick.RecentlyBall.GrowthAttackDamage)
-            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-        else
-            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
+        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
             + StatManager.instance.Temporary_stat.AttackDamage)
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
@@ -543,14 +536,7 @@ public class BrickEffectManager : MonoBehaviour
                 brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
         }
         VisualEffectManager.Instance.SpawnParticle("Curse", brick.transform.position, 5);
-        float baseDamage = 0;
-        if (brick.RecentlyBall != null)
-            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
-            + StatManager.instance.Temporary_stat.AttackDamage
-            + brick.RecentlyBall.GrowthAttackDamage)
-            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-        else
-            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
+        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
             + StatManager.instance.Temporary_stat.AttackDamage)
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 

@@ -11,9 +11,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public List<IAugment> RouletteAugmentsSet;
     //private List<int> usedIndexes;
-    public List<StatAugment> activeStatAugments = new List<StatAugment>();
-    public List<FieldAugment> activeFieldAugments = new List<FieldAugment>();
-    public List<SpecialAugment> activeSpecialAugments = new List<SpecialAugment>();
+    public int ActivatedAugmentNumber;
+    public List<IAugment> activeAugments = new List<IAugment>();
     
     public EffectChance effectChance;
     public int FireStackLimit;
@@ -61,6 +60,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         CurseDamageValue = 1f;
         AfterDeathActiveNumber = 1;
         isLevelUpOnceAgain = false;
+        ActivatedAugmentNumber = 0;
         ClearAllAugments();
 
         augmentsSet = new List<IAugment>
@@ -77,7 +77,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<GoldGain10Up>(),
             gameObject.AddComponent<GoldGain30Up>(),
             gameObject.AddComponent<GoldGain50Up>(),
-            gameObject.AddComponent<AtkUpWhenCritical>(),
             gameObject.AddComponent<CritChanceToAttackDamage>(),
             gameObject.AddComponent<EffectDamageUp1>(),
             gameObject.AddComponent<EffectDamageUp2>(),
@@ -96,6 +95,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ExpGain50Up>(),
             gameObject.AddComponent<AttackEffectBothUp>(),
             gameObject.AddComponent<LevelUpMania>(),
+            gameObject.AddComponent<EffectDuration10>(),
+            gameObject.AddComponent<EffectDuration15>(),
+            gameObject.AddComponent<EffectDuration30>(),
+            gameObject.AddComponent<LateBloomer>(),
             ///////////////////////// Stat
             gameObject.AddComponent<AllDamage>(),
             gameObject.AddComponent<AngryBall>(),
@@ -122,8 +125,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<ChainLightning>(),
             gameObject.AddComponent<DeathExp>(),
             gameObject.AddComponent<DeathGold>(),
-            gameObject.AddComponent<SpeedPower>(),
-            gameObject.AddComponent<SpeedCritical>(),
+            gameObject.AddComponent<BigBoss>(),
+            gameObject.AddComponent<ChangeBallSpawnPosition>(),
             gameObject.AddComponent<Lightning>(),
             gameObject.AddComponent<PoisonBall>(),
             gameObject.AddComponent<Chaos>(),
@@ -156,7 +159,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<HappyBirthday>(),
             gameObject.AddComponent<MidasHand>(),
             gameObject.AddComponent<HalfBallSacrifice>(),
-            gameObject.AddComponent<FreshNewStart>(),
+            gameObject.AddComponent<Chronobreak>(),
             gameObject.AddComponent<CritAfterThreeAttack>(),
             gameObject.AddComponent<DamageInfection>(),
             gameObject.AddComponent<RollDiceBall>(),
@@ -176,6 +179,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             gameObject.AddComponent<RerollAugments>(),
             gameObject.AddComponent<BossDamageUp>(),
             gameObject.AddComponent<LevelUpAgain>(),
+            gameObject.AddComponent<AtkUpWhenCritical>(),
             ////////////////////////// Special
             gameObject.AddComponent<FireEffectStackBlast>(),
             gameObject.AddComponent<TheFlamethrower>(),
@@ -204,8 +208,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<TheFlamethrower>(),
-
+            gameObject.GetComponent<CurseBall>(),
         };
 
         foreach (IAugment augment in TestAugments)

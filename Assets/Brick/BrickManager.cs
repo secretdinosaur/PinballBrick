@@ -26,6 +26,7 @@ public class BrickManager : MonoBehaviour
     public List<Vector2> usingPositions = new List<Vector2>();
 
     public IBrick MainBrick;
+    public IBrick BigBossBrick;
 
     public Coroutine SpawnBrickRoutine;
 
@@ -158,8 +159,8 @@ public class BrickManager : MonoBehaviour
     }
     public void TakeBrick(IBrick brick)
     {
-        if (brick.IsBoss && WavePause)
-            OnWaveStopButtonClick();
+        if (brick.IsBoss)
+            WavePause = false;
         if (brick.gameObject.activeSelf)
         {
             if (brick.Fire != null)
@@ -344,7 +345,7 @@ public class BrickManager : MonoBehaviour
                 break;
             }
         }
-        Brick.Init(brick.IsBoss, brick.IsSpecialBrick, BrickPointSetting(brick.BrickType), BrickExpSetting(brick.BrickType));
+        Brick.Init(brick.IsBoss, brick.IsSpecialBrick, false, BrickPointSetting(brick.BrickType), BrickExpSetting(brick.BrickType));
         return Brick;
     }
 
@@ -357,7 +358,7 @@ public class BrickManager : MonoBehaviour
         var genericMethod = method.MakeGenericMethod(brickType);
         Brick = (IBrick)genericMethod.Invoke(PoolManager, null);
         
-        Brick.Init(false, true, 1, 10f);
+        Brick.Init(false, true, false, 1, 10f);
         return Brick;
     }
 
@@ -370,7 +371,20 @@ public class BrickManager : MonoBehaviour
         var genericMethod = method.MakeGenericMethod(brickType);
         Brick = (IBrick)genericMethod.Invoke(PoolManager, null);
 
-        Brick.Init(true, false, (int)(5.3f * BrickPointSetting(brick.BrickType)), 5.3f * BrickExpSetting(brick.BrickType));
+        Brick.Init(true, false, false, (int)(5.3f * BrickPointSetting(brick.BrickType)), 5.3f * BrickExpSetting(brick.BrickType));
+        return Brick;
+    }
+
+    private IBrick GetBigBossBrick(IBrick brick)
+    {
+        IBrick Brick = null;
+
+        Type brickType = Type.GetType(BrickInfo.BrickTypes[0]);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(brickType);
+        Brick = (IBrick)genericMethod.Invoke(PoolManager, null);
+
+        Brick.Init(false, false, true, BrickPointSetting(brick.BrickType), BrickExpSetting(brick.BrickType));
         return Brick;
     }
 
@@ -534,6 +548,7 @@ public class BrickManager : MonoBehaviour
         IBrick brick = new IBrick();
         brick.IsBoss = false;
         brick.IsSpecialBrick = false;
+        brick.IsBigBoss = false;
         return brick;
     }
 
@@ -542,6 +557,7 @@ public class BrickManager : MonoBehaviour
         IBrick brick = new IBrick();
         brick.IsBoss = true;
         brick.IsSpecialBrick = false;
+        brick.IsBigBoss = false;
         return brick;
     }
 
@@ -550,6 +566,16 @@ public class BrickManager : MonoBehaviour
         IBrick brick = new IBrick();
         brick.IsBoss = false;
         brick.IsSpecialBrick = true;
+        brick.IsBigBoss = false;
+        return brick;
+    }
+
+    public IBrick SettingBigBoss()
+    {
+        IBrick brick = new IBrick();
+        brick.IsBoss = false;
+        brick.IsSpecialBrick = false;
+        brick.IsBigBoss = true;
         return brick;
     }
 
@@ -560,33 +586,9 @@ public class BrickManager : MonoBehaviour
         HPPool = new List<float>();
         int Wave = GameManager.instance.Wave;
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
-        if (brick.IsBoss)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.2f) * UnityEngine.Random.Range(10f, 11f))));
-            }
-        }
-        else if (brick.IsSpecialBrick)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                HPPool.Add(UnityEngine.Random.Range(5, 10));
-            }
-        }
-        else
-        {
-            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, UnityEngine.Random.Range(1.1f, 1.15f))));
-            //need to adjust
-            for (int j = HPBase; j < 3 + HPBase; j++)
-            {
-                HPPool.Add(j);
-            }
-        }
-        _FusionBrickHealth += HPPool.Average();
-        _FusionBrickNum++;
+        SettingBrickHp(brick, Wave, AddPerWave);
         IBrick Brick = new IBrick();
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_65"))
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_65") && !brick.IsBigBoss && !brick.IsSpecialBrick)
         {
             if(BrickQueue.Count == 0)
             {
@@ -613,6 +615,11 @@ public class BrickManager : MonoBehaviour
                 Brick = GetBossBrick(brick);
             else if (brick.IsSpecialBrick)
                 Brick = GetSpecialBrick(brick, UnityEngine.Random.Range(0, BrickInfo.SpecialBrickTypes.Length));
+            else if (brick.IsBigBoss)
+            {
+                Brick = GetBigBossBrick(brick);
+                BigBossBrick = Brick;
+            }
             else
                 Brick = GetBrick(brick);
 
@@ -629,7 +636,7 @@ public class BrickManager : MonoBehaviour
             float rotation = UnityEngine.Random.value * 3.14f;
             Brick.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
-            Twin.Init(Brick.IsBoss, false, Brick.Point, Brick.Exp);
+            Twin.Init(Brick.IsBoss, false, false, Brick.Point, Brick.Exp);
         }
         if(Brick.IsBoss)
             OnWaveStopButtonClick();
@@ -651,6 +658,41 @@ public class BrickManager : MonoBehaviour
         return brick;
     }
 
+    private void SettingBrickHp(IBrick brick, int Wave, int AddPerWave)
+    {
+        if (brick.IsBoss)
+        {
+            WavePause = true;
+            for (int i = 0; i < 3; i++)
+            {
+                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
+            }
+            _FusionBrickHealth += HPPool.Average();
+        }
+        else if (brick.IsSpecialBrick)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                HPPool.Add(UnityEngine.Random.Range(5, 10));
+            }
+        }
+        else if (brick.IsBigBoss)
+        {
+            HPPool.Add(10101);
+        }
+        else
+        {
+            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, UnityEngine.Random.Range(0.9f, 1.1f))));
+            //need to adjust
+            for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
+            {
+                HPPool.Add(j);
+            }
+            _FusionBrickHealth += HPPool.Average();
+        }
+        _FusionBrickNum++;
+    }
+
     public bool BossSpawnCondition(int Wave)
     {
         bool isBossSpawnCondition = Wave == NextBossSpawnWave;
@@ -660,10 +702,6 @@ public class BrickManager : MonoBehaviour
 
     public void WaveSkip(int Num)
     {
-        if (BrickQueue.Count > 0)
-        {
-            BrickQueue.Clear();
-        }
         if (BrickQueue != null)
         {
             BrickQueue = null;
@@ -674,6 +712,33 @@ public class BrickManager : MonoBehaviour
             SpawnBrickRoutine = null;
         }
         GameManager.instance.Wave += Num;
+    }
+
+    public void DestroyBricksNum(int Num, bool isBrickDied = false)
+    {
+        var bricksCopy = CurrentBricks.ToList();
+        if (isBrickDied)
+        {
+            for (int i = 0; i < Mathf.Min(Num, bricksCopy.Count); i++)
+            {
+                if (!CurrentBricks[i].IsBigBoss)
+                    CurrentBricks[i].BrickDie();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Mathf.Min(Num, bricksCopy.Count); i++)
+            {
+                if (!bricksCopy[i].IsBigBoss)
+                    TakeBrick(bricksCopy[i]);
+            }
+        }
+    }
+
+    public IBrick GetRandomBrick()
+    {
+        IBrick brick = CurrentBricks[UnityEngine.Random.Range(0, CurrentBricks.Count)];
+        return brick;
     }
 
     //Test Button Functions

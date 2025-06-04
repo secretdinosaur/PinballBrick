@@ -49,6 +49,7 @@ public partial class LevelManager : MonoBehaviour
         EffectDuration,
         GoldGain,
         ExpGain,
+        SummonBalls
     }
 
     public List<List<float>> StatUpValue = new List<List<float>>
@@ -60,6 +61,7 @@ public partial class LevelManager : MonoBehaviour
         new List<float> { 0.05f, 0.1f }, //EffectDuration
         new List<float> { 0.1f, 0.2f }, //GoldGain
         new List<float> { 0.05f, 0.1f }, //ExpGain
+        new List<float> { 2f } //SummonBalls
     };
 
     public float BaseStatUpValue;
@@ -181,9 +183,7 @@ public partial class LevelManager : MonoBehaviour
         Level++;
         LevelBarMaxValueSet(Level);
         LevelUpQueue.Enqueue(Level);
-        foreach (IAugment augment in AugmentManager.instance.activeStatAugments)
-            augment.AfterLevelUpEffect();
-        foreach (IAugment augment in AugmentManager.instance.activeSpecialAugments)
+        foreach (IAugment augment in AugmentManager.instance.activeAugments)
             augment.AfterLevelUpEffect();
     }
 
@@ -222,7 +222,8 @@ public partial class LevelManager : MonoBehaviour
             { "Effect\nDamage", 3 },
             { "Effect\nDuration", 4 },
             { "Gold\nGain", 5 },
-            { "Exp\nGain", 6 }
+            { "Exp\nGain", 6 },
+            { "Summon\nBalls", 7 }
         };
         
         List<string> keys = new List<string>(statTable.Keys);
@@ -302,6 +303,13 @@ public partial class LevelManager : MonoBehaviour
                     (
                         BaseStatUpValue * (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.ExpGain] % 5 == 0
                         ? StatUpValue[(int)StatName.ExpGain][1] : StatUpValue[(int)StatName.ExpGain][0])
+                    );
+                break;
+            case (int)StatName.SummonBalls:
+                BallManager.Instance.CreateBall
+                    (
+                        (StatManager.instance.Temporary_stat.StatLevel[(int)StatName.SummonBalls] / 5)
+                        + (int)StatUpValue[(int)StatName.SummonBalls][0]
                     );
                 break;
             default:
@@ -737,17 +745,25 @@ public partial class LevelManager : MonoBehaviour
         string percent = "%";
         bool percentBool = (randomStats[i].Value == 1 || randomStats[i].Value == 2 || randomStats[i].Value == 4 || randomStats[i].Value == 5 || randomStats[i].Value == 6);
 
-
-        return " +" + 
-                (
-                    (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1) % 5 == 0 ?
-                    (BaseStatUpValue * StatUpValue[randomStats[i].Value][1] * (percentBool ? 100 : 1)) : 
-                    (BaseStatUpValue * StatUpValue[randomStats[i].Value][0] * (percentBool ? 100 : 1))
-                )
-                + 
-                (percentBool ? percent
-                : "")
-                + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
+        if(randomStats[i].Value == 7)
+        {
+            return ((StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] / 5) + StatUpValue[randomStats[i].Value][0]) + " Balls "
+                + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1); ;
+                
+        }
+        else
+        {
+            return " +" +
+                            (
+                                (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1) % 5 == 0 ?
+                                (BaseStatUpValue * StatUpValue[randomStats[i].Value][1] * (percentBool ? 100 : 1)) :
+                                (BaseStatUpValue * StatUpValue[randomStats[i].Value][0] * (percentBool ? 100 : 1))
+                            )
+                            +
+                            (percentBool ? percent
+                            : "")
+                            + "\n\nLv. " + (StatManager.instance.Temporary_stat.StatLevel[randomStats[i].Value] + 1);
+        }
     }
 
     private void SetMaterialColor(int i, Material material, bool isStat)
@@ -856,7 +872,7 @@ public partial class LevelManager : MonoBehaviour
         else
         {
             AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
-            AugmentManager.instance.RemoveAugment(augmentsSet[optionIndex]);
+            AugmentManager.instance.RemoveOnAugmentsSetAugment(augmentsSet[optionIndex]);
         }
         isAlreadyClickedButton = new bool[OptionButtons.Length];
         optionIndex = -1;

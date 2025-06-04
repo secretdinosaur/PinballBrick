@@ -7,6 +7,7 @@ using UnityEditor;
 using Random = UnityEngine.Random;
 using System.Collections;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class BallManager : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class BallManager : MonoBehaviour
     
     private Canvas canvas;
     private Camera camera;
+
+    public static Vector3 StartPosition = new Vector3(0f, -5f, 35);
+    public static float linearVelocityYValue = 10;
 
     public int LeftBallCount;
     void Awake()
@@ -124,6 +128,8 @@ public class BallManager : MonoBehaviour
         var method = typeof(PoolManager).GetMethod("GetFromPool");
         var genericMethod = method.MakeGenericMethod(ballType);
         ball = (IBall)genericMethod.Invoke(PoolManager, null);
+        ball.StartPosition = StartPosition;
+        ball.linearVelocityYValue = linearVelocityYValue;
         if (IsRebirth)
         {
             StartCoroutine(RebirthBallEffect(ball));
@@ -149,6 +155,33 @@ public class BallManager : MonoBehaviour
                 yield return null;
             }
         }
+    }
+
+    public void DestroyBallNum(int Num, bool isBallDied = false)
+    {
+        var ballsCopy = InGameBall.ToList();
+        if (isBallDied)
+        {
+            for (int i = 0; i < Mathf.Min(Num, ballsCopy.Count); i++)
+            {
+                StartCoroutine(BallRemoveEffect(InGameBall[i]));
+                InGameBall[i].BallDied();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Mathf.Min(Num, ballsCopy.Count); i++)
+            {
+                StartCoroutine(BallRemoveEffect(InGameBall[i]));
+                TakeBall(InGameBall[i]);
+            }
+        }  
+    }
+
+    private IEnumerator BallRemoveEffect(IBall ball)
+    {
+        VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
+        yield return null;
     }
 
     public void TakeBall(IBall ball)

@@ -42,19 +42,17 @@ public partial class IBall : MonoBehaviour
 
     public void OnEnable()
     {
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        foreach (IAugment Augment in AugmentManager.instance.activeAugments)
         {
             Augment.AfterBirthEffect(this);
         }
         gameObject.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        transform.position = StartPosition;
+        transform.position = BallManager.StartPosition;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
-        linearVelocityYValue = 10;
         spriteRenderer.color = new Color(1f, 1f, 1f);
-        TrailRenderer = gameObject.GetComponent<TrailRenderer>();
         BounceTime = 1f;
         MaxBounce = 0;
         detectArea = GetComponentInChildren<BallDetect>();
@@ -91,7 +89,6 @@ public partial class IBall : MonoBehaviour
             BallManager.Instance.inGameSpecialBallPosition.Add(gameObject.GetComponent<Transform>());
             BallManager.Instance.inGameSpecialBallCollider.Add(gameObject.GetComponent<Collider2D>());
         }
-
     }
 
     public void BallDied()
@@ -121,7 +118,7 @@ public partial class IBall : MonoBehaviour
             {
                 for (int i = 0; i < AugmentManager.instance.AfterDeathActiveNumber; i++)
                 {
-                    foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+                    foreach (IAugment Augment in AugmentManager.instance.activeAugments)
                     {
                         Augment.AfterDeathEffect(this);
                     }
@@ -162,44 +159,9 @@ public partial class IBall : MonoBehaviour
         UpdateCurrentTarget();
 
         GrowthAttackDamageObserve = GrowthAttackDamage;
-        TrailRenderer.startColor = spriteRenderer.color;
         CurrentSpeed = rb.linearVelocity.magnitude;
-        if (isPhoenix)
-        {
-            TrailRenderer.enabled = true;
-            TrailRenderer.material.color = new Color(2, 0, 0);
-            TrailRenderer.time = 1;
-        }
-        else
-        {
-            TrailRenderer.material.color = new Color(1, 1, 1);
-        }
+
         
-        if (CurrentSpeed > 8 && (AugmentManager.instance.determineAugmentID("SPECIAL_12") || AugmentManager.instance.determineAugmentID("SPECIAL_13"))) //Speed Augment
-        {
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
-            {
-                SpecialCriticalChance = ((CurrentSpeed / 100f) * 1.5f);
-            }
-            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
-            {
-                TransformationMultiple = 1f + ((CurrentSpeed / 100f) * 2.5f);
-            }
-            TrailRenderer.enabled = true;
-            TrailRenderer.time = 1;
-        }
-        else
-        {
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
-            {
-                SpecialCriticalChance = 0f;
-            }
-            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
-            {
-                TransformationMultiple = 1f;
-            }
-            TrailRenderer.enabled = false;
-        }
         if(transform.position.y <= -10 && !isOverDeathLine)
         {
             BallDied();
@@ -361,12 +323,6 @@ public partial class IBall //Bounce = Power
     public float BounceTime { get; set; } = 1f;
     private int MaxBounce = 0;
     protected SpriteRenderer spriteRenderer;
-}
-
-public partial class IBall //Speed = Power
-{
-    private TrailRenderer TrailRenderer;
-    public float TransformationMultiple = 1f;
 }
 
 public partial class IBall //GrowBall

@@ -14,6 +14,7 @@ public partial class IBrick : MonoBehaviour
     private float hp;
     public bool IsBoss = false;
     public bool IsSpecialBrick = false;
+    public bool IsBigBoss = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -117,7 +118,7 @@ public partial class IBrick : MonoBehaviour
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
         LevelManager.Instance.GetExp(Exp);
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        foreach (IAugment Augment in AugmentManager.instance.activeAugments)
         {
             Augment.AfterBrickDieEffect(this);
         }
@@ -192,10 +193,11 @@ public partial class IBrick : MonoBehaviour
             HPText.fontSize = 5f;
         }
     }
-    public void Init(bool IsBoss, bool IsSpecialBrick, int Point, float Exp)
+    public void Init(bool IsBoss, bool IsSpecialBrick, bool IsBigBoss, int Point, float Exp)
     {
         this.IsBoss = IsBoss;
         this.IsSpecialBrick = IsSpecialBrick;
+        this.IsBigBoss = IsBigBoss;
         this.Point = Point;
         this.Exp = Exp;
 
@@ -374,14 +376,15 @@ public partial class IBrick
     {
         if (!gameObject.activeSelf) return;
         if (AugmentManager.instance.determineAugmentID("SPECIAL_75"))
+        {
             if (Curse == null)
-            {
                 Curse = StartCoroutine(BrickEffect.DamageByCurse2());
-            }
+        }
         else
         {
             DamageManager.DamageByCurse(this);
         }
+
     }
 
     public float DecayDamageCalculate(float Damage)
