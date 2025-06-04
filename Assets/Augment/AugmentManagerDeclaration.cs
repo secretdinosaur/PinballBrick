@@ -204,6 +204,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
+            gameObject.GetComponent<SatelliteBeam>(),
+
         };
 
         foreach (IAugment augment in TestAugments)
@@ -214,7 +216,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<Oneness>());
     }
 }
 

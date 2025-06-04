@@ -16,7 +16,19 @@ public class GoldBrick : IBrick
         if (collision.gameObject.CompareTag("Ball"))
         {
             TakeDamage(collision.gameObject.GetComponent<IBall>());
-            StatManager.instance.GetGold(5 + GameManager.instance.Wave / 2);
+            int i = Random.Range(0, 3);
+            switch(i)
+            {
+                case 0:
+                    ItemManager.Instance.SpawnSpecificItem("Gold1", transform.position);
+                    break;
+                case 1:
+                    ItemManager.Instance.SpawnSpecificItem("Gold2", transform.position);
+                    break;
+                case 2:
+                    ItemManager.Instance.SpawnSpecificItem("Gold3", transform.position);
+                    break;
+            }
         }
     }
 

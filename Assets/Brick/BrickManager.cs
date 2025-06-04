@@ -189,8 +189,8 @@ public class BrickManager : MonoBehaviour
             {
                 brick.StopCoroutine(brick.ExecutionCor);
             }
-
-            ItemManager.Instance.SpawnItem(brick.transform.position);
+            if(!brick.IsSpecialBrick)
+                ItemManager.Instance.SpawnItem(brick.transform.position);
 
             availablePositions.Add(brick.transform.position);
             usingPositions.Remove(brick.transform.position);
