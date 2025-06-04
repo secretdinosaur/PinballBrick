@@ -1,22 +1,13 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 using Button = UnityEngine.UI.Button;
 using Color = UnityEngine.Color;
-using UnityEngine.InputSystem;
 using System.Collections;
-using System.Drawing;
-using static UnityEngine.Analytics.IAnalytic;
-using System.Xml;
 using DG.Tweening;
-using Unity.Android.Gradle.Manifest;
-using System.Linq;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -883,25 +874,26 @@ public partial class LevelManager : MonoBehaviour
             OptionButtons[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
             OptionButtonShaders[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
         }
+        CustomTime_1 = 0;
+        CustomTime_2 = 0;
+        CustomTime_3 = 0;
+        Time.timeScale = 1f;
+        OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
+        OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
+        OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
+        AdditionalDescriptionPanel.SetActive(false);
+        LevelUpPanel.SetActive(false);
+        CanvasForLevelUpPanel.SetActive(false);
+        VisualEffectManager.Instance.UnsetAugmentPanelPs();
+
         if (LevelUpQueue.Count > 0)
         {
             ShowLevelUpPanel();
         }
         else
         {
-            CustomTime_1 = 0;
-            CustomTime_2 = 0;
-            CustomTime_3 = 0;
-            Time.timeScale = 1f;
-            OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
-            OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
-            OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
-            AdditionalDescriptionPanel.SetActive(false);
-            LevelUpPanel.SetActive(false);
-            CanvasForLevelUpPanel.SetActive(false);
             if (AugmentManager.instance.isLevelUpOnceAgain)
                 AugmentManager.instance.isLevelUpOnceAgain = false;
-            VisualEffectManager.Instance.UnsetAugmentPanelPs();
             if (StatManager.instance.isChangedStat)
             {
                 StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());

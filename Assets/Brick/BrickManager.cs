@@ -158,7 +158,7 @@ public class BrickManager : MonoBehaviour
     }
     public void TakeBrick(IBrick brick)
     {
-        if (brick.IsBoss)
+        if (brick.IsBoss && WavePause)
             OnWaveStopButtonClick();
         if (brick.gameObject.activeSelf)
         {
@@ -189,8 +189,16 @@ public class BrickManager : MonoBehaviour
             {
                 brick.StopCoroutine(brick.ExecutionCor);
             }
-
-            ItemManager.Instance.SpawnItem(brick.transform.position);
+            if (brick.BrickType == "ExpBrick")
+                ItemManager.Instance.SpawnSpecificItem("ExpBead", brick.transform.position, 10);
+            else if (brick.BrickType == "GoldBrick")
+            {
+                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3);
+                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 4);
+                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3);
+            }
+            else if(brick.BrickType != "BallBrick")
+                ItemManager.Instance.SpawnItem(brick.transform.position);
 
             availablePositions.Add(brick.transform.position);
             usingPositions.Remove(brick.transform.position);

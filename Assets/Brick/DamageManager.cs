@@ -185,6 +185,7 @@ public static partial class DamageManager //Special Effect Attack
 
     public static void DamageByCurse(IBrick brick)
     {
+        Debug.Log(3);
         bool isCritical = true;
         if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
         {

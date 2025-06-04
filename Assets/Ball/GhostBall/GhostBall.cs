@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditorInternal;
 using UnityEngine;
 using DG.Tweening;
 using Random = UnityEngine.Random;
@@ -41,11 +40,12 @@ public class GhostBall : IBall
     void GhostBallDisappearProcess()
     {
         int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+        /*
         if (BrickManager.Instance.CurrentBricks.Count != 0)
             while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
             {
                 index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-            }
+            }*/
         try
         {
             BrickManager.Instance.CurrentBricks[index].DamageByCurse();

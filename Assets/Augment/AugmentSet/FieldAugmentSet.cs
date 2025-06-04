@@ -851,11 +851,9 @@ public class Example : FieldAugment
             {
                 rolledDiceSet = new List<int>();
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(0.2f);
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(0.2f);
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(5f);    
                 CalDiceSet();
                 yield return new WaitForSeconds(Cooldown);
             }
