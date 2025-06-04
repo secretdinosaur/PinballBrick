@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
         EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) *
             (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString("F1");
 
-        EffectDurationStatValueText.text = Temporary_stat.EffectDuration.ToString() + "s";
+        EffectDurationStatValueText.text = (Temporary_stat.EffectDuration * 100).ToString("F1") + "%";
 
         GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString("F1") + "%";
 

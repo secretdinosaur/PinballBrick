@@ -1073,6 +1073,8 @@ public class RandomEffect : SpecialAugment
         { "BossSpawn", 0.01f },
         { "Execution", 0.01f },
     };
+
+
     private void OnEnable()
     {
         SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nit may be positive or negative", "Special", 3);
@@ -1085,7 +1087,8 @@ public class RandomEffect : SpecialAugment
 
     public override void AfterMainAttackEffect(IBrick Brick)
     {
-        float RandomValue = Random.value;
+
+    float RandomValue = Random.value;
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             float accumulatedProbability = 0;

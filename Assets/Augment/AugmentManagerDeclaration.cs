@@ -204,7 +204,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<SatelliteBeam>(),
+            gameObject.GetComponent<TheFlamethrower>(),
 
         };
 
@@ -216,6 +216,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
+        AddAugment(gameObject.GetComponent<FusionBricks>());
     }
 }
 

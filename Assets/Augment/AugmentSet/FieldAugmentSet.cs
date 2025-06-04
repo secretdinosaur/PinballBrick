@@ -614,11 +614,11 @@ public class Example : FieldAugment
             {
                 if (BallManager.Instance.InGameBall.Count > 0)
                 {
-                    foreach (IBall ball in BallManager.Instance.InGameBall)
+                    for (int i = 0; i < BallManager.Instance.InGameBall.Count; i++)
                     {
-                        if(ball.AttackDelayTime >= 3 && ball.AttackOrDieRoutine == null)
+                        if(BallManager.Instance.InGameBall[i].AttackOrDieRoutine == null)
                         {
-                            ball.AttackOrDieRoutine = StartCoroutine(GetDying(ball));
+                        BallManager.Instance.InGameBall[i].AttackOrDieRoutine = StartCoroutine(GetDying(BallManager.Instance.InGameBall[i]));
                         }
                     }
                 }
