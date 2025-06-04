@@ -724,6 +724,12 @@ public class BrickManager : MonoBehaviour
         }
     }
 
+    public IBrick GetRandomBrick()
+    {
+        IBrick brick = CurrentBricks[UnityEngine.Random.Range(0, CurrentBricks.Count)];
+        return brick;
+    }
+
     //Test Button Functions
     public void OnSpawnWaveBrickButtonClick()
     {

@@ -198,14 +198,7 @@ public static partial class DamageManager //Special Effect Attack
                 brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
         }
         VisualEffectManager.Instance.SpawnParticle("Curse", brick.transform.position, 5);
-        float baseDamage = 0;
-        if (brick.RecentlyBall != null)
-            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
-            + StatManager.instance.Temporary_stat.AttackDamage
-            + brick.RecentlyBall.GrowthAttackDamage)
-            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-        else
-            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
+        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
             + StatManager.instance.Temporary_stat.AttackDamage)
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
@@ -546,14 +539,7 @@ public class BrickEffectManager : MonoBehaviour
                 brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
         }
         VisualEffectManager.Instance.SpawnParticle("Curse", brick.transform.position, 5);
-        float baseDamage = 0;
-        if (brick.RecentlyBall != null)
-            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
-            + StatManager.instance.Temporary_stat.AttackDamage
-            + brick.RecentlyBall.GrowthAttackDamage)
-            * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-        else
-            baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
+        float baseDamage = (StatManager.instance.Persistent_stat.AttackDamage
             + StatManager.instance.Temporary_stat.AttackDamage)
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 

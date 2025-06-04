@@ -1670,22 +1670,9 @@ public class CurseBall : SpecialAugment
 
     public override void AfterDeathEffect(IBall ball)
     {
-        if (Random.value < AugmentManager.instance.effectChance.CurseChance)
+        if (Random.value < AugmentManager.instance.effectChance.CurseChance && BrickManager.Instance.CurrentBricks.Count > 0)
         {
-            int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-            if (BrickManager.Instance.CurrentBricks.Count != 0)
-                while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
-                {
-                    index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-                }
-            try
-            {
-                BrickManager.Instance.CurrentBricks[index].DamageByCurse();
-            }
-            catch(ArgumentOutOfRangeException)
-            {
-                Debug.Log("There are no Bricks");
-            }
+            BrickManager.Instance.GetRandomBrick().DamageByCurse();
         }
     }
 }
