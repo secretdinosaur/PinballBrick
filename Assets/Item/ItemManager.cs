@@ -42,26 +42,29 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public void SpawnSpecificItem(string Item, Vector2 BrickPosiotion)
+    public void SpawnSpecificItem(string Item, Vector2 BrickPosiotion, int num)
     {
         int index = 0;
-        for (int i = 0; i < ItemInfo.ItemSpawnChance.Length; i++)
+        for (int i = 0; i < ItemInfo.ItemName.Length; i++)
         {
             if (Item == ItemInfo.ItemName[i])
                 index = i;
         }
 
-        Type Type = Type.GetType(ItemInfo.ItemName[index]);
-        var method = typeof(PoolManager).GetMethod("GetFromPool");
-        var genericMethod = method.MakeGenericMethod(Type);
-        Item item = (Item)genericMethod.Invoke(PoolManager, null);
-        item.transform.position = BrickPosiotion;
-        item.ItemName = ItemInfo.ItemName[index];
-        if (item.ItemName == "ExpBead") item.GetComponent<ExpBead>().ExpAmount = 7f + GameManager.instance.Wave / 2;
-        if (item.ItemName == "Gold1") item.GetComponent<Gold1>().GoldAmount = 5 + GameManager.instance.Wave / 2;
-        if (item.ItemName == "Gold2") item.GetComponent<Gold2>().GoldAmount = 25 + GameManager.instance.Wave / 2;
-        if (item.ItemName == "Gold3") item.GetComponent<Gold3>().GoldAmount = 50 + GameManager.instance.Wave / 2;
-        item.MoveItem();
+        for(int i = 0; i < num; i++)
+        {
+            Type Type = Type.GetType(ItemInfo.ItemName[index]);
+            var method = typeof(PoolManager).GetMethod("GetFromPool");
+            var genericMethod = method.MakeGenericMethod(Type);
+            Item item = (Item)genericMethod.Invoke(PoolManager, null);
+            item.transform.position = BrickPosiotion;
+            item.ItemName = ItemInfo.ItemName[index];
+            if (item.ItemName == "ExpBead") item.GetComponent<ExpBead>().ExpAmount = (5f + GameManager.instance.Wave / 2) / 2;
+            if (item.ItemName == "Gold1") item.GetComponent<Gold1>().GoldAmount = (5 + GameManager.instance.Wave / 2) / 2;
+            if (item.ItemName == "Gold2") item.GetComponent<Gold2>().GoldAmount = (25 + GameManager.instance.Wave / 2) / 2;
+            if (item.ItemName == "Gold3") item.GetComponent<Gold3>().GoldAmount = (50 + GameManager.instance.Wave / 2) / 2;
+            item.MoveItem();
+        }
     }
 
     public void TakeItem(Item item)
