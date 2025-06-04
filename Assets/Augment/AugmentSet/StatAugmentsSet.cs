@@ -559,18 +559,6 @@ public class MassivelyCriticalDamageUp : StatAugment
         LevelManager.Instance.StatUpValue[1][0] /= 2;
         LevelManager.Instance.StatUpValue[1][1] /= 2;
     }
-
-    private void Update()
-    {
-        if (isGetAugment)
-        {
-            if (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance > 0.1f)
-            {
-                float excess = (StatManager.instance.Persistent_stat.CriticalChance + StatManager.instance.Temporary_stat.CriticalChance) - 0.1f;
-                StatManager.instance.ChangeTemporaryStats_CriticalChance(-excess);
-            }
-        }
-    }
 }
 
 public class ExpGain10Up : StatAugment

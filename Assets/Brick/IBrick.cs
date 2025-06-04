@@ -299,6 +299,7 @@ public partial class IBrick
 
     public void TakeDamage(IBall ball)
     {
+        if (!gameObject.activeSelf) return;
         RecentlyBall = ball;
         float PreviousCritChance = RecentlyBall.SpecialCriticalChance;
         RecentlyBall.AttackDelayTime = 0f;
@@ -312,6 +313,7 @@ public partial class IBrick
 
     public void DamageByFireEffect(float effectDuration)
     {
+        if (!gameObject.activeSelf) return;
         BrickEffect.EffectStatusSet["Fire"].EffectStack +=
                 (BrickEffect.EffectStatusSet["Fire"].EffectStack != BrickEffect.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
         if (Fire == null)
@@ -325,6 +327,7 @@ public partial class IBrick
     }
     public void DamageByPoisonEffect(float effectDuration)
     {
+        if (!gameObject.activeSelf) return;
         BrickEffect.EffectStatusSet["Poison"].EffectStack +=
                 (BrickEffect.EffectStatusSet["Poison"].EffectStack != BrickEffect.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
         if (Poison == null)
@@ -346,6 +349,7 @@ public partial class IBrick
     }
     public void DecayEffect(float effectDuration)
     {
+        if (!gameObject.activeSelf) return;
         BrickEffect.EffectStatusSet["Decay"].EffectStack +=
                 (BrickEffect.EffectStatusSet["Decay"].EffectStack != BrickEffect.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
         if (Decay == null)
@@ -364,11 +368,13 @@ public partial class IBrick
     
     public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
     {
+        if (!gameObject.activeSelf) return;
         DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
     }
 
     public void DamageByCurse()
     {
+        if (!gameObject.activeSelf) return;
         if (AugmentManager.instance.determineAugmentID("SPECIAL_75"))
         {
             if (Curse == null)

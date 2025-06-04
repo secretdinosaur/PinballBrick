@@ -638,6 +638,9 @@ public class BrickManager : MonoBehaviour
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.Init(Brick.IsBoss, false, false, Brick.Point, Brick.Exp);
         }
+        if(Brick.IsBoss)
+            OnWaveStopButtonClick();
+
         UpdateCurrentBricks(Brick);
     }
 
