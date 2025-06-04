@@ -1619,27 +1619,43 @@ public class SplitBall : SpecialAugment
 
     public void CreateBall(int Num, IBall RecentlyBall)
     {
-        for (int i = 0; i < Num; i++)
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_50"))
         {
-            IBall ball = GetSpecificBall(RecentlyBall.BallType);
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
-            {
-                IBall BombBall = GetSpecificBall("BombBall");
-            }
-            ball.gameObject.SetActive(false);
-            ball.StartPosition = RecentlyBall.gameObject.transform.position;
-            ball.linearVelocityYValue = Random.Range(-5f, 5f);
-            if(ball.linearVelocityYValue >= 0)
-            {
-                ball.linearVelocityYValue += 3f;
-            }
-            else
-            {
-                ball.linearVelocityYValue -= 3f;
-            }
-            ball.gameObject.SetActive(true);
-            StartCoroutine(SplitBallEffect(ball));
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(Num * 0.2f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(Num * 0.2f);
         }
+        else if (AugmentManager.instance.determineAugmentID("SPECIAL_38"))
+        {
+            BallManager.Instance.LeftBallCount += Num;
+        }
+        else if (AugmentManager.instance.determineAugmentID("SPECIAL_39"))
+        {
+            BallManager.Instance.LeftBallCount += Num;
+        }
+        else
+        {
+            for (int i = 0; i < Num; i++)
+            {
+                IBall ball = GetSpecificBall(RecentlyBall.BallType);
+                if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+                {
+                    IBall BombBall = GetSpecificBall("BombBall");
+                }
+                ball.gameObject.SetActive(false);
+                ball.StartPosition = RecentlyBall.gameObject.transform.position;
+                ball.linearVelocityYValue = Random.Range(-5f, 5f);
+                if (ball.linearVelocityYValue >= 0)
+                {
+                    ball.linearVelocityYValue += 3f;
+                }
+                else
+                {
+                    ball.linearVelocityYValue -= 3f;
+                }
+                ball.gameObject.SetActive(true);
+                StartCoroutine(SplitBallEffect(ball));
+            }
+        }     
     }
     
     private IBall GetSpecificBall(string ballTypeName)
@@ -1834,27 +1850,42 @@ public class OneMoreChance : SpecialAugment
 
 public class Concentrate : SpecialAugment
 {
-    int MaxCount = 3;
-    int Count = 3;
+    int MaxCount = 10;
+    int Count = 10;
+    int DestroyedBall = 0;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_50", "Concentrate", "Stats increase massively, \nbut 3 ball fall, it's game over", "Special", 0);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_50", "Concentrate", "Stats increase massively, \nbut 10 ball fall, it's game over", "Special", 0);
+        SetAdditionalDescription("Attack, Effect Damage +300%\n" +
+            "Balls are limited to 10\n" +
+            "Excess balls are destroyed\n" +
+            "If fewer than 10 balls, generate until 10\n" +
+            "Balls generated from now on convert to 0.2 Attack, Effect Damage");
     }
 
     public override void Apply()
     {
         QuestAlarm.Instance.SetQuest("Concentrate", "GameOver In",  Count, 0);
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(3.3f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(2.6f);
-        StatManager.instance.ChangeTemporaryStats_EffectDuration(StatManager.instance.Temporary_stat.EffectDuration * 0.3f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(3f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(3f);
+        DestroyedBall = BallManager.Instance.InGameBall.Count - 10 <= 0 ? 0 : BallManager.Instance.InGameBall.Count - 10;
+        BallManager.Instance.DestroyBallNum(DestroyedBall, true);
+        CreateBall(10 - BallManager.Instance.InGameBall.Count <= 0 ? 0 : 10 - BallManager.Instance.InGameBall.Count);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(DestroyedBall * 0.2f);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(DestroyedBall * 0.2f);
     }
 
     public override void Remove() 
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-3.3f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-2.6f);
-        StatManager.instance.ChangeTemporaryStats_EffectDuration(-(StatManager.instance.Temporary_stat.EffectDuration * 0.3f));
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-3f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-3f);
+
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-(DestroyedBall * 0.2f));
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-(DestroyedBall * 0.2f));
+        DestroyedBall = 0;
+        MaxCount = 10;
+        Count = 10;
+
         AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SpawnBombBall>());
     }
 
@@ -1867,6 +1898,25 @@ public class Concentrate : SpecialAugment
         {
             Debug.Log("Game Over");
         }
+    }
+
+    public void CreateBall(int num)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            IBall ball = GetSpecificBall(BallManager.Instance.NormalBall);
+        }
+    }
+
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
     }
 }
 public class GroupViolence: SpecialAugment

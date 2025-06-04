@@ -55,7 +55,12 @@ public class BallManager : MonoBehaviour
 
     public void OnCreateBall(int diceSum)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_38"))
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_50"))
+        {
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(diceSum * 0.2f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(diceSum * 0.2f);
+        }
+        else if (AugmentManager.instance.determineAugmentID("SPECIAL_38"))
         {
             LeftBallCount += diceSum;
         }
@@ -80,7 +85,12 @@ public class BallManager : MonoBehaviour
     {
         Num *= AugmentManager.instance.SpawnBallAmount;
 
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_38"))
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_50"))
+        {
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(Num * 0.2f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(Num * 0.2f);
+        }
+        else if (AugmentManager.instance.determineAugmentID("SPECIAL_38"))
         {
             LeftBallCount += Num;
         }
