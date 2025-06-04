@@ -49,7 +49,6 @@ public class BallManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("create ball");
             OnCreateBall(Num);
         }
     }

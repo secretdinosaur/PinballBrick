@@ -227,7 +227,6 @@ public class Example : FieldAugment
 
         private IEnumerator TargetMarking(float Cooldown)
         {
-        
             while (true)
             {
                 if (BallManager.Instance.InGameBall.Count > 0 && BallManager.Instance.InGameBall != null && BrickManager.Instance.CurrentBricks.Count > 0)
@@ -252,12 +251,27 @@ public class Example : FieldAugment
                         rb.linearVelocity = Vector2.zero;
                     }
 
-                    Vector3 TargetPosition = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)].transform.position;
-
+                    IBrick TargetBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+                    Vector3 TargetPosition = TargetBrick.transform.position;
                     Target.transform.position = TargetPosition;
                     Target.SetActive(true);
                     StartCoroutine(FindTarget());
-                    yield return new WaitForSeconds(1f);
+
+                    float elapsed = 0f;
+                    while(elapsed < 1)
+                    {
+                        if(!TargetBrick.gameObject.activeSelf)
+                        {
+                            TargetBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
+                            TargetPosition = TargetBrick.transform.position;
+                            Target.transform.position = TargetPosition;
+                            Target.SetActive(true);
+                            elapsed = 0;
+                        }
+                        yield return null;
+                        elapsed += Time.deltaTime;
+                    
+                    }
 
                     Target.SetActive(false);
                     foreach (Rigidbody2D ball in BallRigidBody2D)
@@ -837,9 +851,7 @@ public class Example : FieldAugment
             {
                 rolledDiceSet = new List<int>();
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(0.2f);
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitForSeconds(0.2f);
                 DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
                 yield return new WaitUntil(() => rolledDiceSet.Count == 3);
                 CalDiceSet();

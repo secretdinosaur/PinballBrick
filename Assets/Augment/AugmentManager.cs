@@ -8,6 +8,12 @@ using static UnityEngine.Rendering.HableCurve;
 
 public partial class AugmentManager //Utility
 {
+    string str = null;
+    public void S(string s)
+    {
+        str += s;
+        print(str);
+    }
     public bool determineSpecialAugmentType(string Type)
     {
         return activeAugments.Any(a => a.Type == Type);

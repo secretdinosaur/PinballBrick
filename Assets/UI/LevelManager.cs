@@ -1,23 +1,13 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 using Button = UnityEngine.UI.Button;
 using Color = UnityEngine.Color;
-using UnityEngine.InputSystem;
 using System.Collections;
-using System.Drawing;
-using static UnityEngine.Analytics.IAnalytic;
-using System.Xml;
 using DG.Tweening;
-using Unity.Android.Gradle.Manifest;
-using System.Linq;
-using UnityEditor.VisionOS;
 
 
 public partial class LevelManager : MonoBehaviour
@@ -397,27 +387,23 @@ public partial class LevelManager : MonoBehaviour
             {
                 case 5:
                     yield return StartCoroutine(MovePanel(i));
-                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 4:
                     yield return StartCoroutine(MovePanel(i));
-                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 3:
                     yield return StartCoroutine(MovePanel(i));
                     yield return StartCoroutine(SetParticle(3, i));
-                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 2:
                     yield return StartCoroutine(MovePanel(i));
                     yield return StartCoroutine(SetParticle(2, i));
-                    yield return new WaitForSecondsRealtime(0.5f);
                     yield return StartCoroutine(FlashPanel(2, i));
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     ParticleBurst(2, i, 50);
@@ -429,7 +415,6 @@ public partial class LevelManager : MonoBehaviour
                     {
                         yield return StartCoroutine(MovePanel(i));
                         yield return StartCoroutine(SetParticle(1, i));
-
                     }
                     else
                     {
@@ -439,7 +424,6 @@ public partial class LevelManager : MonoBehaviour
                         yield return StartCoroutine(ShakePanel(i));
                     }
                     yield return StartCoroutine(FlashPanel(1, i));
-                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     ParticleBurst(1, i, 100);
                     break;
@@ -459,6 +443,7 @@ public partial class LevelManager : MonoBehaviour
                         yield return StartCoroutine(SetParticle(2, i));
                         yield return StartCoroutine(FlashPanel(2, i));
                         yield return StartCoroutine(ShakePanel(i));
+                        yield return StartCoroutine(SetParticle(1, i));
                         yield return StartCoroutine(FlashPanel(1, i));
                         yield return StartCoroutine(ShakePanel(i));
                     }
@@ -471,7 +456,6 @@ public partial class LevelManager : MonoBehaviour
                     }
 
                     yield return StartCoroutine(FlashPanel(0, i));
-                    yield return new WaitForSecondsRealtime(0.5f);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     ParticleBurst(0, i, 150);
                     SetBackLight(i);
@@ -680,8 +664,11 @@ public partial class LevelManager : MonoBehaviour
         TMP_Text[] Descs = { Option_1_Description, Option_2_Description, Option_3_Description };
         TMP_Text[] types = { Option_1_Type, Option_2_Type, Option_3_Type };
         TMP_Text[] cools = { Option_1_CoolTime, Option_2_CoolTime, Option_3_CoolTime };
-
-        for(int i = 0; i < 3; i++)
+        OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
+        OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
+        OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
+        VisualEffectManager.Instance.UnsetAugmentPanelPs();
+        for (int i = 0; i < 3; i++)
         {
             Names[i].text = "";
             Descs[i].text = "";
@@ -690,6 +677,9 @@ public partial class LevelManager : MonoBehaviour
 
         }
     }
+
+    Coroutine AniRoutine;
+
     public void ShowStatOrAugment()
     {
         ClearAugmentPanel();
@@ -709,7 +699,7 @@ public partial class LevelManager : MonoBehaviour
                 StatManager.instance.Temporary_stat.StatLevel[randomStats[2].Value] + 1
             };
 
-            StartCoroutine(AugAniCoroutineForStat(levels, OptionButtons, randomStats));
+            AniRoutine = StartCoroutine(AugAniCoroutineForStat(levels, OptionButtons, randomStats));
         }
         else
         {
@@ -748,7 +738,7 @@ public partial class LevelManager : MonoBehaviour
                 augmentsSet[2].Rarity
             };
 
-            StartCoroutine(AugAniCoroutine(Rarities, OptionButtons, augmentsSet));
+            AniRoutine = StartCoroutine(AugAniCoroutine(Rarities, OptionButtons, augmentsSet));
         }
     }
 
@@ -848,7 +838,7 @@ public partial class LevelManager : MonoBehaviour
 
     private bool IsStatOrAugment()
     {
-        return Level % 3 != 0;
+        return (Level - 2) % 5 != 0;
     }
 
     private int optionIndex = -1;
@@ -875,6 +865,7 @@ public partial class LevelManager : MonoBehaviour
 
     public void LevelUpEnd()
     {
+        StopCoroutine(AniRoutine);
         if (CheckStatOrAugment)
         {
             StatManager.instance.Temporary_stat.StatLevel[randomStats[optionIndex].Value]++;
@@ -882,11 +873,6 @@ public partial class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(optionIndex);
-            for (int i = 0; i < augmentsSet.Count; i++)
-            {
-                Debug.Log(augmentsSet[i]);
-            }
             AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
             AugmentManager.instance.RemoveOnAugmentsSetAugment(augmentsSet[optionIndex]);
         }
@@ -904,25 +890,26 @@ public partial class LevelManager : MonoBehaviour
             OptionButtons[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
             OptionButtonShaders[i].transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
         }
+        CustomTime_1 = 0;
+        CustomTime_2 = 0;
+        CustomTime_3 = 0;
+        Time.timeScale = 1f;
+        OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
+        OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
+        OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
+        AdditionalDescriptionPanel.SetActive(false);
+        LevelUpPanel.SetActive(false);
+        CanvasForLevelUpPanel.SetActive(false);
+        VisualEffectManager.Instance.UnsetAugmentPanelPs();
+
         if (LevelUpQueue.Count > 0)
         {
             ShowLevelUpPanel();
         }
         else
         {
-            CustomTime_1 = 0;
-            CustomTime_2 = 0;
-            CustomTime_3 = 0;
-            Time.timeScale = 1f;
-            OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
-            OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
-            OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
-            AdditionalDescriptionPanel.SetActive(false);
-            LevelUpPanel.SetActive(false);
-            CanvasForLevelUpPanel.SetActive(false);
             if (AugmentManager.instance.isLevelUpOnceAgain)
                 AugmentManager.instance.isLevelUpOnceAgain = false;
-            VisualEffectManager.Instance.UnsetAugmentPanelPs();
             if (StatManager.instance.isChangedStat)
             {
                 StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());

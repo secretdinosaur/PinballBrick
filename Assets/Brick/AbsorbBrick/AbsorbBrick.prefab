@@ -4977,7 +4977,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Point: 5
   Exp: 1
-  BasicHP: 2
+  BasicHP: 1.5
   IsBoss: 0
   IsSpecialBrick: 0
   HPText: {fileID: 5705247543096716897}
@@ -4985,6 +4985,7 @@ MonoBehaviour:
   BrickTransform: {fileID: 0}
   HpTemp: 0
   BallSpeed: 0
+  detectArea: {fileID: 0}
   spriteRenderer: {fileID: 1280913294406619973}
   lineRenderer: {fileID: 2330458189798778918}
   PoisonEffect: {fileID: 1430400986521459541}
@@ -4996,6 +4997,4 @@ MonoBehaviour:
   SpecialCriticalChance: 0
   BrickEffect: {fileID: 0}
   RecentReceivedDamage: 0
-  NearbyBricks: []
-  boxSize: {x: 6, y: 4}
   AbsorbParticleSys: {fileID: 463841846542717311}

@@ -185,6 +185,7 @@ public static partial class DamageManager //Special Effect Attack
 
     public static void DamageByCurse(IBrick brick)
     {
+        Debug.Log(3);
         bool isCritical = true;
         if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
         {
@@ -501,10 +502,6 @@ public class BrickEffectManager : MonoBehaviour
 
     public IEnumerator DecayEffect(float effectDuration)
     {
-        if(brick.BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
-        {
-            yield break;
-        }
         EffectStatusSet["Decay"].IsActive = true;
         DecayEffectDuration = effectDuration;
         int PreviousEffectStack = EffectStatusSet["Decay"].EffectStack;
