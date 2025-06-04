@@ -1727,7 +1727,7 @@ public class EnhanceCurseAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_44", "Endless Revenge", "Curse damage increases by 1% whenever the ball dies", "Effect", 2);
+        SetAugment("SPECIAL_44", "Endless Revenge", "Curse damage increases by 1.5% whenever the ball dies", "Effect", 2);
         SetAdditionalDescription("30% of the balls that died \n" +
             "before acquiring this augment will be counted");
     }

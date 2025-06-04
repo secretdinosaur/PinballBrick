@@ -709,7 +709,7 @@ public partial class LevelManager : MonoBehaviour
                 {
                     float chance = Random.value;
                     int rarity;
-                    if (chance < AugmentManager.instance.rarityWeights[0])
+                    if (chance < 0.2f)
                         rarity = 0;
                     else
                         rarity = 1;
