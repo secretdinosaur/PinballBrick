@@ -500,6 +500,11 @@ public partial class StatManager
     }
     public void ChangeTemporaryStats_CriticalChance(float value)
     {
+        float MaxCriChance = 1f;
+        if (AugmentManager.instance.determineAugmentID("STAT_25"))
+        {
+            MaxCriChance = 0.1f;
+        }
         if (AugmentManager.instance.determineAugmentID("STAT_21"))
         {
             if(Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value != 0)
@@ -520,10 +525,10 @@ public partial class StatManager
         }
         else
         {
-            if (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value >= 1f)
+            if (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value >= MaxCriChance)
             {
-                float x = 1f - (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance);
-                float y = Mathf.Floor((value - x) * 100f) / 100f;
+                float x = MaxCriChance - (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance);
+                float y = Mathf.Floor(((float)System.Math.Round(value, 2) - (float)System.Math.Round(x, 2)) * 100f) / 100f;
                 Temporary_stat.CriticalChance += (float)System.Math.Round(x, 2);
                 TotalChangedStatValue[2] += (float)System.Math.Round(x, 2);
                 if (y > 0)

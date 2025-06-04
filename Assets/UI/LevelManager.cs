@@ -389,35 +389,36 @@ public partial class LevelManager : MonoBehaviour
 
                 case 3:
                     yield return StartCoroutine(MovePanel(i));
-                    yield return StartCoroutine(SetParticle(3, i));
+                    SetParticle(3, i);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 2:
                     yield return StartCoroutine(MovePanel(i));
-                    yield return StartCoroutine(SetParticle(2, i));
-                    yield return StartCoroutine(FlashPanel(2, i));
+                    SetParticle(2, i);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     ParticleBurst(2, i, 50);
+                    yield return StartCoroutine(FlashPanel(2, i));
                     break;
 
                 case 1:
                     int j = Random.Range(0, 2);
                     if(j == 0)
                     {
+                        OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[1]);
                         yield return StartCoroutine(MovePanel(i));
-                        yield return StartCoroutine(SetParticle(1, i));
+                        SetParticle(1, i);
                     }
                     else
                     {
                         yield return StartCoroutine(MovePanel(i));
-                        yield return StartCoroutine(SetParticle(2, i));
+                        SetParticle(2, i);
                         yield return StartCoroutine(FlashPanel(2, i));
                         yield return StartCoroutine(ShakePanel(i));
                     }
-                    yield return StartCoroutine(FlashPanel(1, i));
-                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     ParticleBurst(1, i, 100);
+                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
+                    yield return StartCoroutine(FlashPanel(1, i));
                     break;
 
 
@@ -426,30 +427,31 @@ public partial class LevelManager : MonoBehaviour
                     int k = Random.Range(0, 3);
                     if (k == 0)
                     {
+                        OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[0]);
                         yield return StartCoroutine(MovePanel(i));
-                        yield return StartCoroutine(SetParticle(0, i));
+                        SetParticle(0, i);
                     }
                     else if(k == 1)
                     {
                         yield return StartCoroutine(MovePanel(i));
-                        yield return StartCoroutine(SetParticle(2, i));
+                        SetParticle(2, i);
                         yield return StartCoroutine(FlashPanel(2, i));
                         yield return StartCoroutine(ShakePanel(i));
-                        yield return StartCoroutine(SetParticle(1, i));
+                        SetParticle(1, i);
                         yield return StartCoroutine(FlashPanel(1, i));
                         yield return StartCoroutine(ShakePanel(i));
                     }
                     else
                     {
+                        OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[1]);
                         yield return StartCoroutine(MovePanel(i));
-                        yield return StartCoroutine(SetParticle(1, i));
+                        SetParticle(1, i);
                         yield return StartCoroutine(FlashPanel(1, i));
                         yield return StartCoroutine(ShakePanel(i));
                     }
-
-                    yield return StartCoroutine(FlashPanel(0, i));
-                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     ParticleBurst(0, i, 150);
+                    SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
+                    yield return StartCoroutine(FlashPanel(0, i));
                     SetBackLight(i);
                     break;
             }
@@ -466,19 +468,15 @@ public partial class LevelManager : MonoBehaviour
             yield return new WaitUntil(() => isFinished);
         }
 
-        IEnumerator SetParticle(int rarity, int num)
+        void SetParticle(int rarity, int num)
         {
-            bool isFinished = false;
             VisualEffectManager.Instance.SetActiveAugmentPanelPs(num, RarityColorList[rarity], rarity);
-            VisualEffectManager.Instance.AugmentPanelPS[num].transform.DOMove(new Vector3(VisualEffectManager.Instance.AugmentPanelPS[num].transform.position.x, 0, 0), 0.25f)
-                .SetEase(Ease.OutQuad)
-                .SetUpdate(true)
-                .OnComplete(() => isFinished = true);
-            yield return new WaitUntil(() => isFinished);
+            VisualEffectManager.Instance.AugmentPanelPS[num].transform.position = (new Vector3(VisualEffectManager.Instance.AugmentPanelPS[num].transform.position.x, 0, 0));
         }
 
         IEnumerator FlashPanel(int rarity, int num)
         {
+            SetParticle(rarity, num);
             bool isFinished = false;
             SelectButtons[num].GetComponent<Image>().material.DOColor(RarityColorList[rarity] * 2, 0.1f)
                 .SetEase(Ease.OutQuad)

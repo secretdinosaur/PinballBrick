@@ -562,7 +562,6 @@ public class BrickManager : MonoBehaviour
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
         if (brick.IsBoss)
         {
-            OnWaveStopButtonClick();
             for (int i = 0; i < 3; i++)
             {
                 HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.2f) * UnityEngine.Random.Range(10f, 11f))));
@@ -632,6 +631,9 @@ public class BrickManager : MonoBehaviour
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.Init(Brick.IsBoss, false, Brick.Point, Brick.Exp);
         }
+        if(Brick.IsBoss)
+            OnWaveStopButtonClick();
+
         UpdateCurrentBricks(Brick);
     }
 

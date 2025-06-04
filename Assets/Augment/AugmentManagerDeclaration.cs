@@ -39,7 +39,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
-        { 0, 0.1f },
+        { 0, 1.1f },
         { 1, 0.18f },
         { 2, 0.18f },
         { 3, 0.18f },
@@ -204,7 +204,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<SatelliteBeam>(),
+            gameObject.GetComponent<FusionBricks>(),
+            gameObject.GetComponent<RandomEffect>(),
 
         };
 
@@ -216,6 +217,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
+        AddAugment(gameObject.GetComponent<FusionBricks>());
     }
 }
 
