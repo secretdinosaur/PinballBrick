@@ -44,8 +44,9 @@ public class GameManager : MonoBehaviour
     public int Wave
     {
         get {  return wave; }
-        set { wave = Mathf.Max(1, value); ; }
+        set { wave = value;  }
     }
+
 
     public int DestroyedBricks;
     public int SummonedBalls;
@@ -84,11 +85,27 @@ public class GameManager : MonoBehaviour
         SummonedBalls = 0;
         DiedBalls = 0;
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
+
+        StartCoroutine(StartGame());
+    }
+
+    IEnumerator StartGame()
+    {
+        WaveNoticeText.gameObject.SetActive(true);
+
+        for (int i = 3; i > 0; i--)
+        {
+            WaveNoticeText.text = "Start In " + i;
+            yield return new WaitForSeconds(1f);
+        }
+
+        StartCoroutine(BallManager.Instance.CreateStartingBall());
+        BrickManager.Instance.SpawnBrickRoutine = StartCoroutine(BrickManager.Instance.SpawnBricks());
     }
 
     public IEnumerator WaveNotice()
     {
-        if(!BrickManager.Instance.BossSpawnCondition(Wave))
+        if (!BrickManager.Instance.BossSpawnCondition(Wave))
         {
             WaveNoticeText.text = "Wave " + Wave;
         }

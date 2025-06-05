@@ -38,6 +38,18 @@ public class BallManager : MonoBehaviour
         camera = Camera.main;
 
         LeftBallCount = 0;
+
+    }
+
+    public IEnumerator CreateStartingBall()
+    {
+        for(int i = 0; i < StatManager.instance.Persistent_stat.StartingBall; i++)
+        {
+            IBall ball = GetSpecificBall(NormalBall);
+            ball.transform.position = new Vector3(Random.Range(-2, 2), 6, 0);
+            ball.rb.linearVelocity = new Vector2(Random.value, 0);
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     public void CreateBall(int Num)

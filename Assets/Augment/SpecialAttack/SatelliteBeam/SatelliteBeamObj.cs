@@ -43,11 +43,11 @@ public class SatelliteBeamObj : SpecialObj
                 {
                     if (!TouchedBricks.Contains(brick))
                     {
-                        TouchDamage = (200f + StatManager.instance.Temporary_stat.AttackDamage) * StatManager.instance.statMultiplier.AttackDamageMultiplier;
-                        brick.ArbitraryDamageAttack(TouchDamage, false, TouchDamage.ToString("F1"), "Normal");
+                        TouchDamage = (StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.AttackDamageMultiplier * 10;
+                        brick.ArbitraryDamageAttack(TouchDamage, false, TouchDamage.ToString("F1"), "Fire");
                         TouchedBricks.Add(brick);
                     }
-                    EffectDamage = (2f + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier;
+                    EffectDamage = (StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier;
                     brick.ArbitraryDamageAttack(EffectDamage, false, EffectDamage.ToString("F1"), "Fire");
                 }
             }

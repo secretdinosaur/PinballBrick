@@ -83,7 +83,6 @@ public class BrickManager : MonoBehaviour
         BrickQueue = new Queue<IBrick>();
         PoolManager = GetComponent<PoolManager>();
         SpawnBrickRoutine = null;
-        SpawnBrickRoutine = StartCoroutine(SpawnBricks());
     }
 
     private void InitializeVariables()
@@ -106,14 +105,6 @@ public class BrickManager : MonoBehaviour
         BossSpawnWaveNumber = 10;
 
         WavePause = false;
-    }
-
-    void Update()
-    {
-        if(availablePositions.Count > 0 && SpawnBrickRoutine == null && !WavePause && !GameManager.instance.isGameEnded)
-        {
-            SpawnBrickRoutine = StartCoroutine(SpawnBricks());
-        }
     }
 
     public void UpdateCurrentBricks(IBrick brick)
@@ -245,19 +236,20 @@ public class BrickManager : MonoBehaviour
         SpawnBrickQueue.Enqueue(brickQueue);
     }
 
-    private IEnumerator SpawnBricks()
+    public IEnumerator SpawnBricks()
     {
         while (!GameManager.instance.isGameEnded)
         {
             int Wave = GameManager.instance.Wave;
             int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
+            yield return new WaitUntil(() => !WavePause);
+
             if (BrickQueue == null)
             {
-                yield return new WaitUntil(() => !WavePause);
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
                     || AugmentManager.instance.determineAugmentID("SPECIAL_62")
                     || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
-                //SettingBrickSpawnChance();
+                SettingBrickSpawnChance();
                 StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
@@ -268,7 +260,8 @@ public class BrickManager : MonoBehaviour
                 RapidStageChance = 0;
                 while(BrickQueue.Count > 0)
                 {
-                    if(availablePositions.Count > 0 && !WavePause)
+                    yield return new WaitUntil(() => !WavePause);
+                    if (availablePositions.Count > 0 && !WavePause)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
                         yield return new WaitForSeconds(Mathf.Sin(Mathf.PI * UnityEngine.Random.value)
@@ -288,7 +281,8 @@ public class BrickManager : MonoBehaviour
                 RapidStageChance += RapidStageChanceValue; //Ensure it activates by stage 11 at the latest
                 while (BrickQueue.Count > 0)
                 {
-                    if(availablePositions.Count > 0 && !WavePause)
+                    yield return new WaitUntil(() => !WavePause);
+                    if (availablePositions.Count > 0 && !WavePause)
                     {
                         SpawnBrick(BrickQueue.Dequeue());
                         //Wait for Sin(pi * x) * 5 seconds about random value x between 0~1
@@ -612,7 +606,9 @@ public class BrickManager : MonoBehaviour
         else
         {
             if (brick.IsBoss)
+            {
                 Brick = GetBossBrick(brick);
+            }
             else if (brick.IsSpecialBrick)
                 Brick = GetSpecialBrick(brick, UnityEngine.Random.Range(0, BrickInfo.SpecialBrickTypes.Length));
             else if (brick.IsBigBoss)
@@ -662,7 +658,6 @@ public class BrickManager : MonoBehaviour
     {
         if (brick.IsBoss)
         {
-            WavePause = true;
             for (int i = 0; i < 3; i++)
             {
                 HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
@@ -712,6 +707,7 @@ public class BrickManager : MonoBehaviour
             SpawnBrickRoutine = null;
         }
         GameManager.instance.Wave += Num;
+        SpawnBrickRoutine = StartCoroutine(SpawnBricks());
     }
 
     public void DestroyBricksNum(int Num, bool isBrickDied = false)

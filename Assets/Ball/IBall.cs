@@ -49,7 +49,7 @@ public partial class IBall : MonoBehaviour
         gameObject.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        transform.position = BallManager.StartPosition;
+        transform.position = StartPosition;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
         spriteRenderer.color = new Color(1f, 1f, 1f);
@@ -136,7 +136,7 @@ public partial class IBall : MonoBehaviour
     private IEnumerator EnableCollider()
     {
         GetComponent<Collider2D>().enabled = false;
-        while (transform.position.y < -2)
+        while (transform.position.y < -2 || transform.position.y > 4.5f)
         {
             yield return null;
         }
