@@ -87,7 +87,7 @@ public abstract class SpecialAugment : IAugment
         Type = type;
         Rarity = rarity;
         CoolTime = cooltime;
-        AugmentManager.instance.S("Special" + "   " + rarity + "   " + name + "   " + description + "\n");
+        //AugmentManager.instance.S("Special" + "   " + rarity + "   " + name + "   " + description + "\n");
 
     }
 

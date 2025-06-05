@@ -142,7 +142,7 @@ public partial class LevelManager : MonoBehaviour
     void Start()
     {
         Exp = 0;
-        Level = 1;
+        Level = 0;
 
     }
 
@@ -836,7 +836,9 @@ public partial class LevelManager : MonoBehaviour
 
     private bool IsStatOrAugment()
     {
-        return (Level - 2) % 5 != 0;
+        if (Level == 1)
+            return false;
+        return Level % 5 != 0;
     }
 
     private int optionIndex = -1;

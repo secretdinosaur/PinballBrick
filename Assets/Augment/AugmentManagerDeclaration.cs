@@ -54,7 +54,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         FireStackLimit = 5;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
-        DecayDamageMultiple = 1.1f;
+        DecayDamageMultiple = 0.1f;
         isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
         CurseDamageValue = 1f;
@@ -208,7 +208,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            gameObject.GetComponent<RollDiceBall>(),
         };
 
         foreach (IAugment augment in TestAugments)

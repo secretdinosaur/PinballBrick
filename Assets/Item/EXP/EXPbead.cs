@@ -16,11 +16,11 @@ public class ExpBead : Item
 
         seq.Append(transform.DOMove(transform.position + direction * Random.Range(0.08f, 0.12f), Random.Range(0.3f, 0.7f)).SetEase(Ease.OutCirc));
         seq.Append(transform.DOMove(worldTopRight, 0.5f).SetEase(Ease.InCirc)).OnComplete(() => GetEXP(ExpAmount));
-        ItemManager.Instance.TakeItem(this);
     }
 
     public void GetEXP(float value)
     {
         LevelManager.Instance.GetExp(value);
+        ItemManager.Instance.TakeItem(this);
     }
 }

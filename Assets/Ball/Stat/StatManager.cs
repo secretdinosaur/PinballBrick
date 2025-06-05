@@ -106,7 +106,7 @@ public partial class StatManager : MonoBehaviour
         {
             AttackDamage = 5f,
             EffectDamage = 5f,
-            StartingBall = 1,
+            StartingBall = 5,
             BonusExp = 1f,
             CriticalChance = 0.0f,
             CriticalDamage = 1.1f,
