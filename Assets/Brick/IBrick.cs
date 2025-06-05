@@ -405,7 +405,7 @@ public partial class IBrick
 
 public partial class IBrick
 {  
-    private IEnumerator Execution()
+    public IEnumerator Execution()
     {
         ExecutionObject1.SetActive(true);
         ExecutionObject2.SetActive(true);

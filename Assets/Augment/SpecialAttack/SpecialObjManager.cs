@@ -24,7 +24,7 @@ public class SpecialObjManager : MonoBehaviour
 
         if (type == "SatelliteBeamObj") specialObj.GetComponent<SatelliteBeamObj>().StartAttack(Duration);
         if (type == "LightningRodObj") specialObj.GetComponent<LightningRodObj>().StartAttack(Duration);
-        if (type == "LightningRodObj") specialObj.GetComponent<DecayZoneObj>().StartAttack(Duration); 
+        if (type == "DecayZoneObj") specialObj.GetComponent<DecayZoneObj>().StartAttack(Duration); 
 
     }
 

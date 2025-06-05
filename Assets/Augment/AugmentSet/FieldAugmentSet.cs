@@ -39,7 +39,7 @@ public class Example : FieldAugment
         private void OnEnable()
         {
             SetAugment("FIELD_1", "Holy Rain", "The holy rain damages all bricks", 3, (float)System.Math.Round(Cooldown, 2));
-            SetAdditionalDescription("Holy Rain's base damage is 5 and scales with <sprite=2>");
+            SetAdditionalDescription("Damage: 5 + <sprite=2>");
         }
 
         public override void Apply()
@@ -89,7 +89,7 @@ public class Example : FieldAugment
 
         private void OnEnable()
         {
-            SetAugment("FIELD_2", "Angry Ball", "Balls become enraged and move faster", 3, (float)System.Math.Round(Cooldown, 2));
+            SetAugment("FIELD_2", "Angry Ball", "Balls briefly become enraged and move faster", 3, (float)System.Math.Round(Cooldown, 2));
             SetAdditionalDescription(null);
         }
 
@@ -210,10 +210,10 @@ public class Example : FieldAugment
 
         public override void Apply()
         {
-            Routine = StartCoroutine(TargetMarking(Cooldown));
             Target = GameObject.Find("Target");
             TargetMat = Target.GetComponent<Renderer>().material;
             Target.SetActive(false);
+            Routine = StartCoroutine(TargetMarking(Cooldown));
         }
 
         public override void Remove()
@@ -309,7 +309,7 @@ public class Example : FieldAugment
     private void OnEnable()
         {
             SetAugment("FIELD_5", "Satellite Beam", "Generates a powerful satellite beam for " + Duration.ToString("F1") + "seconds", 1, (float)System.Math.Round(Cooldown, 2));
-            SetAdditionalDescription(null);
+            SetAdditionalDescription("On hit damage: 10 <sprite=2>\nContinuous damage: <sprite=2>");
         }
 
         public override void Apply()
@@ -343,8 +343,8 @@ public class Example : FieldAugment
 
         private void OnEnable()
         {
-            SetAugment("FIELD_6", "Meditation", "Automatically gain EXP over time", 5, 10);
-            SetAdditionalDescription("The amount of EXP gained is 1% of the EXP bar");
+            SetAugment("FIELD_6", "Meditation", "Automatically gain 1% of the max EXP", 5, 10);
+            SetAdditionalDescription(null);
         }
 
         public override void Apply()
@@ -479,22 +479,22 @@ public class Example : FieldAugment
         float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
         float Duration = StatManager.instance.Temporary_stat.EffectDuration * 20;
         GameObject BountyHunterObj;
-    Material BountyHunterMat;
+        Material BountyHunterMat;
         private void OnEnable()
         {
             SetAugment("FIELD_8", "Bounty Hunter", "Random brick is wanted for " + Duration.ToString("F1") + " seconds \nrewards are earned when breaking it", 4, (float)System.Math.Round(Cooldown, 2));
-            SetAdditionalDescription(null);
+            SetAdditionalDescription("Kill wanted brick and get EXP and gold");
         }
 
         public override void Apply()
         {
-            Routine = StartCoroutine(GetBountyHunter(Cooldown, Duration));
             BountyHunterObj = GameObject.Find("BountyHunter");
             BountyHunterMat = BountyHunterObj.GetComponent<Renderer>().material;
             BountyHunterObj.SetActive(false);
-        }
+            Routine = StartCoroutine(GetBountyHunter(Cooldown, Duration));
+    }
 
-        public override void Remove()
+    public override void Remove()
         {
             if (Routine != null)
             {
@@ -511,7 +511,8 @@ public class Example : FieldAugment
                 {
                     IBrick WantedBrick = BrickManager.Instance.CurrentBricks[Random.Range(0, BrickManager.Instance.CurrentBricks.Count)];
                     BountyHunterObj.SetActive(true);
-                    BountyHunterObj.transform.position = WantedBrick.transform.position;
+                    Vector2 Position = WantedBrick.transform.position;
+                    BountyHunterObj.transform.position = Position;
                 
                     bool isDestroy = false;
                     float timer = Duration;
@@ -529,10 +530,11 @@ public class Example : FieldAugment
                     }
                     if (isDestroy)
                     {
-                        StatManager.instance.GetGold(WantedBrick.IsBoss ? Random.Range(20, 101) : Random.Range(20, 61));
-                        LevelManager.Instance.GetExp(WantedBrick.IsBoss ?
-                            Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.1f, LevelManager.Instance.LevelBar.maxValue * 0.2f)
-                            : Random.Range(LevelManager.Instance.LevelBar.maxValue * 0.05f, LevelManager.Instance.LevelBar.maxValue * 0.1f));
+                        
+                        ItemManager.Instance.SpawnSpecificItem("ExpBead", Position, WantedBrick.IsBoss ? Random.Range(30, 50) : Random.Range(10, 15));
+                        ItemManager.Instance.SpawnSpecificItem("Gold1", Position, WantedBrick.IsBoss ? Random.Range(10, 15) : Random.Range(3, 5));
+                        ItemManager.Instance.SpawnSpecificItem("Gold2", Position, WantedBrick.IsBoss ? Random.Range(10, 15) : Random.Range(3, 5));
+                        ItemManager.Instance.SpawnSpecificItem("Gold3", Position, WantedBrick.IsBoss ? Random.Range(10, 15) : Random.Range(3, 5));
                         BountyHunterObj.SetActive(false);
                     }
                     else
@@ -554,7 +556,7 @@ public class Example : FieldAugment
         private void OnEnable()
         {
             SetAugment("FIELD_9", "Thunderstrike Zone", "Generates thunderstrike zone for " + Duration.ToString("F1") + " seconds", 2, (float)System.Math.Round(Cooldown, 2));
-            SetAdditionalDescription("Lightning damage deals based on the brick's max health");
+            SetAdditionalDescription("Lightning damage: 0.2 <sprite=2> + 3% of brick's max HP");
         }
 
         public override void Apply()
@@ -576,7 +578,7 @@ public class Example : FieldAugment
             while (true)
             {
                 SpecialObjManager.Instance.CreateSpecialObj("LightningRodObj", Duration);
-                yield return new WaitForSeconds(Cooldown);
+                yield return new WaitForSeconds(Cooldown + Duration);
             }
         }
     }
@@ -588,7 +590,7 @@ public class Example : FieldAugment
 
         private void OnEnable()
         {
-            SetAugment("FIELD_11", "Last Breath", "Attack damage +40%,\nballs get die if they don't hit any bricks within "+ Duration.ToString("F1") +" seconds.", 2);
+            SetAugment("FIELD_11", "Last Breath", "<sprite=0> +40%,\nballs get die if they don't hit any bricks within " + Duration.ToString("F1") +" seconds.", 2);
             SetAdditionalDescription(null);
         }
 
@@ -668,7 +670,7 @@ public class Example : FieldAugment
         private void OnEnable()
     {
             SetAugment("FIELD_12", "Decay Zone", "Generate a decay zone for " + Duration.ToString("F1") + " seconds", 2, (float)System.Math.Round(Cooldown, 2));
-            SetAdditionalDescription("Decay effect increases all damage taken based on the number of stacks");
+            SetAdditionalDescription("Decay Effect: Increases damage taken by bricks by 10% per stack");
         }
 
         public override void Apply()
@@ -690,7 +692,7 @@ public class Example : FieldAugment
             while (true)
             {
                 SpecialObjManager.Instance.CreateSpecialObj("DecayZoneObj", Duration);
-                yield return new WaitForSeconds(Cooldown);
+                yield return new WaitForSeconds(Cooldown + Duration);
             }
         }
     }
@@ -705,11 +707,11 @@ public class Example : FieldAugment
         {
             SetAugment("FIELD_13", "Constant Disaster", "Random disaster occured for " + Duration.ToString("F1") + " seconds", 1, (float)System.Math.Round(Cooldown, 2));
             SetAdditionalDescription(
-                "Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
-                "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks\n" +
-                "Decay effect : increases all damage taken by stacks \n" +
-                "Curse damage : deals random damage based on <sprite=0>\n" +
-                "Lightning damage : deals damage scales with brick's max health");
+                "Fire damage : 0.5 <sprite=2> per stack\n" +
+                "Poison damage : 0.5 <sprite=2> + 3% of brick's current HP per stack\n" +
+                "Decay Effect: Increases damage taken by bricks by 10% per stack \n" +
+                "Curse damage : 1.5 <sprite=0>\n" +
+                "Lightning damage : Lightning damage: 0.2 <sprite=2> + 3% of brick's max HP");
         }
 
         public override void Apply()
@@ -823,8 +825,9 @@ public class Example : FieldAugment
     public class DiceGamble : FieldAugment
     {
         Coroutine Routine = null;
+        Coroutine Routine2 = null;
         float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 6;
-
+        
         private void OnEnable()
         {
             SetAugment("FIELD_14", "Dice Gamble", "Roll the dice and get rewards based on the result", 2, (float)System.Math.Round(Cooldown, 2));
@@ -841,49 +844,72 @@ public class Example : FieldAugment
             if (Routine != null)
             {
                 StopCoroutine(Routine);
+                StopCoroutine(Routine2);
                 Routine = null;
-            }
+                Routine2 = null;
         }
-        private List<int> rolledDiceSet = new List<int>();
+    }
+        private List<int[]> rolledDiceSet = new List<int[]>();
         private IEnumerator GetDiceGamble(float Cooldown)
         {
             while (true)
             {
-                rolledDiceSet = new List<int>();
-                DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(1, AddDiceSet));
-                yield return new WaitUntil(() => rolledDiceSet.Count == 3);
+                rolledDiceSet = new List<int[]>();
+                DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDicesforDiceGamble(3, AddDiceSet));
+                yield return new WaitUntil(() => rolledDiceSet.Count == 1);
                 CalDiceSet();
                 yield return new WaitForSeconds(Cooldown);
             }
         }
 
-        private void AddDiceSet(int dice)
+        private void AddDiceSet(int[] dice)
         {
             rolledDiceSet.Add(dice);
+        }
+
+        IEnumerator SpawnLuckyItem()
+        {
+            int SpawnCount = 0;
+            while(SpawnCount < 30)
+            {
+                for(int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
+                {
+                    IBrick brick = BrickManager.Instance.CurrentBricks[i];
+                    if(brick.gameObject.activeSelf)
+                    {
+                        ItemManager.Instance.SpawnSpecificItem("ExpBead", brick.transform.position, 3);
+                        ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 1);
+                        ItemManager.Instance.SpawnSpecificItem("Gold2", brick.transform.position, 1);
+                        ItemManager.Instance.SpawnSpecificItem("Gold3", brick.transform.position, 1);
+                        SpawnCount += 1;
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         private void CalDiceSet()
         {
             rolledDiceSet.Sort();
-            int DiceSum = rolledDiceSet[0] + rolledDiceSet[1] + rolledDiceSet[2];
-            if (rolledDiceSet[0] == rolledDiceSet[1] && rolledDiceSet[1] == rolledDiceSet[2])
+            int DiceSum = rolledDiceSet[0][0] + rolledDiceSet[0][1] + rolledDiceSet[0][2];
+            if (rolledDiceSet[0][0] == rolledDiceSet[0][1] && rolledDiceSet[0][1] == rolledDiceSet[0][2])
             {
-                switch (Random.Range(1, 3))
+                switch (Random.Range(1, 4))
                 {
                     case 1:
-                        foreach (Brick brick in BrickManager.Instance.CurrentBricks)
+                        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
                         {
-                            brick.BrickDie();
+                            StartCoroutine(brick.Execution());
                         }
                         break;
                     case 2:
-                        LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue;
-                        break;
+                        Routine2 = StartCoroutine(SpawnLuckyItem());
+                    break;
                     case 3:
-                        foreach (Brick brick in BrickManager.Instance.CurrentBricks)
+                        foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
                         {
+                            brick.ArbitraryDamageAttack(brick.HpTemp * 0.77f, false, "77%", "Normal");
                             brick.
                                 DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.FireDuration);
                             brick.
@@ -896,24 +922,26 @@ public class Example : FieldAugment
                         break;
                 }
             }
-            else if (rolledDiceSet[0] + 1 == rolledDiceSet[1] && rolledDiceSet[1] + 1 == rolledDiceSet[2])
+            else if (rolledDiceSet[0][0] + 1 == rolledDiceSet[0][1] && rolledDiceSet[0][1] + 1 == rolledDiceSet[0][2])
             {
-                switch (Random.Range(1, 3))
+                switch (Random.Range(1, 4))
                 {
                     case 1:
                         for(int i = 0; i < DiceSum / 2; i++)
                         {
                             BallManager.Instance.CreateBombBall(1);
                         }
-                        break;
+                    break;
                     case 2:
                         foreach (Brick brick in BrickManager.Instance.CurrentBricks)
                         {
-                            brick.ArbitraryDamageAttack(brick.HpTemp * 0.1f, false, "10%", "Normal");
+                            brick.ArbitraryDamageAttack(brick.HpTemp * 0.077f, false, "7.7%", "Normal");
+                            brick.ArbitraryDamageAttack(brick.HpTemp * 0.077f, false, "7.7%", "Normal");
+                            brick.ArbitraryDamageAttack(brick.HpTemp * 0.077f, false, "7.7%", "Normal");
                         }
-                        break;
+                    break;
                     case 3:
-                        LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.25f;
+                        LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.5f * DiceSum;
                         break;
                     default:
                         break;
@@ -921,17 +949,19 @@ public class Example : FieldAugment
             }
             else
             {
-                switch (Random.Range(1, 3))
+                switch (Random.Range(1, 4))
                 {
                     case 1:
                         BallManager.Instance.CreateBall(DiceSum / 2);
                         break;
                     case 2:
                         BrickManager.Instance.OnSpecialBrickSpawnButtonClick();
-                        break;
+                        BrickManager.Instance.OnSpecialBrickSpawnButtonClick();
+                        BrickManager.Instance.OnSpecialBrickSpawnButtonClick();
+                    break;
                     case 3:
-                        LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.05f;
-                        break;
+                            LevelManager.Instance.Exp += DiceSum * 0.02f;
+                            break;
                     default:
                         break;
                 }
@@ -990,7 +1020,7 @@ public class Bombardment : FieldAugment
     private void OnEnable()
     {
         SetAugment("FIELD_16", "Air Strike", "Summons 5 bombs that fall from above", 2, (float)System.Math.Round(Cooldown, 2));
-        SetAdditionalDescription(null);
+        SetAdditionalDescription("Bomb damage: 10 <sprite=0>");
     }
 
     public override void Apply()
