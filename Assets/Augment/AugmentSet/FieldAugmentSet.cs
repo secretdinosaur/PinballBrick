@@ -711,7 +711,7 @@ public class Example : FieldAugment
                 "Poison damage : 0.5 <sprite=2> + 3% of brick's current HP per stack\n" +
                 "Decay Effect: Increases damage taken by bricks by 10% per stack \n" +
                 "Curse damage : 1.5 <sprite=0>\n" +
-                "Lightning damage : Lightning damage: 0.2 <sprite=2> + 3% of brick's max HP");
+                "Lightning damage : 0.2 <sprite=2> + 3% of brick's max HP");
         }
 
         public override void Apply()
@@ -978,7 +978,7 @@ public class Example : FieldAugment
 
     private void OnEnable()
         {
-            SetAugment("FIELD_15", "Trampoline", "Spawn trampoline on the wall for " + Duration.ToString("F1") + " seconds", 2, (float)System.Math.Round(Cooldown, 2));
+            SetAugment("FIELD_15", "Trampoline", "Spawn rectangle trampoline for " + Duration.ToString("F1") + " seconds", 2, (float)System.Math.Round(Cooldown, 2));
             SetAdditionalDescription(null);
         }
 
