@@ -1065,7 +1065,7 @@ void CreateAirStrikeBombBall(Vector3 position)
     BombBall.gameObject.SetActive(false);
     BombBall.StartPosition.x = Random.Range(position.x - 0.2f, position.x + 0.2f);
     BombBall.StartPosition.y = position.y;
-    BombBall.linearVelocityYValue -= 1f;
+    BombBall.linearVelocityYValue = -1f;
     BombBall.gameObject.SetActive(true);
 }
 

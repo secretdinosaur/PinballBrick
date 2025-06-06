@@ -243,6 +243,24 @@ public static partial class DamageManager //Special Effect Attack
         }
     }
 
+    public static void ExplosionDamageAttack(IBrick brick, float value)
+    {
+        float BaseExplosiveDamage = 30;
+        bool isCritical = false;
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
+        {
+            isCritical = IsCriticalHit(brick);
+        }
+        float damage = BaseExplosiveDamage + (isCritical ? 
+            (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) 
+            * StatManager.instance.statMultiplier.EffectDamageMultiplier * value * CriticalDamage() 
+            : (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
+            * StatManager.instance.statMultiplier.EffectDamageMultiplier * value);
+        damage = DecayDamageCalculate(brick, damage);
+        brick.HP -= damage;
+        brick.ShowText(damage.ToString("F1"), "Explosion", isCritical);
+    }
+
     public static float DecayDamageCalculate(IBrick brick, float Damage)
     {
         Damage *= 1 + AugmentManager.instance.DecayDamageMultiple * brick.BrickEffect.EffectStatusSet["Decay"].EffectStack;

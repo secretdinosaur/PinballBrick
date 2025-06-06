@@ -1581,7 +1581,6 @@ public class LonelyBall : SpecialAugment
 }
 public class SuicideBoomBall : SpecialAugment
 {
-    float damage = 50;
     private void OnEnable()
     {
         SetAugment("SPECIAL_40", "Explosive Ball", "A low chance for the ball to explode after an attack", "Special", 1);
@@ -1598,29 +1597,41 @@ public class SuicideBoomBall : SpecialAugment
     public override void AfterMainAttackEffect(IBrick Brick)
     {
         IBall ball = Brick.RecentlyBall;
-        if(Random.value < 0.1f)
+        if(Random.value < 0.02f)
         {
+            Brick.ExplosionAttack(2f);
             VisualEffectManager.Instance.SpawnParticle("SuicideBoomBall", Brick.transform.position, 1);
-            Brick.ArbitraryDamageAttack(
-                    (damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                    false,
-                    ((damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
-                    "Explosion");
             foreach (IBrick brick in Brick.detectArea.NearbyBricks)
             {
-                brick.ArbitraryDamageAttack(
-                    (damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                    false,
-                    ((damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
-                    "Explosion");
+                brick.ExplosionAttack(2f);
             }
             ball.BallDied();
             if(Random.value < 0.8f)
             {
-                BallManager.Instance.CreateSpecificBall(1, ball.BallType);
+                CreateBall(1, ball.BallType);
             }
         }
     }
+
+    public void CreateBall(int num, string BallType)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            IBall ball = GetSpecificBall(BallType);
+        }
+    }
+
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
+    }
+
 }
 public class SplitBall : SpecialAugment
 {
@@ -1642,7 +1653,7 @@ public class SplitBall : SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        if(Random.value < 0.07f)
+        if(Random.value < 0.04f)
         {
             IBall RecentlyBall = Brick.RecentlyBall;
             StartCoroutine(SplitBallEffect(RecentlyBall));

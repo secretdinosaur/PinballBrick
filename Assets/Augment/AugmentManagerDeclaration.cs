@@ -66,6 +66,11 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         ClearAllAugments();
         AugmentSet = GameObject.Find("AugmentSet").gameObject;
 
+        exceptionAugments = new List<IAugment>
+        {
+
+        };
+
         augmentsSet = new List<IAugment>
         {
             AugmentSet.AddComponent<AtkUp1>(),
@@ -208,14 +213,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<SuicideBoomBall>(),
         };
 
-        exceptionAugments = new List<IAugment>
-        {
-            
-        };
-
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<FireBall>()
+            AugmentSet.GetComponent<Bombardment>()
         };
 
         foreach (IAugment augment in TestAugments)
@@ -226,8 +226,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        ClearAllAugments();
-        AddAugment(gameObject.GetComponent<FusionBricks>());
+        RemoveAugment(AugmentSet.GetComponent<FireBall>());
     }
 }
 

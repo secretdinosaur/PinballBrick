@@ -530,16 +530,20 @@ public class Perfectionism : StatAugment
     {
         SetAugment("STAT_24", "Perfectionism", "Critical chance becomes 100%,\n Attack damage -50%", 2);
         SetAdditionalDescription(null);
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>());
         StatManager.instance.ChangeTemporaryStats_CriticalChance(1 - StatManager.instance.Persistent_stat.CriticalChance);
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.6f);
     }
 
     public override void Remove()
     {
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>());
         StatManager.instance.ChangeTemporaryStats_CriticalChance(-StatManager.instance.Temporary_stat.CriticalChance);
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.6f);
     }
@@ -552,11 +556,14 @@ public class MassivelyCriticalDamageUp : StatAugment
     {
         SetAugment("STAT_25", "Waiter", "Max critical chance becomes 10%,\n Critical damage upgrade values are doubled after level up", 2);
         SetAdditionalDescription(null);
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Perfectionism>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
         isGetAugment = true;
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
         LevelManager.Instance.StatUpValue[1][0] *= 2;
         LevelManager.Instance.StatUpValue[1][1] *= 2;
     }
@@ -564,6 +571,7 @@ public class MassivelyCriticalDamageUp : StatAugment
     public override void Remove()
     {
         isGetAugment = false;
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
         LevelManager.Instance.StatUpValue[1][0] /= 2;
         LevelManager.Instance.StatUpValue[1][1] /= 2;
     }

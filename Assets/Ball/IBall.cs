@@ -128,9 +128,9 @@ public partial class IBall : MonoBehaviour
                 }
                 GetComponent<Collider2D>().enabled = false;
                 GameManager.instance.DiedBalls += 1;
-                BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
             }
         }
+        BallManager.Instance.TakeBall(this);
     }
 
     private IEnumerator EnableCollider()
