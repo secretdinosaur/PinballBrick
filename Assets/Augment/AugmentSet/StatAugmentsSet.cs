@@ -571,7 +571,7 @@ public class MassivelyCriticalDamageUp : StatAugment
     public override void Remove()
     {
         isGetAugment = false;
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
         LevelManager.Instance.StatUpValue[1][0] /= 2;
         LevelManager.Instance.StatUpValue[1][1] /= 2;
     }

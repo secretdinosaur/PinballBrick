@@ -1599,11 +1599,11 @@ public class SuicideBoomBall : SpecialAugment
         IBall ball = Brick.RecentlyBall;
         if(Random.value < 0.02f && !BallManager.Instance.InGameSpecialBall.Contains(ball))
         {
-            Brick.ExplosionAttack(2f);
+            Brick.ExplosionAttack(3f);
             VisualEffectManager.Instance.SpawnParticle("SuicideBoomBall", Brick.transform.position, 1);
             foreach (IBrick brick in Brick.detectArea.NearbyBricks)
             {
-                brick.ExplosionAttack(2f);
+                brick.ExplosionAttack(3f);
             }
             ball.BallDied();
             if(Random.value < 0.8f)
@@ -1849,12 +1849,14 @@ public class SpawnBombBall : SpecialAugment
     {
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<RebornBombBall>());
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SuicideBoomBall>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
     }
 
     public override void Remove()
     {
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<RebornBombBall>());
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SuicideBoomBall>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
     }
 }
 public class ChangeNormalToGlass : SpecialAugment
@@ -1958,8 +1960,6 @@ public class Concentrate : SpecialAugment
         DestroyedBall = 0;
         MaxCount = 10;
         Count = 10;
-
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SpawnBombBall>());
     }
 
     public override void AfterDeathEffect(IBall ball)
@@ -2299,19 +2299,20 @@ public class DecayingPoison: SpecialAugment
         SetAugment("SPECIAL_55", "Decaying Poison", "When poisoned, decay is also applied", "Effect", 3);
         SetAdditionalDescription("Decay effect : increases all damage taken by stacks \n" +
             "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
+            !AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FlammablePoison>()))
             AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<FlammablePoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
         AugmentManager.instance.effectDuration.FireDuration += 1f;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FlammablePoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
         AugmentManager.instance.effectDuration.FireDuration -= 1f;
     }
 }
@@ -2323,19 +2324,20 @@ public class FlammablePoison: SpecialAugment
         SetAugment("SPECIAL_56", "Flammable Poison", "When poisoned, fire is also applied", "Effect", 3);
         SetAdditionalDescription("Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
             "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
+            !AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayingPoison>()))
             AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<DecayingPoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
         AugmentManager.instance.effectDuration.DecayDuration += 2f;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayingPoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
         AugmentManager.instance.effectDuration.DecayDuration -= 2f;
     }
 }

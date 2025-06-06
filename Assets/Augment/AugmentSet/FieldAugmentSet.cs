@@ -1025,6 +1025,8 @@ public class Bombardment : FieldAugment
     {
         SetAugment("FIELD_16", "Air Strike", "Summons 5 bombs that fall from above", 2, (float)System.Math.Round(Cooldown, 2));
         SetAdditionalDescription("Bomb damage: 10 <sprite=0>");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
