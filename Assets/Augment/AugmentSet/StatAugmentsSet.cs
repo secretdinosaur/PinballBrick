@@ -337,16 +337,20 @@ public class WeakButStrongEffect : StatAugment
     {
         SetAugment("STAT_17", "Magician", "Attack damage -12%\nEffect damage +12%", 3);
         SetAdditionalDescription(null);
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.88f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.12f);
     }
 
     public override void Remove()
     {
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.88f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.12f);
     }
@@ -358,16 +362,20 @@ public class WeakButStrongAtk : StatAugment
     {
         SetAugment("STAT_18", "Fighter", "Attack damage +12%\nEffect damage -12%", 3);
         SetAdditionalDescription(null);
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.12f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(0.88f);
     }
 
     public override void Remove()
     {
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.12f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-0.88f);
     }
