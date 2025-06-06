@@ -32,14 +32,8 @@ public class BombBall : IBall
         {
             foreach (IBrick brick in detectArea.BoomArea.ToArray())
             {
-                if(brick.gameObject.activeInHierarchy)
-                brick.ArbitraryDamageAttack(
-                    (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) 
-                    * StatManager.instance.statMultiplier.EffectDamageMultiplier * 10,
-                    false,
-                    ((StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
-                    * StatManager.instance.statMultiplier.EffectDamageMultiplier * 10).ToString("F1"),
-                    "Explosion");
+                if (brick.gameObject.activeInHierarchy)
+                    brick.ExplosionAttack(6.5f);
             }
         }
         VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);

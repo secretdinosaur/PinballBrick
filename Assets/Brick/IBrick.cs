@@ -397,6 +397,11 @@ public partial class IBrick
         DamageManager.AdditionalAttack(this, MaxAttackTime, TimeCount, DamageMultiflier);
     }
 
+    public void ExplosionAttack(float value)
+    {
+        DamageManager.ExplosionDamageAttack(this, value);
+    }
+
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
     {
         DamageManager.ArbitraryDamageAttack(this, damage, isCritical, damageText, DamageType);

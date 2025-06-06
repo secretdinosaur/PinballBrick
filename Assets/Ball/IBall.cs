@@ -93,21 +93,18 @@ public partial class IBall : MonoBehaviour
 
     public void BallDied()
     {
-        if (BallManager.Instance.InGameBall.Contains(this))
-        {
-            BallManager.Instance.InGameBall.Remove(this);
-            BallManager.Instance.inGameBallPosition.Remove(gameObject.GetComponent<Transform>());
-            BallManager.Instance.inGameBallCollider.Remove(gameObject.GetComponent<Collider2D>());
-        }
-        else if (BallManager.Instance.InGameSpecialBall.Contains(this))
+        if (BallManager.Instance.InGameSpecialBall.Contains(this))
         {
             BallManager.Instance.InGameSpecialBall.Remove(this);
             BallManager.Instance.inGameSpecialBallPosition.Remove(gameObject.GetComponent<Transform>());
             BallManager.Instance.inGameSpecialBallCollider.Remove(gameObject.GetComponent<Collider2D>());
         }
-
-        if (BallType != "GhostBall")
+        else if (BallManager.Instance.InGameBall.Contains(this))
         {
+            BallManager.Instance.InGameBall.Remove(this);
+            BallManager.Instance.inGameBallPosition.Remove(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameBallCollider.Remove(gameObject.GetComponent<Collider2D>());
+
             Renderer.material.color = Color.white;
             if (isPhoenix)
             {
@@ -131,9 +128,9 @@ public partial class IBall : MonoBehaviour
                 }
                 GetComponent<Collider2D>().enabled = false;
                 GameManager.instance.DiedBalls += 1;
-                BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
             }
         }
+        BallManager.Instance.TakeBall(this);
     }
 
     private IEnumerator EnableCollider()

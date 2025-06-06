@@ -22,7 +22,7 @@ public partial class AugmentManager //Utility
     {
         return activeAugments.Any(a => a.ID == ID);
     }
-    public List<IAugment> exceptionAugments = new List<IAugment>();
+    
     private List<IAugment> alreadyChosenAugments = new List<IAugment>();
     public IAugment GetRandomAugment()
     {
@@ -80,33 +80,13 @@ public partial class AugmentManager
     {
         alreadyChosenAugments.Clear();
         exceptionAugments.Add(augment);
-        if (augment is StatAugment statAugment)
-        {
-            activeAugments.Add(statAugment);
-            augment.Apply();
-        }
-        else if (augment is FieldAugment fieldAugment)
-        {
-            activeAugments.Add(fieldAugment);
-            augment.Apply();
-        }
-        else if (augment is SpecialAugment specialAugment)
-        {
-            if(specialAugment.ID != "SPECIAL_73")
-                activeAugments.Add(specialAugment);
-            augment.Apply();
-        }
-        IAugment OppositeAugment = GetOppositeAugment(augment);
-        if (OppositeAugment != null)
-        {
-            exceptionAugments.Add(OppositeAugment);
-        }
+        activeAugments.Add(augment);
+        augment.Apply();
         ActivatedAugmentNumber++;
     }
 
     public void RemoveAugment(IAugment augment)
     {
-        Debug.Log("Remove Augment :" + augment.name);
         exceptionAugments.Remove(augment);
         activeAugments.Remove(augment);
         augment.Remove();
@@ -114,7 +94,7 @@ public partial class AugmentManager
     }
 
 
-    public void RemoveOnAugmentsSetAugment(IAugment augment)
+    public void RemoveOnAugmentsSet(IAugment augment)
     {
         if (activeAugments.Any(a => a.Name == augment.Name && augment.ID != "SPECIAL_73"))
         {
@@ -130,10 +110,16 @@ public partial class AugmentManager
         activeAugments.Clear();
     }
 
-    public void RemoveOnExceptAugmentsList(IAugment augment)
+    public void UnlockAugment(IAugment augment)
     {
         if(exceptionAugments.Contains(augment))
             exceptionAugments.Remove(augment);
+    }
+
+    public void LockAugment(IAugment augment)
+    {
+        if (!exceptionAugments.Contains(augment))
+            exceptionAugments.Add(augment);
     }
     
     private IAugment GetOppositeAugment(IAugment ChosenAugment)
