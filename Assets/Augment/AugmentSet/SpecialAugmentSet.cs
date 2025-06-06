@@ -1583,7 +1583,7 @@ public class SuicideBoomBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_40", "Explosive Ball", "A low chance for the ball to explode after an attack", "Special", 1);
+        SetAugment("SPECIAL_40", "Potential Bomb", "A low chance for the ball to explode after an attack", "Special", 1);
         SetAdditionalDescription("Explosion damage scales with <sprite=2> and hits all nearby bricks\n" +
             "After explosion, the ball dies but has a high chance to revive");
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
@@ -1597,7 +1597,7 @@ public class SuicideBoomBall : SpecialAugment
     public override void AfterMainAttackEffect(IBrick Brick)
     {
         IBall ball = Brick.RecentlyBall;
-        if(Random.value < 0.02f)
+        if(Random.value < 0.02f && !BallManager.Instance.InGameSpecialBall.Contains(ball))
         {
             Brick.ExplosionAttack(2f);
             VisualEffectManager.Instance.SpawnParticle("SuicideBoomBall", Brick.transform.position, 1);

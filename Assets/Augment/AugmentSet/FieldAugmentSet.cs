@@ -956,7 +956,7 @@ public class DiceGamble : FieldAugment
             switch (Random.Range(1, 4))
             {
                 case 1:
-                    BallManager.Instance.CreateBall(DiceSum / 2);
+                    BallManager.Instance.CreateBall(DiceSum / 3);
                     break;
                 case 2:
                     BrickManager.Instance.OnSpecialBrickSpawnButtonClick();
@@ -980,7 +980,7 @@ public class Trampoline : FieldAugment
     float Duration = StatManager.instance.Temporary_stat.EffectDuration * 5;
     GameObject TrampolineObj;
 
-private void OnEnable()
+    private void OnEnable()
     {
         SetAugment("FIELD_15", "Trampoline", "Spawn rectangle trampoline for " + Duration.ToString("F1") + " seconds", 2, (float)System.Math.Round(Cooldown, 2));
         SetAdditionalDescription(null);
@@ -1018,65 +1018,65 @@ private void OnEnable()
 
 public class Bombardment : FieldAugment
 {
-Coroutine Routine = null;
-float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 1.5f;
+    Coroutine Routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 1.5f;
 
-private void OnEnable()
-{
-    SetAugment("FIELD_16", "Air Strike", "Summons 5 bombs that fall from above", 2, (float)System.Math.Round(Cooldown, 2));
-    SetAdditionalDescription("Bomb damage: 10 <sprite=0>");
-}
-
-public override void Apply()
-{
-    Routine = StartCoroutine(StartAirStrike(Cooldown));
-}
-
-public override void Remove()
-{
-    if (Routine != null)
+    private void OnEnable()
     {
-        StopCoroutine(Routine);
-        Routine = null;
+        SetAugment("FIELD_16", "Air Strike", "Summons 5 bombs that fall from above", 2, (float)System.Math.Round(Cooldown, 2));
+        SetAdditionalDescription("Bomb damage: 10 <sprite=0>");
     }
-}
 
-private IEnumerator StartAirStrike(float Cooldown)
-{
-    while (true)
-    {      
-        CreateAirStrikeBombBall(new Vector3(-1.8f, 4.725f, 0));
-        yield return new WaitForSeconds(0.3f);
-        CreateAirStrikeBombBall(new Vector3(-0.9f, 4.725f, 0));
-        yield return new WaitForSeconds(0.3f);
-        CreateAirStrikeBombBall(new Vector3(0f, 4.725f, 0));
-        yield return new WaitForSeconds(0.3f);
-        CreateAirStrikeBombBall(new Vector3(0.9f, 4.725f, 0));
-        yield return new WaitForSeconds(0.3f);
-        CreateAirStrikeBombBall(new Vector3(1.8f, 4.725f, 0));
-
-        yield return new WaitForSeconds(Cooldown);
+    public override void Apply()
+    {
+        Routine = StartCoroutine(StartAirStrike(Cooldown));
     }
-}
 
-void CreateAirStrikeBombBall(Vector3 position)
-{
-    IBall BombBall = GetSpecificBall("BombBall");
-    BombBall.gameObject.SetActive(false);
-    BombBall.StartPosition.x = Random.Range(position.x - 0.2f, position.x + 0.2f);
-    BombBall.StartPosition.y = position.y;
-    BombBall.linearVelocityYValue = -1f;
-    BombBall.gameObject.SetActive(true);
-}
+    public override void Remove()
+    {
+        if (Routine != null)
+        {
+            StopCoroutine(Routine);
+            Routine = null;
+        }
+    }
 
-private IBall GetSpecificBall(string ballTypeName)
-{
-    IBall ball = null;
+    private IEnumerator StartAirStrike(float Cooldown)
+    {
+        while (true)
+        {      
+            CreateAirStrikeBombBall(new Vector3(-1.8f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(-0.9f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(0f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(0.9f, 4.725f, 0));
+            yield return new WaitForSeconds(0.3f);
+            CreateAirStrikeBombBall(new Vector3(1.8f, 4.725f, 0));
 
-    Type ballType = System.Type.GetType(ballTypeName);
-    var method = typeof(PoolManager).GetMethod("GetFromPool");
-    var genericMethod = method.MakeGenericMethod(ballType);
-    ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
-    return ball;
-}
+            yield return new WaitForSeconds(Cooldown);
+        }
+    }
+
+    void CreateAirStrikeBombBall(Vector3 position)
+    {
+        IBall BombBall = GetSpecificBall("BombBall");
+        BombBall.gameObject.SetActive(false);
+        BombBall.StartPosition.x = Random.Range(position.x - 0.2f, position.x + 0.2f);
+        BombBall.StartPosition.y = position.y;
+        BombBall.linearVelocityYValue = -1f;
+        BombBall.gameObject.SetActive(true);
+    }
+
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
+    }
 }
