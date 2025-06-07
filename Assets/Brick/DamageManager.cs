@@ -531,6 +531,8 @@ public class BrickEffectManager : MonoBehaviour
         while (DecayEffectDuration > 0f)
         {
             DecayEffectDuration -= interval;
+            brick.GetComponent<SpriteRenderer>().material.SetFloat("_NoiseScale", brick.BrickEffect.EffectStatusSet["Decay"].EffectStack * 30);
+
             if (!brick.gameObject.activeSelf)
             {
                 yield break;

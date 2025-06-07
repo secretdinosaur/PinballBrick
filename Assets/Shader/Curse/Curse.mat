@@ -55,8 +55,8 @@ Material:
     m_Floats:
     - _Distorsion: 0.196
     - _EnableExternalAlpha: 0
-    - _NoiseScale: 3.1
-    - _Width: 0.05
+    - _NoiseScale: 7.07
+    - _Width: 0.15
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 0.3490566, g: 0, b: 0, a: 1}

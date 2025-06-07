@@ -629,6 +629,8 @@ public partial class LevelManager : MonoBehaviour
 
     void ShowLevelUpPanel()
     {
+        GameManager.instance.WaveNoticeText.enabled = false;
+        GameManager.instance.WaveExtraNoticeText.enabled = false;
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
         CanvasForLevelUpPanel.SetActive(true);
@@ -916,5 +918,7 @@ public partial class LevelManager : MonoBehaviour
                 StatManager.instance.isChangedStat = false;
             }
         }
+        GameManager.instance.WaveNoticeText.enabled = true;
+        GameManager.instance.WaveExtraNoticeText.enabled = true;
     }
 }
