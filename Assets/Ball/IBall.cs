@@ -80,30 +80,32 @@ public partial class IBall : MonoBehaviour
 
     public void BallDied()
     {
-        Renderer.material.color = Color.white;
-        if (isPhoenix)
+        if(BallType != "GhostBall")
         {
-            gameObject.SetActive(false);
-            gameObject.SetActive(true);
-        }
-        
-        else
-        {
-            for(int i = 0; i < AugmentManager.instance.AfterDeathActiveNumber; i++)
+            Renderer.material.color = Color.white;
+            if (isPhoenix)
             {
-                foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+                gameObject.SetActive(false);
+                gameObject.SetActive(true);
+            }
+            else
+            {
+                for (int i = 0; i < AugmentManager.instance.AfterDeathActiveNumber; i++)
                 {
-                    Augment.AfterDeathEffect(this);
+                    foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+                    {
+                        Augment.AfterDeathEffect(this);
+                    }
                 }
+                GrowthAttackDamage = 0f;
+                if (FusionMoveRoutine != null)
+                {
+                    StopCoroutine(FusionMoveRoutine);
+                    FusionMoveRoutine = null;
+                }
+                GetComponent<Collider2D>().enabled = false;
+                BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
             }
-            GrowthAttackDamage = 0f;
-            if(FusionMoveRoutine != null)
-            {
-                StopCoroutine(FusionMoveRoutine);
-                FusionMoveRoutine = null;
-            }
-            GetComponent<Collider2D>().enabled = false;
-            BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
         }
     }
 
@@ -328,7 +330,7 @@ public partial class IBall //Bounce = Power
 {
     public float BounceTime { get; set; } = 1f;
     private int MaxBounce = 0;
-    private SpriteRenderer spriteRenderer;
+    protected SpriteRenderer spriteRenderer;
 }
 
 public partial class IBall //Speed = Power

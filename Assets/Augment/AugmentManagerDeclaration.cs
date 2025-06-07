@@ -187,7 +187,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
             gameObject.AddComponent<ShareBallAtk>(),
 
-            gameObject.AddComponent<ThreeBrickCurseAttack>(),
+            gameObject.AddComponent<SummonGhostBall>(),
             gameObject.AddComponent<CurseTwice>(),
 
             gameObject.AddComponent<RebornBombBall>(),
@@ -206,7 +206,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(gameObject.GetComponent<FreshNewStart>());
+        AddAugment(gameObject.GetComponent<SpawnBombBall>());
+        AddAugment(gameObject.GetComponent<ChangeNormalToGlass>());
+        AddAugment(gameObject.GetComponent<SummonGhostBall>());
     }
 }
 
