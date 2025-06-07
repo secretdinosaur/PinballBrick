@@ -1,23 +1,13 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 using Button = UnityEngine.UI.Button;
 using Color = UnityEngine.Color;
-using UnityEngine.InputSystem;
 using System.Collections;
-using System.Drawing;
-using static UnityEngine.Analytics.IAnalytic;
-using System.Xml;
 using DG.Tweening;
-using Unity.Android.Gradle.Manifest;
-using System.Linq;
-using UnityEditor.VisionOS;
 
 
 public partial class LevelManager : MonoBehaviour

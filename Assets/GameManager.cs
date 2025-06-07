@@ -128,6 +128,7 @@ public class GameManager : MonoBehaviour
         {
             WaveExtraNoticeText.gameObject.SetActive(false);
         }
+        BrickManager.Instance.WaveRoutine = null;
         WaveNoticeText.gameObject.SetActive(false);
     }
 

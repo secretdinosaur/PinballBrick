@@ -52,6 +52,7 @@ public class BrickManager : MonoBehaviour
     public int BossSpawnWaveNumber;
 
     private bool WavePause;
+    public Coroutine WaveRoutine;
 
     enum BrickType
     {
@@ -244,7 +245,11 @@ public class BrickManager : MonoBehaviour
                     || AugmentManager.instance.determineAugmentID("SPECIAL_62")
                     || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
                 SettingBrickSpawnChance();
-                StartCoroutine(GameManager.instance.WaveNotice());
+                if(WaveRoutine != null)
+                {
+                    StopCoroutine(WaveRoutine);
+                }
+                WaveRoutine = StartCoroutine(GameManager.instance.WaveNotice());
                 CreateSpawnBrickQueue();
                 BrickQueue = SpawnBrickQueue.Dequeue();
             }
