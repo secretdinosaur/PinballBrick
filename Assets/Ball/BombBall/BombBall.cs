@@ -13,6 +13,8 @@ public class BombBall : IBall
         BoomCount = 3;
         BallType = "BombBall";
         BallBaseDamage = 0;
+        GameManager.instance.SummonedBalls += 1;
+        gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
         StartCoroutine(StartBoomCount());
     }
 
@@ -30,14 +32,8 @@ public class BombBall : IBall
         {
             foreach (IBrick brick in detectArea.BoomArea.ToArray())
             {
-                if(brick.gameObject.activeInHierarchy)
-                brick.ArbitraryDamageAttack(
-                    (100 + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) 
-                    * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                    false,
-                    ((100 + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
-                    * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
-                    "Explosion");
+                if (brick.gameObject.activeInHierarchy)
+                    brick.ExplosionAttack(6.5f);
             }
         }
         VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);
@@ -45,7 +41,7 @@ public class BombBall : IBall
         {
             if(Random.value < 0.5f)
             {
-                BallManager.Instance.CreateSpecificBall(1, "BombBall");
+                BallManager.Instance.CreateBombBall(1);
             }
         }
         BallDied();

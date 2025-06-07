@@ -12,6 +12,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using UnityEngine.U2D;
 using UnityEngine.UI;
+using DG.Tweening;
+using Sequence = DG.Tweening.Sequence;
+using static UnityEngine.Rendering.DebugUI;
 
 /*
 public class Example : SpecialAugment
@@ -38,20 +41,20 @@ public class FireBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_1", "FireBall", "Bricks have a 30% chance to catch fire when struck by a ball", "Effect", 4);
-        SetAdditionalDescription("Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
+        SetAdditionalDescription("Fire damage : 0.5 <sprite=2> per stack" +
             "The max stack is 5");
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FireEffectStackBlast>());
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<TheFlamethrower>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<FireEffectStackBlast>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<TheFlamethrower>());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<FireEffectStackBlast>());
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<TheFlamethrower>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<FireEffectStackBlast>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<TheFlamethrower>());
     }
 
     public override void AfterMainAttackEffect(IBrick Brick)
@@ -86,7 +89,7 @@ public class BouncePower: SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_3", "Thrust", "Ball gains +2% attack damage for each wall bounce up to a maximum of 10%", "Special", 3);
+        SetAugment("SPECIAL_3", "Thrust", "<sprite=0> +2%  for each wall bounce up to a maximum of 10%", "Special", 3);
         SetAdditionalDescription(null);
     }
 
@@ -107,8 +110,7 @@ public class AdditionalThreeAttack: SpecialAugment
     {
         SetAugment("SPECIAL_4", "Afterimage", "Rapid three additional attacks follow after ball hits", "Special", 1);
         SetAdditionalDescription(
-            "Additional attack : deals damage scaling with <sprite=0> \n" +
-            "Critical chance is applied");
+            "Additional attack : 0.25 <sprite=0>\n");
     }
 
     public override void Apply(){ }
@@ -130,8 +132,7 @@ public class CriticalAdditionalAttack : SpecialAugment
     {
         SetAugment("SPECIAL_5", "Deadpoint", "Additional attack follows after critical attack", "Special", 4);
         SetAdditionalDescription(
-            "Additional attack : deals damage scaling with <sprite=0> \n" +
-            "Critical chance is applied");
+            "Additional attack : 0.5 <sprite=0> \n");
     }
 
     public override void Apply(){  }
@@ -142,7 +143,7 @@ public class CriticalAdditionalAttack : SpecialAugment
     {
         if (Brick.gameObject.activeSelf) //Critical Additional Attack
         {
-            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 1));
+            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.5f));
         }
     }
 }
@@ -185,11 +186,12 @@ public class FireEffectStackBlast : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_8", "Fire Burst", "An explosion occurs when the brick reaches maximum fire stack", "Effect", 3);
+        SetAugment("SPECIAL_8", "Fire Burst", "An explosion occurs and spreads fire when the brick reaches maximum fire stack", "Effect", 3);
         SetAdditionalDescription(
-            "Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
-            "Explosion damage scales with <sprite=2> \n" +
-            "and hits all nearby bricks");
+            "Fire damage : 0.5 <sprite=2> per stack\n" +
+            "Explosion damage: 3 <sprite=2>");
+        if(!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FireBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
@@ -203,7 +205,7 @@ public class FireEffectStackBlast : SpecialAugment
     {
         float BlastDamage = (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) 
             * StatManager.instance.statMultiplier.EffectDamageMultiplier 
-            * 1.4f;
+            * 3f;
         if (Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack == Brick.BrickEffect.EffectStatusSet["Fire"].EffectStackLimit)
         {
             Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack = (int)(Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack * 0.3);
@@ -226,7 +228,9 @@ public class ChainLightning : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_9", "Chain Lightning", "Lightning chains to 3 nearby bricks", "Effect", 2);
-        SetAdditionalDescription("Lightning damage : deals damage scales with brick's max health");
+        SetAdditionalDescription("Lightning damage: 0.2 <sprite=2> + 3% of brick's max HP");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply(){ }
@@ -302,39 +306,74 @@ public class DeathGold : SpecialAugment
 
     public override void AfterDeathEffect(IBall ball)
     {
-        StatManager.instance.GetGold(2);
+        StatManager.instance.GetGold(20);
     }
 }
 
-public class SpeedPower : SpecialAugment
+public class BigBoss : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_12", "Momentum", "Atack damage increases with ball speed", "Special", 4);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_12", "Big Boss", "Summons a 'Big Boss' with extremely high HP\nDefeating it grants great rewards", "Special", 2);
+        SetAdditionalDescription("Despite being called the Big Boss,\nit is not treated as an actual boss");
     }
 
-    public override void Apply(){ }
-
-    public override void Remove(){ }
-
-    public override void BeforeAttackEffect(IBrick Brick)
+    public override void Apply()
     {
-        Brick.TotalMultiple *= Brick.RecentlyBall.TransformationMultiple;
+        StartCoroutine(SettingBigBoss());
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    IEnumerator SettingBigBoss()
+    {
+        if (BrickManager.Instance.availablePositions.Count > 0)
+        {
+            BrickManager.Instance.SpawnBrick(BrickManager.Instance.SettingBigBoss());
+        }
+        else
+        {
+            yield return new WaitUntil(() => BrickManager.Instance.BrickQueue != null);
+            BrickManager.Instance.BrickQueue.Enqueue(BrickManager.Instance.SettingBigBoss());
+        }
+        StartCoroutine(BigBossAbility());
+    }
+
+    IEnumerator BigBossAbility()
+    {
+        yield return new WaitUntil(() => BrickManager.Instance.BigBossBrick != null);
+        while (BrickManager.Instance.BigBossBrick != null)
+        {
+            yield return new WaitForSeconds(30f);
+            BrickManager.Instance.TeleportBrickPosition(BrickManager.Instance.BigBossBrick);
+        }
+        AugmentManager.instance.AddAugment(gameObject.GetComponent<LevelUpAgain>());
+        AugmentManager.instance.RemoveOnAugmentsSet(gameObject.GetComponent<LevelUpAgain>());
     }
 }
 
-public class SpeedCritical : SpecialAugment
+public class ChangeBallSpawnPosition : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_13", "Quick and Accurate", "Critical chance increases with ball speed", "Special", 4);
+        SetAugment("SPECIAL_13", "Unexpected Strategy", "A ball is summoned from top", "Special", 3);
         SetAdditionalDescription(null);
     }
 
-    public override void Apply(){ }
+    public override void Apply()
+    {
+        BallManager.StartPosition = new Vector3(0f, 5f, 35);
+        BallManager.linearVelocityYValue = -10;
+    }
 
-    public override void Remove(){ }
+    public override void Remove()
+    {
+        BallManager.StartPosition = new Vector3(0f, -5f, 35);
+        BallManager.linearVelocityYValue = 10;
+    }
 }
 
 public class Lightning : SpecialAugment
@@ -342,12 +381,22 @@ public class Lightning : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_14", "Lightning Attack", "An additional lightning strike occurs on attack", "Effect", 4);
-        SetAdditionalDescription("Lightning damage : deals damage scales with brick's max health");
+        SetAdditionalDescription("Lightning damage : 0.2 <sprite=2> + 3% of brick's max HP");
     }
 
-    public override void Apply() { }
+    public override void Apply() 
+    {
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<ThunderStrike>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<ChainLightning>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LightningRod>());
+    }
 
-    public override void Remove() { }
+    public override void Remove() 
+    {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ThunderStrike>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ChainLightning>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LightningRod>());
+    }
 
     public override void AfterAttackEffect(IBrick brick)
     {
@@ -359,23 +408,24 @@ public class PoisonBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_15", "Poison Ball", "Chance to poison on hit", "Effect", 4);
-        SetAdditionalDescription("Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks\n" +
-            "The max stack is 3");
+        SetAugment("SPECIAL_15", "Poison Ball", "30% chance to poison on hit", "Effect", 4);
+        SetAdditionalDescription("Poison damage : 0.5 <sprite=2> + 3% of brick's current HP per stack");
     }
 
     public override void Apply() 
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<InfinitePoison>());
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DeadlyPoison>());
-        isGetAugment = false;
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DeadlyPoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<InfinitePoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
     }
 
-    public override void Remove() 
+    public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<InfinitePoison>());
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<DeadlyPoison>());
-        isGetAugment = true;
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DeadlyPoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<InfinitePoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
     }
 
     public override void AfterMainAttackEffect(IBrick Brick)
@@ -384,20 +434,6 @@ public class PoisonBall : SpecialAugment
             Random.value < AugmentManager.instance.effectChance.PoisonChance)
         {
             Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.PoisonDuration); 
-        }
-    }
-    bool isGetAugment = false;
-    private void Update()
-    {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_18") && !isGetAugment)
-        {
-            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayingPoison>());
-            isGetAugment = true;
-        }
-        else if (AugmentManager.instance.determineAugmentID("SPECIAL_1") && !isGetAugment)
-        {
-            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FlammablePoison>());
-            isGetAugment = true;
         }
     }
 }
@@ -409,7 +445,9 @@ public class InfinitePoison : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_16", "Infinite Poison", "Poison spreads to nearby bricks, on max stacks", "Effect", 2);
-        SetAdditionalDescription("Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+        SetAdditionalDescription("Poison damage : 0.5 <sprite=2> + 3% of brick's current HP per stack");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
     public override void Apply()
     {
@@ -465,68 +503,150 @@ public class DeadlyPoison : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_17", "Deadly Poison", "Increase poison max stacks and chance", "Effect", 3);
+        SetAugment("SPECIAL_17", "Deadly Poison", "+15% poison chance, make max poison stacks to 5.", "Effect", 3);
         SetAdditionalDescription(
-            "Max stack up 3 to 5\n" +
-            "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+            "Max stack up 3 to 5\n");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
         AugmentManager.instance.PoisonStackLimit = 5;
+        AugmentManager.instance.effectChance.PoisonChance += 0.15f;
     }
 
     public override void Remove()
     {
         AugmentManager.instance.PoisonStackLimit = 3;
+        AugmentManager.instance.effectChance.PoisonChance -= 0.15f;
     }
 }
 public class Chaos : SpecialAugment
 {
-    Dictionary<int, float> rarityWeights;
+    GameObject Curtain;
+    List<float> TotalChangedStatValue;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_18", "Chaos", "All augment probabilities are equal", "Special", 0);
+        SetAugment("SPECIAL_18", "Chaos", "Random stat up or down\nThen, randomly teleport to a wave between the current wave +5 and +20", "Special", 1);
         SetAdditionalDescription(null);
+        Curtain = GameObject.Find("Canvas").transform.Find("Curtain").gameObject;
+        Curtain.SetActive(false);
+        TotalChangedStatValue = new List<float>
+        {
+            0, 0, 0, 0, 0
+        };
     }
 
     public override void Apply()
     {
-        rarityWeights = AugmentManager.instance.rarityWeights;
-        AugmentManager.instance.rarityWeights[0] = 0.001f;
-        AugmentManager.instance.rarityWeights[1] = 0.199f;
-        AugmentManager.instance.rarityWeights[2] = 0.2f;
-        AugmentManager.instance.rarityWeights[3] = 0.2f;
-        AugmentManager.instance.rarityWeights[4] = 0.2f;
-        AugmentManager.instance.rarityWeights[5] = 0.2f;
+        int RandomNumber = Random.Range(3, 5);
+        for(int i = 0; i < RandomNumber; i++)
+        {
+            int RandomStat = Random.Range(1, 5);
+            switch (RandomStat)
+            {
+                case 1:
+                    float RandomAttack = (float)System.Math.Round(Random.Range(-1f, 4f), 2);
+                    StatManager.instance.ChangeTemporaryStats_AttackDamage(RandomAttack);
+                    TotalChangedStatValue[0] += RandomAttack;
+                    break;
+                case 2:
+                    float RandomCritDamage = (float)System.Math.Round(Random.Range(-2f, 5f) / 100, 2) ;
+                    StatManager.instance.ChangeTemporaryStats_CriticalDamage(RandomCritDamage);
+                    TotalChangedStatValue[1] += RandomCritDamage;
+                    break;
+                case 3:
+                    float RandomCritChance = (float)System.Math.Round(Random.Range(-1f, 8f) / 100, 2);
+                    StatManager.instance.ChangeTemporaryStats_CriticalChance(RandomCritChance);
+                    TotalChangedStatValue[2] += RandomCritChance;
+                    break;
+                case 4:
+                    float RandomEffect = (float)System.Math.Round(Random.Range(-1f, 4f), 2);
+                    StatManager.instance.ChangeTemporaryStats_EffectDamage(RandomEffect);
+                    TotalChangedStatValue[3] += RandomEffect;
+                    break;
+                case 5:
+                    float RandomEffectDuration = (float)System.Math.Round(Random.Range(-5f, 12f) / 100, 2);
+                    StatManager.instance.ChangeTemporaryStats_EffectDuration(RandomEffectDuration);
+                    TotalChangedStatValue[4] += RandomEffectDuration;
+                    break;
+                default:
+                    break;
+            }
+        }
+        Sequence seq = DOTween.Sequence();
+        seq.AppendCallback(() => {
+            Curtain.SetActive(true);
+            GameManager.instance.OnChaos = true;
+        });
+        seq.Append(Curtain.GetComponent<Image>().DOFade(1f, 0.5f));
+        seq.AppendInterval(0.5f);
+        seq.Append(Curtain.GetComponent<Image>().DOFade(0.4f, 0.4f));
+        seq.AppendCallback(() => {
+            BrickManager.Instance.WaveSkip(Random.Range(5, 20));
+        });
+        seq.Append(Curtain.GetComponent<Image>().DOFade(0f, 0.6f));
+        seq.AppendCallback(() => {
+            Curtain.SetActive(false);
+            GameManager.instance.OnChaos = false;
+            BallManager.Instance.CreateBall(3);
+        });
+        
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.rarityWeights[0] = rarityWeights[0];
-        AugmentManager.instance.rarityWeights[1] = rarityWeights[1];
-        AugmentManager.instance.rarityWeights[2] = rarityWeights[2];
-        AugmentManager.instance.rarityWeights[3] = rarityWeights[3];
-        AugmentManager.instance.rarityWeights[4] = rarityWeights[4];
-        AugmentManager.instance.rarityWeights[5] = rarityWeights[5];
+        for(int i = 0; i < TotalChangedStatValue.Count; i++)
+        {
+            switch (i)
+            {
+                case 0:
+                    StatManager.instance.ChangeTemporaryStats_AttackDamage(TotalChangedStatValue[0]);
+                    break;
+                case 1:
+                    StatManager.instance.ChangeTemporaryStats_CriticalDamage(TotalChangedStatValue[1]);
+                    break;
+                case 2:
+                    StatManager.instance.ChangeTemporaryStats_CriticalChance(TotalChangedStatValue[2]);
+                    break;
+                case 3:
+                    StatManager.instance.ChangeTemporaryStats_EffectDamage(TotalChangedStatValue[3]);
+                    break;
+                case 4:
+                    StatManager.instance.ChangeTemporaryStats_EffectDuration(TotalChangedStatValue[4]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        TotalChangedStatValue = new List<float>
+        {
+            0, 0, 0, 0, 0
+        };
     }
 }
 public class DecayBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_18", "Decay Ball", "Chance to decay on hit", "Effect", 4);
-        SetAdditionalDescription("Decay effect : increases all damage taken by stacks\n" +
-            "The max stack is 3");
+        SetAugment("SPECIAL_18", "Decay Ball", "hance to decay on hit", "Effect", 4);
+        SetAdditionalDescription("Decay Effect: Increases damage taken by bricks by 10% per stack");
     }
 
     public override void Apply() 
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<PowerfulDecay>());
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayExplosion>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<PowerfulDecay>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayExplosion>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayZone>());
     }
 
-    public override void Remove() { }
+    public override void Remove()
+    {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<PowerfulDecay>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayExplosion>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayZone>());
+    }
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
@@ -541,18 +661,21 @@ public class PowerfulDecay : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_19", "Powerful Decay", "Increase decay damage increase rate and chance", "Effect", 3);
-        SetAdditionalDescription("Decay effect : increases all damage taken by stacks");
+        SetAugment("SPECIAL_19", "Powerful Decay", "Decay chance +15%, increase decay damage increase rate to 15%", "Effect", 3);
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
         AugmentManager.instance.DecayDamageMultiple = 1.15f;
+        AugmentManager.instance.effectChance.DecayChance -= 0.15f;
     }
 
     public override void Remove()
     {
         AugmentManager.instance.DecayDamageMultiple = 1.1f;
+        AugmentManager.instance.effectChance.DecayChance -= 0.15f;
     }
 }
 public class DecayExplosion : SpecialAugment
@@ -561,9 +684,9 @@ public class DecayExplosion : SpecialAugment
     {
         SetAugment("SPECIAL_20", "Decay Explosion", "Brick explodes when die with max decay stack", "Effect", 2);
         SetAdditionalDescription(
-            "Decay effect : increases all damage taken by stacks\n" +
-            "Explosion damage scales with brick's max health and \n" +
-            "hits all nearby bricks and pushes away nearby balls");
+            "Explosion damage: 5% of brick's max health");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
@@ -624,11 +747,13 @@ public class TheFlamethrower : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_22", "Fire Aura", "Deals fire damage around the ball", "Effect", 2);
-        SetAdditionalDescription("Continuously damages enemies in the fire aura, scaling with <sprite=2>, \n" +
-            "and may apply a fire effect\n" + 
-            "Fire damage : deals damage scaling with <sprite=2> and stacks");
+        SetAugment("SPECIAL_22", "Fire Aura", "Generates a fire aura around the balls that deals damage and may ignite bricks", "Effect", 2);
+        SetAdditionalDescription("Aura damage : 0.2 <sprite=2> per stack\n" +
+            "Fire damage : 0.5 <sprite=2> per stack");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FireBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
+    
 
     public override void Apply() 
     {
@@ -636,6 +761,11 @@ public class TheFlamethrower : SpecialAugment
         {
             ball.flamethrower.FlamethrowerOn();
         }
+        foreach (IBall ball in BallManager.Instance.InGameSpecialBall)
+        {
+            ball.flamethrower.FlamethrowerOn();
+        }
+
         BallManager.Instance.isOnFlamerower = true;
     }
 
@@ -645,6 +775,11 @@ public class TheFlamethrower : SpecialAugment
         {
             ball.flamethrower.FlamethrowerOff();
         }
+        foreach (IBall ball in BallManager.Instance.InGameSpecialBall)
+        {
+            ball.flamethrower.FlamethrowerOff();
+        }
+
         BallManager.Instance.isOnFlamerower = false;
     }
 }
@@ -656,15 +791,15 @@ public class LevelUpQuest : SpecialAugment
     private int ClearRequiredCount = 50;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_23", "Slayer", "Gain 50% of EXP and accept a quest.\nComplete it to level up", "Quest", 5);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_23", "Slayer", "Receive 50% EXP and a quest. Complete the quest to level up", "Quest", 5);
+        SetAdditionalDescription("Quest: Destroy 50 bricks");
     }
 
     public override void Apply()
     {
         LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * 0.5f;
 
-        QuestAlarm.Instance.SetQuest("Slayer", "Killed", 0, ClearRequiredCount);
+        QuestAlarm.Instance.SetQuest("Slayer", "Destroyed", 0, ClearRequiredCount);
     }
 
     public override void Remove(){ }
@@ -673,7 +808,7 @@ public class LevelUpQuest : SpecialAugment
     {
         KilledEnemy++;
         if(KilledEnemy <= ClearRequiredCount)
-            QuestAlarm.Instance.SetQuest("Slayer", "Killed", KilledEnemy, ClearRequiredCount);
+            QuestAlarm.Instance.SetQuest("Slayer", "Destroyed", KilledEnemy, ClearRequiredCount);
 
         if (KilledEnemy >= ClearRequiredCount && !isCleared)
         {
@@ -691,12 +826,14 @@ public class GrowBallQuest : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_24", "Grow Ball", "Accept a grow ball quest.\nComplete it to attack damage up", "Quest", 5);
-        SetAdditionalDescription(null);
+        SetAdditionalDescription("Quest: Destroy 20 bricks\n" +
+            "<sprite=0> +0.1 per destroyed bricks\n" +
+            "<sprite=0> +0.2 per destroyed boss bricks");
     }
 
     public override void Apply()
     {
-        QuestAlarm.Instance.SetQuest("Grow Ball", "Killed", KilledEnemy, ClearRequiredCount);
+        QuestAlarm.Instance.SetQuest("Grow Ball", "Destroyed", KilledEnemy, ClearRequiredCount);
     }
 
     public override void Remove() 
@@ -712,7 +849,7 @@ public class GrowBallQuest : SpecialAugment
     {
         KilledEnemy++;
         if (KilledEnemy <= ClearRequiredCount)
-            QuestAlarm.Instance.SetQuest("Grow Ball", "Killed", KilledEnemy, ClearRequiredCount);
+            QuestAlarm.Instance.SetQuest("Grow Ball", "Destroyed", KilledEnemy, ClearRequiredCount);
         if (Brick.RecentlyBall != null && !isCleared)
         {
             QuestProgressing(Brick);
@@ -762,17 +899,19 @@ public class InfiniteGrowBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_25", "Infinite Grow Ball", "The ball's attack power increases after destroying bricks", "Special", 3);
-        SetAdditionalDescription("When a ball dies, its increased stats are reset");
+        SetAdditionalDescription("When a ball dies, its increased stats are reset" +
+            "<sprite=0> +0.1 per destroyed bricks\n" +
+            "<sprite=0> +0.2 per destroyed boss bricks");
     }
 
     public override void Apply() 
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<ShareBallAtk>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<ShareBallAtk>());
     }
 
     public override void Remove() 
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<ShareBallAtk>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ShareBallAtk>());
     }
 
     public override void AfterBrickDieEffect(IBrick Brick)
@@ -788,18 +927,25 @@ public class SacrificeQuest1 : SpecialAugment
     private bool isCleared;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_26", "Sacrifice I", "Accept a sacrifice I.\nComplete it to Receive a weak reward", "Quest", 5);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_26", "Sacrifice I", "Accept a sacrifice I quest.\nComplete it to Receive a weak reward", "Quest", 5);
+        SetAdditionalDescription("Quest: Sacrifice 40 balls for <sprite=0> +1, <sprite=2> +1");
     }
 
-    public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
+    public override void Apply() 
+    {
+        QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", SacrificeNumber, ClearRequiredCount); 
+    }
 
     public override void Remove() 
-    {
+    {    
         if (isCleared) 
         {
             StatManager.instance.ChangeTemporaryStats_AttackDamage(-1f);
             StatManager.instance.ChangeTemporaryStats_EffectDamage(-1f);
+        }
+        else
+        {
+            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest2>());
         }
     }
 
@@ -813,7 +959,7 @@ public class SacrificeQuest1 : SpecialAugment
             StatManager.instance.ChangeTemporaryStats_AttackDamage(1f);
             StatManager.instance.ChangeTemporaryStats_EffectDamage(1f);
 
-            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest2>());
+            AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest2>());
             isCleared = true;
         }
     }
@@ -825,11 +971,16 @@ public class SacrificeQuest2 : SpecialAugment
     int ClearRequiredCount = 70;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_27", "Sacrifice II", "Accept a sacrifice II.\nComplete it to Receive a moderate reward", "Quest", 3);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_27", "Sacrifice II", "Accept a sacrifice II quest.\nComplete it to Receive a moderate reward", "Quest", 3);
+        SetAdditionalDescription("Quest: sacrifice 70 balls for <sprite=0> +15%, <sprite=2> +15%, 500 Gold");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SacrificeQuest1>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
-    public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
+    public override void Apply() 
+    {
+        QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", SacrificeNumber, ClearRequiredCount);
+    }
 
     public override void Remove() 
     {
@@ -845,13 +996,13 @@ public class SacrificeQuest2 : SpecialAugment
         SacrificeNumber++;
         if (SacrificeNumber <= ClearRequiredCount)
             QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", SacrificeNumber, ClearRequiredCount);
-        if (SacrificeNumber >= 50 && !isCleared)
+        if (SacrificeNumber >= ClearRequiredCount && !isCleared)
         {
             StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.15f);
             StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.15f);
-            StatManager.instance.GetGold(50);
+            StatManager.instance.GetGold(500);
 
-            AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SacrificeQuest3>());
+            AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest3>());
             isCleared = true;
         }
     }
@@ -863,13 +1014,21 @@ public class SacrificeQuest3 : SpecialAugment
     private bool isCleared;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_28", "Sacrifice III", "Accept a sacrifice III.\nComplete it to Receive a powerful reward", "Quest", 2);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_28", "Sacrifice III", "Accept a sacrifice III quest.\nComplete it to Receive a powerful reward", "Quest", 2);
+        SetAdditionalDescription("Quest: sacrifice 100 balls for secret reward");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SacrificeQuest2>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice III", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
 
-    public override void Remove() { }
+    public override void Remove() 
+    {
+        if (!isCleared)
+        {
+            AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest3>());
+        }
+    }
 
     public override void AfterDeathEffect(IBall ball)
     {
@@ -925,6 +1084,8 @@ public class ShareBallAtk : SpecialAugment
     {
         SetAugment("SPECIAL_30", "Inheritance", "Fallen ball's 70% attack power\ndivided among current balls", "Special", 5);
         SetAdditionalDescription(null);
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<InfiniteGrowBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply() { }
@@ -948,8 +1109,8 @@ public class StrongAdditionalAttack : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_31", "One in a thousand", "A powerful additional attack triggers at low chance", "Special", 3);
-        SetAdditionalDescription("Additional attack : deals damage scaling with <sprite=0> \n" +
-            "Critical chance is applied");
+        SetAdditionalDescription("Strong additional attack : 10 <sprite=0> for 1% chance\n" +
+            "It seems there are more powerful attacks...");
     }
 
     public override void Apply() { }
@@ -964,7 +1125,7 @@ public class StrongAdditionalAttack : SpecialAugment
             if (RandomValue < SuperUltraStrongAttackChance)
                 StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 500f, true));
             else if (RandomValue < SuperStrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f, true));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 50f, true));
             else if (RandomValue < StrongAttackChance)
                 StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 10f));
         }
@@ -984,6 +1145,8 @@ public class RandomEffect : SpecialAugment
         { "BossSpawn", 0.01f },
         { "Execution", 0.01f },
     };
+
+
     private void OnEnable()
     {
         SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nit may be positive or negative", "Special", 3);
@@ -996,7 +1159,8 @@ public class RandomEffect : SpecialAugment
 
     public override void AfterMainAttackEffect(IBrick Brick)
     {
-        float RandomValue = Random.value;
+
+    float RandomValue = Random.value;
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             float accumulatedProbability = 0;
@@ -1074,10 +1238,14 @@ public class RandomEffect : SpecialAugment
 public class ThunderStrike : SpecialAugment
 {
     Coroutine routine = null;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown / 2;
+    float Duration = StatManager.instance.Temporary_stat.EffectDuration * 3;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_33", "Arc Link", "All balls are linked by electricity, dealing electric damage", "Special", 1);
-        SetAdditionalDescription("Lightning damage : deals damage scales with brick's max health");
+        SetAugment("SPECIAL_33", "Arc Link", "All balls are linked by electricity for " + Duration + "seconds", "Special", 1, Cooldown);
+        SetAdditionalDescription("Lightning damage : 0.2 <sprite=2> + 3% of brick's max HP");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply() 
@@ -1099,20 +1267,45 @@ public class ThunderStrike : SpecialAugment
 
         while (true)
         {
-            yield return new WaitForSeconds(0.1f);
-
-            List<IBall> Balls = BallManager.Instance.InGameBall;
-            if (Balls.Count >= 2)
+            float elapsed = 0;
+            while(elapsed < Duration)
             {
-                VisualEffectManager.Instance.SpawnThunderStrike(Balls);
+                List<IBall> Balls = new List<IBall>();
 
-                for (int i = 0; i < Balls.Count - 1; i++)
+                foreach (IBall ball in BallManager.Instance.InGameBall)
                 {
-                    start = Balls[i].transform.position;
-                    end = Balls[i + 1].transform.position;
+                    if (!Balls.Contains(ball))
+                        Balls.Add(ball);
+                }
+                foreach (IBall ball in BallManager.Instance.InGameSpecialBall)
+                {
+                    if (!Balls.Contains(ball))
+                        Balls.Add(ball);
+                }
+
+                if (Balls.Count >= 2)
+                {
+                    VisualEffectManager.Instance.SpawnThunderStrike(Balls);
+
+                    for (int i = 0; i < Balls.Count - 1; i++)
+                    {
+                        start = Balls[i].transform.position;
+                        end = Balls[i + 1].transform.position;
+
+                        hits = Physics2D.LinecastAll(start, end);
+                        for (int j = 0; j < hits.Length; j++)
+                            if (hits[j].collider.CompareTag("Brick"))
+                            {
+                                IBrick brick = hits[j].collider.GetComponent<IBrick>();
+
+                                brick.DamageByLightningEffect(10, 0);
+                            }
+                    }
+                    start = Balls[Balls.Count - 1].transform.position;
+                    end = Balls[0].transform.position;
 
                     hits = Physics2D.LinecastAll(start, end);
-                    for(int j = 0; j < hits.Length; j++)
+                    for (int j = 0; j < hits.Length; j++)
                         if (hits[j].collider.CompareTag("Brick"))
                         {
                             IBrick brick = hits[j].collider.GetComponent<IBrick>();
@@ -1120,18 +1313,10 @@ public class ThunderStrike : SpecialAugment
                             brick.DamageByLightningEffect(10, 0);
                         }
                 }
-                start = Balls[Balls.Count - 1].transform.position;
-                end = Balls[0].transform.position;
-
-                hits = Physics2D.LinecastAll(start, end);
-                for (int j = 0; j < hits.Length; j++)
-                    if (hits[j].collider.CompareTag("Brick"))
-                    {
-                        IBrick brick = hits[j].collider.GetComponent<IBrick>();
-
-                        brick.ArbitraryDamageAttack(0.3f + 0.03f * brick.HpTemp, false, (1 + 0.03f * brick.HpTemp).ToString("F1"), "Lightning");
-                    }
+                yield return new WaitForSeconds(0.1f);
+                elapsed += 0.1f;
             }
+            yield return new WaitForSeconds(Cooldown);
         }
     }
 }
@@ -1139,8 +1324,8 @@ public class RebirthBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_34", "Immortality", "Adds a low chance to revive after the ball falls", "Special", 5);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_34", "Immortality", "Adds a 5% chance to revive after the ball died", "Special", 5);
+        SetAdditionalDescription("Excluding certain balls");
     }
 
     public override void Apply() { }
@@ -1189,12 +1374,12 @@ public class SpawnBallAmountMultiple1 : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.SpawnBallAmount *= 2;
+        AugmentManager.instance.SpawnBallAmount = 2;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.SpawnBallAmount /= 2;
+        AugmentManager.instance.SpawnBallAmount = 1;
     }
 }
 
@@ -1208,12 +1393,12 @@ public class SpawnBallAmountMultiple2 : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.SpawnBallAmount *= 3;
+        AugmentManager.instance.SpawnBallAmount = 3;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.SpawnBallAmount /= 3;
+        AugmentManager.instance.SpawnBallAmount = 1;
     }
 }
 public class BallSwarm : SpecialAugment
@@ -1221,60 +1406,34 @@ public class BallSwarm : SpecialAugment
     bool isGetAugment = false;
     bool Upgrade = false;
 
-    int RequiredBall = 30;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_38", "Ball Swarm", "Attack power increases \nwhen 30 or more balls are summoned", "Special", 4);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_38", "Ball Swarm", "<sprite=0> +2 \nwhen 15 or more balls are summoned", "Special", 4);
+        SetAdditionalDescription("Extra balls are stored and released one by one when the count falls below 15");
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<LonelyBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
         isGetAugment = true;
-    }
 
-    public override void Remove()
-    {
-        isGetAugment = false;
-        if (Upgrade)
-            StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
-    }
-
-    private void Update()
-    {
-        if (isGetAugment)
-        { 
-            if (BallManager.Instance.InGameBall.Count >= RequiredBall && !Upgrade)
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LonelyBall>());
+        if (BallManager.Instance.InGameBall.Count > 15)
+        {
+            for (int i = 0; i < BallManager.Instance.InGameBall.Count - 15; i++)
             {
-                Upgrade = true;
-                StatManager.instance.ChangeTemporaryStats_AttackDamage(2f);
-            }
-            else if(BallManager.Instance.InGameBall.Count < 30 && Upgrade)
-            {
-                Upgrade = false;
-                StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
+                BallManager.Instance.LeftBallCount++;
+                BallManager.Instance.TakeBall(BallManager.Instance.InGameBall[i]);
             }
         }
     }
-}
-public class LonelyBall : SpecialAugment
-{
-    bool isGetAugment = false;
-    bool Upgrade = false;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_39", "Lonely Ball", "Attack power increases \nwhen 5 or less balls are summoned", "Special", 4);
-        SetAdditionalDescription(null);
-    }
-
-    public override void Apply()
-    {
-        isGetAugment = true;
-    }
 
     public override void Remove()
     {
         isGetAugment = false;
+
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LonelyBall>());
         if (Upgrade)
             StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
     }
@@ -1283,29 +1442,152 @@ public class LonelyBall : SpecialAugment
     {
         if (isGetAugment)
         {
+            if (BallManager.Instance.InGameBall.Count <= 15)
+            {
+                int ballsToAdd = Mathf.Min(15 - BallManager.Instance.InGameBall.Count, BallManager.Instance.LeftBallCount);
+                CreateBall(ballsToAdd);
+                BallManager.Instance.LeftBallCount -= ballsToAdd;
+            }
+
+            if (BallManager.Instance.InGameBall.Count >= 15 && !Upgrade)
+            {
+                Upgrade = true;
+                StatManager.instance.ChangeTemporaryStats_AttackDamage(2f);
+                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
+                StatManager.instance.isChangedStat = false;
+            }
+            if (BallManager.Instance.InGameBall.Count < 15 && BallManager.Instance.LeftBallCount == 0 && Upgrade)
+            {
+                Upgrade = false;
+                StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
+                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
+                StatManager.instance.isChangedStat = false;
+            }
+        }
+    }
+
+    public void CreateBall(int num)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            IBall ball = GetSpecificBall(BallManager.Instance.NormalBall);
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+            {
+                IBall BombBall = GetSpecificBall("BombBall");
+            }
+        }
+    }
+
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
+    }
+}
+public class LonelyBall : SpecialAugment
+{
+    bool isGetAugment = false;
+    bool Upgrade = false;
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_39", "Lonely Ball", "<sprite=0> +2 \nwhen 5 or less balls are summoned", "Special", 4);
+        SetAdditionalDescription("Extra balls are stored\n" +
+            "and released one by one when the count falls below 5");
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<BallSwarm>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
+    }
+
+    public override void Apply()
+    {
+        isGetAugment = true;
+
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<BallSwarm>());
+        if (BallManager.Instance.InGameBall.Count > 5)
+        {
+            for (int i = 0; i < BallManager.Instance.InGameBall.Count - 5; i++)
+            {
+                BallManager.Instance.LeftBallCount++;
+                BallManager.Instance.TakeBall(BallManager.Instance.InGameBall[i]);
+            }
+        }
+    }
+
+    public override void Remove()
+    {
+        isGetAugment = false;
+
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<BallSwarm>());
+        if (Upgrade)
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
+    }
+
+    private void Update()
+    {
+        if (isGetAugment)
+        {
+            if(BallManager.Instance.InGameBall.Count <= 5)
+            {
+                int ballsToAdd = Mathf.Min(5 - BallManager.Instance.InGameBall.Count, BallManager.Instance.LeftBallCount);
+                CreateBall(ballsToAdd);
+                BallManager.Instance.LeftBallCount -= ballsToAdd;
+            }
+
             if (BallManager.Instance.InGameBall.Count <= 5 && !Upgrade)
             {
                 Upgrade = true;
                 StatManager.instance.ChangeTemporaryStats_AttackDamage(2f);
-                BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(2, 2, 2);
+                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
+                StatManager.instance.isChangedStat = false;
+                //BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(2, 2, 2);
             }
-            else if (BallManager.Instance.InGameBall.Count > 5 && Upgrade)
+            if (BallManager.Instance.InGameBall.Count > 5 && BallManager.Instance.LeftBallCount == 0 && Upgrade)
             {
                 Upgrade = false;
                 StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
-                BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(1, 1, 1);
+                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
+                StatManager.instance.isChangedStat = false;
+                //BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(1, 1, 1);
             }
         }
+    }
+
+    public void CreateBall(int num)
+    {
+        for(int i = 0; i < num; i++)
+        {
+            IBall ball = GetSpecificBall(BallManager.Instance.NormalBall);
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+            {
+                IBall BombBall = GetSpecificBall("BombBall");
+            }
+        }
+    }
+
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
     }
 }
 public class SuicideBoomBall : SpecialAugment
 {
-    float damage = 50;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_40", "Explosive Ball", "A low chance for the ball to explode after an attack", "Special", 1);
+        SetAugment("SPECIAL_40", "Potential Bomb", "A low chance for the ball to explode after an attack", "Special", 1);
         SetAdditionalDescription("Explosion damage scales with <sprite=2> and hits all nearby bricks\n" +
             "After explosion, the ball dies but has a high chance to revive");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply() { }
@@ -1315,29 +1597,41 @@ public class SuicideBoomBall : SpecialAugment
     public override void AfterMainAttackEffect(IBrick Brick)
     {
         IBall ball = Brick.RecentlyBall;
-        if(Random.value < 0.1f)
+        if(Random.value < 0.02f && !BallManager.Instance.InGameSpecialBall.Contains(ball))
         {
+            Brick.ExplosionAttack(3f);
             VisualEffectManager.Instance.SpawnParticle("SuicideBoomBall", Brick.transform.position, 1);
-            Brick.ArbitraryDamageAttack(
-                    (damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                    false,
-                    ((damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
-                    "Explosion");
             foreach (IBrick brick in Brick.detectArea.NearbyBricks)
             {
-                brick.ArbitraryDamageAttack(
-                    (damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                    false,
-                    ((damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
-                    "Explosion");
+                brick.ExplosionAttack(3f);
             }
             ball.BallDied();
             if(Random.value < 0.8f)
             {
-                BallManager.Instance.CreateSpecificBall(1, ball.BallType);
+                CreateBall(1, ball.BallType);
             }
         }
     }
+
+    public void CreateBall(int num, string BallType)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            IBall ball = GetSpecificBall(BallType);
+        }
+    }
+
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
+    }
+
 }
 public class SplitBall : SpecialAugment
 {
@@ -1359,7 +1653,7 @@ public class SplitBall : SpecialAugment
 
     public override void BeforeAttackEffect(IBrick Brick)
     {
-        if(Random.value < 0.07f)
+        if(Random.value < 0.04f)
         {
             IBall RecentlyBall = Brick.RecentlyBall;
             StartCoroutine(SplitBallEffect(RecentlyBall));
@@ -1388,27 +1682,43 @@ public class SplitBall : SpecialAugment
 
     public void CreateBall(int Num, IBall RecentlyBall)
     {
-        for (int i = 0; i < Num; i++)
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_50"))
         {
-            IBall ball = GetSpecificBall(RecentlyBall.BallType);
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
-            {
-                IBall BombBall = GetSpecificBall("BombBall");
-            }
-            ball.gameObject.SetActive(false);
-            ball.StartPosition = RecentlyBall.gameObject.transform.position;
-            ball.linearVelocityYValue = Random.Range(-5f, 5f);
-            if(ball.linearVelocityYValue >= 0)
-            {
-                ball.linearVelocityYValue += 3f;
-            }
-            else
-            {
-                ball.linearVelocityYValue -= 3f;
-            }
-            ball.gameObject.SetActive(true);
-            StartCoroutine(SplitBallEffect(ball));
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(Num * 0.2f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(Num * 0.2f);
         }
+        else if (AugmentManager.instance.determineAugmentID("SPECIAL_38"))
+        {
+            BallManager.Instance.LeftBallCount += Num;
+        }
+        else if (AugmentManager.instance.determineAugmentID("SPECIAL_39"))
+        {
+            BallManager.Instance.LeftBallCount += Num;
+        }
+        else
+        {
+            for (int i = 0; i < Num; i++)
+            {
+                IBall ball = GetSpecificBall(RecentlyBall.BallType);
+                if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+                {
+                    IBall BombBall = GetSpecificBall("BombBall");
+                }
+                ball.gameObject.SetActive(false);
+                ball.StartPosition = RecentlyBall.gameObject.transform.position;
+                ball.linearVelocityYValue = Random.Range(-5f, 5f);
+                if (ball.linearVelocityYValue >= 0)
+                {
+                    ball.linearVelocityYValue += 3f;
+                }
+                else
+                {
+                    ball.linearVelocityYValue -= 3f;
+                }
+                ball.gameObject.SetActive(true);
+                StartCoroutine(SplitBallEffect(ball));
+            }
+        }     
     }
     
     private IBall GetSpecificBall(string ballTypeName)
@@ -1432,37 +1742,23 @@ public class CurseBall : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SummonGhostBall>());
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<CurseTwice>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SummonGhostBall>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<EnhanceCurseAttack>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<ContinuingCurseAttack>());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<SummonGhostBall>());
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<CurseTwice>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SummonGhostBall>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<EnhanceCurseAttack>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ContinuingCurseAttack>());
     }
 
     public override void AfterDeathEffect(IBall ball)
     {
-        if (Random.value < AugmentManager.instance.effectChance.CurseChance)
+        if (Random.value < AugmentManager.instance.effectChance.CurseChance && BrickManager.Instance.CurrentBricks.Count > 0)
         {
-            for (int i = 0; i < AugmentManager.instance.CurseActiveNumber; i++)
-            {
-                int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-                if (BrickManager.Instance.CurrentBricks.Count != 0)
-                    while (BrickManager.Instance.CurrentBricks[index].RecentlyBall == null)
-                    {
-                        index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
-                    }
-                try
-                {
-                    BrickManager.Instance.CurrentBricks[index].DamageByCurse();
-                }
-                catch(ArgumentOutOfRangeException)
-                {
-                    Debug.Log("There are no Bricks");
-                }
-            }
+            BrickManager.Instance.GetRandomBrick().DamageByCurse();
         }
     }
 }
@@ -1470,10 +1766,12 @@ public class SummonGhostBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_43", "Revenant", "When the ball falls, \nSummon Ghost Ball at low chance", "Effect", 3);
-        SetAdditionalDescription("Summoned Ghost Balls do not collide with each balls \n" +
-            "and disappear after 10 seconds\n" +
+        SetAugment("SPECIAL_43", "Revenant", "When the ball falls, \nSummon ghost ball at low chance", "Effect", 3);
+        SetAdditionalDescription("Summoned ghost balls do not collide with each balls \n" +
+            "and disappear after 8 seconds\n" +
             "When a Ghost Ball is disappear, Curse Attack activates with a 100% chance");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply() 
@@ -1492,29 +1790,37 @@ public class SummonGhostBall : SpecialAugment
             BallManager.Instance.CreateGhostBall(1, ball);
     }
 }
-public class CurseTwice : SpecialAugment
+public class EnhanceCurseAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_44", "Persistent Grudge", "All curse attack are doubled", "Effect", 2);
-        SetAdditionalDescription("Curse damage : deals random damage based on <sprite=0>");
+        SetAugment("SPECIAL_44", "Endless Revenge", "Curse damage increases by 1.5% whenever the ball dies", "Effect", 2);
+        SetAdditionalDescription("30% of the balls that died \n" +
+            "before acquiring this augment will be counted");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply() 
     {
-        AugmentManager.instance.CurseActiveNumber = 2;
+        AugmentManager.instance.CurseDamageValue += (GameManager.instance.DiedBalls * 0.3f) * 0.01f;
     }
 
     public override void Remove() 
     {
-        AugmentManager.instance.CurseActiveNumber = 1;
+        AugmentManager.instance.CurseDamageValue = 1f;
+    }
+
+    public override void AfterDeathEffect(IBall ball)
+    {
+        AugmentManager.instance.CurseDamageValue += 0.01f;
     }
 }
 public class DeathEffectTwice : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_45", "Die again?", "All actions performed after the ball's death are doubled", "Special", 1);
+        SetAugment("SPECIAL_45", "Die Again?", "All actions performed after the ball's death are doubled", "Special", 1);
         SetAdditionalDescription(null);
     }
 
@@ -1541,12 +1847,16 @@ public class SpawnBombBall : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<RebornBombBall>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<RebornBombBall>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SuicideBoomBall>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").AddComponent<RebornBombBall>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<RebornBombBall>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SuicideBoomBall>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
     }
 }
 public class ChangeNormalToGlass : SpecialAugment
@@ -1574,8 +1884,10 @@ public class RebornBombBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_48", "Bomb Modification", "Bomb ball revive a low chance after explode", "Special", 3);
+        SetAugment("SPECIAL_48", "Bomb Modification", "Bomb ball revive a low chance after explode", "Special", 4);
         SetAdditionalDescription(null);
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply() { }
@@ -1605,7 +1917,7 @@ public class OneMoreChance : SpecialAugment
     {
         if (!isRevived && BallManager.Instance.InGameBall.Count <= 0)
         {
-            BallManager.Instance.CreateSpecificBall(5, BallManager.Instance.NormalBall, true);
+            BallManager.Instance.CreateBall(5);
             isRevived = true;
         }
     }
@@ -1613,28 +1925,41 @@ public class OneMoreChance : SpecialAugment
 
 public class Concentrate : SpecialAugment
 {
-    int MaxCount = 3;
-    int Count = 3;
+    int MaxCount = 10;
+    int Count = 10;
+    int DestroyedBall = 0;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_50", "Concentrate", "Stats increase massively, \nbut 3 ball fall, it's game over", "Special", 0);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_50", "Concentrate", "Stats increase massively, \nbut 10 ball fall, it's game over", "Special", 0);
+        SetAdditionalDescription("Attack, Effect Damage +300%\n" +
+            "Balls are limited to 10\n" +
+            "Excess balls are destroyed\n" +
+            "If fewer than 10 balls, generate until 10\n" +
+            "Balls generated from now on convert to 0.2 Attack, Effect Damage");
     }
 
     public override void Apply()
     {
         QuestAlarm.Instance.SetQuest("Concentrate", "GameOver In",  Count, 0);
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(3.3f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(2.6f);
-        StatManager.instance.ChangeTemporaryStats_EffectDuration(StatManager.instance.Temporary_stat.EffectDuration * 0.3f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(3f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(3f);
+        DestroyedBall = BallManager.Instance.InGameBall.Count - 10 <= 0 ? 0 : BallManager.Instance.InGameBall.Count - 10;
+        BallManager.Instance.DestroyBallNum(DestroyedBall, true);
+        CreateBall(10 - BallManager.Instance.InGameBall.Count <= 0 ? 0 : 10 - BallManager.Instance.InGameBall.Count);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(DestroyedBall * 0.2f);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(DestroyedBall * 0.2f);
     }
 
     public override void Remove() 
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-3.3f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-2.6f);
-        StatManager.instance.ChangeTemporaryStats_EffectDuration(-(StatManager.instance.Temporary_stat.EffectDuration * 0.3f));
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<SpawnBombBall>());
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-3f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-3f);
+
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-(DestroyedBall * 0.2f));
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-(DestroyedBall * 0.2f));
+        DestroyedBall = 0;
+        MaxCount = 10;
+        Count = 10;
     }
 
     public override void AfterDeathEffect(IBall ball)
@@ -1647,14 +1972,33 @@ public class Concentrate : SpecialAugment
             Debug.Log("Game Over");
         }
     }
+
+    public void CreateBall(int num)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            IBall ball = GetSpecificBall(BallManager.Instance.NormalBall);
+        }
+    }
+
+    private IBall GetSpecificBall(string ballTypeName)
+    {
+        IBall ball = null;
+
+        Type ballType = System.Type.GetType(ballTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(ballType);
+        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        return ball;
+    }
 }
 public class GroupViolence: SpecialAugment
 {
     bool isGetAugment = false;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_51", "Group Violence", "Only attacks the brick with the highest health", "Special", 3);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_51", "Group Violence", "After attack, transfers 10% of Attack damage to the brick with the highest HP", "Special", 3);
+        SetAdditionalDescription("Applies only to normal attacks and specific effects attacks");
     }
 
     public override void Apply()
@@ -1672,28 +2016,54 @@ public class GroupViolence: SpecialAugment
         if (isGetAugment && BrickManager.Instance.CurrentBricks.Count > 0)
         {
             float maxHp = BrickManager.Instance.CurrentBricks.Max(b => b.HP);
-            BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp);
+            BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp && b.BrickType != "IgnoreBrick");
         }
+    }
+
+    public override void AfterAttackEffect(IBrick Brick)
+    {
+        if(Brick != BrickManager.Instance.MainBrick)
+            DamageManager.ArbitraryDamageAttack
+                (BrickManager.Instance.MainBrick, StatManager.AttackDamage * 0.1f, false, (StatManager.AttackDamage * 0.1f).ToString("F1"), "Additional");
     }
 }
 public class Oneness: SpecialAugment
 {
     IBall MainBall = null;
     bool isGetAugment = false;
+    Coroutine routine;
     private void OnEnable()
     {
         SetAugment("SPECIAL_52", "Oneness", "All balls merge into one,\nthe ball becomes stronger as it merges", "Special", 2);
         SetAdditionalDescription(null);
     }
 
+    private void Update()
+    {
+        if(isGetAugment == true && MainBall == null)
+            StartCoroutine(WaitforMainBall());
+        else if(isGetAugment)
+        {
+            for (int i = 0; i < BallManager.Instance.InGameBall.Count; i++)
+            {
+                if (BallManager.Instance.InGameBall[i] != MainBall && BallManager.Instance.InGameBall[i].FusionMoveRoutine == null)
+                    BallManager.Instance.InGameBall[i].FusionMoveRoutine = StartCoroutine(MoveToPosition(BallManager.Instance.InGameBall[i], MainBall, 5f, 5f));
+            }
+        }
+    }
+
     public override void Apply() 
     {
+        IBall MainBall = null;
         isGetAugment = true;
+        routine = StartCoroutine(WaitforMainBall());
     }
 
     public override void Remove()
     {
+        IBall MainBall = null;
         isGetAugment = false;
+        StopCoroutine(routine);
     }
 
     IEnumerator OnenessBallEffect(IBall RecentlyBall)
@@ -1715,39 +2085,27 @@ public class Oneness: SpecialAugment
         }
     }
 
-    public void Update()
+    IEnumerator WaitforMainBall()
     {
-        if (BallManager.Instance.InGameBall.Count > 0 && isGetAugment)
+        while(MainBall == null)
         {
-            if (BallManager.Instance.InGameBall.Count == 1)
+            for (int i = 0; i < BallManager.Instance.InGameBall.Count; i++)
             {
-                MainBall = BallManager.Instance.InGameBall[0];
-            }
-            else if (BallManager.Instance.InGameBall.Count >= 2)
-            {
-                if (MainBall == null)
-                    MainBall = BallManager.Instance.InGameBall[0];
-                for (int i = 1; i < BallManager.Instance.InGameBall.Count; i++)
+                IBall ball = BallManager.Instance.InGameBall[i];
+                if (ball.transform.position.y > -1 && ball.rb.linearVelocityY > 0)
                 {
-                    IBall ball = BallManager.Instance.InGameBall[i];
-                    if (ball.FusionMoveRoutine == null && MainBall != null)
-                    {
-                        ball.FusionMoveRoutine = StartCoroutine(MoveToPosition(ball, MainBall, 5f, 5f));
-                    }
+                    MainBall = ball;
                 }
             }
-            else if(BallManager.Instance.InGameBall.Count <= 0)
-            {
-                MainBall = null;
-            }
+            yield return null;
         }
     }
 
     IEnumerator MoveToPosition(IBall obj, IBall target, float duration, float smoothTime)
     {
-        obj.gameObject.GetComponent<CircleCollider2D>().enabled = false;
-        yield return new WaitForSeconds(1f);
-        while (Vector3.Distance(obj.transform.position, target.transform.position) > 0.28f)
+        yield return new WaitForSeconds(0.5f);
+        obj.gameObject.GetComponent<Collider2D>().enabled = false;
+        while (Vector3.Distance(obj.transform.position, target.transform.position) > 0.35f)
         {
             if (target != null)
             {
@@ -1796,11 +2154,11 @@ public class HappyBirthday : SpecialAugment
     IEnumerator AtkUp(IBall ball)
     {
         yield return null;
-        ball.BallBaseDamage += 10;
+        ball.BallBaseDamage += 30;
         ball.Renderer.material.color = Color.white * 2;
         yield return new WaitForSeconds(Duration);
         ball.Renderer.material.color = Color.white;
-        ball.BallBaseDamage -= 10;
+        ball.BallBaseDamage -= 30;
     }
 }
 
@@ -1901,37 +2259,31 @@ public class HalfBallSacrifice : SpecialAugment
     }
 }
 
-public class FreshNewStart : SpecialAugment
+public class Chronobreak : SpecialAugment
 {
-    int AugmentNum = 0;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_54", "Fresh New Start", "Receive a massive reward\nand return to the beginning state", "Special", 0);
-        SetAdditionalDescription("Gain Attack, Effect Damage based on the number of augments acquired");
+        SetAugment("SPECIAL_54", "Chronobreak", "lose half of augment, Attack and Effect Damage\nThen, return to Wave 1", "Special", 0);
+        SetAdditionalDescription("The minimum wave to return to is Wave 1\n" +
+            "All bricks are destroyed\n" +
+            "All balls are destroyed, then 10 balls are summoned \n" +
+            "Certain bricks and balls are excluded");
     }
 
     public override void Apply()
     {
-        AugmentNum = AugmentManager.instance.activeStatAugments.Count
-                   + AugmentManager.instance.activeFieldAugments.Count
-                   + AugmentManager.instance.activeSpecialAugments.Count;
-        AugmentManager.instance.ClearAllAugments();
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(AugmentNum * 2);
-        LevelManager.Instance.LevelSet(1);
-        foreach (IBall ball in BallManager.Instance.InGameBall)
+        BrickManager.Instance.WaveSkip(-(GameManager.instance.Wave + 2));
+        for (int i = 0; i < AugmentManager.instance.activeAugments.Count / 2; i++)
         {
-            StartCoroutine(BallRemoveEffect(ball));
-            BallManager.Instance.TakeBall(ball);
-        }
-        BallManager.Instance.CreateBall(1);
-        QuestAlarm.Instance.ClearQuest();
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager").GetComponent<FreshNewStart>());
-    }
+            int RandomIndex = Random.Range(0, AugmentManager.instance.activeAugments.Count);
+            AugmentManager.instance.RemoveAugment(AugmentManager.instance.activeAugments[RandomIndex]);
 
-    private IEnumerator BallRemoveEffect(IBall ball)
-    {
-        VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
-        yield return null;
+        }
+        BallManager.Instance.DestroyBallNum(BallManager.Instance.InGameBall.Count);
+        BrickManager.Instance.DestroyBricksNum(BrickManager.Instance.CurrentBricks.Count);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-(StatManager.AttackDamage / 2));
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-(StatManager.EffectDamage / 2));
+        BallManager.Instance.CreateBall(10);
     }
 
     public override void Remove()
@@ -1947,17 +2299,20 @@ public class DecayingPoison: SpecialAugment
         SetAugment("SPECIAL_55", "Decaying Poison", "When poisoned, decay is also applied", "Effect", 3);
         SetAdditionalDescription("Decay effect : increases all damage taken by stacks \n" +
             "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
+            !AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FlammablePoison>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<FlammablePoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
         AugmentManager.instance.effectDuration.FireDuration += 1f;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<FlammablePoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
         AugmentManager.instance.effectDuration.FireDuration -= 1f;
     }
 }
@@ -1969,17 +2324,20 @@ public class FlammablePoison: SpecialAugment
         SetAugment("SPECIAL_56", "Flammable Poison", "When poisoned, fire is also applied", "Effect", 3);
         SetAdditionalDescription("Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
             "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
+            !AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayingPoison>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<DecayingPoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
         AugmentManager.instance.effectDuration.DecayDuration += 2f;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<DecayingPoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
         AugmentManager.instance.effectDuration.DecayDuration -= 2f;
     }
 }
@@ -2216,8 +2574,8 @@ public class FusionBricks : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health. \nIt is treated as a boss", "Special", 0);
-        SetAdditionalDescription("Together we survive, Divided we will die");
+        SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health.", "Special", 2);
+        SetAdditionalDescription("It is treated as a boss");
     }
 
     public override void Apply()
@@ -2255,6 +2613,11 @@ public class GainBallAfterLevelUp : SpecialAugment
     public override void Remove()
     {
 
+    }
+
+    public override void AfterLevelUpEffect()
+    {
+        DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(AugmentManager.instance.SpawnBallAmount, BallManager.Instance.OnCreateBall));
     }
 }
 
@@ -2522,5 +2885,101 @@ public class BossDamageUp : SpecialAugment
         {
             Brick.TotalMultiple *= 1.1f;
         }
+    }
+}
+
+public class ContinuingCurseAttack : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_75", "Possession", "Transforms Curse Damage into a damage-over-time attack", "Special", 2);
+        SetAdditionalDescription(null);
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+
+    }
+}
+
+public class LevelUpAgain : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up", "Special", 6);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.augmentsSet.Add(gameObject.AddComponent<LevelUpAgain>());
+    }
+
+    public override void AfterLevelUpEffect()
+    {
+        if (!AugmentManager.instance.isLevelUpOnceAgain)
+        {
+            AugmentManager.instance.isLevelUpOnceAgain = true;
+            LevelManager.Instance.LevelUp();
+        }
+    }
+}
+
+public class AtkUpWhenCritical : SpecialAugment
+{
+    Coroutine Routine;
+    int setTime = 3;
+
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_77", "Lucky Streak", "When critical attack hits, attack damage +1.8\nfor 3 seconds", "Special", 4);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        Routine = null;
+    }
+
+    public override void Remove()
+    {
+
+    }
+
+    public override void CriticalAttackEffect(IBrick Brick)
+    {
+        if (Routine == null)
+        {
+            Routine = StartCoroutine(AttackDamageUpFewSec(1.8f));
+        }
+        else
+        {
+            setTime = 3;
+        }
+    }
+
+    IEnumerator AttackDamageUpFewSec(float AttackUpValue)
+    {
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(AttackUpValue);
+        while (setTime > 0)
+        {
+            yield return new WaitForSeconds(1);
+            setTime--;
+        }
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-AttackUpValue);
+        setTime = 3;
+        Routine = null;
     }
 }

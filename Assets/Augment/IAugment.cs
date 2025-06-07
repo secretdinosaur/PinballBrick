@@ -34,6 +34,8 @@ public abstract class IAugment : MonoBehaviour
     public virtual void AfterAttackEffect(IBrick Brick) { }
 
     public virtual void AfterBrickDieEffect(IBrick Brick) { }
+
+    public virtual void AfterLevelUpEffect() { }
     
 }
 
@@ -85,7 +87,7 @@ public abstract class SpecialAugment : IAugment
         Type = type;
         Rarity = rarity;
         CoolTime = cooltime;
-        AugmentManager.instance.S("Special" + "   " + rarity + "   " + name + "   " + description + "\n");
+        //AugmentManager.instance.S("Special" + "   " + rarity + "   " + name + "   " + description + "\n");
 
     }
 

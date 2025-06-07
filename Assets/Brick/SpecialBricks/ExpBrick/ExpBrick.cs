@@ -16,7 +16,7 @@ public class ExpBrick : IBrick
         if (collision.gameObject.CompareTag("Ball"))
         {
             TakeDamage(collision.gameObject.GetComponent<IBall>());
-            LevelManager.Instance.GetExp(7f + GameManager.instance.Wave / 2);
+            ItemManager.Instance.SpawnSpecificItem("ExpBead", transform.position, 1);
         }
     }
 

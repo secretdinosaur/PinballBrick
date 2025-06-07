@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Random = UnityEngine.Random;
 using TMPro;
 using TrailRenderer = UnityEngine.TrailRenderer;
+using Unity.VisualScripting;
 
 public partial class IBall : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public partial class IBall : MonoBehaviour
     public Coroutine FusionMoveRoutine = null;
 
     public Renderer Renderer;
+    public Color BrickColor;
 
     public int AttackNumber;
 
@@ -40,7 +42,7 @@ public partial class IBall : MonoBehaviour
 
     public void OnEnable()
     {
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        foreach (IAugment Augment in AugmentManager.instance.activeAugments)
         {
             Augment.AfterBirthEffect(this);
         }
@@ -50,9 +52,7 @@ public partial class IBall : MonoBehaviour
         transform.position = StartPosition;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
-        linearVelocityYValue = 10;
         spriteRenderer.color = new Color(1f, 1f, 1f);
-        TrailRenderer = gameObject.GetComponent<TrailRenderer>();
         BounceTime = 1f;
         MaxBounce = 0;
         detectArea = GetComponentInChildren<BallDetect>();
@@ -75,13 +75,36 @@ public partial class IBall : MonoBehaviour
         StartCoroutine(CalAttackDelayTime());
         AttackNumber = 0;
         StartCoroutine(EnableCollider());
+        BrickColor = spriteRenderer.color;
 
+        if(!BallManager.Instance.InGameBall.Contains(this) && BallManager.Instance.BallList.Contains(BallType))
+        {
+            BallManager.Instance.InGameBall.Add(this);
+            BallManager.Instance.inGameBallPosition.Add(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameBallCollider.Add(gameObject.GetComponent<Collider2D>());
+        }
+        else if (!BallManager.Instance.InGameSpecialBall.Contains(this) && BallManager.Instance.SpecialBallList.Contains(BallType))
+        {
+            BallManager.Instance.InGameSpecialBall.Add(this);
+            BallManager.Instance.inGameSpecialBallPosition.Add(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameSpecialBallCollider.Add(gameObject.GetComponent<Collider2D>());
+        }
     }
 
     public void BallDied()
     {
-        if(BallType != "GhostBall")
+        if (BallManager.Instance.InGameSpecialBall.Contains(this))
         {
+            BallManager.Instance.InGameSpecialBall.Remove(this);
+            BallManager.Instance.inGameSpecialBallPosition.Remove(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameSpecialBallCollider.Remove(gameObject.GetComponent<Collider2D>());
+        }
+        else if (BallManager.Instance.InGameBall.Contains(this))
+        {
+            BallManager.Instance.InGameBall.Remove(this);
+            BallManager.Instance.inGameBallPosition.Remove(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameBallCollider.Remove(gameObject.GetComponent<Collider2D>());
+
             Renderer.material.color = Color.white;
             if (isPhoenix)
             {
@@ -92,7 +115,7 @@ public partial class IBall : MonoBehaviour
             {
                 for (int i = 0; i < AugmentManager.instance.AfterDeathActiveNumber; i++)
                 {
-                    foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+                    foreach (IAugment Augment in AugmentManager.instance.activeAugments)
                     {
                         Augment.AfterDeathEffect(this);
                     }
@@ -104,15 +127,16 @@ public partial class IBall : MonoBehaviour
                     FusionMoveRoutine = null;
                 }
                 GetComponent<Collider2D>().enabled = false;
-                BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
+                GameManager.instance.DiedBalls += 1;
             }
         }
+        BallManager.Instance.TakeBall(this);
     }
 
     private IEnumerator EnableCollider()
     {
         GetComponent<Collider2D>().enabled = false;
-        while (transform.position.y < -2)
+        while (transform.position.y < -2 || transform.position.y > 4.5f)
         {
             yield return null;
         }
@@ -132,44 +156,9 @@ public partial class IBall : MonoBehaviour
         UpdateCurrentTarget();
 
         GrowthAttackDamageObserve = GrowthAttackDamage;
-        TrailRenderer.startColor = spriteRenderer.color;
         CurrentSpeed = rb.linearVelocity.magnitude;
-        if (isPhoenix)
-        {
-            TrailRenderer.enabled = true;
-            TrailRenderer.material.color = new Color(2, 0, 0);
-            TrailRenderer.time = 1;
-        }
-        else
-        {
-            TrailRenderer.material.color = new Color(1, 1, 1);
-        }
+
         
-        if (CurrentSpeed > 8 && (AugmentManager.instance.determineAugmentID("SPECIAL_12") || AugmentManager.instance.determineAugmentID("SPECIAL_13"))) //Speed Augment
-        {
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
-            {
-                SpecialCriticalChance = ((CurrentSpeed / 100f) * 1.5f);
-            }
-            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
-            {
-                TransformationMultiple = 1f + ((CurrentSpeed / 100f) * 2.5f);
-            }
-            TrailRenderer.enabled = true;
-            TrailRenderer.time = 1;
-        }
-        else
-        {
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
-            {
-                SpecialCriticalChance = 0f;
-            }
-            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
-            {
-                TransformationMultiple = 1f;
-            }
-            TrailRenderer.enabled = false;
-        }
         if(transform.position.y <= -10 && !isOverDeathLine)
         {
             BallDied();
@@ -197,7 +186,7 @@ public partial class IBall : MonoBehaviour
             else if (collision.gameObject.CompareTag("Brick"))
             {
                 MaxBounce = 0;
-                spriteRenderer.color = new Color(1f, 1f, 1f);
+                spriteRenderer.color = BrickColor;
             }
         }
         if (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball"))
@@ -331,12 +320,6 @@ public partial class IBall //Bounce = Power
     public float BounceTime { get; set; } = 1f;
     private int MaxBounce = 0;
     protected SpriteRenderer spriteRenderer;
-}
-
-public partial class IBall //Speed = Power
-{
-    private TrailRenderer TrailRenderer;
-    public float TransformationMultiple = 1f;
 }
 
 public partial class IBall //GrowBall

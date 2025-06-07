@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public bool isGameEnded = false;
+    public bool OnChaos = false;
 
     public GameObject PausePanel;
     public GameObject GameEndPanel;
@@ -39,8 +40,17 @@ public class GameManager : MonoBehaviour
     public TMP_Text WaveNoticeText;
     public TMP_Text WaveExtraNoticeText;
 
-    public int Wave;
-    public int DestroyedBricks; 
+    private int wave;
+    public int Wave
+    {
+        get {  return wave; }
+        set { wave = value;  }
+    }
+
+
+    public int DestroyedBricks;
+    public int SummonedBalls;
+    public int DiedBalls;
     void Awake()
     {
         instance = this;
@@ -72,12 +82,30 @@ public class GameManager : MonoBehaviour
         WaveExtraNoticeText = GameObject.Find("Canvas").transform.Find("WaveExtraNoticeText").GetComponent<TMP_Text>();
         Wave = 0;
         DestroyedBricks = 0;
+        SummonedBalls = 0;
+        DiedBalls = 0;
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
+
+        StartCoroutine(StartGame());
+    }
+
+    IEnumerator StartGame()
+    {
+        WaveNoticeText.gameObject.SetActive(true);
+
+        for (int i = 3; i > 0; i--)
+        {
+            WaveNoticeText.text = "Start In " + i;
+            yield return new WaitForSeconds(1f);
+        }
+
+        StartCoroutine(BallManager.Instance.CreateStartingBall());
+        BrickManager.Instance.SpawnBrickRoutine = StartCoroutine(BrickManager.Instance.SpawnBricks());
     }
 
     public IEnumerator WaveNotice()
     {
-        if(!BrickManager.Instance.BossSpawnCondition(Wave))
+        if (!BrickManager.Instance.BossSpawnCondition(Wave))
         {
             WaveNoticeText.text = "Wave " + Wave;
         }
@@ -161,7 +189,7 @@ public class GameManager : MonoBehaviour
         EffectDamageStatValueText.text = ((Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) *
             (Persistent_stat.EffectDamageMultiplier * statMultiplier.EffectDamageMultiplier)).ToString("F1");
 
-        EffectDurationStatValueText.text = Temporary_stat.EffectDuration.ToString() + "s";
+        EffectDurationStatValueText.text = (Temporary_stat.EffectDuration * 100).ToString("F1") + "%";
 
         GoldGainStatValueText.text = ((Persistent_stat.BonusGold + Temporary_stat.GoldGain) * 100).ToString("F1") + "%";
 

@@ -11,7 +11,9 @@ public partial class StatManager : MonoBehaviour
     public Persistent_Stat Persistent_stat; // If you want to use it elsewhere, use this variable
     public Temporary_Stat Temporary_stat; //
     public StatMultiplier statMultiplier; //
-    
+    public static float AttackDamage;
+    public static float EffectDamage;
+
     private string persistent_stat_filePath;
     private string temporary_stat_filePath;
     private string stat_Multiplier_filePath;
@@ -94,6 +96,9 @@ public partial class StatManager : MonoBehaviour
 
         ShowChangedStatRoutine = null;
         isChangedStat = false;
+
+        AttackDamage = (Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier;
+        EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
     }
     void InitializePersistentStats() // persistent stats
     {
@@ -101,7 +106,7 @@ public partial class StatManager : MonoBehaviour
         {
             AttackDamage = 5f,
             EffectDamage = 5f,
-            StartingBall = 1,
+            StartingBall = 5,
             BonusExp = 1f,
             CriticalChance = 0.0f,
             CriticalDamage = 1.1f,
@@ -128,7 +133,7 @@ public partial class StatManager : MonoBehaviour
     {
         Temporary_Stat initialStats = new Temporary_Stat
         {
-            StatLevel = new []{1, 1, 1, 1, 1, 1, 1, 1},
+            StatLevel = new[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             AttackDamage = 0f,
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
@@ -136,6 +141,7 @@ public partial class StatManager : MonoBehaviour
             EffectDuration = 1f,
             GoldGain = 0.0f,
             ExpGain = 0.0f,
+            SummonBall = 5
         };
         
         string json = JsonUtility.ToJson(initialStats, true);
@@ -180,6 +186,9 @@ public partial class StatManager : MonoBehaviour
         
         json = File.ReadAllText(temporary_stat_filePath);
         Temporary_stat = JsonUtility.FromJson<Temporary_Stat>(json);
+
+        AttackDamage = (Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier;
+        EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
     }
     
     public StatMultiplier LoadStatMultiplier() // Just Load
@@ -195,6 +204,9 @@ public partial class StatManager : MonoBehaviour
         
         json = File.ReadAllText(stat_Multiplier_filePath);
         statMultiplier = JsonUtility.FromJson<StatMultiplier>(json);
+
+        AttackDamage = (Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier;
+        EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
     }
 
     public void RunAttackDamageUpFewSec(float setTime, float AttackUpValue)
@@ -474,8 +486,8 @@ public partial class StatManager
         TotalChangedStatValue[0] += value;
         if (AugmentManager.instance.determineAugmentID("STAT_28"))
         {
-            Temporary_stat.EffectDamage += value * 0.1f;
-            TotalChangedStatValue[3] += value * 0.1f;
+            Temporary_stat.EffectDamage += value * 0.2f;
+            TotalChangedStatValue[3] += value * 0.2f;
         }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
@@ -489,6 +501,11 @@ public partial class StatManager
     }
     public void ChangeTemporaryStats_CriticalChance(float value)
     {
+        float MaxCriChance = 1f;
+        if (AugmentManager.instance.determineAugmentID("STAT_25"))
+        {
+            MaxCriChance = 0.1f;
+        }
         if (AugmentManager.instance.determineAugmentID("STAT_21"))
         {
             if(Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value != 0)
@@ -509,10 +526,10 @@ public partial class StatManager
         }
         else
         {
-            if (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value >= 1f)
+            if (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value >= MaxCriChance)
             {
-                float x = 1f - (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance);
-                float y = Mathf.Floor((value - x) * 100f) / 100f;
+                float x = MaxCriChance - (Persistent_stat.CriticalChance + Temporary_stat.CriticalChance);
+                float y = Mathf.Floor(((float)System.Math.Round(value, 2) - (float)System.Math.Round(x, 2)) * 100f) / 100f;
                 Temporary_stat.CriticalChance += (float)System.Math.Round(x, 2);
                 TotalChangedStatValue[2] += (float)System.Math.Round(x, 2);
                 if (y > 0)
@@ -536,8 +553,8 @@ public partial class StatManager
         TotalChangedStatValue[3] += (float)System.Math.Round(value, 2);
         if (AugmentManager.instance.determineAugmentID("STAT_28"))
         {
-            Temporary_stat.AttackDamage += value * 0.1f;
-            TotalChangedStatValue[0] += value * 0.1f;
+            Temporary_stat.AttackDamage += value * 0.2f;
+            TotalChangedStatValue[0] += value * 0.2f;
         }
         SaveTemporaryStat(Temporary_stat);
         isChangedStat = true;
@@ -567,13 +584,13 @@ public partial class StatManager
     {
         if(value >= 0)
         {
-            statMultiplier.AttackDamageMultiplier *= (float)System.Math.Round(value, 2);
+            statMultiplier.AttackDamageMultiplier *= (float)System.Math.Round(value, 3);
             TotalChangedStatValue[7] *= (float)System.Math.Round(value, 2);
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
-            statMultiplier.AttackDamageMultiplier /= (float)System.Math.Round(-value, 2);
+            statMultiplier.AttackDamageMultiplier /= (float)System.Math.Round(-value, 3);
             TotalChangedStatValue[7] /= (float)System.Math.Round(-value, 2);
             SaveStatMultiplier(statMultiplier);
         }
@@ -583,13 +600,13 @@ public partial class StatManager
     {
         if(value >= 0)
         {
-            statMultiplier.EffectDamageMultiplier *= (float)System.Math.Round(value, 2);
+            statMultiplier.EffectDamageMultiplier *= (float)System.Math.Round(value, 3);
             TotalChangedStatValue[8] *= (float)System.Math.Round(value, 2);
             SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
-            statMultiplier.EffectDamageMultiplier /= (float)System.Math.Round(-value, 2);
+            statMultiplier.EffectDamageMultiplier /= (float)System.Math.Round(-value, 3);
             TotalChangedStatValue[8] /= (float)System.Math.Round(-value, 2);
             SaveStatMultiplier(statMultiplier);
         }

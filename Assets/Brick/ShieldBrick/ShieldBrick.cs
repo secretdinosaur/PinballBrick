@@ -12,11 +12,12 @@ public class ShieldBrick : IBrick
     public GameObject Shield;
     private void OnEnable()
     {
+        base.OnEnable();
         BrickType = "ShieldBrick";
         Shield.SetActive(true);
         Shield.GetComponent<Renderer>().material.SetFloat("_Alpha", 0);
         IsShieldDestroyed = false;
-        ShieldCount = BasicShieldCount * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)] / 5;
+        ShieldCount = BasicShieldCount * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)] / 20;
         HPMultiplier = ShieldCount / BasicShieldCount;
         HP = ShieldCount;
         HpTemp = HP;

@@ -14,6 +14,7 @@ public partial class IBrick : MonoBehaviour
     private float hp;
     public bool IsBoss = false;
     public bool IsSpecialBrick = false;
+    public bool IsBigBoss = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -33,6 +34,7 @@ public partial class IBrick : MonoBehaviour
     public Coroutine Fire = null;
     public Coroutine Poison = null;
     public Coroutine Decay = null;
+    public Coroutine Curse = null;
     public Coroutine ExecutionCor = null;
     public Coroutine BrickHealCoroutine = null;
 
@@ -116,7 +118,7 @@ public partial class IBrick : MonoBehaviour
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
         LevelManager.Instance.GetExp(Exp);
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        foreach (IAugment Augment in AugmentManager.instance.activeAugments)
         {
             Augment.AfterBrickDieEffect(this);
         }
@@ -191,10 +193,11 @@ public partial class IBrick : MonoBehaviour
             HPText.fontSize = 5f;
         }
     }
-    public void Init(bool IsBoss, bool IsSpecialBrick, int Point, float Exp)
+    public void Init(bool IsBoss, bool IsSpecialBrick, bool IsBigBoss, int Point, float Exp)
     {
         this.IsBoss = IsBoss;
         this.IsSpecialBrick = IsSpecialBrick;
+        this.IsBigBoss = IsBigBoss;
         this.Point = Point;
         this.Exp = Exp;
 
@@ -228,6 +231,8 @@ public partial class IBrick : MonoBehaviour
         ExecutionObject2.transform.position = transform.position;
         isGoldBrick = false;
         spriteRenderer.material.SetFloat("_Decay", 0);
+        if (detectArea.NearbyBricks.Contains(this))
+            detectArea.NearbyBricks.Remove(this);
     }
 
     public void GetComponents()
@@ -294,6 +299,7 @@ public partial class IBrick
 
     public void TakeDamage(IBall ball)
     {
+        if (!gameObject.activeSelf) return;
         RecentlyBall = ball;
         float PreviousCritChance = RecentlyBall.SpecialCriticalChance;
         RecentlyBall.AttackDelayTime = 0f;
@@ -307,6 +313,7 @@ public partial class IBrick
 
     public void DamageByFireEffect(float effectDuration)
     {
+        if (!gameObject.activeSelf) return;
         BrickEffect.EffectStatusSet["Fire"].EffectStack +=
                 (BrickEffect.EffectStatusSet["Fire"].EffectStack != BrickEffect.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
         if (Fire == null)
@@ -320,6 +327,7 @@ public partial class IBrick
     }
     public void DamageByPoisonEffect(float effectDuration)
     {
+        if (!gameObject.activeSelf) return;
         BrickEffect.EffectStatusSet["Poison"].EffectStack +=
                 (BrickEffect.EffectStatusSet["Poison"].EffectStack != BrickEffect.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
         if (Poison == null)
@@ -341,10 +349,15 @@ public partial class IBrick
     }
     public void DecayEffect(float effectDuration)
     {
+        if (!gameObject.activeSelf) return;
         BrickEffect.EffectStatusSet["Decay"].EffectStack +=
                 (BrickEffect.EffectStatusSet["Decay"].EffectStack != BrickEffect.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
         if (Decay == null)
         {
+            if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+            {
+                return;
+            }
             Decay = StartCoroutine(BrickEffect.DecayEffect(effectDuration));
         }
         else
@@ -355,12 +368,23 @@ public partial class IBrick
     
     public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
     {
+        if (!gameObject.activeSelf) return;
         DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
     }
 
     public void DamageByCurse()
     {
-        DamageManager.DamageByCurse(this);
+        if (!gameObject.activeSelf) return;
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_75"))
+        {
+            if (Curse == null)
+                Curse = StartCoroutine(BrickEffect.DamageByCurse2());
+        }
+        else
+        {
+            DamageManager.DamageByCurse(this);
+        }
+
     }
 
     public float DecayDamageCalculate(float Damage)
@@ -373,6 +397,11 @@ public partial class IBrick
         DamageManager.AdditionalAttack(this, MaxAttackTime, TimeCount, DamageMultiflier);
     }
 
+    public void ExplosionAttack(float value)
+    {
+        DamageManager.ExplosionDamageAttack(this, value);
+    }
+
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
     {
         DamageManager.ArbitraryDamageAttack(this, damage, isCritical, damageText, DamageType);
@@ -381,7 +410,7 @@ public partial class IBrick
 
 public partial class IBrick
 {  
-    private IEnumerator Execution()
+    public IEnumerator Execution()
     {
         ExecutionObject1.SetActive(true);
         ExecutionObject2.SetActive(true);
