@@ -564,8 +564,8 @@ public class BrickEffectManager : MonoBehaviour
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
         float damage = isCritical ?
-              (baseDamage * 0.44f) * AugmentManager.instance.CurseDamageValue * DamageManager.CriticalDamage()
-            : (baseDamage * 0.44f) * AugmentManager.instance.CurseDamageValue;
+              (baseDamage * 0.77f) * AugmentManager.instance.CurseDamageValue * DamageManager.CriticalDamage()
+            : (baseDamage * 0.77f) * AugmentManager.instance.CurseDamageValue;
         float FinalDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
