@@ -111,6 +111,7 @@ public class AngryBall : FieldAugment
     {
         while(true)
         {
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(1.4f);
             foreach (Ball ball in BallManager.Instance.InGameBall)
             {
                 StartCoroutine(AngryBallEffect(ball));
@@ -125,7 +126,8 @@ public class AngryBall : FieldAugment
                 Vector3 forceDirection = rb.linearVelocity.normalized;
                 rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
             }
-
+            yield return new WaitForSeconds(0.5f);
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.4f);
             yield return new WaitForSeconds(period);
         }
     }
