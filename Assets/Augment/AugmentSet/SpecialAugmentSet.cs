@@ -2456,20 +2456,20 @@ public class InfiniteRapid : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_62", "Rapidfire", "Attack, Effect Damage Up,\nAll waves appear as transformed rapid waves", "Special", 3);
+        SetAugment("SPECIAL_62", "Rapidfire", "Effect damage +1.8, Effect duration +15%,\nAll waves appear as transformed rapid waves", "Special", 3);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(0.3f);
-        StatManager.instance.ChangeTemporaryStats_EffectDamage(0.3f);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(1.8f);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(0.15f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(-0.3f);
-        StatManager.instance.ChangeTemporaryStats_EffectDamage(-0.3f);
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-1.8f);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(-0.15f);
     }
 }
 
