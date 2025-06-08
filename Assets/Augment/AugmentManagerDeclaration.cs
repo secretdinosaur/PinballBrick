@@ -119,7 +119,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<WeatherChange>(),
             AugmentSet.AddComponent<DiceGamble>(),
             AugmentSet.AddComponent<Trampoline>(),
-            AugmentSet.AddComponent<Bombardment>(),
             ///////////////////////// Field
             AugmentSet.AddComponent<FireBall>(),
             AugmentSet.AddComponent<Homing>(),
@@ -211,11 +210,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
             AugmentSet.AddComponent<RebornBombBall>(),
             AugmentSet.AddComponent<SuicideBoomBall>(),
+            AugmentSet.AddComponent<Bombardment>(),
+            AugmentSet.AddComponent<InstantBombBall>()
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<Bombardment>()
+            AugmentSet.GetComponent<InstantBombBall>()
         };
 
         foreach (IAugment augment in TestAugments)
@@ -226,7 +227,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        RemoveAugment(AugmentSet.GetComponent<FireBall>());
+        AddAugment(AugmentSet.GetComponent<Bombardment>());
     }
 }
 

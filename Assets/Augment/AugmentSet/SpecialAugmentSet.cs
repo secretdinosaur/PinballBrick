@@ -2983,3 +2983,22 @@ public class AtkUpWhenCritical : SpecialAugment
         Routine = null;
     }
 }
+
+public class InstantBombBall : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_78", "Instant Bomb", "Bomb ball is changed to explode immediately after attacking the brick", "Special", 4);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        
+    }
+
+    public override void Remove()
+    {
+
+    }
+}
