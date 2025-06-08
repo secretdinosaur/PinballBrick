@@ -303,7 +303,7 @@ public partial class IBrick
         RecentlyBall = ball;
         float PreviousCritChance = RecentlyBall.SpecialCriticalChance;
         RecentlyBall.AttackDelayTime = 0f;
-        if(RecentlyBall.AttackNumber % 3 == 0 && RecentlyBall.AttackNumber != 0)
+        if(RecentlyBall.AttackNumber % 4 == 0 && RecentlyBall.AttackNumber != 0)
         {
             RecentlyBall.SpecialCriticalChance = 1f;
         }
@@ -395,6 +395,11 @@ public partial class IBrick
     public void AdditionalAttack(float MaxAttackTime, float TimeCount, float DamageMultiflier)
     {
         DamageManager.AdditionalAttack(this, MaxAttackTime, TimeCount, DamageMultiflier);
+    }
+
+    public void ExplosionAttack(float value)
+    {
+        DamageManager.ExplosionDamageAttack(this, value);
     }
 
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)

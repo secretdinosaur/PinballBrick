@@ -162,16 +162,21 @@ public class VisualEffectManager : MonoBehaviour
 
     public void SpawnCurseEffect(Vector2 Pos)
     {
-        Vec = Pos - new Vector2(0, -10);
+        StartCoroutine(SpawnCurseEffectCo(Pos));
+    }
 
-        CursePS.Emit(10);
+    public IEnumerator SpawnCurseEffectCo(Vector2 Pos)
+    {
+        Vec = Pos - new Vector2(0, -10);
+        ParticleSystem CursePS = PoolManager.GetFromPool<CursePS>().GetComponent<ParticleSystem>();
+        CursePS.Emit(5);
 
         Particle[] CurseParticles = new Particle[CursePS.particleCount];
         CursePS.GetParticles(CurseParticles);
 
         Array.Sort(CurseParticles, (a, b) => b.remainingLifetime.CompareTo(a.remainingLifetime));
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < CurseParticles.Length; i++)
         {
             float angle = Mathf.Atan2(Vec.y, Vec.x) * Mathf.Rad2Deg;
             CurseParticles[i].position = new Vector2(0, -10);
@@ -183,6 +188,10 @@ public class VisualEffectManager : MonoBehaviour
             CurseParticles[i].startSize3D = size;
         }
         CursePS.SetParticles(CurseParticles);
+
+        yield return new WaitForSeconds(1f);
+
+        PoolManager.TakeToPool<CursePS>(CursePS.GetComponent<CursePS>());
     }
 
     public void SpawnExplosionWithBallEffect(Vector2 Vec, Vector2 Pos)

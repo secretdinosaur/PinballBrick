@@ -629,6 +629,8 @@ public partial class LevelManager : MonoBehaviour
 
     void ShowLevelUpPanel()
     {
+        GameManager.instance.WaveNoticeText.enabled = false;
+        GameManager.instance.WaveExtraNoticeText.enabled = false;
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
         CanvasForLevelUpPanel.SetActive(true);
@@ -709,7 +711,7 @@ public partial class LevelManager : MonoBehaviour
                 {
                     float chance = Random.value;
                     int rarity;
-                    if (chance < AugmentManager.instance.rarityWeights[0])
+                    if (chance < 0.2f)
                         rarity = 0;
                     else
                         rarity = 1;
@@ -874,7 +876,7 @@ public partial class LevelManager : MonoBehaviour
         else
         {
             AugmentManager.instance.AddAugment(augmentsSet[optionIndex]);
-            AugmentManager.instance.RemoveOnAugmentsSetAugment(augmentsSet[optionIndex]);
+            AugmentManager.instance.RemoveOnAugmentsSet(augmentsSet[optionIndex]);
         }
         isAlreadyClickedButton = new bool[OptionButtons.Length];
         optionIndex = -1;
@@ -882,7 +884,7 @@ public partial class LevelManager : MonoBehaviour
         {
             isThereRerolled = false;
             ShowStatOrAugment();
-            AugmentManager.instance.RemoveOnExceptAugmentsList(RerollAugment);
+            AugmentManager.instance.UnlockAugment(RerollAugment);
             return;
         }
         for (int i = 0; i < OptionButtons.Length; i++)
@@ -916,5 +918,7 @@ public partial class LevelManager : MonoBehaviour
                 StatManager.instance.isChangedStat = false;
             }
         }
+        GameManager.instance.WaveNoticeText.enabled = true;
+        GameManager.instance.WaveExtraNoticeText.enabled = true;
     }
 }

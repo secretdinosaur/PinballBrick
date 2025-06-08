@@ -337,16 +337,20 @@ public class WeakButStrongEffect : StatAugment
     {
         SetAugment("STAT_17", "Magician", "Attack damage -12%\nEffect damage +12%", 3);
         SetAdditionalDescription(null);
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.88f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.12f);
     }
 
     public override void Remove()
     {
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.88f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.12f);
     }
@@ -358,16 +362,20 @@ public class WeakButStrongAtk : StatAugment
     {
         SetAugment("STAT_18", "Fighter", "Attack damage +12%\nEffect damage -12%", 3);
         SetAdditionalDescription(null);
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.12f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(0.88f);
     }
 
     public override void Remove()
     {
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.12f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-0.88f);
     }
@@ -497,7 +505,7 @@ public class Trinity : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, Critical Chance 33.3% up", 0);
+        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, Critical Chance 33.3% up and Exp gain 20%", 0);
         SetAdditionalDescription(null);
     }
 
@@ -506,6 +514,7 @@ public class Trinity : StatAugment
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.333f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.333f);
         StatManager.instance.ChangeTemporaryStats_CriticalChance(0.333f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.2f);
     }
 
     public override void Remove()
@@ -513,6 +522,7 @@ public class Trinity : StatAugment
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.333f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.333f);
         StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.333f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.2f);
     }
 }
 
@@ -522,16 +532,20 @@ public class Perfectionism : StatAugment
     {
         SetAugment("STAT_24", "Perfectionism", "Critical chance becomes 100%,\n Attack damage -50%", 2);
         SetAdditionalDescription(null);
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>());
         StatManager.instance.ChangeTemporaryStats_CriticalChance(1 - StatManager.instance.Persistent_stat.CriticalChance);
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.6f);
     }
 
     public override void Remove()
     {
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>());
         StatManager.instance.ChangeTemporaryStats_CriticalChance(-StatManager.instance.Temporary_stat.CriticalChance);
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.6f);
     }
@@ -544,11 +558,14 @@ public class MassivelyCriticalDamageUp : StatAugment
     {
         SetAugment("STAT_25", "Waiter", "Max critical chance becomes 10%,\n Critical damage upgrade values are doubled after level up", 2);
         SetAdditionalDescription(null);
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Perfectionism>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
     {
         isGetAugment = true;
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
         LevelManager.Instance.StatUpValue[1][0] *= 2;
         LevelManager.Instance.StatUpValue[1][1] *= 2;
     }
@@ -556,6 +573,7 @@ public class MassivelyCriticalDamageUp : StatAugment
     public override void Remove()
     {
         isGetAugment = false;
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
         LevelManager.Instance.StatUpValue[1][0] /= 2;
         LevelManager.Instance.StatUpValue[1][1] /= 2;
     }
@@ -590,12 +608,12 @@ public class ExpGain50Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_ExpGain(0.5f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.3f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.5f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.3f);
     }
 }
 

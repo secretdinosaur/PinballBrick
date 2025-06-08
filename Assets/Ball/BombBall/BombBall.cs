@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 public class BombBall : IBall
 {
     private int BoomCount;
+    bool isInstantBomb = false;
+
     void OnEnable()
     {
         base.OnEnable();
@@ -15,7 +17,30 @@ public class BombBall : IBall
         BallBaseDamage = 0;
         GameManager.instance.SummonedBalls += 1;
         gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-        StartCoroutine(StartBoomCount());
+        isInstantBomb = AugmentManager.instance.determineAugmentID("SPECIAL_78");
+        if (!isInstantBomb)
+        {
+            StartCoroutine(StartBoomCount());
+        }
+    }
+
+    public override void OnCollisionEnter2D(Collision2D collision)
+    {
+        base.OnCollisionEnter2D(collision);
+        if (isInstantBomb && collision.gameObject.CompareTag("Brick"))
+        {
+            BallManager.Instance.BallShowText(this, "Boom", null, false);
+            if (detectArea.BoomArea != null)
+            {
+                foreach (IBrick brick in detectArea.BoomArea.ToArray())
+                {
+                    if (brick.gameObject.activeInHierarchy)
+                        brick.ExplosionAttack(6.5f);
+                }
+            }
+            VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);
+            BallDied();
+        }
     }
 
     IEnumerator StartBoomCount()
@@ -32,14 +57,8 @@ public class BombBall : IBall
         {
             foreach (IBrick brick in detectArea.BoomArea.ToArray())
             {
-                if(brick.gameObject.activeInHierarchy)
-                brick.ArbitraryDamageAttack(
-                    (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) 
-                    * StatManager.instance.statMultiplier.EffectDamageMultiplier * 10,
-                    false,
-                    ((StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
-                    * StatManager.instance.statMultiplier.EffectDamageMultiplier * 10).ToString("F1"),
-                    "Explosion");
+                if (brick.gameObject.activeInHierarchy)
+                    brick.ExplosionAttack(6.5f);
             }
         }
         VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);
