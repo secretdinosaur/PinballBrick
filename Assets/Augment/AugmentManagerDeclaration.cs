@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using static UnityEngine.Rendering.HableCurve;
 
 public partial class AugmentManager : MonoBehaviour //Declaration
@@ -51,7 +49,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 1f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 1.3f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 3;
         PoisonStackLimit = 3;
@@ -227,7 +225,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        ClearAllAugments();
+        RemoveAugment(AugmentSet.GetComponent<FireBall>());
     }
 }
 

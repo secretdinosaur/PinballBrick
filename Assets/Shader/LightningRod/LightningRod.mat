@@ -57,12 +57,12 @@ Material:
     - _NoisePower: 8.1
     - _NoiseScale: 8.98
     - _NoiseSpeed1: -0.89
-    - _NoiseSpeed2: 1.62
-    - _OuterNoisePower: 1.01
+    - _NoiseSpeed2: 1.39
+    - _OuterNoisePower: 1.16
     - _OuterNoiseScale: 43.66
-    - _OuterNoiseSpeed1: -1
-    - _OuterNoiseSpeed2: 1
-    - _OuterThick: 0.719
+    - _OuterNoiseSpeed1: -0.7
+    - _OuterNoiseSpeed2: 0.7
+    - _OuterThick: 0.776
     - _OuterWidth: 1
     - _ZWrite: 0
     m_Colors:

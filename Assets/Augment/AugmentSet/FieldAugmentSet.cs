@@ -385,8 +385,8 @@ public class AntiGravity : FieldAugment
 
     public override void Apply()
     {
-        Routine = StartCoroutine(GetAntiGravity(Cooldown, Duration));
         AntiGravityObj = GameObject.Find("AntiGravity");
+        Routine = StartCoroutine(GetAntiGravity(Cooldown, Duration));
     }
 
     public override void Remove()
@@ -830,7 +830,7 @@ public class DiceGamble : FieldAugment
 {
     Coroutine Routine = null;
     Coroutine Routine2 = null;
-    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 6;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
         
     private void OnEnable()
     {
@@ -911,16 +911,8 @@ public class DiceGamble : FieldAugment
                     Routine2 = StartCoroutine(SpawnLuckyItem());
                 break;
                 case 3:
-                    foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
-                    {
-                        brick.ArbitraryDamageAttack(brick.HpTemp * 0.77f, false, "77%", "Normal");
-                        brick.
-                            DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.FireDuration);
-                        brick.
-                            DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.PoisonDuration);
-                        brick.
-                            DecayEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.DecayDuration);
-                    }
+                    BallManager.Instance.CreateBombBall(10);
+                    BallManager.Instance.CreateBall(50);
                     break;
                 default:
                     break;
@@ -933,7 +925,7 @@ public class DiceGamble : FieldAugment
                 case 1:
                     for(int i = 0; i < DiceSum / 2; i++)
                     {
-                        BallManager.Instance.CreateBombBall(1);
+                        BallManager.Instance.CreateBall(DiceSum / 3);
                     }
                 break;
                 case 2:
@@ -956,7 +948,7 @@ public class DiceGamble : FieldAugment
             switch (Random.Range(1, 4))
             {
                 case 1:
-                    BallManager.Instance.CreateBall(DiceSum / 3);
+                    BallManager.Instance.CreateBombBall(DiceSum / 3);
                     break;
                 case 2:
                     BrickManager.Instance.OnSpecialBrickSpawnButtonClick();
@@ -964,7 +956,7 @@ public class DiceGamble : FieldAugment
                     BrickManager.Instance.OnSpecialBrickSpawnButtonClick();
                 break;
                 case 3:
-                        LevelManager.Instance.Exp += DiceSum * 0.02f;
+                        LevelManager.Instance.Exp += LevelManager.Instance.LevelBar.maxValue * DiceSum * 0.02f;
                         break;
                 default:
                     break;
