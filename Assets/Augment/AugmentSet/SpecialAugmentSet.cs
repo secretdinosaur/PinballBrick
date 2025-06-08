@@ -584,7 +584,7 @@ public class Chaos : SpecialAugment
         seq.AppendInterval(0.5f);
         seq.Append(Curtain.GetComponent<Image>().DOFade(0.4f, 0.4f));
         seq.AppendCallback(() => {
-            BrickManager.Instance.WaveSkip(Random.Range(5, 20));
+            BrickManager.Instance.WaveSkip(Random.Range(-5, 10));
         });
         seq.Append(Curtain.GetComponent<Image>().DOFade(0f, 0.6f));
         seq.AppendCallback(() => {
@@ -788,7 +788,7 @@ public class LevelUpQuest : SpecialAugment
 {
     private int KilledEnemy = 0;
     private bool isCleared = false;
-    private int ClearRequiredCount = 50;
+    private int ClearRequiredCount = 100;
     private void OnEnable()
     {
         SetAugment("SPECIAL_23", "Slayer", "Receive 50% EXP and a quest. Complete the quest to level up", "Quest", 5);
@@ -822,13 +822,13 @@ public class GrowBallQuest : SpecialAugment
     private int KilledEnemy;
     private float KeepAtk;
     private bool isCleared = false;
-    int ClearRequiredCount = 20;
+    int ClearRequiredCount = 100;
     private void OnEnable()
     {
         SetAugment("SPECIAL_24", "Grow Ball", "Accept a grow ball quest.\nComplete it to attack damage up", "Quest", 5);
-        SetAdditionalDescription("Quest: Destroy 20 bricks\n" +
-            "<sprite=0> +0.1 per destroyed bricks\n" +
-            "<sprite=0> +0.2 per destroyed boss bricks");
+        SetAdditionalDescription("Quest: Destroy 100 bricks\n" +
+            "<sprite=0> +0.02 per destroyed bricks\n" +
+            "<sprite=0> +0.04 per destroyed boss bricks");
     }
 
     public override void Apply()
@@ -2139,7 +2139,7 @@ public class HappyBirthday : SpecialAugment
     float Duration = StatManager.instance.Temporary_stat.EffectDuration;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_53", "Happy Birth Day", "Gain 30 attack damage when ball is summoned for " + Duration + " seconds", "Special", 4);
+        SetAugment("SPECIAL_53", "Happy Birth Day", "Gain 5 attack damage when ball is summoned for " + Duration + " seconds", "Special", 4);
         SetAdditionalDescription(null);
     }
 
@@ -2154,11 +2154,11 @@ public class HappyBirthday : SpecialAugment
     IEnumerator AtkUp(IBall ball)
     {
         yield return null;
-        ball.BallBaseDamage += 30;
+        ball.BallBaseDamage += 5;
         ball.Renderer.material.color = Color.white * 2;
         yield return new WaitForSeconds(Duration);
         ball.Renderer.material.color = Color.white;
-        ball.BallBaseDamage -= 30;
+        ball.BallBaseDamage -= 5;
     }
 }
 

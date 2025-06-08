@@ -336,7 +336,7 @@ public partial class IBall //GrowBall
         }
         else
         {
-            GrowthAttackDamage += 0.04f;
+            GrowthAttackDamage += 0.1f;
         }
 
         IEnumerator GrowBall()

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using static UnityEngine.Rendering.HableCurve;
 
 public partial class AugmentManager : MonoBehaviour //Declaration
 {
@@ -212,7 +213,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<CurseBall>()
+            AugmentSet.GetComponent<AntiGravity>()
+
         };
 
         foreach (IAugment augment in TestAugments)
@@ -224,6 +226,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public void AddAugmentButton()
     {
         //RemoveAugment();
+            AddAugment(AugmentSet.GetComponent<ChangeNormalToGlass>());
     }
 }
 

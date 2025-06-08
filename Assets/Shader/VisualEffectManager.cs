@@ -141,7 +141,7 @@ public class VisualEffectManager : MonoBehaviour
 
             case "Curse":
                 CursePS.transform.position = new Vector2(0, -10);
-                //SpawnCurseEffect(ParticlePosition);
+                SpawnCurseEffect(ParticlePosition);
                 break;
 
             case "BallSacrifice":
@@ -160,16 +160,16 @@ public class VisualEffectManager : MonoBehaviour
         }
     }
 
-    public void SpawnCurseEffect(int x)
+    public void SpawnCurseEffect(Vector2 Pos)
     {
-        StartCoroutine(SpawnCurseEffectCo(x));
+        StartCoroutine(SpawnCurseEffectCo(Pos));
     }
 
-    public IEnumerator SpawnCurseEffectCo(int x)
+    public IEnumerator SpawnCurseEffectCo(Vector2 Pos)
     {
-        Vec = new Vector2(0, 0) - new Vector2(0, -10);
+        Vec = Pos - new Vector2(0, -10);
         ParticleSystem CursePS = PoolManager.GetFromPool<CursePS>().GetComponent<ParticleSystem>();
-        CursePS.Emit(x);
+        CursePS.Emit(5);
 
         Particle[] CurseParticles = new Particle[CursePS.particleCount];
         CursePS.GetParticles(CurseParticles);
@@ -191,7 +191,7 @@ public class VisualEffectManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        PoolManager.TakeToPool<CursePS>(CursePS);
+        PoolManager.TakeToPool<CursePS>(CursePS.GetComponent<CursePS>());
     }
 
     public void SpawnExplosionWithBallEffect(Vector2 Vec, Vector2 Pos)

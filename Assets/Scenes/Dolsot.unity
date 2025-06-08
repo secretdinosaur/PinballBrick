@@ -84096,10 +84096,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 137631892}
-        m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
-        m_MethodName: OnBossSpawnButtonClick
-        m_Mode: 1
+      - m_Target: {fileID: 639729464}
+        m_TargetAssemblyTypeName: VisualEffectManager, Assembly-CSharp
+        m_MethodName: SpawnCurseEffect
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -116817,6 +116817,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 639729465}
     m_Modifications:
+    - target: {fileID: 166264936585649410, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
+      propertyPath: SizeModule.y.maxCurve.m_Curve.Array.data[1].time
+      value: 0.83473074
+      objectReference: {fileID: 0}
+    - target: {fileID: 166264936585649410, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
+      propertyPath: SizeModule.y.maxCurve.m_Curve.Array.data[2].time
+      value: 0.9256188
+      objectReference: {fileID: 0}
     - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
