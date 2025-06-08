@@ -132,7 +132,7 @@ public class CriticalAdditionalAttack : SpecialAugment
     {
         SetAugment("SPECIAL_5", "Deadpoint", "Additional attack follows after critical attack", "Special", 4);
         SetAdditionalDescription(
-            "Additional attack : 0.5 <sprite=0> \n");
+            "Additional attack : 0.25 <sprite=0> \n");
     }
 
     public override void Apply(){  }
@@ -1849,13 +1849,11 @@ public class ChangeNormalToGlass : SpecialAugment
     public override void Apply()
     {
         BallManager.Instance.NormalBall = "GlassBall";
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(4f);
     }
 
     public override void Remove()
     {
         BallManager.Instance.NormalBall = "Ball";
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(-4f);
     }
 }
 public class RebornBombBall : SpecialAugment
@@ -2324,7 +2322,7 @@ public class CritAfterThreeAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_57", "Weakness Detection", "The third attack always triggers a critical hit", "Special", 4);
+        SetAugment("SPECIAL_57", "Weakness Detection", "The fourth attack always triggers a critical hit", "Special", 4);
         SetAdditionalDescription(null);
     }
 

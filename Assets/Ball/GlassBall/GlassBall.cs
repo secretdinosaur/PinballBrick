@@ -6,7 +6,7 @@ public class GlassBall : IBall
     {
         base.OnEnable();
         BallType = "GlassBall";
-        BallBaseDamage = 1;
+        BallBaseDamage = 4;
         GameManager.instance.SummonedBalls += 1;
     }
 
