@@ -1841,8 +1841,9 @@ public class ChangeNormalToGlass : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_47", "Glassification", "The basic ball becomes a glass ball", "Special", 4);
-        SetAdditionalDescription("The glass ball has higher attack damage" +
-            "\nthan a regular ball");
+        SetAdditionalDescription("The glass ball has higher attack damage\n" +
+            "than a regular ball\n" +
+            "Glass ball can break with a low probability");
     }
 
     public override void Apply()
