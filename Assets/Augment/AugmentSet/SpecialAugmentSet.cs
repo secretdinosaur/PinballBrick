@@ -1531,7 +1531,7 @@ public class SuicideBoomBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_40", "Explosive Ball", "A low chance for the ball to explode after an attack", "Special", 1);
-        SetAdditionalDescription("Explosion damage scales with <sprite=2> and hits all nearby bricks\n" +
+        SetAdditionalDescription("Explosion damage: 5 <sprite=2>\n" +
             "After explosion, the ball dies but has a high chance to revive");
     }
 
@@ -1546,16 +1546,16 @@ public class SuicideBoomBall : SpecialAugment
         {
             VisualEffectManager.Instance.SpawnParticle("SuicideBoomBall", Brick.transform.position, 1);
             Brick.ArbitraryDamageAttack(
-                    (damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
+                    (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * 5,
                     false,
-                    ((damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
+                    ((StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * 5).ToString("F1"),
                     "Explosion");
             foreach (IBrick brick in Brick.detectArea.NearbyBricks)
             {
                 brick.ArbitraryDamageAttack(
-                    (damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier,
+                    (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * 5,
                     false,
-                    ((damage + StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
+                    ((StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier * 5).ToString("F1"),
                     "Explosion");
             }
             ball.BallDied();
@@ -1653,8 +1653,8 @@ public class CurseBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_42", "Curse Ball", "When the ball falls, \nit deals curse damage to a random block", "Effect", 4);
-        SetAdditionalDescription("Curse damage : deals random damage based on <sprite=0>");
+        SetAugment("SPECIAL_42", "Curse Ball", "When the ball falls, \n30% chance of curse damage to a random block", "Effect", 4);
+        SetAdditionalDescription("Curse damage : 1.5 <sprite=0>");
     }
 
     public override void Apply()
@@ -1708,8 +1708,7 @@ public class EnhanceCurseAttack : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_44", "Endless Revenge", "Curse damage increases by 1% whenever the ball dies", "Effect", 2);
-        SetAdditionalDescription("30% of the balls that died \n" +
-            "before acquiring this augment will be counted");
+        SetAdditionalDescription("30% of the balls that already died will be counted");
     }
 
     public override void Apply() 
@@ -1752,8 +1751,7 @@ public class SpawnBombBall : SpecialAugment
     {
         SetAugment("SPECIAL_46", "Bomb Maniac", "Low chance of bomb ball on summon", "Special", 3);
         SetAdditionalDescription("The summoned bomb ball explodes after 3 seconds\n" +
-            "Explosion damage scales with <sprite=2> \n" +
-            "and hits all nearby bricks");
+            "Explosion damage: 10 <sprite=2>");
     }
 
     public override void Apply()
@@ -1771,8 +1769,7 @@ public class ChangeNormalToGlass : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_47", "Glassification", "The basic ball becomes a glass ball", "Special", 4);
-        SetAdditionalDescription("The glass ball has higher attack damage" +
-            "\nthan a regular ball");
+        SetAdditionalDescription("<sprite=0> +2");
     }
 
     public override void Apply()
@@ -1805,7 +1802,6 @@ public class OneMoreChance : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_49", "One More Chance", "If no balls exist,\nsummon 5 balls at once", "Special", 4);
-        SetAdditionalDescription("Summons the currently set basic ball");
     }
 
     public override void Apply() 
