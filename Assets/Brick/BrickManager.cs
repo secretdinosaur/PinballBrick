@@ -68,10 +68,18 @@ public class BrickManager : MonoBehaviour
         TwinBrick,
     }
 
-    enum SpecialBrickType
+    public List<float> BrickExpValue = new List<float>
     {
-        ExpBrick,
-    }
+        10f,
+        20f,
+        12.5f,
+        20f,
+        15.5f,
+        12.5f,
+        15.5f,
+        20f,
+        10f,
+    };
 
     void Awake()
     {
@@ -437,25 +445,34 @@ public class BrickManager : MonoBehaviour
     private float BrickExpSetting(string brickType)
     {
         if (brickType == "Brick")
-            return 10f;
+            return BrickExpValue[(int)BrickType.Brick];
+
         else if (brickType == "HardBrick")
-            return 20f;
+            return BrickExpValue[(int)BrickType.HardBrick];
+
         else if (brickType == "HealBrick")
-            return 12.5f;
+            return BrickExpValue[(int)BrickType.HealBrick];
+
         else if (brickType == "IgnoreBrick")
-            return 20f;
+            return BrickExpValue[(int)BrickType.IgnoreBrick];
+
         else if (brickType == "ShieldBrick")
-            return 15.5f;
+            return BrickExpValue[(int)BrickType.ShieldBrick];
+
         else if (brickType == "SlimeBrick")
-            return 12.5f;
+            return BrickExpValue[(int)BrickType.SlimeBrick];
+
         else if (brickType == "TeleportBrick")
-            return 15.5f;
+            return BrickExpValue[(int)BrickType.TeleportBrick];
+
         else if (brickType == "TwinBrick")
-            return 20f;
+            return BrickExpValue[(int)BrickType.TwinBrick];
+
         else if (brickType == "AbsorbBrick")
-            return 10f;
+            return BrickExpValue[(int)BrickType.AbsorbBrick];
+
         else
-            return 10f;
+            return BrickExpValue[(int)BrickType.Brick];
     }
     private IBrick GetSpecificBrick(string brickTypeName)
     {
@@ -592,8 +609,8 @@ public class BrickManager : MonoBehaviour
             if(BrickQueue.Count == 0)
             {
                 HPPool.Clear();
-                HPPool.Add(_FusionBrickHealth);
-                Debug.Log(_FusionBrickHealth);
+                HPPool.Add(_FusionBrickHealth * 0.9f);
+                Debug.Log(_FusionBrickHealth * 0.9f);
                 brick.IsBoss = true;
                 brick.IsSpecialBrick = false;
                 Brick = GetBrick(brick);

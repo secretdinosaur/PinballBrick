@@ -505,7 +505,7 @@ public class Trinity : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, Critical Chance 33.3% up", 0);
+        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, Critical Chance 33.3% up and Exp gain 20%", 0);
         SetAdditionalDescription(null);
     }
 
@@ -514,6 +514,7 @@ public class Trinity : StatAugment
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.333f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.333f);
         StatManager.instance.ChangeTemporaryStats_CriticalChance(0.333f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.2f);
     }
 
     public override void Remove()
@@ -521,6 +522,7 @@ public class Trinity : StatAugment
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.333f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.333f);
         StatManager.instance.ChangeTemporaryStats_CriticalChance(-0.333f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.2f);
     }
 }
 
@@ -606,12 +608,12 @@ public class ExpGain50Up : StatAugment
 
     public override void Apply()
     {
-        StatManager.instance.ChangeTemporaryStats_ExpGain(0.5f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(0.3f);
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.5f);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-0.3f);
     }
 }
 

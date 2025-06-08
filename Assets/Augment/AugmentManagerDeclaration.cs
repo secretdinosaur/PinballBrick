@@ -49,7 +49,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 1.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 1.3f, 0.3f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 3;
         PoisonStackLimit = 3;
@@ -117,7 +117,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<WeatherChange>(),
             AugmentSet.AddComponent<DiceGamble>(),
             AugmentSet.AddComponent<Trampoline>(),
-            AugmentSet.AddComponent<Bombardment>(),
             ///////////////////////// Field
             AugmentSet.AddComponent<FireBall>(),
             AugmentSet.AddComponent<Homing>(),
@@ -209,12 +208,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
             AugmentSet.AddComponent<RebornBombBall>(),
             AugmentSet.AddComponent<SuicideBoomBall>(),
+            AugmentSet.AddComponent<Bombardment>(),
+            AugmentSet.AddComponent<InstantBombBall>()
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<AntiGravity>()
-
+            AugmentSet.GetComponent<SatelliteBeam>(),
         };
 
         foreach (IAugment augment in TestAugments)
@@ -225,8 +225,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        //RemoveAugment();
-            AddAugment(AugmentSet.GetComponent<ChangeNormalToGlass>());
+        RemoveAugment(AugmentSet.GetComponent<FireBall>());
     }
 }
 

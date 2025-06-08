@@ -111,6 +111,7 @@ public class AngryBall : FieldAugment
     {
         while(true)
         {
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(1.4f);
             foreach (Ball ball in BallManager.Instance.InGameBall)
             {
                 StartCoroutine(AngryBallEffect(ball));
@@ -125,7 +126,8 @@ public class AngryBall : FieldAugment
                 Vector3 forceDirection = rb.linearVelocity.normalized;
                 rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
             }
-
+            yield return new WaitForSeconds(0.5f);
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.4f);
             yield return new WaitForSeconds(period);
         }
     }
@@ -540,6 +542,7 @@ public override void Remove()
                 else
                 {
                     WantedBrick.HP += WantedBrick.HpTemp * 0.1f;
+                    WantedBrick.HP = Mathf.Clamp(WantedBrick.HP, 1f, WantedBrick.HpTemp);
                 }
             }
             yield return new WaitForSeconds(Cooldown);
@@ -588,23 +591,23 @@ public class LightningRod: FieldAugment
 public class AttackOrDie : FieldAugment
 {
     Coroutine Routine = null;
-    float Duration = StatManager.instance.Temporary_stat.EffectDuration * 10;
+    float Duration = 8;
 
     private void OnEnable()
     {
-        SetAugment("FIELD_11", "Last Breath", "<sprite=0> +40%,\nballs get die if they don't hit any bricks within " + Duration.ToString("F1") +" seconds.", 2);
+        SetAugment("FIELD_11", "Last Breath", "<sprite=0> +30%,\nballs get die if they don't hit any bricks within " + Duration.ToString("F1") +" seconds.", 2);
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.4f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.3f);
         Routine = StartCoroutine(GetAttackOrDie());
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.4f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.3f);
         if (Routine != null)
         {
             StopCoroutine(Routine);
