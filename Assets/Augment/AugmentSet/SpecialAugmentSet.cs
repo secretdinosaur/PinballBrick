@@ -1605,33 +1605,8 @@ public class SuicideBoomBall : SpecialAugment
             {
                 brick.ExplosionAttack(3f);
             }
-            ball.BallDied();
-            if(Random.value < 0.8f)
-            {
-                CreateBall(1, ball.BallType);
-            }
         }
     }
-
-    public void CreateBall(int num, string BallType)
-    {
-        for (int i = 0; i < num; i++)
-        {
-            IBall ball = GetSpecificBall(BallType);
-        }
-    }
-
-    private IBall GetSpecificBall(string ballTypeName)
-    {
-        IBall ball = null;
-
-        Type ballType = System.Type.GetType(ballTypeName);
-        var method = typeof(PoolManager).GetMethod("GetFromPool");
-        var genericMethod = method.MakeGenericMethod(ballType);
-        ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
-        return ball;
-    }
-
 }
 public class SplitBall : SpecialAugment
 {
@@ -2506,7 +2481,7 @@ public class MoreAndWeakBricks : SpecialAugment
         if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>()))
             AugmentManager.instance.exceptionAugments.Add(this);
     }
-
+    
     public override void Apply()
     {
         BrickManager.Instance.BaseBrickSpawnValue = 1.5f;
