@@ -143,7 +143,7 @@ public class CriticalAdditionalAttack : SpecialAugment
     {
         if (Brick.gameObject.activeSelf) //Critical Additional Attack
         {
-            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.5f));
+            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.25f));
         }
     }
 }
