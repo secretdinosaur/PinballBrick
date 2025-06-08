@@ -160,7 +160,23 @@ public class BrickManager : MonoBehaviour
     public void TakeBrick(IBrick brick)
     {
         if (brick.IsBoss)
+        {
             WavePause = false;
+
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            {
+                int BossSpawned = 2;
+                for (int i = 0; i < CurrentBricks.Count; i++)
+                {
+                    if (CurrentBricks[i].IsBoss)
+                        BossSpawned -= 1;
+                }
+                if (BossSpawned == 1) // currentbrick does not updated yet
+                    WavePause = false;
+                else
+                    WavePause = true;
+            }
+        }
         if (brick.gameObject.activeSelf)
         {
             if (brick.Fire != null)
@@ -656,8 +672,24 @@ public class BrickManager : MonoBehaviour
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.Init(Brick.IsBoss, false, false, Brick.Point, Brick.Exp);
         }
-        if(Brick.IsBoss)
-            OnWaveStopButtonClick();
+        
+        if (Brick.IsBoss)
+        {
+            WavePause = true;
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            {
+                int BossSpawned = 1;
+                for(int i = 0; i < CurrentBricks.Count; i++)
+                {
+                    if (CurrentBricks[i].IsBoss)
+                        BossSpawned += 1;
+                }
+                if (BossSpawned == 2)
+                    WavePause = true;
+                else
+                    WavePause = false;
+            }
+        }
 
         UpdateCurrentBricks(Brick);
     }

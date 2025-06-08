@@ -1584,7 +1584,7 @@ public class SuicideBoomBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_40", "Potential Bomb", "A low chance for the ball to explode after an attack", "Special", 1);
-        SetAdditionalDescription("Explosion damage: 3 <sprite=2>\n" +
+        SetAdditionalDescription("Explosion damage: 30 + 3 <sprite=2>\n" +
             "After explosion, the ball dies but has a high chance to revive");
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -1612,7 +1612,7 @@ public class SplitBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_41", "Diffraction", "A low chance for the ball to split after an attack", "Special", 1);
+        SetAugment("SPECIAL_41", "Diffraction", "Balls Have a 1% chance to split after an attack", "Special", 1);
         SetAdditionalDescription(null);
     }
 
@@ -1777,7 +1777,7 @@ public class EnhanceCurseAttack : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.CurseDamageValue += (GameManager.instance.DiedBalls * 0.3f) * 0.01f;
+        AugmentManager.instance.CurseDamageValue += (GameManager.instance.DiedBalls * 0.3f) * 0.015f;
     }
 
     public override void Remove() 
@@ -1787,7 +1787,7 @@ public class EnhanceCurseAttack : SpecialAugment
 
     public override void AfterDeathEffect(IBall ball)
     {
-        AugmentManager.instance.CurseDamageValue += 0.01f;
+        AugmentManager.instance.CurseDamageValue += 0.015f;
     }
 }
 public class DeathEffectTwice : SpecialAugment
@@ -1839,7 +1839,7 @@ public class ChangeNormalToGlass : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_47", "Glassification", "The basic ball becomes a glass ball", "Special", 4);
-        SetAdditionalDescription("<sprite=0> +2");
+        SetAdditionalDescription("<sprite=0> +4\nballs have a 1% chance to break on hit");
     }
 
     public override void Apply()
@@ -1856,7 +1856,7 @@ public class RebornBombBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_48", "Bomb Modification", "Bomb ball revive a low chance after explode", "Special", 4);
+        SetAugment("SPECIAL_48", "Bomb Modification", "Bomb ball revive at a low chance after explode", "Special", 4);
         SetAdditionalDescription(null);
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -1903,10 +1903,8 @@ public class Concentrate : SpecialAugment
     {
         SetAugment("SPECIAL_50", "Concentrate", "Stats increase massively, \nbut 10 ball fall, it's game over", "Special", 0);
         SetAdditionalDescription("Attack, Effect Damage +300%\n" +
-            "Balls are limited to 10\n" +
-            "Excess balls are destroyed\n" +
-            "If fewer than 10 balls, generate until 10\n" +
-            "Balls generated from now on convert to 0.2 Attack, Effect Damage");
+            "Set current balls to 10\n" +
+            "Balls destroyed will converted to <sprite=0> +0.2, <sprite=2> + 0.2");
     }
 
     public override void Apply()
@@ -2006,7 +2004,7 @@ public class Oneness: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_52", "Oneness", "All balls merge into one,\nthe ball becomes stronger as it merges", "Special", 2);
-        SetAdditionalDescription(null);
+        SetAdditionalDescription("<sprite=0> +30% of merged ball's <sprite=0>");
     }
 
     private void Update()
@@ -2110,7 +2108,7 @@ public class HappyBirthday : SpecialAugment
     float Duration = StatManager.instance.Temporary_stat.EffectDuration;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_53", "Happy Birth Day", "Gain 5 attack damage when ball is summoned for " + Duration + " seconds", "Special", 4);
+        SetAugment("SPECIAL_53", "Happy Birth Day", "<sprite=0> +5 when ball is summoned for " + Duration + " seconds", "Special", 4);
         SetAdditionalDescription(null);
     }
 
@@ -2201,7 +2199,7 @@ public class HalfBallSacrifice : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_55", "Mass Sacrifice", "Sacrifice half of the balls,\nand increse corresponding attack damage", "Special", 4);
-        SetAdditionalDescription("Increases by 0.1 for each ball");
+        SetAdditionalDescription("<sprite=0> +0.2 for each sacrificed ball");
     }
 
     public override void Apply() 
@@ -2235,9 +2233,7 @@ public class Chronobreak : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_54", "Chronobreak", "lose half of augment, Attack and Effect Damage\nThen, return to Wave 1", "Special", 0);
-        SetAdditionalDescription("The minimum wave to return to is Wave 1\n" +
-            "All bricks are destroyed\n" +
-            "All balls are destroyed, then 10 balls are summoned \n" +
+        SetAdditionalDescription("All bricks and balls are destroyed, then 10 balls are summoned \n" +
             "Certain bricks and balls are excluded");
     }
 
@@ -2268,8 +2264,7 @@ public class DecayingPoison: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_55", "Decaying Poison", "When poisoned, decay is also applied", "Effect", 3);
-        SetAdditionalDescription("Decay effect : increases all damage taken by stacks \n" +
-            "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+        SetAdditionalDescription("Increases damage taken by bricks by 10% per stack");
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
             !AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FlammablePoison>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -2293,8 +2288,7 @@ public class FlammablePoison: SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_56", "Flammable Poison", "When poisoned, fire is also applied", "Effect", 3);
-        SetAdditionalDescription("Fire damage : deals damage scaling with <sprite=2> and stacks\n" +
-            "Poison damage : deals damage scaling with brick's current health, <sprite=2>, and stacks");
+        SetAdditionalDescription("0.5 <sprite=2> per stack");
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
             !AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayingPoison>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -2342,7 +2336,7 @@ public class DamageInfection : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_58", "Miraculous Technique", "Attacks nearby bricks,\nIt count as direct hits by the ball", "Special", 0);
+        SetAugment("SPECIAL_58", "Miraculous Technique", "Ball attacks all nearby bricks,\nIt count as direct hits by the ball", "Special", 0);
         SetAdditionalDescription("Applies all effects triggered by direct hits");
     }
 
@@ -2449,7 +2443,7 @@ public class InfiniteRapid : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_62", "Rapidfire", "Effect damage +1.8, Effect duration +15%,\nAll waves appear as transformed rapid waves", "Special", 3);
+        SetAugment("SPECIAL_62", "Rapidfire", "<sprite=2> +1.8, <sprite=6> +15%,\nAll waves appear as transformed rapid waves", "Special", 3);
         SetAdditionalDescription(null);
     }
 
