@@ -940,8 +940,8 @@ public class SacrificeQuest1 : SpecialAugment
     {    
         if (isCleared) 
         {
-            StatManager.instance.ChangeTemporaryStats_AttackDamage(-1f);
-            StatManager.instance.ChangeTemporaryStats_EffectDamage(-1f);
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.5f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(-1.5f);
         }
         else
         {
@@ -956,8 +956,8 @@ public class SacrificeQuest1 : SpecialAugment
             QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= ClearRequiredCount && !isCleared)
         {
-            StatManager.instance.ChangeTemporaryStats_AttackDamage(1f);
-            StatManager.instance.ChangeTemporaryStats_EffectDamage(1f);
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(1.5f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(1.5f);
 
             AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest2>());
             isCleared = true;
@@ -986,8 +986,8 @@ public class SacrificeQuest2 : SpecialAugment
     {
         if (isCleared)
         {
-            StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.15f);
-            StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.15f);
+            StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.17f);
+            StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.17f);
         }
     }
 
@@ -998,8 +998,8 @@ public class SacrificeQuest2 : SpecialAugment
             QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", SacrificeNumber, ClearRequiredCount);
         if (SacrificeNumber >= ClearRequiredCount && !isCleared)
         {
-            StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.15f);
-            StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.15f);
+            StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.17f);
+            StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.17f);
             StatManager.instance.GetGold(500);
 
             AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest3>());
