@@ -152,7 +152,7 @@ public class Execution : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_6", "Execution", "THe ball executes bricks with less than 15% of max HP", "Special", 1);
+        SetAugment("SPECIAL_6", "Execution", "THe ball executes bricks with less than 15% of max HP", "Special", 2);
         SetAdditionalDescription(null);
     }
 
