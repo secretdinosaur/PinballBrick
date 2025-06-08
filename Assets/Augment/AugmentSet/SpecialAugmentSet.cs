@@ -1850,6 +1850,7 @@ public class SpawnBombBall : SpecialAugment
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<RebornBombBall>());
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SuicideBoomBall>());
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<InstantBombBall>());
     }
 
     public override void Remove()
@@ -1857,6 +1858,7 @@ public class SpawnBombBall : SpecialAugment
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<RebornBombBall>());
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SuicideBoomBall>());
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<InstantBombBall>());
     }
 }
 public class ChangeNormalToGlass : SpecialAugment
@@ -2501,6 +2503,8 @@ public class MoreAndWeakBricks : SpecialAugment
     {
         SetAugment("SPECIAL_63", "Legion", "Every Bricks appear 50% more frequently, \nbut their health is reduced by 33%", "Special", 3);
         SetAdditionalDescription("Special bricks are excluded");
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
@@ -2509,7 +2513,8 @@ public class MoreAndWeakBricks : SpecialAugment
         BrickManager.Instance.BaseBrickHealthValue = 0.66f;
         BrickManager.Instance.BaseBossHealthValue = 0.66f;
         BrickManager.Instance.BaseWaitingTimeValue = 6;
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<LessAndStrongBricks>());
+        BrickManager.Instance.BrickExpValue = BrickManager.Instance.BrickExpValue.Select(x => x * 0.5f).ToList();
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>());
     }
 
     public override void Remove()
@@ -2518,7 +2523,8 @@ public class MoreAndWeakBricks : SpecialAugment
         BrickManager.Instance.BaseBrickHealthValue = 1f;
         BrickManager.Instance.BaseBossHealthValue = 1f;
         BrickManager.Instance.BaseWaitingTimeValue = 5;
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<LessAndStrongBricks>());
+        BrickManager.Instance.BrickExpValue = BrickManager.Instance.BrickExpValue.Select(x => x * 2f).ToList();
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>());
     }
 }
 
@@ -2528,6 +2534,8 @@ public class LessAndStrongBricks : SpecialAugment
     {
         SetAugment("SPECIAL_63", "Elite Group", "Every Bricks appear 50% less frequently, \nbut their health is increased by 33%.", "Special", 3);
         SetAdditionalDescription("Special bricks are excluded");
+        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<MoreAndWeakBricks>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
@@ -2536,7 +2544,8 @@ public class LessAndStrongBricks : SpecialAugment
         BrickManager.Instance.BaseBrickHealthValue = 1.33f;
         BrickManager.Instance.BaseBossHealthValue = 1.33f;
         BrickManager.Instance.BaseWaitingTimeValue = 4;
-        AugmentManager.instance.augmentsSet.Remove(GameObject.Find("GameManager")?.GetComponent<MoreAndWeakBricks>());
+        BrickManager.Instance.BrickExpValue = BrickManager.Instance.BrickExpValue.Select(x => x * 2f).ToList();
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>());
     }
 
     public override void Remove()
@@ -2545,7 +2554,8 @@ public class LessAndStrongBricks : SpecialAugment
         BrickManager.Instance.BaseBrickHealthValue = 1f;
         BrickManager.Instance.BaseBossHealthValue = 1f;
         BrickManager.Instance.BaseWaitingTimeValue = 5;
-        AugmentManager.instance.augmentsSet.Add(GameObject.Find("GameManager").AddComponent<MoreAndWeakBricks>());
+        BrickManager.Instance.BrickExpValue = BrickManager.Instance.BrickExpValue.Select(x => x * 0.5f).ToList();
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>());
     }
 }
 
@@ -2990,6 +3000,8 @@ public class InstantBombBall : SpecialAugment
     {
         SetAugment("SPECIAL_78", "Instant Bomb", "Bomb ball is changed to explode immediately after attacking the brick", "Special", 4);
         SetAdditionalDescription(null);
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
