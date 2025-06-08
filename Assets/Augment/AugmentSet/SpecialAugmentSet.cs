@@ -1347,7 +1347,7 @@ public class BossKillBall : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_35", "Uprising", "Summons an Three ball when the boss is defeated", "Special", 5);
+        SetAugment("SPECIAL_35", "Uprising", "Summons a special brick when the boss is defeated", "Special", 5);
         SetAdditionalDescription(null);
     }
 
@@ -1359,7 +1359,7 @@ public class BossKillBall : SpecialAugment
     {
         if (Brick.IsBoss)
         {
-            BallManager.Instance.CreateBall(3);
+            BrickManager.Instance.OnSpecialBrickSpawnButtonClick();
         }
     }
 }
