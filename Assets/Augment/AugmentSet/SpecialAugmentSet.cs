@@ -1849,13 +1849,13 @@ public class ChangeNormalToGlass : SpecialAugment
     public override void Apply()
     {
         BallManager.Instance.NormalBall = "GlassBall";
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(2f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(4f);
     }
 
     public override void Remove()
     {
         BallManager.Instance.NormalBall = "Ball";
-        StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
+        StatManager.instance.ChangeTemporaryStats_AttackDamage(-4f);
     }
 }
 public class RebornBombBall : SpecialAugment
@@ -2218,7 +2218,7 @@ public class HalfBallSacrifice : SpecialAugment
             for(int i = 0; i < BallManager.Instance.InGameBall.Count / 2; i++)
             {
                 StartCoroutine(BallRemoveEffect(BallManager.Instance.InGameBall[i]));
-                AtkUpValue += 0.1f;
+                AtkUpValue += 0.2f;
             }
             StatManager.instance.ChangeTemporaryStats_AttackDamage(AtkUpValue);
         }

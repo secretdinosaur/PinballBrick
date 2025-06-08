@@ -13,7 +13,7 @@ public class GlassBall : IBall
     public override void OnCollisionEnter2D(Collision2D collision)
     {
         base.OnCollisionEnter2D(collision);
-        if (Random.value < 0.008f && collision.gameObject.CompareTag("Brick"))
+        if (Random.value < 0.01f && collision.gameObject.CompareTag("Brick"))
         {
             BallDied();
         }
