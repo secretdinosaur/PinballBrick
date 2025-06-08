@@ -701,7 +701,7 @@ public class DecayExplosion : SpecialAugment
 
     public override void AfterBrickDieEffect(IBrick Brick)
     {
-        if (Brick.BrickEffect.EffectStatusSet["Decay"].EffectStack + 1 == Brick.BrickEffect.EffectStatusSet["Decay"].EffectStackLimit)
+        if (Brick.Decay != null)
         {
             VisualEffectManager.Instance.DecayExplosionPS.GetComponent<ParticleSystemRenderer>().material.SetColor("_Color", Brick.GetComponent<Renderer>().material.color);
             VisualEffectManager.Instance.SpawnParticle("DecayExplosion", Brick.transform.position, 1);
