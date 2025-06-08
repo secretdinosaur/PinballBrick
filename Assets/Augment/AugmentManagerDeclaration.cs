@@ -214,8 +214,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<DecayBall>(),
-            AugmentSet.GetComponent<DecayExplosion>()
+            AugmentSet.GetComponent<SatelliteBeam>(),
         };
 
         foreach (IAugment augment in TestAugments)
