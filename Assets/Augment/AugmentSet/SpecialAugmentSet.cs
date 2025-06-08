@@ -1142,7 +1142,7 @@ public class RandomEffect : SpecialAugment
         { "RandomEffect", 0.04f },
         { "FullHealth", 0.02f },
         { "BrickSpawn", 0.02f },
-        { "BossSpawn", 0.01f },
+        //{ "BossSpawn", 0.01f },
         { "Execution", 0.01f },
     };
 
