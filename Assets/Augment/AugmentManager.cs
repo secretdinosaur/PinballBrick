@@ -9,11 +9,20 @@ using static UnityEngine.Rendering.HableCurve;
 public partial class AugmentManager //Utility
 {
     string str = null;
-    public void S(string s)
+    public void printAugments()
     {
-        str += s;
+        string str = "";
+        for(int i = 0; i < augmentsSet.Count; i++)
+        {
+            str += augmentsSet[i].Type + "\t" + augmentsSet[i].Rarity + "\t" + augmentsSet[i].Name + "\t" + augmentsSet[i].Description.Replace("\r\n", "").Replace("\n", "") + "\n";
+        }
         print(str);
     }
+
+    private void Start()
+    {
+        printAugments();
+     }
     public bool determineSpecialAugmentType(string Type)
     {
         return activeAugments.Any(a => a.Type == Type);
