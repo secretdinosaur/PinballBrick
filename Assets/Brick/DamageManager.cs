@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -263,6 +264,25 @@ public static partial class DamageManager //Special Effect Attack
         brick.ShowText(damage.ToString("F1"), "Explosion", isCritical);
     }
 
+    public static void HolyRainDamageAttack(IBrick brick)
+    {
+        float Multiplier = 1 + (brick.BrickEffect.EffectStatusSet["Holy"].EffectStack * 0.07f);
+        float damage = 5f + (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
+                    * StatManager.instance.statMultiplier.EffectDamageMultiplier * Multiplier;
+        damage = DecayDamageCalculate(brick, damage);
+
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(Random.Range(0, 0.5f))
+           .AppendCallback(() => {
+               VisualEffectManager.Instance.SpawnParticle("AllDamage", brick.transform.position, 1);
+           })
+           .AppendInterval(0.65f)
+           .AppendCallback(() => {
+               brick.HP -= damage;
+               brick.ShowText(damage.ToString("F1"), "Lightning", false);
+           });
+    }
+
     public static float DecayDamageCalculate(IBrick brick, float Damage)
     {
         Damage *= 1 + AugmentManager.instance.DecayDamageMultiple * brick.BrickEffect.EffectStatusSet["Decay"].EffectStack;
@@ -289,7 +309,8 @@ public class BrickEffectManager : MonoBehaviour
         {
             { "Fire", new EffectStatus("Fire", false, 0, AugmentManager.instance.FireStackLimit) },
             { "Poison", new EffectStatus("Poison", false, 0, AugmentManager.instance.PoisonStackLimit) },
-            { "Decay", new EffectStatus("Decay", false, 0, AugmentManager.instance.DecayStackLimit) }
+            { "Decay", new EffectStatus("Decay", false, 0, AugmentManager.instance.DecayStackLimit) },
+            { "Holy", new EffectStatus("Holy", false, 0, AugmentManager.instance.HolyStackLimit) }
         };
     }
 

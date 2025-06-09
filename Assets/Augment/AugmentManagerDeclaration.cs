@@ -18,6 +18,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public int FireStackLimit;
     public int PoisonStackLimit;
     public int DecayStackLimit;
+    public int HolyStackLimit;
 
     public EffectDuration effectDuration;
 
@@ -49,11 +50,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 1.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 1.3f, 0.3f, 1f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 3;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
+        HolyStackLimit = 2;
         DecayDamageMultiple = 0.1f;
         isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
@@ -180,9 +182,11 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<BossDamageUp>(),
             AugmentSet.AddComponent<LevelUpAgain>(),
             AugmentSet.AddComponent<AtkUpWhenCritical>(),
+            AugmentSet.AddComponent<AdditionalEffectDamage>(),
             ////////////////////////// Special
             AugmentSet.AddComponent<FireEffectStackBlast>(),
             AugmentSet.AddComponent<TheFlamethrower>(),
+            AugmentSet.AddComponent<Pyromaniac>(),
 
             AugmentSet.AddComponent<DeadlyPoison>(),
             AugmentSet.AddComponent<InfinitePoison>(),
@@ -214,11 +218,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<CurseBall>(),
-            AugmentSet.GetComponent<SummonGhostBall>(),
-            AugmentSet.GetComponent<ContinuingCurseAttack>(),
-            AugmentSet.GetComponent<EnhanceCurseAttack>(),
-
+            AugmentSet.GetComponent<LevelUpAgain>(),
         };
 
         foreach (IAugment augment in TestAugments)
@@ -229,7 +229,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        RemoveAugment(AugmentSet.GetComponent<FireBall>());
+        AddAugment(AugmentSet.GetComponent<Pyromaniac>());
     }
 }
 
@@ -255,13 +255,15 @@ public class EffectChance
     public float PoisonChance;
     public float DecayChance;
     public float CurseChance;
+    public float LightningChance;
 
-    public EffectChance(float fireChance, float poisonChance, float decayChance, float curseChance)
+    public EffectChance(float fireChance, float poisonChance, float decayChance, float curseChance, float lightningChance)
     {
         FireChance = fireChance;
         PoisonChance = poisonChance;
         DecayChance = decayChance;
         CurseChance = curseChance;
+        LightningChance = lightningChance;
     }
 }
 

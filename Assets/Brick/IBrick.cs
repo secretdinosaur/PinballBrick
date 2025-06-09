@@ -361,7 +361,8 @@ public partial class IBrick
     public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
     {
         if (!gameObject.activeSelf) return;
-        DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
+        if(Random.value < AugmentManager.instance.effectChance.LightningChance)
+            DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
     }
 
     public void DamageByCurse(Vector2? StartingPos = null)
@@ -392,6 +393,14 @@ public partial class IBrick
     public void ExplosionAttack(float value)
     {
         DamageManager.ExplosionDamageAttack(this, value);
+    }
+
+    public void HolyRainAttack()
+    {
+        if (!gameObject.activeSelf) return;
+        BrickEffect.EffectStatusSet["Holy"].EffectStack +=
+                (BrickEffect.EffectStatusSet["Holy"].EffectStack != BrickEffect.EffectStatusSet["Holy"].EffectStackLimit) ? 1 : 0;
+        DamageManager.HolyRainDamageAttack(this);
     }
 
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
