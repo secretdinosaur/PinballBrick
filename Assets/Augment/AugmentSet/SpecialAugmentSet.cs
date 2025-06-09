@@ -3047,7 +3047,7 @@ public class Pyromaniac : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_79", "Pyromaniac", "Bricks always catch fire when hit\nNo other effects will apply", "Fire", 4);
+        SetAugment("SPECIAL_79", "Pyromaniac", "<sprite=2> +2, Bricks always catch fire when hit\nNo other effects will apply", "Fire", 4);
         SetAdditionalDescription("Lose all other effect augments");
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FireBall>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -3065,6 +3065,8 @@ public class Pyromaniac : SpecialAugment
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Lightning>());
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<CurseBall>());
 
+
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(2f);
         AugmentManager.instance.effectChance.FireChance = 1f;
         AugmentManager.instance.effectChance.PoisonChance = -99f;
         AugmentManager.instance.effectChance.DecayChance = -99f;
@@ -3082,10 +3084,37 @@ public class Pyromaniac : SpecialAugment
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Lightning>());
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<CurseBall>());
 
+
+        StatManager.instance.ChangeTemporaryStats_EffectDamage(-2f);
         AugmentManager.instance.effectChance.FireChance = 0.3f;
         AugmentManager.instance.effectChance.PoisonChance = 0.3f;
         AugmentManager.instance.effectChance.DecayChance = 0.3f;
         AugmentManager.instance.effectChance.CurseChance = 0.3f;
         AugmentManager.instance.effectChance.LightningChance = 1f;
+    }
+}
+
+public class AdditionalEffectDamage : SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_80", "Dual Wield", "Deals additional damage equal to 10% of the <sprite=2> after the attack", "Special", 4);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        
+    }
+
+    public override void Remove()
+    {
+        
+    }
+
+    public override void AfterMainAttackEffect(IBrick Brick)
+    {
+        float damage = StatManager.EffectDamage * 0.1f;
+        Brick.ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Additional");
     }
 }

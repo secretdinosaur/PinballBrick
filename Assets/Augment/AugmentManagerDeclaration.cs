@@ -180,6 +180,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<BossDamageUp>(),
             AugmentSet.AddComponent<LevelUpAgain>(),
             AugmentSet.AddComponent<AtkUpWhenCritical>(),
+            AugmentSet.AddComponent<AdditionalEffectDamage>(),
             ////////////////////////// Special
             AugmentSet.AddComponent<FireEffectStackBlast>(),
             AugmentSet.AddComponent<TheFlamethrower>(),
@@ -215,16 +216,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<FireBall>(),
-            AugmentSet.GetComponent<PowerfulDecay>(),
-            AugmentSet.GetComponent<ChainLightning>(),
-            AugmentSet.GetComponent<SummonGhostBall>(),
-            AugmentSet.GetComponent<DecayBall>(),
-            AugmentSet.GetComponent<PoisonBall>(),
-            AugmentSet.GetComponent<Lightning>(),
-            AugmentSet.GetComponent<CurseBall>(),
-            AugmentSet.GetComponent<TheFlamethrower>(),
-            AugmentSet.GetComponent<DeadlyPoison>(),
+            AugmentSet.GetComponent<AdditionalEffectDamage>(),
         };
 
         foreach (IAugment augment in TestAugments)
