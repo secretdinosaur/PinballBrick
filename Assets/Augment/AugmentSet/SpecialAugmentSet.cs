@@ -802,7 +802,10 @@ public class LevelUpQuest : SpecialAugment
         QuestAlarm.Instance.SetQuest("Slayer", "Destroyed", 0, ClearRequiredCount);
     }
 
-    public override void Remove(){ }
+    public override void Remove()
+    {
+        QuestAlarm.Instance.SetQuest("Slayer", "Destroyed", ClearRequiredCount, ClearRequiredCount);
+    }
 
     public override void AfterBrickDieEffect(IBrick Brick)
     {
@@ -842,6 +845,7 @@ public class GrowBallQuest : SpecialAugment
         {
             isCleared = false;
             StatManager.instance.ChangeTemporaryStats_AttackDamage(-(KeepAtk + 1));
+            QuestAlarm.Instance.SetQuest("Grow Ball", "Destroyed", ClearRequiredCount, ClearRequiredCount);
         }
     }
 
@@ -937,7 +941,8 @@ public class SacrificeQuest1 : SpecialAugment
     }
 
     public override void Remove() 
-    {    
+    {
+        QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", ClearRequiredCount, ClearRequiredCount);
         if (isCleared) 
         {
             StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.5f);
@@ -984,6 +989,7 @@ public class SacrificeQuest2 : SpecialAugment
 
     public override void Remove() 
     {
+        QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", ClearRequiredCount, ClearRequiredCount);
         if (isCleared)
         {
             StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.17f);
@@ -1024,6 +1030,7 @@ public class SacrificeQuest3 : SpecialAugment
 
     public override void Remove() 
     {
+        QuestAlarm.Instance.SetQuest("Sacrifice III", "Sacrificed", ClearRequiredCount, ClearRequiredCount);
         if (!isCleared)
         {
             AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest3>());
@@ -1070,7 +1077,10 @@ public class AttackAfterAdditionalBall : SpecialAugment
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sincerity", "Attack", AttackNumber, RequiredCount); }
 
-    public override void Remove() { }
+    public override void Remove() 
+    {
+        QuestAlarm.Instance.SetQuest("Sincerity", "Sacrificed", RequiredCount, RequiredCount);
+    }
 
     public override void AfterAttackEffect(IBrick Brick)
     {
@@ -1921,6 +1931,7 @@ public class Concentrate : SpecialAugment
 
     public override void Remove() 
     {
+        QuestAlarm.Instance.SetQuest("Concentrate", "GameOver In", 0, 0);
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-3f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-3f);
 

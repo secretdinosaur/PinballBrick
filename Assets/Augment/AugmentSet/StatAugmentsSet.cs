@@ -499,7 +499,7 @@ public class Trinity : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_23", "Trinity", "<sprite=0>, <sprite=2>, Critical Chance 33.3% up and Exp gain 20%", 0);
+        SetAugment("STAT_23", "Trinity", "<sprite=0>, <sprite=2>, <sprite=3> 33.3% up and Exp gain 20%", 0);
         SetAdditionalDescription(null);
     }
 

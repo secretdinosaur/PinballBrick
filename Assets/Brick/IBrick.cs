@@ -81,25 +81,11 @@ public partial class IBrick : MonoBehaviour
                 else
                 {
                     if (BrickType == "HealBrick") StopCoroutine(BrickHealCoroutine);
-                    if (IsSpecialBrick)
-                    {
-                        if (BrickType == "ExpBrick")
-                        {
-                            LevelManager.Instance.GetExp(100f + GameManager.instance.Wave / 2);
-                        }
-                        else if(BrickType == "GoldBrick")
-                        {
-                            StatManager.instance.GetGold(100 + GameManager.instance.Wave / 2);
-                        }
-                        else if(BrickType == "BallBrick")
-                        {
-                            BallManager.Instance.CreateBall(2);
-                        }
-                    }
                     BrickDie();
                 }
             }
-            UpdateHPtext();
+            if(!IsSpecialBrick)
+                UpdateHPtext();
         }
     }
 
@@ -211,7 +197,10 @@ public partial class IBrick : MonoBehaviour
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
-        HPText.enabled = true;
+        if(!IsSpecialBrick)
+            HPText.enabled = true;
+        else
+            HPText.enabled = false;
 
     }
     public void OnEnable()
@@ -226,7 +215,10 @@ public partial class IBrick : MonoBehaviour
 
         GetComponents();
         spriteRenderer.enabled = true;
-        HPText.enabled = true;
+        if (!IsSpecialBrick)
+            HPText.enabled = true;
+        else
+            HPText.enabled = false;
         ExecutionObject1.transform.position = transform.position;
         ExecutionObject2.transform.position = transform.position;
         isGoldBrick = false;
