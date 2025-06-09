@@ -2643,8 +2643,8 @@ public class GoalWaveBonus : SpecialAugment
             "Wave 10: 15 Balls\n" +
             "Wave 30: <sprite=0> +5%, <sprite=3> +5%\n" +
             "Wave 50: Moderate exp\n" +
-            "Wave 70: 25 Balls,  <sprite=0> +5%, <sprite=3> +5%\n" +
-            "Wave 100: Huge exp,  <sprite=0> +10%, <sprite=3> +10%\n"
+            "Wave 70: 25 Balls, <sprite=0> +5%, <sprite=3> +5%\n" +
+            "Wave 100: Huge exp, <sprite=0> +10%, <sprite=3> +10%\n"
             );
     }
 
@@ -2915,7 +2915,7 @@ public class AtkUpWhenCritical : SpecialAugment
 
     private void OnEnable()
     {
-        SetAugment("SPECIAL_77", "Lucky Streak", "When critical attack hits, attack damage +1.8\nfor 3 seconds", "Special", 4);
+        SetAugment("SPECIAL_77", "Lucky Streak", "When critical attack hits, <sprite=0> +1.8\nfor 3 seconds", "Special", 4);
         SetAdditionalDescription(null);
     }
 

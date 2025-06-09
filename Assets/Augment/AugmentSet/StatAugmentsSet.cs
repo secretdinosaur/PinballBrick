@@ -28,7 +28,7 @@ public class AtkUp2 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_1", "Super Ball II", "Attack damage +1.3", 4);
+        SetAugment("STAT_1", "Super Ball II", "<sprite=0> +1.3", 4);
         SetAdditionalDescription(null);
     }
 
@@ -47,7 +47,7 @@ public class AtkUp3 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_2", "Super Ball III", "Attack damage +2.5", 3);
+        SetAugment("STAT_2", "Super Ball III", "<sprite=0> +2.5", 3);
         SetAdditionalDescription(null);
     }
 
@@ -66,7 +66,7 @@ public class CritChance35Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_3", "Sharpness III", "Critical chance +15%", 3);
+        SetAugment("STAT_3", "Sharpness III", "<sprite=3> +15%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -85,7 +85,7 @@ public class CritDamage15Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_4", "Fatal Attack I", "Critical damage +15%", 4);
+        SetAugment("STAT_4", "Fatal Attack I", "<sprite=1> +15%", 4);
         SetAdditionalDescription(null);
     }
 
@@ -104,7 +104,7 @@ public class CritDamage30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_5", "Fatal Attack II", "Critical damage +30%", 3);
+        SetAugment("STAT_5", "Fatal Attack II", "<sprite=1> +30%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -123,9 +123,7 @@ public class DecreaseFieldCooldown10 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_6", "Time Accelerator II", "Field effect cooltime -10%", 4);
-        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 10% ="
-            + AugmentManager.instance.FieldGlobalCooldown * 0.9f);
+        SetAugment("STAT_6", "Time Accelerator II", "<sprite=10> -10%", 4);
     }
 
     public override void Apply()
@@ -143,7 +141,7 @@ public class EffectDuration10 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_7", "Sticky Ball I", "Effect duration +10%", 5);
+        SetAugment("STAT_7", "Sticky Ball I", "<sprite=6> +10%", 5);
         SetAdditionalDescription(null);
     }
 
@@ -162,7 +160,7 @@ public class ExpGain30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_8", "Researcher II", "Exp gain +15%", 4);
+        SetAugment("STAT_8", "Researcher II", "<sprite=9> +15%", 4);
         SetAdditionalDescription(null);
     }
 
@@ -181,7 +179,7 @@ public class AtkUp1 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_9", "Super Ball I", "Attack damage +1", 5);
+        SetAugment("STAT_9", "Super Ball I", "<sprite=0> +1", 5);
         SetAdditionalDescription(null);
     }
 
@@ -200,7 +198,7 @@ public class CritChance10Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_10", "Sharpness I", "Critical chance +5%", 5);
+        SetAugment("STAT_10", "Sharpness I", "<sprite=3> +5%", 5);
         SetAdditionalDescription(null);
     }
 
@@ -219,7 +217,7 @@ public class CritChance20Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_11", "Sharpness II", "Critical chance +8%", 4);
+        SetAugment("STAT_11", "Sharpness II", "<sprite=3> +8%", 4);
         SetAdditionalDescription(null);
     }
 
@@ -238,7 +236,7 @@ public class GoldGain10Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_12", "Gold Rush I", "Gold gain +20%", 5);
+        SetAugment("STAT_12", "Gold Rush I", "<sprite=8> +20%", 5);
         SetAdditionalDescription(null);
     }
 
@@ -257,7 +255,7 @@ public class GoldGain30Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_13", "Gold Rush II", "Gold gain +30%", 4);
+        SetAugment("STAT_13", "Gold Rush II", "<sprite=8> +30%", 4);
         SetAdditionalDescription(null);
     }
 
@@ -276,7 +274,7 @@ public class GoldGain50Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_14", "Gold Rush III", "Gold gain +50%", 3);
+        SetAugment("STAT_14", "Gold Rush III", "<sprite=8> +50%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -295,7 +293,7 @@ public class AttackAndEffectUp : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_15", "Supreme Ball", "Attack, Effect damage +15%", 3);
+        SetAugment("STAT_15", "Supreme Ball", "<sprite=0>, <sprite=2> +15%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -316,7 +314,7 @@ public class EffectDamageUp1 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_16", "Psychic Ball I", "Effect damage +1", 5);
+        SetAugment("STAT_16", "Psychic Ball I", "<sprite=2> +1", 5);
         SetAdditionalDescription(null);
     }
 
@@ -335,7 +333,7 @@ public class WeakButStrongEffect : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_17", "Magician", "Attack damage -12%\nEffect damage +12%", 3);
+        SetAugment("STAT_17", "Magician", "<sprite=0> -12%\n<sprite=2> +12%", 3);
         SetAdditionalDescription(null);
         if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -360,7 +358,7 @@ public class WeakButStrongAtk : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_18", "Fighter", "Attack damage +12%\nEffect damage -12%", 3);
+        SetAugment("STAT_18", "Fighter", "<sprite=0> +12%\n<sprite=2> -12%", 3);
         SetAdditionalDescription(null);
         if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -385,9 +383,7 @@ public class DecreaseFieldCooldown5 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_19", "Time Accelerator I", "Field effect cooltime -5%", 5);
-        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString("F1") + "- 5% =" 
-            + AugmentManager.instance.FieldGlobalCooldown * 0.95f);
+        SetAugment("STAT_19", "Time Accelerator I", "<sprite=10> +5%", 5);
     }
 
     public override void Apply()
@@ -405,9 +401,7 @@ public class DecreaseFieldCooldown20 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_20", "Time Accelerator III", "Field effect cooltime -20%", 3);
-        SetAdditionalDescription("Field effect cooltime :" + AugmentManager.instance.FieldGlobalCooldown.ToString() + "- 20% ="
-            + AugmentManager.instance.FieldGlobalCooldown * 0.8f);
+        SetAugment("STAT_20", "Time Accelerator III", "<sprite=10> +20%", 3);
     }
 
     public override void Apply()
@@ -425,7 +419,7 @@ public class CritChanceToAttackDamage : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_21", "Risk Management", "Critical chance is fixed at 0%\nConverts 1% critical chance to 0.04 attack damage", 4);
+        SetAugment("STAT_21", "Risk Management", "<sprite=3> is fixed at 0%\nConverts 1% <sprite=3> to <sprite=0> +0.04 ", 4);
         SetAdditionalDescription(null);
     }
 
@@ -448,7 +442,7 @@ public class RandomStatUpOrDown : StatAugment
     public float ChangeCritChance;
     private void OnEnable()
     {
-        SetAugment("STAT_22", "Stat Roulette", "Damage, critical stats randomly increase or decrease", 4);
+        SetAugment("STAT_22", "Stat Roulette", "<sprite=0>, <sprite=1>, <sprite=2>, <sprite=3> randomly increase or decrease", 4);
         SetAdditionalDescription(null);
     }
 
@@ -505,7 +499,7 @@ public class Trinity : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_23", "Trinity", "Attack Damage, Effect Damage, Critical Chance 33.3% up and Exp gain 20%", 0);
+        SetAugment("STAT_23", "Trinity", "<sprite=0>, <sprite=2>, Critical Chance 33.3% up and Exp gain 20%", 0);
         SetAdditionalDescription(null);
     }
 
@@ -530,7 +524,7 @@ public class Perfectionism : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_24", "Perfectionism", "Critical chance becomes 100%,\n Attack damage -50%", 2);
+        SetAugment("STAT_24", "Perfectionism", "<sprite=3> becomes 100%,\n <sprite=0> -50%", 2);
         SetAdditionalDescription(null);
         if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -556,7 +550,7 @@ public class MassivelyCriticalDamageUp : StatAugment
     bool isGetAugment;
     private void OnEnable()
     {
-        SetAugment("STAT_25", "Waiter", "Max critical chance becomes 10%,\n Critical damage upgrade values are doubled after level up", 2);
+        SetAugment("STAT_25", "Waiter", "Max <sprite=3> becomes 10%,\n Critical damage upgrade values are doubled after level up", 2);
         SetAdditionalDescription(null);
         if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Perfectionism>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -583,7 +577,7 @@ public class ExpGain10Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_26", "Researcher I", "Exp gain +10%", 5);
+        SetAugment("STAT_26", "Researcher I", "<sprite=9> +10%", 5);
         SetAdditionalDescription(null);
     }
 
@@ -602,7 +596,7 @@ public class ExpGain50Up : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_27", "Researcher III", "Exp gain +30%", 3);
+        SetAugment("STAT_27", "Researcher III", "<sprite=9> +30%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -623,7 +617,7 @@ public class AttackEffectBothUp : StatAugment
     float UpgradeEffectStat;
     private void OnEnable()
     {
-        SetAugment("STAT_28", "Greedy", "Attack, Effect Damage stats share 20% of each other's increase", 1);
+        SetAugment("STAT_28", "Greedy", "<sprite=0>, <sprite=2> stats share 20% of each other's increase", 1);
         SetAdditionalDescription(null);
     }
 
@@ -651,27 +645,27 @@ public class AllStatUp : StatAugment
     private void OnEnable()
     {
         SetAugment("STAT_29", "Awake", "All stat up", 1);
-        SetAdditionalDescription("Except gold gain stat");
+        SetAdditionalDescription("Gain stats equal to twice the amount gained from level ups");
     }
 
     public override void Apply()
     {
         StatManager.instance.ChangeTemporaryStats_AttackDamage(2 * LevelManager.Instance.StatUpValue[0][1]);
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(1.2f * LevelManager.Instance.StatUpValue[1][1]);
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(2f * LevelManager.Instance.StatUpValue[1][1]);
         StatManager.instance.ChangeTemporaryStats_CriticalDamage(2 * LevelManager.Instance.StatUpValue[2][1]);
         StatManager.instance.ChangeTemporaryStats_EffectDamage(2 * LevelManager.Instance.StatUpValue[3][1]);
-        StatManager.instance.ChangeTemporaryStats_EffectDuration(1.2f * LevelManager.Instance.StatUpValue[4][1]);
-        StatManager.instance.ChangeTemporaryStats_ExpGain(1.2f * LevelManager.Instance.StatUpValue[6][1]);
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(2f * LevelManager.Instance.StatUpValue[4][1]);
+        StatManager.instance.ChangeTemporaryStats_ExpGain(2f * LevelManager.Instance.StatUpValue[6][1]);
     }
 
     public override void Remove()
     {
         StatManager.instance.ChangeTemporaryStats_AttackDamage(-(2 * LevelManager.Instance.StatUpValue[0][1]));
-        StatManager.instance.ChangeTemporaryStats_CriticalChance(-(1.2f * LevelManager.Instance.StatUpValue[1][1]));
+        StatManager.instance.ChangeTemporaryStats_CriticalChance(-(2f * LevelManager.Instance.StatUpValue[1][1]));
         StatManager.instance.ChangeTemporaryStats_CriticalDamage(-(2 * LevelManager.Instance.StatUpValue[2][1]));
         StatManager.instance.ChangeTemporaryStats_EffectDamage(-(2 * LevelManager.Instance.StatUpValue[3][1]));
-        StatManager.instance.ChangeTemporaryStats_EffectDuration(-(1.2f * LevelManager.Instance.StatUpValue[4][1]));
-        StatManager.instance.ChangeTemporaryStats_ExpGain(-(1.2f * LevelManager.Instance.StatUpValue[6][1]));
+        StatManager.instance.ChangeTemporaryStats_EffectDuration(-(2f * LevelManager.Instance.StatUpValue[4][1]));
+        StatManager.instance.ChangeTemporaryStats_ExpGain(-(2f * LevelManager.Instance.StatUpValue[6][1]));
     }
 }
 
@@ -679,7 +673,7 @@ public class EffectDamageUp2 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_30", "Psychic Ball II", "Effect damage +1.3", 4);
+        SetAugment("STAT_30", "Psychic Ball II", "<sprite=2> +1.3", 4);
         SetAdditionalDescription(null);
     }
 
@@ -698,7 +692,7 @@ public class EffectDamageUp3 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_31", "Psychic Ball III", "Effect damage +2.5", 3);
+        SetAugment("STAT_31", "Psychic Ball III", "<sprite=2> +2.5", 3);
         SetAdditionalDescription(null);
     }
 
@@ -718,7 +712,7 @@ public class LevelUpMania : StatAugment
     float TotalUpgradedValue;
     private void OnEnable()
     {
-        SetAugment("STAT_32", "Level Up Mania", "After level up, Exp gain +2%", 5);
+        SetAugment("STAT_32", "Level Up Mania", "After level up, <sprite=9> +2%", 5);
         SetAdditionalDescription(null);
     }
 
@@ -743,7 +737,7 @@ public class EffectDuration15 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_33", "Sticky Ball II", "Effect duration +15%", 4);
+        SetAugment("STAT_33", "Sticky Ball II", "<sprite=6> +15%", 4);
         SetAdditionalDescription(null);
     }
 
@@ -762,7 +756,7 @@ public class EffectDuration30 : StatAugment
 {
     private void OnEnable()
     {
-        SetAugment("STAT_34", "Sticky Ball III", "Effect duration +30%", 3);
+        SetAugment("STAT_34", "Sticky Ball III", "<sprite=6> +30%", 3);
         SetAdditionalDescription(null);
     }
 
@@ -783,7 +777,7 @@ public class LateBloomer : StatAugment
     Coroutine Routine;
     private void OnEnable()
     {
-        SetAugment("STAT_35", "Late Bloomer", "Attack, Effect Damage -50% and Gain +3% Attack, Effect Damage each time Wave 1 is cleared (up to 75%)", 3);
+        SetAugment("STAT_35", "Late Bloomer", "<sprite=0>, <sprite=2> -50% and Gain +3% <sprite=0>, <sprite=2> each wave is cleared (up to 75%)", 3);
         SetAdditionalDescription(null);
     }
 
