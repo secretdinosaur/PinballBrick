@@ -690,6 +690,12 @@ public class BrickManager : MonoBehaviour
             }
         }
 
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_81"))
+        {
+            Brick.GetComponent<Collider2D>().isTrigger = true;
+        }
+        else
+            Brick.GetComponent<Collider2D>().isTrigger = false;
         UpdateCurrentBricks(Brick);
     }
 

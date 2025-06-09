@@ -35,6 +35,22 @@ public class ExpBrick : IBrick
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ball"))
+        {
+            TakeDamage(other.gameObject.GetComponent<IBall>());
+            ItemManager.Instance.SpawnSpecificItem("ExpBead", transform.position, 1);
+            var activeBalls = System.Array.FindAll(Balls, b => b.gameObject.activeSelf);
+            int index = Random.Range(0, activeBalls.Length);
+            activeBalls[index].gameObject.SetActive(false);
+            for (int i = 0; i < Balls.Length; i++)
+            {
+                Balls[i].GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
+            }
+        }
+    }
+
     IEnumerator TimeSet()
     {
         yield return new WaitForSeconds(20f);

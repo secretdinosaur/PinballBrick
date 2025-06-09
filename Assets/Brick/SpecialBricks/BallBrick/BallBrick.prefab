@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 689943480319883019}
   - component: {fileID: 2979670750473975120}
   - component: {fileID: 2684994994375317364}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: DetectArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +481,7 @@ Transform:
   - {fileID: 277649335960007066}
   - {fileID: 3485044428245978241}
   - {fileID: 689943480319883019}
-  - {fileID: 2308600468656229339}
+  - {fileID: 2953167529006008524}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2930037138640383005
@@ -922,7 +922,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &7349141911506479347
+--- !u!1 &6968445509689420338
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -930,25 +930,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2308600468656229339}
-  m_Layer: 6
-  m_Name: Balls
+  - component: {fileID: 2953167529006008524}
+  - component: {fileID: 8752178712669484954}
+  m_Layer: 12
+  m_Name: BallCase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2308600468656229339
+--- !u!4 &2953167529006008524
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7349141911506479347}
+  m_GameObject: {fileID: 6968445509689420338}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 1.2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8173117441382616752}
@@ -963,17 +964,78 @@ Transform:
   - {fileID: 3030017491110157379}
   m_Father: {fileID: 4196403253232580860}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &8752178712669484954
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6968445509689420338}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.5, y: 0.5}
+      - {x: -0.5, y: -0.5}
+      - {x: -0.4175414, y: -0.49999997}
+      - {x: 0.5, y: -0.5}
+      - {x: 0.5, y: 0.5}
+    - - {x: -0.43, y: 0.41}
+      - {x: -0.43, y: -0.41}
+      - {x: -0.4175414, y: -0.41}
+      - {x: 0.43, y: -0.41}
+      - {x: 0.43, y: 0.41}
+  m_UseDelaunayMesh: 0
 --- !u!1001 &95416386460789616
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
       value: BallForSpecialBrick (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
@@ -981,11 +1043,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z
@@ -1095,11 +1157,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
       value: BallForSpecialBrick (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
@@ -1107,11 +1173,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z
@@ -1221,11 +1287,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
       value: BallForSpecialBrick (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
@@ -1233,11 +1303,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z
@@ -1347,11 +1417,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
       value: BallForSpecialBrick (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
@@ -1359,11 +1433,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z
@@ -1473,7 +1547,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
@@ -1481,11 +1555,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_TagString
@@ -1493,11 +1567,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z
@@ -1711,11 +1785,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
       value: BallForSpecialBrick (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
@@ -1723,11 +1801,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z
@@ -1837,11 +1915,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
       value: BallForSpecialBrick (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
@@ -1849,11 +1931,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z
@@ -1963,7 +2045,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
@@ -1971,7 +2053,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
@@ -1983,11 +2065,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z
@@ -2201,11 +2283,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
       value: BallForSpecialBrick (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
@@ -2213,11 +2299,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z
@@ -2327,11 +2413,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2308600468656229339}
+    m_TransformParent: {fileID: 2953167529006008524}
     m_Modifications:
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_Name
       value: BallForSpecialBrick (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 26260608329336785, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_IsActive
@@ -2339,11 +2429,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22000001
+      value: 0.17600003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22000001
+      value: 0.26400003
       objectReference: {fileID: 0}
     - target: {fileID: 4961788289135129368, guid: 0f4e885a3d4f1884bb7f0b6a383b0842, type: 3}
       propertyPath: m_LocalScale.z

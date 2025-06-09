@@ -183,6 +183,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<LevelUpAgain>(),
             AugmentSet.AddComponent<AtkUpWhenCritical>(),
             AugmentSet.AddComponent<AdditionalEffectDamage>(),
+            AugmentSet.AddComponent<PenetratingBall>(),
             ////////////////////////// Special
             AugmentSet.AddComponent<FireEffectStackBlast>(),
             AugmentSet.AddComponent<TheFlamethrower>(),
@@ -218,8 +219,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<BigBoss>(),
-            AugmentSet.GetComponent<LevelUpAgain>(),
         };
 
         foreach (IAugment augment in TestAugments)
@@ -230,7 +229,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(AugmentSet.GetComponent<Pyromaniac>());
+        AddAugment(AugmentSet.GetComponent<Chronobreak>());
     }
 }
 
