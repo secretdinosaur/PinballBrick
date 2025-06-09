@@ -93,6 +93,18 @@ public partial class AugmentManager
         ActivatedAugmentNumber--;
     }
 
+    public void RemoveAugmentOnType(string augmentType)
+    {
+        var activeAugmentsCopy = activeAugments.ToList();
+        foreach (IAugment augment in activeAugmentsCopy)
+        {
+            if(augment.Type == augmentType)
+            {
+                RemoveAugment(augment);
+            }
+        }
+    }
+
 
     public void RemoveOnAugmentsSet(IAugment augment)
     {

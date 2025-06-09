@@ -369,7 +369,8 @@ public partial class IBrick
     public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
     {
         if (!gameObject.activeSelf) return;
-        DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
+        if(Random.value < AugmentManager.instance.effectChance.LightningChance)
+            DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
     }
 
     public void DamageByCurse()

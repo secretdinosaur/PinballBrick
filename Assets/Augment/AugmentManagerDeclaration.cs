@@ -49,7 +49,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 1.3f, 0.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 1.3f, 0.3f, 1f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 3;
         PoisonStackLimit = 3;
@@ -183,6 +183,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             ////////////////////////// Special
             AugmentSet.AddComponent<FireEffectStackBlast>(),
             AugmentSet.AddComponent<TheFlamethrower>(),
+            AugmentSet.AddComponent<Pyromaniac>(),
 
             AugmentSet.AddComponent<DeadlyPoison>(),
             AugmentSet.AddComponent<InfinitePoison>(),
@@ -214,7 +215,16 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<WeatherChange>(),
+            AugmentSet.GetComponent<FireBall>(),
+            AugmentSet.GetComponent<PowerfulDecay>(),
+            AugmentSet.GetComponent<ChainLightning>(),
+            AugmentSet.GetComponent<SummonGhostBall>(),
+            AugmentSet.GetComponent<DecayBall>(),
+            AugmentSet.GetComponent<PoisonBall>(),
+            AugmentSet.GetComponent<Lightning>(),
+            AugmentSet.GetComponent<CurseBall>(),
+            AugmentSet.GetComponent<TheFlamethrower>(),
+            AugmentSet.GetComponent<DeadlyPoison>(),
         };
 
         foreach (IAugment augment in TestAugments)
@@ -225,7 +235,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        RemoveAugment(AugmentSet.GetComponent<FireBall>());
+        AddAugment(AugmentSet.GetComponent<Pyromaniac>());
     }
 }
 
@@ -251,13 +261,15 @@ public class EffectChance
     public float PoisonChance;
     public float DecayChance;
     public float CurseChance;
+    public float LightningChance;
 
-    public EffectChance(float fireChance, float poisonChance, float decayChance, float curseChance)
+    public EffectChance(float fireChance, float poisonChance, float decayChance, float curseChance, float lightningChance)
     {
         FireChance = fireChance;
         PoisonChance = poisonChance;
         DecayChance = decayChance;
         CurseChance = curseChance;
+        LightningChance = lightningChance;
     }
 }
 
