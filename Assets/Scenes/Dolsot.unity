@@ -11306,6 +11306,16 @@ MonoBehaviour:
   BaseBossSpawnValue: 1
   NextBossSpawnWave: 0
   BossSpawnWaveNumber: 0
+  BrickExpValue:
+  - 10
+  - 20
+  - 12.5
+  - 20
+  - 15.5
+  - 12.5
+  - 15.5
+  - 20
+  - 10
 --- !u!114 &137631893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11747,16 +11757,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 167072998}
   m_CullTransparentMesh: 1
---- !u!198 &169933177 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 166264936585649410, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-  m_PrefabInstance: {fileID: 2380411865550610170}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &169933179 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-  m_PrefabInstance: {fileID: 2380411865550610170}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &175947404
 GameObject:
   m_ObjectHideFlags: 0
@@ -17988,10 +17988,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1810732510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -220}
-  m_SizeDelta: {x: 800, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &275747022
 MonoBehaviour:
@@ -25082,10 +25082,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1810732510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -90}
-  m_SizeDelta: {x: 800, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &573480039
 MonoBehaviour:
@@ -25681,7 +25681,7 @@ MonoBehaviour:
   PoolManager: {fileID: 950339562}
   SuicideBoomBallPS: {fileID: 265549516}
   SuicideBoomBallPS2: {fileID: 125984147}
-  CursePS: {fileID: 169933177}
+  CursePS: {fileID: 0}
   BombBallPS: {fileID: 2106038541}
   BallSacrificePS: {fileID: 1359686236}
   AllDamagePS: {fileID: 2097035829}
@@ -25715,7 +25715,6 @@ Transform:
   - {fileID: 1127975505}
   - {fileID: 265549518}
   - {fileID: 125984149}
-  - {fileID: 169933179}
   - {fileID: 2106038543}
   - {fileID: 1359686238}
   - {fileID: 2097035830}
@@ -38860,6 +38859,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 998555652}
     _nonLazy: 0
+  - _name: GhostBall
+    _component: {fileID: 4895539536944960113, guid: 78f5c32a7e1289e4eba3d2683a02a0a7, type: 3}
+    _count: 0
+    _container: {fileID: 998555652}
+    _nonLazy: 0
 --- !u!1 &1012409408
 GameObject:
   m_ObjectHideFlags: 0
@@ -39065,10 +39069,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1810732510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -285}
-  m_SizeDelta: {x: 800, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1022064956
 MonoBehaviour:
@@ -73462,10 +73466,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1810732510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -350}
-  m_SizeDelta: {x: 800, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1604906318
 MonoBehaviour:
@@ -78840,10 +78844,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1810732510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -25}
-  m_SizeDelta: {x: 800, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1665704425
 MonoBehaviour:
@@ -84179,10 +84183,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1810732510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -155}
-  m_SizeDelta: {x: 800, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1733726394
 MonoBehaviour:
@@ -116809,71 +116813,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2131083593}
   m_CullTransparentMesh: 1
---- !u!1001 &2380411865550610170
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 639729465}
-    m_Modifications:
-    - target: {fileID: 166264936585649410, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: SizeModule.y.maxCurve.m_Curve.Array.data[1].time
-      value: 0.83473074
-      objectReference: {fileID: 0}
-    - target: {fileID: 166264936585649410, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: SizeModule.y.maxCurve.m_Curve.Array.data[2].time
-      value: 0.9256188
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344881382095889637, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8167026221352052998, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
-      propertyPath: m_Name
-      value: CursePS
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 34af61710e008bd4fa5dff42365c4421, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -364,17 +364,17 @@ public partial class IBrick
         DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
     }
 
-    public void DamageByCurse()
+    public void DamageByCurse(Vector2? StartingPos = null)
     {
         if (!gameObject.activeSelf) return;
         if (AugmentManager.instance.determineAugmentID("SPECIAL_75"))
         {
-            if (Curse == null)
-                Curse = StartCoroutine(BrickEffect.DamageByCurse2());
+            if(Curse == null)
+                StartCoroutine(BrickEffect.DamageByCurse2(StartingPos));
         }
         else
         {
-            DamageManager.DamageByCurse(this);
+            StartCoroutine(DamageManager.DamageByCurse(this, StartingPos));
         }
 
     }
