@@ -5,18 +5,39 @@ using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 using UnityEngine;
 using static UnityEngine.Rendering.HableCurve;
+using System.Text.RegularExpressions;
 
 public partial class AugmentManager //Utility
 {
-    string str = null;
     public void printAugments()
     {
+        Dictionary<int, string> spriteDescriptions = new Dictionary<int, string>
+        {
+            { 0, "Attack Damage" },
+            { 1, "Critical Damage" },
+            { 2, "Effect Damage" },
+            { 3, "Critical Chance" },
+            { 6, "Effect Duration" },
+            { 8, "Gold Gain" },
+            { 10, "EXP Gain" },
+            { 11, "Cooltime Reduce" }
+        };
+
+        string ReplaceSpriteTags(string input)
+        {
+            return Regex.Replace(input, @"<sprite=(\d+)>", match =>
+            {
+                int index = int.Parse(match.Groups[1].Value);
+                return spriteDescriptions.ContainsKey(index) ? spriteDescriptions[index] : match.Value;
+            });
+        }
+
         string str = "";
         for(int i = 0; i < augmentsSet.Count; i++)
         {
             str += augmentsSet[i].Type + "\t" + augmentsSet[i].Rarity + "\t" + augmentsSet[i].Name + "\t" + augmentsSet[i].Description.Replace("\r\n", "").Replace("\n", "") + "\n";
         }
-        print(str);
+        print(ReplaceSpriteTags(str));
     }
 
     private void Start()
