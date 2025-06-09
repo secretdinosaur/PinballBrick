@@ -2617,7 +2617,7 @@ public class IncreseStatUpValue : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_68", "Stick to the Basics", "Gain 24% More When Selecting Stats After Level Up.", "Special", 1);
+        SetAugment("SPECIAL_68", "Stick to the Basics", "Gain 24% more stats when selecting after level up.", "Special", 1);
         SetAdditionalDescription(null);
     }
 
@@ -2638,8 +2638,14 @@ public class GoalWaveBonus : SpecialAugment
     bool[] Goals;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_69", "Milestone", "Receive Rewards Upon Reaching Certain Waves.", "Special", 3);
-        SetAdditionalDescription(null);
+        SetAugment("SPECIAL_69", "Milestone", "Receive rewards upon reaching certain waves.", "Special", 3);
+        SetAdditionalDescription("Wave 5: Small exp\n" +
+            "Wave 10: 15 Balls\n" +
+            "Wave 30: <sprite=0> +5%, <sprite=3> +5%\n" +
+            "Wave 50: Moderate exp\n" +
+            "Wave 70: 25 Balls,  <sprite=0> +5%, <sprite=3> +5%\n" +
+            "Wave 100: Huge exp,  <sprite=0> +10%, <sprite=3> +10%\n"
+            );
     }
 
     public override void Apply()
@@ -2683,15 +2689,12 @@ public class GoalWaveBonus : SpecialAugment
             if(GameManager.instance.Wave == 5 && !Goals[0])
             {
                 Goals[0] = true;
-                for (int i = 0; i < 3; i++)
-                {
-                    LevelManager.Instance.GetExp(20);
-                }
+                ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead", 10, 0.1f);
             }
             else if(GameManager.instance.Wave == 10 && !Goals[1])
             {
                 Goals[1] = true;
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     BallManager.Instance.CreateBall(5);
                 }
@@ -2705,10 +2708,7 @@ public class GoalWaveBonus : SpecialAugment
             else if (GameManager.instance.Wave == 50 && !Goals[3])
             {
                 Goals[3] = true;
-                for (int i = 0; i < 5; i++)
-                {
-                    LevelManager.Instance.GetExp(50);
-                }
+                StartCoroutine(ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead", 40, 0.1f));
             }
             else if (GameManager.instance.Wave == 70 && !Goals[4])
             {
@@ -2723,10 +2723,8 @@ public class GoalWaveBonus : SpecialAugment
             else if (GameManager.instance.Wave == 100 && !Goals[5])
             {
                 Goals[5] = true;
-                for (int i = 0; i < 20; i++)
-                {
-                    LevelManager.Instance.GetExp(20);
-                }
+                ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead", 100, 0.1f);
+
                 StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
                 StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);
             }
@@ -2865,7 +2863,7 @@ public class ContinuingCurseAttack : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_75", "Possession", "Transforms Curse Damage into a damage-over-time attack", "Special", 2);
+        SetAugment("SPECIAL_75", "Possession", "The curse can activate multiple times based on a specific chance", "Special", 2);
         SetAdditionalDescription(null);
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
             AugmentManager.instance.exceptionAugments.Add(this);

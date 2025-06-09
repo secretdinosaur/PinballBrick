@@ -198,13 +198,13 @@ public partial class LevelManager : MonoBehaviour
     {
         LevelBar.maxValue = BaseMaxExpValue * 
             (level > 90 ?
-                110 + 98 * (level - 1) :
+                50 + 60 * (level - 1) :
             level > 60 ?
-                100 + 82 * (level - 1) :
+                50 + 50 * (level - 1) :
             level > 30 ?
-                80 + 62 * (level - 1) :
+                50 + 40 * (level - 1) :
             //level <= 30
-                50 + 27 * (level - 1));
+                50 + 30 * (level - 1));
     }
 
     public void GetExp(float value)

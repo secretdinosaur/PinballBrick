@@ -626,7 +626,6 @@ public class BrickManager : MonoBehaviour
             {
                 HPPool.Clear();
                 HPPool.Add(_FusionBrickHealth * 0.9f);
-                Debug.Log(_FusionBrickHealth * 0.9f);
                 brick.IsBoss = true;
                 brick.IsSpecialBrick = false;
                 Brick = GetBrick(brick);
@@ -714,7 +713,7 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
+                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1f) : 2) + (AddPerWave * 5) + 1, 1.2f) * UnityEngine.Random.Range(4.9f, 5.1f))));
             }
             _FusionBrickHealth += HPPool.Average();
         }
@@ -731,11 +730,10 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, UnityEngine.Random.Range(0.9f, 1.1f))));
             //need to adjust
-            for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
+            for (int j = 0; j < 3 * 1.1; j++)
             {
-                HPPool.Add(j);
+                HPPool.Add((int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1f) : 2) + (AddPerWave * 5) + 1, 1.1f)) * UnityEngine.Random.Range(0.9f, 1.1f)));
             }
             _FusionBrickHealth += HPPool.Average();
         }
