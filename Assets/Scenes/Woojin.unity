@@ -11306,6 +11306,16 @@ MonoBehaviour:
   BaseBossSpawnValue: 1
   NextBossSpawnWave: 0
   BossSpawnWaveNumber: 0
+  BrickExpValue:
+  - 10
+  - 20
+  - 12.5
+  - 20
+  - 15.5
+  - 12.5
+  - 15.5
+  - 20
+  - 10
 --- !u!114 &137631893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17632,14 +17642,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 350071e32e8a418a8fe1fe82613f90dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exceptionAugments: []
   augmentsSet: []
+  exceptionAugments: []
   RouletteAugmentsSet: []
   ActivatedAugmentNumber: 0
   activeAugments: []
   FireStackLimit: 0
   PoisonStackLimit: 0
   DecayStackLimit: 0
+  HolyStackLimit: 0
   PoisonBrickSet: []
   DecayDamageMultiple: 0
   FieldGlobalCooldown: 10
@@ -36458,7 +36469,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: ea4eb1b9fe676254eb566f597d9e4007, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -78063,7 +78074,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: ea4eb1b9fe676254eb566f597d9e4007, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -111766,7 +111777,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: ea4eb1b9fe676254eb566f597d9e4007, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
