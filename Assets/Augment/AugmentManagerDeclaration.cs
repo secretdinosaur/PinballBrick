@@ -18,6 +18,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public int FireStackLimit;
     public int PoisonStackLimit;
     public int DecayStackLimit;
+    public int HolyStackLimit;
 
     public EffectDuration effectDuration;
 
@@ -54,6 +55,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         FireStackLimit = 3;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
+        HolyStackLimit = 2;
         DecayDamageMultiple = 0.1f;
         isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
@@ -216,7 +218,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<AdditionalEffectDamage>(),
+            AugmentSet.GetComponent<LevelUpAgain>(),
         };
 
         foreach (IAugment augment in TestAugments)

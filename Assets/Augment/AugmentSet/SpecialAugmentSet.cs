@@ -2947,7 +2947,7 @@ public class LevelUpAgain : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up", "Special", 6);
+        SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up and holy attack on all bricks", "Special", 6);
         SetAdditionalDescription(null);
     }
 
@@ -2958,13 +2958,18 @@ public class LevelUpAgain : SpecialAugment
 
     public override void Remove()
     {
-        AugmentManager.instance.augmentsSet.Add(gameObject.AddComponent<LevelUpAgain>());
+        
     }
 
     public override void AfterLevelUpEffect()
     {
         if (!AugmentManager.instance.isLevelUpOnceAgain)
         {
+            var CurrentBricksCopy = BrickManager.Instance.CurrentBricks.ToList();
+            foreach(IBrick brick in CurrentBricksCopy)
+            {
+                brick.HolyRainAttack();
+            }
             AugmentManager.instance.isLevelUpOnceAgain = true;
             LevelManager.Instance.LevelUp();
         }

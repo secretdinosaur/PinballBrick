@@ -822,7 +822,7 @@ public class DiceGamble : FieldAugment
 {
     Coroutine Routine = null;
     Coroutine Routine2 = null;
-    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 6;
         
     private void OnEnable()
     {

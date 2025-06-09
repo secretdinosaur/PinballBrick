@@ -42,7 +42,7 @@ public class GhostBall : IBall
         int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
         try
         {
-            BrickManager.Instance.CurrentBricks[index].DamageByCurse();
+            BrickManager.Instance.CurrentBricks[index].DamageByCurse(transform.position);
         }
         catch (ArgumentOutOfRangeException)
         {
