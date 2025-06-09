@@ -402,6 +402,11 @@ public partial class IBrick
         DamageManager.ExplosionDamageAttack(this, value);
     }
 
+    public void HolyRainAttack()
+    {
+        DamageManager.HolyRainDamageAttack(this);
+    }
+
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
     {
         DamageManager.ArbitraryDamageAttack(this, damage, isCritical, damageText, DamageType);

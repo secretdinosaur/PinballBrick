@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -259,6 +260,24 @@ public static partial class DamageManager //Special Effect Attack
         damage = DecayDamageCalculate(brick, damage);
         brick.HP -= damage;
         brick.ShowText(damage.ToString("F1"), "Explosion", isCritical);
+    }
+
+    public static void HolyRainDamageAttack(IBrick brick)
+    {
+        float damage = 5f + (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
+                    * (StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier);
+        damage = DecayDamageCalculate(brick, damage);
+
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(Random.Range(0, 0.5f))
+           .AppendCallback(() => {
+               VisualEffectManager.Instance.SpawnParticle("AllDamage", brick.transform.position, 1);
+           })
+           .AppendInterval(0.65f)
+           .AppendCallback(() => {
+               brick.HP -= damage;
+               brick.ShowText(damage.ToString("F1"), "Lightning", false);
+           });
     }
 
     public static float DecayDamageCalculate(IBrick brick, float Damage)

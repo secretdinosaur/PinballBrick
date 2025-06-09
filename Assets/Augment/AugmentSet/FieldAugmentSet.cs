@@ -62,22 +62,10 @@ public class AllDamage : FieldAugment
         {
             for (int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
             {
-                IBrick brick = BrickManager.Instance.CurrentBricks[i];
-                Damage = 5f + (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
-                    * (StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier);
-                StartCoroutine(SyncDamageAndEffect(Damage, brick));
+                BrickManager.Instance.CurrentBricks[i].HolyRainAttack();
             }
             yield return new WaitForSeconds(period);
         }
-    }
-
-    private IEnumerator SyncDamageAndEffect(float Damage, IBrick brick)
-    {
-        yield return new WaitForSeconds(Random.Range(0, 0.5f));
-        VisualEffectManager.Instance.SpawnParticle("AllDamage", brick.transform.position, 1);
-
-        yield return new WaitForSeconds(0.65f);
-        brick.ArbitraryDamageAttack(Damage, false, Damage.ToString("F1"), "Lightning");
     }
 }
 
@@ -795,18 +783,16 @@ private void OnEnable()
                     AugmentManager.instance.effectChance.DecayChance -= 0.15f;
                     break;
                 case 4:
-                    AugmentManager.instance.effectChance.CurseChance += 0.15f;
                     while (elapsedTime < Duration)
                     {
                         for (int j = 0; j < BrickManager.Instance.CurrentBricks.Count; j++)
                         {
-                            if (Random.value < CurseChance)
-                                BrickManager.Instance.CurrentBricks[j].DamageByCurse();
+                            if (Random.value < 0.3f)
+                                BrickManager.Instance.CurrentBricks[j].HolyRainAttack();
                         }
                         elapsedTime += 1;
                         yield return new WaitForSeconds(1f);
                     }
-                    AugmentManager.instance.effectChance.CurseChance -= 0.15f;
                     break;
                 case 5:
                     while (elapsedTime < Duration)
