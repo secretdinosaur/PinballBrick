@@ -55,7 +55,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         FireStackLimit = 3;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
-        HolyStackLimit = 2;
+        HolyStackLimit = 5;
         DecayDamageMultiple = 0.1f;
         isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
@@ -218,6 +218,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
+            AugmentSet.GetComponent<BigBoss>(),
             AugmentSet.GetComponent<LevelUpAgain>(),
         };
 

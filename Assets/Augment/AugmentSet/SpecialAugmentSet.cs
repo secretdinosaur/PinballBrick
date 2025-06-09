@@ -361,7 +361,6 @@ public class BigBoss : SpecialAugment
             BrickManager.Instance.TeleportBrickPosition(BrickManager.Instance.BigBossBrick);
         }
         AugmentManager.instance.AddAugment(gameObject.GetComponent<LevelUpAgain>());
-        AugmentManager.instance.RemoveOnAugmentsSet(gameObject.GetComponent<LevelUpAgain>());
     }
 }
 
@@ -2949,6 +2948,7 @@ public class LevelUpAgain : SpecialAugment
     {
         SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up and holy attack on all bricks", "Special", 6);
         SetAdditionalDescription(null);
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LevelUpAgain>());
     }
 
     public override void Apply()
@@ -2963,13 +2963,13 @@ public class LevelUpAgain : SpecialAugment
 
     public override void AfterLevelUpEffect()
     {
+        var CurrentBricksCopy = BrickManager.Instance.CurrentBricks.ToList();
+        foreach (IBrick brick in CurrentBricksCopy)
+        {
+            brick.HolyRainAttack();
+        }
         if (!AugmentManager.instance.isLevelUpOnceAgain)
         {
-            var CurrentBricksCopy = BrickManager.Instance.CurrentBricks.ToList();
-            foreach(IBrick brick in CurrentBricksCopy)
-            {
-                brick.HolyRainAttack();
-            }
             AugmentManager.instance.isLevelUpOnceAgain = true;
             LevelManager.Instance.LevelUp();
         }

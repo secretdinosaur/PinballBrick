@@ -112,15 +112,6 @@ public partial class IBrick : MonoBehaviour
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
 
-    /*
-    private void StopCoroutineAfterDie()
-    {
-        if(Fire != null) { BrickEffect.StopFire(); }
-        if(Poison !=  null) { BrickEffect.StopPoison(); }
-        if(Decay != null) { BrickEffect.StopDecay(); }
-    }
-    */
-
     public void ShowText(string Text, string DamageType, bool isCritical)
     {
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
