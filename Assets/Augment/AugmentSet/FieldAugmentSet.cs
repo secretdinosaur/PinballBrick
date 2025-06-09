@@ -863,28 +863,6 @@ public class DiceGamble : FieldAugment
         rolledDiceSet.Add(dice);
     }
 
-    IEnumerator SpawnLuckyItem()
-    {
-        int SpawnCount = 0;
-        while(SpawnCount < 30)
-        {
-            for(int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
-            {
-                IBrick brick = BrickManager.Instance.CurrentBricks[i];
-                if(brick.gameObject.activeSelf)
-                {
-                    ItemManager.Instance.SpawnSpecificItem("ExpBead", brick.transform.position, 3);
-                    ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 1);
-                    ItemManager.Instance.SpawnSpecificItem("Gold2", brick.transform.position, 1);
-                    ItemManager.Instance.SpawnSpecificItem("Gold3", brick.transform.position, 1);
-                    SpawnCount += 1;
-                    yield return new WaitForSeconds(0.1f);
-                }
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
     private void CalDiceSet()
     {
         rolledDiceSet.Sort();
@@ -900,8 +878,11 @@ public class DiceGamble : FieldAugment
                     }
                     break;
                 case 2:
-                    Routine2 = StartCoroutine(SpawnLuckyItem());
-                break;
+                    ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead",200, 0.1f);
+                    ItemManager.Instance.SpawnSpecificItemInRandomPosition("Gold1", 50, 0.1f);
+                    ItemManager.Instance.SpawnSpecificItemInRandomPosition("Gold2", 50, 0.1f);
+                    ItemManager.Instance.SpawnSpecificItemInRandomPosition("Gold3", 50, 0.1f);
+                    break;
                 case 3:
                     BallManager.Instance.CreateBombBall(10);
                     BallManager.Instance.CreateBall(50);

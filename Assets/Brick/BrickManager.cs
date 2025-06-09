@@ -160,7 +160,23 @@ public class BrickManager : MonoBehaviour
     public void TakeBrick(IBrick brick)
     {
         if (brick.IsBoss)
+        {
             WavePause = false;
+
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            {
+                int BossSpawned = 2;
+                for (int i = 0; i < CurrentBricks.Count; i++)
+                {
+                    if (CurrentBricks[i].IsBoss)
+                        BossSpawned -= 1;
+                }
+                if (BossSpawned == 1) // currentbrick does not updated yet
+                    WavePause = false;
+                else
+                    WavePause = true;
+            }
+        }
         if (brick.gameObject.activeSelf)
         {
             if (brick.Fire != null)
@@ -610,7 +626,6 @@ public class BrickManager : MonoBehaviour
             {
                 HPPool.Clear();
                 HPPool.Add(_FusionBrickHealth * 0.9f);
-                Debug.Log(_FusionBrickHealth * 0.9f);
                 brick.IsBoss = true;
                 brick.IsSpecialBrick = false;
                 Brick = GetBrick(brick);
@@ -656,8 +671,24 @@ public class BrickManager : MonoBehaviour
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.Init(Brick.IsBoss, false, false, Brick.Point, Brick.Exp);
         }
-        if(Brick.IsBoss)
-            OnWaveStopButtonClick();
+        
+        if (Brick.IsBoss)
+        {
+            WavePause = true;
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            {
+                int BossSpawned = 1;
+                for(int i = 0; i < CurrentBricks.Count; i++)
+                {
+                    if (CurrentBricks[i].IsBoss)
+                        BossSpawned += 1;
+                }
+                if (BossSpawned == 2)
+                    WavePause = true;
+                else
+                    WavePause = false;
+            }
+        }
 
         UpdateCurrentBricks(Brick);
     }
@@ -682,7 +713,7 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
+                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1f) : 2) + (AddPerWave * 5) + 1, 1.2f) * UnityEngine.Random.Range(4.9f, 5.1f))));
             }
             _FusionBrickHealth += HPPool.Average();
         }
@@ -699,11 +730,10 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, UnityEngine.Random.Range(0.9f, 1.1f))));
             //need to adjust
-            for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
+            for (int j = 0; j < 3 * 1.1; j++)
             {
-                HPPool.Add(j);
+                HPPool.Add((int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1f) : 2) + (AddPerWave * 5) + 1, 1.1f)) * UnityEngine.Random.Range(0.9f, 1.1f)));
             }
             _FusionBrickHealth += HPPool.Average();
         }
