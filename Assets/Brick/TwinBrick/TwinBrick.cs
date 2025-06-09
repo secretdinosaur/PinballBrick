@@ -20,6 +20,14 @@ public class TwinBrick : IBrick
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ball"))
+        {
+            TakeDamage(other.gameObject.GetComponent<IBall>());
+        }
+    }
+
     public IEnumerator StartRebirth()
     {
         GetComponent<Collider2D>().enabled = false;

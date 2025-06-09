@@ -20,6 +20,13 @@ public class HealBrick : IBrick
             TakeDamage(collision.gameObject.GetComponent<IBall>());
         }
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ball"))
+        {
+            TakeDamage(other.gameObject.GetComponent<IBall>());
+        }
+    }
 
     public IEnumerator BrickHeal()
     {

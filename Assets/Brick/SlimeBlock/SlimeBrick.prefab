@@ -246,6 +246,7 @@ MonoBehaviour:
   BasicHP: 2
   IsBoss: 0
   IsSpecialBrick: 0
+  IsBigBoss: 0
   HPText: {fileID: 0}
   BrickType: 
   BrickTransform: {fileID: 0}
@@ -478,7 +479,7 @@ GameObject:
   - component: {fileID: 5678178829427855178}
   - component: {fileID: 5209690402403979457}
   - component: {fileID: 604834640603842879}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: DetectArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}

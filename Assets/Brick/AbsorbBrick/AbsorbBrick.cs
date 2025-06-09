@@ -18,6 +18,14 @@ public class AbsorbBrick : IBrick
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ball"))
+        {
+            TakeDamage(other.gameObject.GetComponent<IBall>());
+        }
+    }
+
     public void absorbHP(IBrick Brick)
     {
         HP += Brick.HpTemp / 10;

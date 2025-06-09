@@ -32,6 +32,14 @@ public class ShieldBrick : IBrick
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ball"))
+        {
+            TakeDamage(other.gameObject.GetComponent<IBall>());
+        }
+    }
+
     public void DestroyShield()
     {
         StartCoroutine(DestroySheildEffect());

@@ -2294,7 +2294,7 @@ public class Chronobreak : SpecialAugment
 
     public override void Apply()
     {
-        BrickManager.Instance.WaveSkip(-(GameManager.instance.Wave + 2));
+        BrickManager.Instance.WaveSkip(-(GameManager.instance.Wave) + 1);
         for (int i = 0; i < AugmentManager.instance.activeAugments.Count / 2; i++)
         {
             int RandomIndex = Random.Range(0, AugmentManager.instance.activeAugments.Count);
@@ -3118,5 +3118,36 @@ public class AdditionalEffectDamage : SpecialAugment
     {
         float damage = StatManager.EffectDamage * 0.1f;
         Brick.ArbitraryDamageAttack(damage, false, damage.ToString("F1"), "Additional");
+    }
+}
+
+public class PenetratingBall: SpecialAugment
+{
+    private void OnEnable()
+    {
+        SetAugment("SPECIAL_81", "Penetrating Ball", "The ball passes through the brick. <sprite=0> -75%, <sprite=2> -75%", "Special", 0);
+        SetAdditionalDescription(null);
+    }
+
+    public override void Apply()
+    {
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-4f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-4f);
+
+        for(int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
+        {
+            BrickManager.Instance.CurrentBricks[i].GetComponent<Collider2D>().isTrigger = true;
+        }
+    }
+
+    public override void Remove()
+    {
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(4f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(4f);
+
+        for (int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
+        {
+            BrickManager.Instance.CurrentBricks[i].GetComponent<Collider2D>().isTrigger = false;
+        }
     }
 }
