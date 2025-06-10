@@ -809,7 +809,7 @@ public class LevelUpQuest : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_23", "Slayer", "Receive 50% EXP and a quest. Complete the quest to level up", "Quest", 5);
-        SetAdditionalDescription("Quest: Destroy 50 bricks");
+        SetAdditionalDescription("Quest: Destroy 100 bricks");
     }
 
     public override void Apply()
