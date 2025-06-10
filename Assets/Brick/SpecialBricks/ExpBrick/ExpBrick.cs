@@ -27,7 +27,8 @@ public class ExpBrick : IBrick
             ItemManager.Instance.SpawnSpecificItem("ExpBead", transform.position, 1);
             var activeBalls = System.Array.FindAll(Balls, b => b.gameObject.activeSelf);
             int index = Random.Range(0, activeBalls.Length);
-            activeBalls[index].gameObject.SetActive(false);
+            if (activeBalls.Length > 0)
+                activeBalls[index].gameObject.SetActive(false);
             for (int i = 0; i < Balls.Length; i++)
             {
                 Balls[i].GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));

@@ -415,12 +415,10 @@ public partial class LevelManager : MonoBehaviour
                     {
                         OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[1]);
                         yield return StartCoroutine(MovePanel(i));
-                        SetParticle(1, i);
                     }
                     else
                     {
                         yield return StartCoroutine(MovePanel(i));
-                        SetParticle(2, i);
                         yield return StartCoroutine(FlashPanel(2, i));
                         yield return StartCoroutine(ShakePanel(i));
                     }
@@ -531,7 +529,6 @@ public partial class LevelManager : MonoBehaviour
 
     IEnumerator AugAniCoroutineForStat(int[] rarities, Button[] SelectButtons, List<KeyValuePair<string, int>> stats)
     {
-
         Option_1_Aura.SetFloat("_OuterFade", 0f);
         Option_2_Aura.SetFloat("_OuterFade", 0f);
         Option_3_Aura.SetFloat("_OuterFade", 0f);
@@ -656,6 +653,39 @@ public partial class LevelManager : MonoBehaviour
         Descs[i].text = desc;
         types[i].text = type;
         cools[i].text = cooltime == 0 ? "" : (cooltime / (10 / AugmentManager.instance.FieldGlobalCooldown)).ToString() + "s";
+
+        Names[i].ForceMeshUpdate();
+
+        if (Option_1_Name.textInfo.lineCount == 1)
+        {
+            Option_1_Name.rectTransform.offsetMax = new Vector2(Option_1_Name.rectTransform.offsetMax.x, -35);
+            Option_1_Description.rectTransform.offsetMax = new Vector2(Option_1_Description.rectTransform.offsetMax.x, -275);
+        }
+        else
+        {
+            Option_1_Name.rectTransform.offsetMax = new Vector2(Option_1_Name.rectTransform.offsetMax.x, -20);
+            Option_1_Description.rectTransform.offsetMax = new Vector2(Option_1_Description.rectTransform.offsetMax.x, -300);
+        }
+        if (Option_2_Name.textInfo.lineCount == 1)
+        {
+            Option_2_Name.rectTransform.offsetMax = new Vector2(Option_2_Name.rectTransform.offsetMax.x, -35);
+            Option_2_Description.rectTransform.offsetMax = new Vector2(Option_2_Description.rectTransform.offsetMax.x, -275);
+        }
+        else
+        {
+            Option_2_Name.rectTransform.offsetMax = new Vector2(Option_2_Name.rectTransform.offsetMax.x, -20);
+            Option_2_Description.rectTransform.offsetMax = new Vector2(Option_2_Description.rectTransform.offsetMax.x, -300);
+        }
+        if (Option_3_Name.textInfo.lineCount == 1)
+        {
+            Option_3_Name.rectTransform.offsetMax = new Vector2(Option_3_Name.rectTransform.offsetMax.x, -35);
+            Option_3_Description.rectTransform.offsetMax = new Vector2(Option_3_Description.rectTransform.offsetMax.x, -275);
+        }
+        else
+        {
+            Option_3_Name.rectTransform.offsetMax = new Vector2(Option_3_Name.rectTransform.offsetMax.x, -20);
+            Option_3_Description.rectTransform.offsetMax = new Vector2(Option_3_Description.rectTransform.offsetMax.x, -300);
+        }
     }
 
     void ClearAugmentPanel()
@@ -739,6 +769,8 @@ public partial class LevelManager : MonoBehaviour
             };
 
             AniRoutine = StartCoroutine(AugAniCoroutine(Rarities, OptionButtons, augmentsSet));
+
+            
         }
     }
 

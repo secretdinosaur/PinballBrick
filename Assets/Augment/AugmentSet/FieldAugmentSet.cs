@@ -941,8 +941,8 @@ public class DiceGamble : FieldAugment
 public class Trampoline : FieldAugment
 {
     Coroutine Routine = null;
-    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 30;
-    float Duration = StatManager.instance.Temporary_stat.EffectDuration * 5;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 3;
+    float Duration = StatManager.instance.Temporary_stat.EffectDuration * 10;
     GameObject TrampolineObj;
 
     private void OnEnable()

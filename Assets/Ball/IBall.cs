@@ -25,8 +25,8 @@ public partial class IBall : MonoBehaviour
     public bool isOverDeathLine;
 
     public Queue<Vector2> PositionSet = new Queue<Vector2>();
-    public Vector3 StartPosition = new Vector3(0f, -5f, 35);
-    public float linearVelocityYValue = 10;
+    public Vector3 StartPosition;
+    public float linearVelocityYValue;
 
     public Coroutine FusionMoveRoutine = null;
 
@@ -50,7 +50,6 @@ public partial class IBall : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.position = StartPosition;
-        gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
         spriteRenderer.color = new Color(1f, 1f, 1f);
         BounceTime = 1f;

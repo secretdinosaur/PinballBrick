@@ -374,7 +374,7 @@ public class ChangeBallSpawnPosition : SpecialAugment
 
     public override void Apply()
     {
-        BallManager.StartPosition = new Vector3(0f, 5f, 35);
+        BallManager.StartPosition = new Vector3(0f, 6f, 35);
         BallManager.linearVelocityYValue = -10;
     }
 
@@ -2697,6 +2697,7 @@ public class GoalWaveBonus : SpecialAugment
 {
     bool isGetAugment;
     bool[] Goals;
+    int NextGoalWave = 5;
     private void OnEnable()
     {
         SetAugment("SPECIAL_69", "Milestone", "Receive rewards upon reaching certain waves.", "Special", 3);
@@ -2713,6 +2714,19 @@ public class GoalWaveBonus : SpecialAugment
     {
         isGetAugment = true;
         Goals = new bool[6];
+
+        if (GameManager.instance.Wave < 5)
+            NextGoalWave = 5;
+        else if (GameManager.instance.Wave < 10)
+            NextGoalWave = 10;
+        else if (GameManager.instance.Wave < 30)
+            NextGoalWave = 30;
+        else if (GameManager.instance.Wave < 50)
+            NextGoalWave = 50;
+        else if (GameManager.instance.Wave < 70)
+            NextGoalWave = 70;
+        else if (GameManager.instance.Wave < 100)
+            NextGoalWave = 100;
     }
 
     public override void Remove()
@@ -2747,10 +2761,17 @@ public class GoalWaveBonus : SpecialAugment
     {
         if (isGetAugment)
         {
+            if(NextGoalWave == 999)
+            {
+                return;
+            }
+            else
+                QuestAlarm.Instance.SetQuest("Milestone", "Wave", GameManager.instance.Wave, NextGoalWave);
             if(GameManager.instance.Wave == 5 && !Goals[0])
             {
                 Goals[0] = true;
                 ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead", 10, 0.1f);
+                NextGoalWave = 10;
             }
             else if(GameManager.instance.Wave == 10 && !Goals[1])
             {
@@ -2759,17 +2780,20 @@ public class GoalWaveBonus : SpecialAugment
                 {
                     BallManager.Instance.CreateBall(5);
                 }
+                NextGoalWave = 30;
             }
             else if (GameManager.instance.Wave == 30 && !Goals[2])
             {
                 Goals[2] = true;
                 StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.05f);
                 StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.05f);
+                NextGoalWave = 50;
             }
             else if (GameManager.instance.Wave == 50 && !Goals[3])
             {
                 Goals[3] = true;
                 StartCoroutine(ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead", 40, 0.1f));
+                NextGoalWave = 70;
             }
             else if (GameManager.instance.Wave == 70 && !Goals[4])
             {
@@ -2780,6 +2804,7 @@ public class GoalWaveBonus : SpecialAugment
                 }
                 StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.05f);
                 StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.05f);
+                NextGoalWave = 100;
             }
             else if (GameManager.instance.Wave == 100 && !Goals[5])
             {
@@ -2788,6 +2813,8 @@ public class GoalWaveBonus : SpecialAugment
 
                 StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.1f);
                 StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.1f);
+                QuestAlarm.Instance.SetQuest("Milestone", "Wave", 100, 100);
+                NextGoalWave = 999;
             }
         }
     }
