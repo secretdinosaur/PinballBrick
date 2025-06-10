@@ -587,8 +587,8 @@ public class BrickEffectManager : MonoBehaviour
             * StatManager.instance.statMultiplier.AttackDamageMultiplier;
 
         float damage = isCritical ?
-              (baseDamage * 0.77f) * AugmentManager.instance.CurseDamageValue * DamageManager.CriticalDamage()
-            : (baseDamage * 0.77f) * AugmentManager.instance.CurseDamageValue;
+              (baseDamage * 0.4f) * AugmentManager.instance.CurseDamageValue * DamageManager.CriticalDamage()
+            : (baseDamage * 0.4f) * AugmentManager.instance.CurseDamageValue;
         float FinalDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
@@ -598,11 +598,11 @@ public class BrickEffectManager : MonoBehaviour
         while (Random.value < Chance)
         {
             VisualEffectManager.Instance.SpawnCurseEffect(brick.transform.position, StartingPos, multipleCount);
-            multipleCount += 1.5f;
+            multipleCount += 1.3f;
             brick.HP -= FinalDamage;
             brick.ShowText(FinalDamage.ToString("F1"), "Curse", isCritical);
-            Chance *= 0.8f;
-            yield return new WaitForSeconds(1f);
+            Chance *= 0.9f;
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
