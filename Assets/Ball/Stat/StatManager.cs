@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using NUnit.Framework;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 public partial class StatManager : MonoBehaviour
 {
     public static StatManager instance;
@@ -23,6 +24,7 @@ public partial class StatManager : MonoBehaviour
         persistent_stat_filePath = Application.persistentDataPath + "/PinballBrick_persistentData.json";
         temporary_stat_filePath = Application.persistentDataPath + "/PinballBrick_temporaryData.json";
         stat_Multiplier_filePath = Application.persistentDataPath + "/PinballBrick_multiplierData.json";
+
         if (!File.Exists(persistent_stat_filePath))
         {
             InitializePersistentStats();
@@ -51,43 +53,45 @@ public partial class StatManager : MonoBehaviour
         Persistent_stat = LoadPersistentStats();
         Temporary_stat = LoadTemporaryStat();
         statMultiplier = LoadStatMultiplier();
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if(currentSceneName != "Main")
+        {
+            AttackDamageStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageStatValueText").GetComponent<TMP_Text>();
+            AttackDamageStatValueText.text = "";
+            AttackDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageChangedStatValueText").GetComponent<TMP_Text>();
+            AttackDamageChangedStatValueText.text = "";
 
-        NoticeChangedStatPanel = GameObject.Find("Canvas").transform.Find("NoticeChangedStatPanel").gameObject;
+            CriticalDamageStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageStatValueText").GetComponent<TMP_Text>();
+            CriticalDamageStatValueText.text = "";
+            CriticalDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageChangedStatValueText").GetComponent<TMP_Text>();
+            CriticalDamageChangedStatValueText.text = "";
 
-        AttackDamageStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageStatValueText").GetComponent<TMP_Text>();
-        AttackDamageStatValueText.text = "";
-        AttackDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageChangedStatValueText").GetComponent<TMP_Text>();
-        AttackDamageChangedStatValueText.text = "";
+            CriticalChanceStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceStatValueText").GetComponent<TMP_Text>();
+            CriticalChanceStatValueText.text = "";
+            CriticalChanceChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceChangedStatValueText").GetComponent<TMP_Text>();
+            CriticalChanceChangedStatValueText.text = "";
 
-        CriticalDamageStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageStatValueText").GetComponent<TMP_Text>();
-        CriticalDamageStatValueText.text = "";
-        CriticalDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageChangedStatValueText").GetComponent<TMP_Text>();
-        CriticalDamageChangedStatValueText.text = "";
+            EffectDamageStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageStatValueText").GetComponent<TMP_Text>();
+            EffectDamageStatValueText.text = "";
+            EffectDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageChangedStatValueText").GetComponent<TMP_Text>();
+            EffectDamageChangedStatValueText.text = "";
 
-        CriticalChanceStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceStatValueText").GetComponent<TMP_Text>();
-        CriticalChanceStatValueText.text = "";
-        CriticalChanceChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceChangedStatValueText").GetComponent<TMP_Text>();
-        CriticalChanceChangedStatValueText.text = "";
+            EffectDurationStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationStatValueText").GetComponent<TMP_Text>();
+            EffectDurationStatValueText.text = "";
+            EffectDurationChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationChangedStatValueText").GetComponent<TMP_Text>();
+            EffectDurationChangedStatValueText.text = "";
 
-        EffectDamageStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageStatValueText").GetComponent<TMP_Text>();
-        EffectDamageStatValueText.text = "";
-        EffectDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageChangedStatValueText").GetComponent<TMP_Text>();
-        EffectDamageChangedStatValueText.text = "";
+            GoldGainStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainStatValueText").GetComponent<TMP_Text>();
+            GoldGainStatValueText.text = "";
+            GoldGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainChangedStatValueText").GetComponent<TMP_Text>();
+            GoldGainChangedStatValueText.text = "";
 
-        EffectDurationStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationStatValueText").GetComponent<TMP_Text>();
-        EffectDurationStatValueText.text = "";
-        EffectDurationChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationChangedStatValueText").GetComponent<TMP_Text>();
-        EffectDurationChangedStatValueText.text = "";
-
-        GoldGainStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainStatValueText").GetComponent<TMP_Text>();
-        GoldGainStatValueText.text = "";
-        GoldGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainChangedStatValueText").GetComponent<TMP_Text>();
-        GoldGainChangedStatValueText.text = "";
-
-        ExpGainStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainStatValueText").GetComponent<TMP_Text>();
-        ExpGainStatValueText.text = "";
-        ExpGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainChangedStatValueText").GetComponent<TMP_Text>();
-        ExpGainChangedStatValueText.text = "";
+            ExpGainStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainStatValueText").GetComponent<TMP_Text>();
+            ExpGainStatValueText.text = "";
+            ExpGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainChangedStatValueText").GetComponent<TMP_Text>();
+            ExpGainChangedStatValueText.text = "";
+        }
+        
 
         TotalChangedStatValue = new List<float>
         {
@@ -254,6 +258,8 @@ public partial class StatManager
 
     TMP_Text ExpGainStatValueText;
     TMP_Text ExpGainChangedStatValueText;
+
+    TMP_Text StartingBallStatValueText;
 
     List<float> TotalChangedStatValue;
 
