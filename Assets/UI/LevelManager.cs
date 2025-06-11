@@ -465,7 +465,7 @@ public partial class LevelManager : MonoBehaviour
 
         IEnumerator MovePanel(int num)
         {
-            Vector3 FinalPosition = new Vector3(260 * (num - 1), 0, 0);
+            Vector3 FinalPosition = new Vector3(470 * (num - 1), 0, 0);
             bool isFinished = false;
             SelectButtons[num].transform.DOLocalMove(FinalPosition, 0.25f)
                         .SetEase(Ease.OutQuad)
@@ -540,7 +540,7 @@ public partial class LevelManager : MonoBehaviour
             if (rarities[i] < 0)
                 rarities[i] = 0;
             bool isFinished = false;
-            Vector3 FinalPosition = new Vector3(260 * (i - 1), 0, 0);
+            Vector3 FinalPosition = new Vector3(470 * (i - 1), 0, 0);
 
             SelectButtons[i].transform.DOLocalMove(FinalPosition, 0.25f)
                         .SetEase(Ease.OutQuad)
@@ -658,33 +658,33 @@ public partial class LevelManager : MonoBehaviour
 
         if (Option_1_Name.textInfo.lineCount == 1)
         {
-            Option_1_Name.rectTransform.offsetMax = new Vector2(Option_1_Name.rectTransform.offsetMax.x, -35);
-            Option_1_Description.rectTransform.offsetMax = new Vector2(Option_1_Description.rectTransform.offsetMax.x, -275);
+            Option_1_Name.rectTransform.anchoredPosition = new Vector2(Option_1_Name.rectTransform.anchoredPosition.x, -75);
+            Option_1_Description.rectTransform.anchoredPosition = new Vector2(Option_1_Description.rectTransform.anchoredPosition.x, -350);
         }
         else
         {
-            Option_1_Name.rectTransform.offsetMax = new Vector2(Option_1_Name.rectTransform.offsetMax.x, -20);
-            Option_1_Description.rectTransform.offsetMax = new Vector2(Option_1_Description.rectTransform.offsetMax.x, -300);
+            Option_1_Name.rectTransform.anchoredPosition = new Vector2(Option_1_Name.rectTransform.anchoredPosition.x, -50);
+            Option_1_Description.rectTransform.anchoredPosition = new Vector2(Option_1_Description.rectTransform.anchoredPosition.x, -400);
         }
         if (Option_2_Name.textInfo.lineCount == 1)
         {
-            Option_2_Name.rectTransform.offsetMax = new Vector2(Option_2_Name.rectTransform.offsetMax.x, -35);
-            Option_2_Description.rectTransform.offsetMax = new Vector2(Option_2_Description.rectTransform.offsetMax.x, -275);
+            Option_2_Name.rectTransform.anchoredPosition = new Vector2(Option_2_Name.rectTransform.anchoredPosition.x, -75);
+            Option_2_Description.rectTransform.anchoredPosition = new Vector2(Option_2_Description.rectTransform.anchoredPosition.x, -350);
         }
         else
         {
-            Option_2_Name.rectTransform.offsetMax = new Vector2(Option_2_Name.rectTransform.offsetMax.x, -20);
-            Option_2_Description.rectTransform.offsetMax = new Vector2(Option_2_Description.rectTransform.offsetMax.x, -300);
+            Option_2_Name.rectTransform.anchoredPosition = new Vector2(Option_2_Name.rectTransform.anchoredPosition.x, -50);
+            Option_2_Description.rectTransform.anchoredPosition = new Vector2(Option_2_Description.rectTransform.anchoredPosition.x, -400);
         }
         if (Option_3_Name.textInfo.lineCount == 1)
         {
-            Option_3_Name.rectTransform.offsetMax = new Vector2(Option_3_Name.rectTransform.offsetMax.x, -35);
-            Option_3_Description.rectTransform.offsetMax = new Vector2(Option_3_Description.rectTransform.offsetMax.x, -275);
+            Option_3_Name.rectTransform.anchoredPosition = new Vector2(Option_3_Name.rectTransform.anchoredPosition.x, -75);
+            Option_3_Description.rectTransform.anchoredPosition = new Vector2(Option_3_Description.rectTransform.anchoredPosition.x, -350);
         }
         else
         {
-            Option_3_Name.rectTransform.offsetMax = new Vector2(Option_3_Name.rectTransform.offsetMax.x, -20);
-            Option_3_Description.rectTransform.offsetMax = new Vector2(Option_3_Description.rectTransform.offsetMax.x, -300);
+            Option_3_Name.rectTransform.anchoredPosition = new Vector2(Option_3_Name.rectTransform.anchoredPosition.x, -50);
+            Option_3_Description.rectTransform.anchoredPosition = new Vector2(Option_3_Description.rectTransform.anchoredPosition.x, -400);
         }
     }
 
@@ -694,9 +694,9 @@ public partial class LevelManager : MonoBehaviour
         TMP_Text[] Descs = { Option_1_Description, Option_2_Description, Option_3_Description };
         TMP_Text[] types = { Option_1_Type, Option_2_Type, Option_3_Type };
         TMP_Text[] cools = { Option_1_CoolTime, Option_2_CoolTime, Option_3_CoolTime };
-        OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
-        OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
-        OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
+        OptionButtons[0].gameObject.transform.localPosition = new Vector3(-470, 2000, 0);
+        OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 2000, 0);
+        OptionButtons[2].gameObject.transform.localPosition = new Vector3(470, 2000, 0);
         VisualEffectManager.Instance.UnsetAugmentPanelPs();
         for (int i = 0; i < 3; i++)
         {
@@ -858,8 +858,8 @@ public partial class LevelManager : MonoBehaviour
             AdditionalDescriptionText.text = augmentsSet[i].AdditionalDescription;
             AdditionalDescriptionText.ForceMeshUpdate();
             int lineCount = AdditionalDescriptionText.textInfo.lineCount;
-            rectTransform.sizeDelta = new Vector2(765, 50 + (lineCount * 50));
-            rectTransform.anchoredPosition = new Vector2(0, -285 - (lineCount * 25f));
+            rectTransform.sizeDelta = new Vector2(1350, 50 + (lineCount * 100));
+            rectTransform.anchoredPosition = new Vector2(0, -450);
         }
         else
         {
@@ -928,9 +928,9 @@ public partial class LevelManager : MonoBehaviour
         CustomTime_2 = 0;
         CustomTime_3 = 0;
         Time.timeScale = 1f;
-        OptionButtons[0].gameObject.transform.localPosition = new Vector3(-260, 1144, 0);
-        OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 1144, 0);
-        OptionButtons[2].gameObject.transform.localPosition = new Vector3(260, 1144, 0);
+        OptionButtons[0].gameObject.transform.localPosition = new Vector3(-470, 2000, 0);
+        OptionButtons[1].gameObject.transform.localPosition = new Vector3(0, 2000, 0);
+        OptionButtons[2].gameObject.transform.localPosition = new Vector3(470, 2000, 0);
         AdditionalDescriptionPanel.SetActive(false);
         LevelUpPanel.SetActive(false);
         CanvasForLevelUpPanel.SetActive(false);
