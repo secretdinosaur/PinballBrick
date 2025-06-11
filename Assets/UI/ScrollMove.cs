@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-public class ScrollSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
+public class ScrollMove : MonoBehaviour, IEndDragHandler, IBeginDragHandler
 {
     public ScrollRect scrollRect;
     public RectTransform content;
@@ -49,5 +49,10 @@ public class ScrollSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
             yield return null;
         }
         content.anchoredPosition = new Vector2(end, content.anchoredPosition.y);
+    }
+
+    public void OnUnderBarButtonClick(int i)
+    {
+        content.anchoredPosition = new Vector2(-i * itemSize - itemSize / 2, content.anchoredPosition.y);
     }
 }

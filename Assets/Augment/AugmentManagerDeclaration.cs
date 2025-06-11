@@ -39,18 +39,18 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
-        { 0, 0.1f },
-        { 1, 0.18f },
-        { 2, 0.18f },
-        { 3, 0.18f },
-        { 4, 0.16f },
+        { 0, 0.005f },
+        { 1, 0.495f },
+        { 2, 0.1f },
+        { 3, 0.25f },
+        { 4, 0.4f },
         { 5, 0.2f }
     };
     
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 1.3f, 0.3f, 1f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f, 1f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 3;
         PoisonStackLimit = 3;

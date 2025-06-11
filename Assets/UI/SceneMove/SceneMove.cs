@@ -10,7 +10,7 @@ public class SceneMove : MonoBehaviour
 
     public void GoToGame()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Dolsot");
     }
 
     public void GoToHighScore()
