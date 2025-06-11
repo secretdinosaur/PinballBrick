@@ -56,7 +56,7 @@ public partial class IBrick : MonoBehaviour
             if (AugmentManager.instance.determineAugmentID("SPECIAL_6") && (BrickType != "ShieldBrick" 
                 || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
             {
-                if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999)
+                if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999 && !IsSpecialBrick)
                 {
                     ExecutionCor = StartCoroutine(Execution());
                 }
