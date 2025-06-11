@@ -99,6 +99,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
+        SoundManager.instance.Bgm.mute = false;
         StartCoroutine(BallManager.Instance.CreateStartingBall());
         BrickManager.Instance.SpawnBrickRoutine = StartCoroutine(BrickManager.Instance.SpawnBricks());
     }
