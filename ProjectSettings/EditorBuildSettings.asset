@@ -11,16 +11,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Before0124/Dolsot.unity
     guid: 0b023b905177c7f4a9e96d15e22f7b32
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameScenes/Main.unity
-    guid: 0f1d00f05acda194881c4f0ed43cc829
-  - enabled: 1
+    guid: e8b3ad676b33b92469d1167655afdc77
+  - enabled: 0
     path: Assets/Scenes/GameScenes/HighScore.unity
     guid: 94548473b1925a24da49e4a24a9f5e2d
   - enabled: 0
     path: Assets/Scenes/GameScenes/Game.unity
     guid: 9d9f28c56e8b037488cddb8feeb200f1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameScenes/Main.unity
     guid: e8b3ad676b33b92469d1167655afdc77
   - enabled: 0

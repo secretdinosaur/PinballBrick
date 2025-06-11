@@ -53,6 +53,9 @@ public partial class StatManager : MonoBehaviour
         Persistent_stat = LoadPersistentStats();
         Temporary_stat = LoadTemporaryStat();
         statMultiplier = LoadStatMultiplier();
+
+        NoticeChangedStatPanel = GameObject.Find("NoticeChangedStatPanel");
+
         string currentSceneName = SceneManager.GetActiveScene().name;
         if(currentSceneName != "Main")
         {
