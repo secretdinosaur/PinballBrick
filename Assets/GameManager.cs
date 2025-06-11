@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -290,8 +291,8 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
-    public void OnClickGoToMain() //추후 수정
+    public void OnClickGoToMain()
     {
-        Application.Quit();
+        SceneManager.LoadScene("Main");
     }
 }
