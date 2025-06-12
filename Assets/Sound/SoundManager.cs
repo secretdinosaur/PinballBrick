@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] SfxClips_Game;
     public AudioClip[] SfxClips_Effect;
 
-    AudioSource Bgm;
+    public AudioSource Bgm;
     Slider BgmVolumeSlider;
     TMP_Text BgmVolumeText;
     private int NowBgm;
