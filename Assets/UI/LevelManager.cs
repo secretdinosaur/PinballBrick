@@ -384,27 +384,30 @@ public partial class LevelManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
 
             switch (rarities[i])
             {
                 case 5:
+                    SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                     yield return StartCoroutine(MovePanel(i));
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 4:
+                    SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                     yield return StartCoroutine(MovePanel(i));
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 3:
+                    SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                     yield return StartCoroutine(MovePanel(i));
                     SetParticle(3, i);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 2:
+                    SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                     yield return StartCoroutine(MovePanel(i));
                     SetParticle(2, i);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
@@ -417,10 +420,13 @@ public partial class LevelManager : MonoBehaviour
                     if(j == 0)
                     {
                         OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[1]);
+                        SoundManager.instance.HighRarityAugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
+
                         yield return StartCoroutine(MovePanel(i));
                     }
                     else
                     {
+                    SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                         yield return StartCoroutine(MovePanel(i));
                         yield return StartCoroutine(FlashPanel(2, i));
                         yield return StartCoroutine(ShakePanel(i));
@@ -437,11 +443,14 @@ public partial class LevelManager : MonoBehaviour
                     if (k == 0)
                     {
                         OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[0]);
+                        SoundManager.instance.HighRarityAugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
+
                         yield return StartCoroutine(MovePanel(i));
                         SetParticle(0, i);
                     }
                     else if(k == 1)
                     {
+                        SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                         yield return StartCoroutine(MovePanel(i));
                         SetParticle(2, i);
                         yield return StartCoroutine(FlashPanel(2, i));
@@ -453,6 +462,8 @@ public partial class LevelManager : MonoBehaviour
                     else
                     {
                         OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[1]);
+                        SoundManager.instance.HighRarityAugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
+
                         yield return StartCoroutine(MovePanel(i));
                         SetParticle(1, i);
                         yield return StartCoroutine(FlashPanel(1, i));
@@ -489,7 +500,6 @@ public partial class LevelManager : MonoBehaviour
             if(rarity < 2)
             {
                 SoundManager.instance.AugmentFlashSound2(SelectButtons[num].GetComponent<AudioSource>());
-                SoundManager.instance.HighRarityAugmentDrawSound(SelectButtons[num].GetComponent<AudioSource>());
             }
             else
                 SoundManager.instance.AugmentFlashSound(SelectButtons[num].GetComponent<AudioSource>());
@@ -907,6 +917,7 @@ public partial class LevelManager : MonoBehaviour
     {
         if (!isAlreadyClickedButton[Array.IndexOf(OptionButtons, clickedButton)])
         {
+            SoundManager.instance.AugmentClickSound();
             for (int i = 0; i < OptionButtons.Length; i++)
             {
                 OptionButtons[i].transform.localScale = i == Array.IndexOf(OptionButtons, clickedButton) ? new Vector3(0.93f, 0.93f, 0.93f) : new Vector3(0.9f, 0.9f, 0.9f);
@@ -919,6 +930,7 @@ public partial class LevelManager : MonoBehaviour
         }
         else
         {
+            SoundManager.instance.AugmentSelectSound();
             LevelUpEnd();
         }
     }

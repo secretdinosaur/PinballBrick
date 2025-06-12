@@ -150,7 +150,7 @@ public class SoundManager : MonoBehaviour
         audio.PlayOneShot(SfxClips_Game[2]);
     }
 
-    public void ButtonClickSound()
+    public void ButtonClickSound_Light()
     {
         Sfx.clip = SfxClips_UI[0];
         Sfx.Play();
@@ -185,4 +185,17 @@ public class SoundManager : MonoBehaviour
         audio.volume = SfxVolumeSlider.value;
         audio.PlayOneShot(SfxClips_Game[7]);
     }
+
+    public void AugmentSelectSound()
+    {
+        Sfx.clip = SfxClips_Game[8];
+        Sfx.Play();
+    }
+
+    public void AugmentClickSound()
+    {
+        Sfx.clip = SfxClips_Game[9];
+        Sfx.Play();
+    }
+
 }
