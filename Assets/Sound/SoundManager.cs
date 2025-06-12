@@ -11,8 +11,10 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance;
 
     public AudioClip[] BgmClips;
-    public AudioClip[] SfxClips;
-    
+    public AudioClip[] SfxClips_UI;
+    public AudioClip[] SfxClips_Game;
+    public AudioClip[] SfxClips_Effect;
+
     AudioSource Bgm;
     Slider BgmVolumeSlider;
     TMP_Text BgmVolumeText;
@@ -130,27 +132,55 @@ public class SoundManager : MonoBehaviour
 
     public void SpawnBrickSound(AudioSource audio)
     {
-        audio.clip = SfxClips[0];
-        audio.volume = SfxVolumeSlider.value;
-        audio.Play();
+        audio.volume = SfxVolumeSlider.value / 2f;
+        audio.PlayOneShot(SfxClips_Game[0]);
     }
 
     public void BallAttackSound(AudioSource audio)
     {
-        audio.clip = SfxClips[1];
-        audio.volume = SfxVolumeSlider.value;
-        audio.Play();
+        audio.volume = SfxVolumeSlider.value / 2f;
+        audio.PlayOneShot(SfxClips_Game[1]);
     }
 
-    public void LevelUpSound()
+    public void LevelUpSound(AudioSource audio)
     {
-        Sfx.clip = SfxClips[2];
-        Sfx.Play();
+        audio.volume = SfxVolumeSlider.value / 1.25f;
+        audio.PlayOneShot(SfxClips_Game[2]);
     }
 
     public void ButtonClickSound()
     {
-        Sfx.clip = SfxClips[3];
+        Sfx.clip = SfxClips_UI[0];
         Sfx.Play();
+    }
+
+    public void AugmentDrawSound(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(SfxClips_Game[3]);
+    }
+
+    public void HighRarityAugmentDrawSound(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(SfxClips_Game[4]);
+    }
+
+    public void AugmentFlashSound(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(SfxClips_Game[5]);
+    }
+
+    public void AugmentFlashSound2(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(SfxClips_Game[6]);
+    }
+
+    public void AugmentShakeSound(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(SfxClips_Game[7]);
     }
 }

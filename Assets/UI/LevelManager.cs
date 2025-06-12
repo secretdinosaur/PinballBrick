@@ -380,28 +380,33 @@ public partial class LevelManager : MonoBehaviour
         Option_1_Aura.SetFloat("_OuterFade", 0f);
         Option_2_Aura.SetFloat("_OuterFade", 0f);
         Option_3_Aura.SetFloat("_OuterFade", 0f);
+        yield return new WaitForSecondsRealtime(0.25f);
 
         for (int i = 0; i < 3; i++)
         {
             switch (rarities[i])
             {
                 case 5:
+                    SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                     yield return StartCoroutine(MovePanel(i));
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 4:
+                    SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                     yield return StartCoroutine(MovePanel(i));
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 3:
+                    SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                     yield return StartCoroutine(MovePanel(i));
                     SetParticle(3, i);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
                     break;
 
                 case 2:
+                    SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                     yield return StartCoroutine(MovePanel(i));
                     SetParticle(2, i);
                     SetAugmentPanel(i, augments[i].Name, augments[i].Description, augments[i].Type, augments[i].CoolTime);
@@ -413,11 +418,13 @@ public partial class LevelManager : MonoBehaviour
                     int j = Random.Range(0, 2);
                     if(j == 0)
                     {
+                        SoundManager.instance.HighRarityAugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                         OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[1]);
                         yield return StartCoroutine(MovePanel(i));
                     }
                     else
                     {
+                        SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                         yield return StartCoroutine(MovePanel(i));
                         yield return StartCoroutine(FlashPanel(2, i));
                         yield return StartCoroutine(ShakePanel(i));
@@ -434,11 +441,13 @@ public partial class LevelManager : MonoBehaviour
                     if (k == 0)
                     {
                         OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[0]);
+                        SoundManager.instance.HighRarityAugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                         yield return StartCoroutine(MovePanel(i));
                         SetParticle(0, i);
                     }
                     else if(k == 1)
                     {
+                        SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                         yield return StartCoroutine(MovePanel(i));
                         SetParticle(2, i);
                         yield return StartCoroutine(FlashPanel(2, i));
@@ -450,6 +459,7 @@ public partial class LevelManager : MonoBehaviour
                     else
                     {
                         OptionButtons[i].GetComponent<Image>().material.SetColor("_Color", RarityColorList[1]);
+                        SoundManager.instance.HighRarityAugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
                         yield return StartCoroutine(MovePanel(i));
                         SetParticle(1, i);
                         yield return StartCoroutine(FlashPanel(1, i));
@@ -470,7 +480,7 @@ public partial class LevelManager : MonoBehaviour
             SelectButtons[num].transform.DOLocalMove(FinalPosition, 0.25f)
                         .SetEase(Ease.OutQuad)
                         .SetUpdate(true)
-                        .OnComplete(() => isFinished = true);
+                        .OnComplete(() => { isFinished = true; });
             yield return new WaitUntil(() => isFinished);
         }
 
@@ -483,6 +493,11 @@ public partial class LevelManager : MonoBehaviour
         IEnumerator FlashPanel(int rarity, int num)
         {
             SetParticle(rarity, num);
+            if(rarity < 2)
+                SoundManager.instance.AugmentFlashSound2(SelectButtons[num].GetComponent<AudioSource>());
+            else
+                SoundManager.instance.AugmentFlashSound(SelectButtons[num].GetComponent<AudioSource>());
+
             bool isFinished = false;
             SelectButtons[num].GetComponent<Image>().material.DOColor(RarityColorList[rarity] * 2, 0.1f)
                 .SetEase(Ease.OutQuad)
@@ -508,6 +523,7 @@ public partial class LevelManager : MonoBehaviour
 
         IEnumerator ShakePanel(int num)
         {
+            SoundManager.instance.AugmentShakeSound(SelectButtons[num].GetComponent<AudioSource>());
             bool isFinished = false;
             SelectButtons[num].transform.transform.DOShakePosition(2, new Vector3(3, 0, 0), 10, 1, false, false)
                  .SetEase(Ease.OutQuad)
@@ -532,6 +548,7 @@ public partial class LevelManager : MonoBehaviour
         Option_1_Aura.SetFloat("_OuterFade", 0f);
         Option_2_Aura.SetFloat("_OuterFade", 0f);
         Option_3_Aura.SetFloat("_OuterFade", 0f);
+        yield return new WaitForSecondsRealtime(0.25f);
 
         for (int i = 0; i < 3; i++)
         {
@@ -542,6 +559,15 @@ public partial class LevelManager : MonoBehaviour
             bool isFinished = false;
             Vector3 FinalPosition = new Vector3(470 * (i - 1), 0, 0);
 
+            if(rarities[i] > 1)
+            {
+                SoundManager.instance.AugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
+            }
+            else
+            {
+                SoundManager.instance.HighRarityAugmentDrawSound(SelectButtons[i].GetComponent<AudioSource>());
+            }
+
             SelectButtons[i].transform.DOLocalMove(FinalPosition, 0.25f)
                         .SetEase(Ease.OutQuad)
                         .SetUpdate(true)
@@ -551,6 +577,12 @@ public partial class LevelManager : MonoBehaviour
 
             switch (rarities[i])
             {
+                case 5:
+                    break;
+
+                case 4:
+                    break;
+
                 case 3:
                     yield return StartCoroutine(SetParticle(3, i));
                     break;
@@ -596,6 +628,8 @@ public partial class LevelManager : MonoBehaviour
                 .OnComplete(() => isFinished = true);
             yield return new WaitUntil(() => isFinished);
             isFinished = false;
+            SoundManager.instance.AugmentFlashSound(SelectButtons[num].GetComponent<AudioSource>());
+
             SelectButtons[num].GetComponent<Image>().material.DOColor(RarityColorList[rarity], 0.1f)
                 .SetEase(Ease.OutQuad)
                 .SetUpdate(true)
@@ -630,10 +664,11 @@ public partial class LevelManager : MonoBehaviour
         GameManager.instance.WaveExtraNoticeText.enabled = false;
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
+        SoundManager.instance.LevelUpSound(LevelUpPanel.GetComponent<AudioSource>());
+
         CanvasForLevelUpPanel.SetActive(true);
         AdditionalDescriptionPanel.SetActive(false);
         AdditionalDescriptionText.text = "";
-        SoundManager.instance.LevelUpSound();
         Level = LevelUpQueue.Dequeue();
 
         NoticeLevelText.text = "Now Your Level: " + Level;
