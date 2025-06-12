@@ -274,10 +274,12 @@ public static partial class DamageManager //Special Effect Attack
         Sequence seq = DOTween.Sequence();
         seq.AppendInterval(Random.Range(0, 0.5f))
            .AppendCallback(() => {
+               SoundManager.instance.HolyWaterSound1();
                VisualEffectManager.Instance.SpawnParticle("AllDamage", brick.transform.position, 1);
            })
            .AppendInterval(0.65f)
            .AppendCallback(() => {
+               SoundManager.instance.HolyWaterSound2();
                brick.HP -= damage;
                brick.ShowText(damage.ToString("F1"), "Lightning", false);
            });

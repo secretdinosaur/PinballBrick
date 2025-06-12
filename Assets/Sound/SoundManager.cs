@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Rendering;
+using Redcode.Pools;
+using System.Collections;
 
 public class SoundManager : MonoBehaviour
 {
@@ -25,12 +27,15 @@ public class SoundManager : MonoBehaviour
     Slider SfxVolumeSlider;
     TMP_Text SfxVolumeText;
 
+    public PoolManager Pool;
+
+
     VolumeData volumeSaveData;
     private string VolumeData_filePath;
     void Awake()
     {
         instance = this;
-
+        Pool = GetComponent<PoolManager>();
         VolumeData_filePath = Application.persistentDataPath + "/PinballBrick_VolumeData.json";
         if (!File.Exists(VolumeData_filePath))
         {
@@ -71,6 +76,11 @@ public class SoundManager : MonoBehaviour
         Bgm.clip = null;
     }
 
+    private IEnumerator WaitForAudioFinish(AudioSource source)
+    {
+        yield return new WaitWhile(() => source.isPlaying);
+        Pool.TakeToPool<SoundObject>(source.GetComponent<SoundObject>());
+    }
     public void SaveVolume()
     {
         SaveVolumeData(volumeSaveData);
@@ -207,5 +217,21 @@ public class SoundManager : MonoBehaviour
     {
         audio.volume = SfxVolumeSlider.value / 1.1f;
         audio.PlayOneShot(SfxClips_Game[11]);
+    }
+
+    public void HolyWaterSound1()
+    {
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(SfxClips_Effect[0]);
+        StartCoroutine(WaitForAudioFinish(audio));
+    }
+
+    public void HolyWaterSound2()
+    {
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(SfxClips_Effect[1]);
+        StartCoroutine(WaitForAudioFinish(audio));
     }
 }
