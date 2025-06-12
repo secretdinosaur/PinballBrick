@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -99,6 +100,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
+        SoundManager.instance.Bgm.mute = false;
         StartCoroutine(BallManager.Instance.CreateStartingBall());
         BrickManager.Instance.SpawnBrickRoutine = StartCoroutine(BrickManager.Instance.SpawnBricks());
     }
@@ -289,8 +291,8 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
-    public void OnClickGoToMain() //추후 수정
+    public void OnClickGoToMain()
     {
-        Application.Quit();
+        SceneManager.LoadScene("Main");
     }
 }

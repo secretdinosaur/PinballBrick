@@ -3158,8 +3158,8 @@ public class PenetratingBall: SpecialAugment
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-4f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-4f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.25f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(0.25f);
 
         for(int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
         {
@@ -3169,8 +3169,8 @@ public class PenetratingBall: SpecialAugment
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(4f);
-        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(4f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.25f);
+        StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-0.25f);
 
         for (int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
         {

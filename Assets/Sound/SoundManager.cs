@@ -21,7 +21,7 @@ public class SoundManager : MonoBehaviour
     private int NowBgm;
     private Queue<int> BgmPlaylist;
 
-    AudioSource Sfx;
+    public AudioSource Sfx;
     Slider SfxVolumeSlider;
     TMP_Text SfxVolumeText;
 
@@ -53,6 +53,8 @@ public class SoundManager : MonoBehaviour
         BgmVolumeSlider.value = volumeSaveData.BgmVolume;
         Sfx.volume = volumeSaveData.SfxVolume;
         SfxVolumeSlider.value = volumeSaveData.SfxVolume;
+
+        Bgm.mute = true;
 
         BgmPlaylist = new Queue<int>();
         List<int> X = new List<int>();
