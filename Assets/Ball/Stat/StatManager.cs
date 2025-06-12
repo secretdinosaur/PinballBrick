@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public partial class StatManager : MonoBehaviour
 {
     public static StatManager instance;
+    private StatOnGoogle StatOnGoogle;
     
     public Persistent_Stat Persistent_stat; // If you want to use it elsewhere, use this variable
     public Temporary_Stat Temporary_stat; //
@@ -25,34 +26,32 @@ public partial class StatManager : MonoBehaviour
         temporary_stat_filePath = Application.persistentDataPath + "/PinballBrick_temporaryData.json";
         stat_Multiplier_filePath = Application.persistentDataPath + "/PinballBrick_multiplierData.json";
 
-        if (!File.Exists(persistent_stat_filePath))
+        if (GoogleManager.instance.isSignIn)
         {
-            InitializePersistentStats();
-        }
+            StatOnGoogle = new StatOnGoogle();
+            StatOnGoogle.LoadPersistentStats();
+            StatOnGoogle.Persistent_stat = Persistent_stat;
 
-        if (!File.Exists(temporary_stat_filePath))
-        {
             InitializeTemporaryStats();
+            Temporary_stat = LoadTemporaryStat();
+
+            InitializeStatMultiplier();
+            statMultiplier = LoadStatMultiplier();
         }
         else
         {
-            File.Delete(temporary_stat_filePath);
+            if (!File.Exists(persistent_stat_filePath))
+            {
+                InitializePersistentStats();
+            }
+            Persistent_stat = LoadPersistentStats();
+            
             InitializeTemporaryStats();
-        }
+            Temporary_stat = LoadTemporaryStat();
 
-        if (!File.Exists(stat_Multiplier_filePath))
-        {
             InitializeStatMultiplier();
+            statMultiplier = LoadStatMultiplier();
         }
-        else
-        {
-            File.Delete(stat_Multiplier_filePath);
-            InitializeStatMultiplier();
-        }
-
-        Persistent_stat = LoadPersistentStats();
-        Temporary_stat = LoadTemporaryStat();
-        statMultiplier = LoadStatMultiplier();
 
         NoticeChangedStatPanel = GameObject.Find("NoticeChangedStatPanel");
 
@@ -138,6 +137,7 @@ public partial class StatManager : MonoBehaviour
 
     public void InitializeTemporaryStats() // temporary stats
     {
+        File.Delete(temporary_stat_filePath);
         Temporary_Stat initialStats = new Temporary_Stat
         {
             StatLevel = new[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -157,6 +157,7 @@ public partial class StatManager : MonoBehaviour
     
     public void InitializeStatMultiplier() // stat multiplier
     {
+        File.Delete(stat_Multiplier_filePath);
         StatMultiplier initialMultiplier = new StatMultiplier
         {
             AttackDamageMultiplier = 1.0f,
