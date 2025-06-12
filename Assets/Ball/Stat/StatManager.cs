@@ -303,12 +303,12 @@ public partial class StatManager
         while (Time.realtimeSinceStartup < startTime + 1f)
         {
             float t = (Time.realtimeSinceStartup - startTime) / 1f;
-            rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(-165f, 129f), new Vector2(165f, 129f), t);
+            rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(-320f, 129f), new Vector2(410f, 129f), t);
             canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
             yield return null;
         }
 
-        rectTransform.anchoredPosition = new Vector2(165f, 129f);
+        rectTransform.anchoredPosition = new Vector2(410f, 129f);
         canvasGroup.alpha = 1f;
 
         yield return new WaitForSecondsRealtime(1.5f);
@@ -326,7 +326,7 @@ public partial class StatManager
             yield return null;
         }
 
-        rectTransform.anchoredPosition = new Vector2(-165f, 129f);
+        rectTransform.anchoredPosition = new Vector2(-320f, 129f);
         canvasGroup.alpha = 0f;
 
         TotalChangedStatValue = new List<float>
