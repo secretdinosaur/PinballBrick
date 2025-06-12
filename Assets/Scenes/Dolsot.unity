@@ -90856,6 +90856,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 56e32cdca9b0fd94b8a9709daaeb7ea7, type: 3}
   - {fileID: 8300000, guid: 81e3ec95ef528ed45bccee49e6ae08b7, type: 3}
   - {fileID: 8300000, guid: 6975343bd0b8fa0409094dd8d3e957f3, type: 3}
+  - {fileID: 8300000, guid: b43463700d57dc542a11f29a84e1c2b9, type: 3}
+  - {fileID: 8300000, guid: def04c82f1c63bb47807b8d63bbf0ae1, type: 3}
   SfxClips_Effect:
   - {fileID: 8300000, guid: ffdd252a833708e4db5b14672b1480f4, type: 3}
   Bgm: {fileID: 0}

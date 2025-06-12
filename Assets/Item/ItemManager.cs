@@ -102,6 +102,12 @@ public class ItemManager : MonoBehaviour
 
     public IEnumerator TakeItemCo(Item item)
     {
+        if (item.ItemName == "Gold1" || item.ItemName == "Gold2" || item.ItemName == "Gold3") SoundManager.instance.GetGoldSOund(item.GetComponent<AudioSource>());
+        if (item.ItemName == "ExpBead")
+        {
+            print(1);
+            SoundManager.instance.GetExpSound(item.GetComponent<AudioSource>());
+        }
         yield return new WaitForSeconds(1);
         Type itemType = Type.GetType(item.ItemName);
         var method = typeof(PoolManager).GetMethod("TakeToPool");

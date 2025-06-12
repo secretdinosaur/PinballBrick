@@ -198,4 +198,14 @@ public class SoundManager : MonoBehaviour
         Sfx.Play();
     }
 
+    public void GetGoldSOund(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value / 1.1f;
+        audio.PlayOneShot(SfxClips_Game[10]);
+    }
+    public void GetExpSound(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value / 1.1f;
+        audio.PlayOneShot(SfxClips_Game[11]);
+    }
 }
