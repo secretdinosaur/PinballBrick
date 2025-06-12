@@ -90844,7 +90844,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d00613518f321ea479b9447cb4b35284, type: 3}
   - {fileID: 8300000, guid: 02f9acfb54052ed499f4cc48f6cf020e, type: 3}
   SfxClips_UI:
-  - {fileID: 8300000, guid: f2acd4177135428448be62c645fcc5af, type: 3}
+  - {fileID: 8300000, guid: ffdd252a833708e4db5b14672b1480f4, type: 3}
   SfxClips_Game:
   - {fileID: 8300000, guid: ed5a13804e938444a9e1963a6614fb3f, type: 3}
   - {fileID: 8300000, guid: 4c6677bda0d9fc24986ea5dcdffe630a, type: 3}
@@ -90854,8 +90854,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 32a848f33832789469b22e534dd127e2, type: 3}
   - {fileID: 8300000, guid: 2b50898490abab64cb553aeb9bef2c54, type: 3}
   - {fileID: 8300000, guid: 56e32cdca9b0fd94b8a9709daaeb7ea7, type: 3}
+  - {fileID: 8300000, guid: 81e3ec95ef528ed45bccee49e6ae08b7, type: 3}
+  - {fileID: 8300000, guid: 6975343bd0b8fa0409094dd8d3e957f3, type: 3}
   SfxClips_Effect:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: ffdd252a833708e4db5b14672b1480f4, type: 3}
   Bgm: {fileID: 0}
   Sfx: {fileID: 0}
 --- !u!4 &1874502473
