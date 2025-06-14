@@ -1647,6 +1647,7 @@ public class SuicideBoomBall : SpecialAugment
         IBall ball = Brick.RecentlyBall;
         if(Random.value < 0.02f && !BallManager.Instance.InGameSpecialBall.Contains(ball))
         {
+            SoundManager.instance.ExplosionSound_Small();
             Brick.ExplosionAttack(3f);
             VisualEffectManager.Instance.SpawnParticle("SuicideBoomBall", Brick.transform.position, 1);
             foreach (IBrick brick in Brick.detectArea.NearbyBricks)

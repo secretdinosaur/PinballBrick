@@ -298,4 +298,13 @@ public class SoundManager : MonoBehaviour
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
+
+    public void ExplosionSound_Small()
+    {
+        AudioClip clip = SfxClips_Effect[7];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
 }
