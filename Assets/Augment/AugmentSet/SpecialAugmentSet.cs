@@ -214,6 +214,8 @@ public class FireEffectStackBlast : SpecialAugment
             * 3f;
         if (Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack == Brick.BrickEffect.EffectStatusSet["Fire"].EffectStackLimit)
         {
+            SoundManager.instance.ExplosionSound_Big();
+
             Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack = (int)(Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack * 0.3);
             foreach (IBrick nearbyBrick in Brick.detectArea.NearbyBricks)
             {
@@ -1145,7 +1147,7 @@ public class ShareBallAtk : SpecialAugment
 public class StrongAdditionalAttack : SpecialAugment
 {
     float StrongAttackChance = 0.01f;
-    float SuperStrongAttackChance = 0.001f;
+    float SuperStrongAttackChance = 0.0025f;
     float SuperUltraStrongAttackChance = 0.0001f;
     private void OnEnable()
     {
@@ -1164,9 +1166,9 @@ public class StrongAdditionalAttack : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             if (RandomValue < SuperUltraStrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 500f, true));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f, true));
             else if (RandomValue < SuperStrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 50f, true));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 25f, true));
             else if (RandomValue < StrongAttackChance)
                 StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 10f));
         }
@@ -1645,6 +1647,7 @@ public class SuicideBoomBall : SpecialAugment
         IBall ball = Brick.RecentlyBall;
         if(Random.value < 0.02f && !BallManager.Instance.InGameSpecialBall.Contains(ball))
         {
+            SoundManager.instance.ExplosionSound_Small();
             Brick.ExplosionAttack(3f);
             VisualEffectManager.Instance.SpawnParticle("SuicideBoomBall", Brick.transform.position, 1);
             foreach (IBrick brick in Brick.detectArea.NearbyBricks)

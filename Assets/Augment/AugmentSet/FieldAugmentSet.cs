@@ -874,7 +874,7 @@ public class DiceGamble : FieldAugment
                 case 1:
                     foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
                     {
-                        StartCoroutine(brick.Execution());
+                        brick.ExecutionCor = StartCoroutine(brick.Execution());
                     }
                     break;
                 case 2:

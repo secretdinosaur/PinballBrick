@@ -61,6 +61,7 @@ public class BombBall : IBall
                     brick.ExplosionAttack(6.5f);
             }
         }
+        SoundManager.instance.ExplosionSound_Big();
         VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);
         if (AugmentManager.instance.determineAugmentID("SPECIAL_48"))
         {
