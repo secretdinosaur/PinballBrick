@@ -214,6 +214,8 @@ public class FireEffectStackBlast : SpecialAugment
             * 3f;
         if (Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack == Brick.BrickEffect.EffectStatusSet["Fire"].EffectStackLimit)
         {
+            SoundManager.instance.ExplosionSound_Big();
+
             Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack = (int)(Brick.BrickEffect.EffectStatusSet["Fire"].EffectStack * 0.3);
             foreach (IBrick nearbyBrick in Brick.detectArea.NearbyBricks)
             {

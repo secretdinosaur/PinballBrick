@@ -91161,6 +91161,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b5942704aab3dda4894a5ccc770300b0, type: 3}
   - {fileID: 8300000, guid: 850006a7aac4c8b42ab1928fd02a08c8, type: 3}
   - {fileID: 8300000, guid: 503b0921025b3d341bcff5babf1d6571, type: 3}
+  - {fileID: 8300000, guid: 9ca123c02b7d0fd48b9fd9acac3a8782, type: 3}
+  - {fileID: 8300000, guid: 910e9a2444697ed45b2150ffa8ffc983, type: 3}
+  - {fileID: 8300000, guid: 774fa328e19d1f249bd26aabc4bb6712, type: 3}
   Bgm: {fileID: 0}
   Sfx: {fileID: 0}
   Pool: {fileID: 0}
@@ -102752,7 +102755,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.1
+      scalar: 0.2
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -106849,7 +106852,7 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
+          value: -0.3153178
           inSlope: 2
           outSlope: 2
           tangentMode: 0
