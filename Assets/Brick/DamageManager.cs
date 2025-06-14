@@ -128,9 +128,15 @@ public static partial class DamageManager //Special Effect Attack
                 yield break;
             }
             if (IsStrong)
+            {
+
                 VisualEffectManager.Instance.SpawnParticle("StrongAdditionalAttack", brick.transform.position, 1);
+            }
             else
+            {
                 VisualEffectManager.Instance.SpawnParticle("AdditionalAttack", brick.transform.position, 1);
+                SoundManager.instance.AdditionalAttackSound();
+            }
             bool CriticalHit = IsCriticalHit(brick);
             float AdditionalAttackDamage = CriticalHit
                     ? (StatManager.instance.Persistent_stat.AttackDamage +

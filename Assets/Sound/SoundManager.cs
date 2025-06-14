@@ -307,4 +307,23 @@ public class SoundManager : MonoBehaviour
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
+
+    public void AdditionalAttackSound()
+    {
+        AudioClip clip = SfxClips_Effect[8];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.pitch = Random.Range(0.9f, 1.1f);
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void ExecutionSound()
+    {
+        AudioClip clip = SfxClips_Effect[9];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
 }
