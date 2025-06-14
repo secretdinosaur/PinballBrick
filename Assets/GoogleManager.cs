@@ -1,16 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
 using System.Text;
-
+using TMPro;
 public class GoogleManager : MonoBehaviour
 {
     public static GoogleManager instance;
     public bool isSignIn = false;
+    Toggle isSignInToggle;
+    TMP_Text GoogleLoginStaus;
+
     void Awake()
     {
         if (instance == null)
@@ -22,17 +23,14 @@ public class GoogleManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Login();
     }
 
-    void Start()
+    public void Login()
     {
-        PlayGamesPlatform.DebugLogEnabled = true;
+        isSignInToggle = GameObject.Find("Canvas").transform.Find("Scroll View/Viewport/Content/Setting/Google/Toggle").GetComponent<Toggle>();
+        GoogleLoginStaus = GameObject.Find("Canvas").transform.Find("Scroll View/Viewport/Content/Setting/Google/GoogleLoginStatus").GetComponent<TMP_Text>();
         PlayGamesPlatform.Activate();
-        SignIn();
-    }
-
-    public void SignIn()
-    {
         PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
     }
 
@@ -40,13 +38,21 @@ public class GoogleManager : MonoBehaviour
     {
         if (status == SignInStatus.Success)
         {
-            Debug.Log("Success to SignIn");
+            isSignInToggle.isOn = true;
             isSignIn = true;
+            Debug.Log("SignIn Success");
+            GoogleLoginStaus.text = "SignIn Success";
+            // Continue with Play Games Services
         }
         else
         {
-            Debug.Log("Fail to SignIn");
+            isSignInToggle.isOn = false;
             isSignIn = false;
+            Debug.Log("SignIn Fail");
+            GoogleLoginStaus.text = "SignIn Fail";
+            // Disable your integration with Play Games Services or show a login button
+            // to ask users to sign-in. Clicking it should call
+            // PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication).
         }
     }
 }
