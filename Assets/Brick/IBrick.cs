@@ -404,9 +404,12 @@ public partial class IBrick
 {  
     public IEnumerator Execution()
     {
+        if (ExecutionCor != null) yield break;
         ExecutionObject1.SetActive(true);
         ExecutionObject2.SetActive(true);
 
+        SoundManager.instance.ExecutionSound();
+        yield return new WaitForSeconds(0.02f);
         spriteRenderer.enabled = false;
         HPText.enabled = false;
         Collider.enabled = false;
@@ -419,7 +422,7 @@ public partial class IBrick
 
         Vector3 Execute1Dir;
         Vector3 Execute2Dir;
-
+        
         ExecutionObject1.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
         ExecutionObject2.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
 

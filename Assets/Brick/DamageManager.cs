@@ -128,9 +128,16 @@ public static partial class DamageManager //Special Effect Attack
                 yield break;
             }
             if (IsStrong)
+            {
+
                 VisualEffectManager.Instance.SpawnParticle("StrongAdditionalAttack", brick.transform.position, 1);
+                SoundManager.instance.StrongAdditionalAttackSound();
+            }
             else
+            {
                 VisualEffectManager.Instance.SpawnParticle("AdditionalAttack", brick.transform.position, 1);
+                SoundManager.instance.AdditionalAttackSound();
+            }
             bool CriticalHit = IsCriticalHit(brick);
             float AdditionalAttackDamage = CriticalHit
                     ? (StatManager.instance.Persistent_stat.AttackDamage +
@@ -335,7 +342,7 @@ public class BrickEffectManager : MonoBehaviour
             brick.lineRenderer.material.SetFloat("_FireHeight", 1.5f);
         }
         brick.lineRenderer.enabled = true;
-
+        SoundManager.instance.StartFireSound();
         while (FireEffectDuration > 0f)
         {
             if (brick.BrickType == "IgnoreBrick")
@@ -354,6 +361,7 @@ public class BrickEffectManager : MonoBehaviour
             float EffectAttackDamage;
             if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
             {
+                SoundManager.instance.FireMaxStackSound();
                 brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 5f);
                 brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 86 / 255f, 0) * 2f);
                 brick.lineRenderer.material.SetFloat("_FireHeight", 0.7f);

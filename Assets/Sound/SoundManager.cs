@@ -237,7 +237,7 @@ public class SoundManager : MonoBehaviour
     public void HolyWaterSound1()
     {
         AudioClip clip = SfxClips_Effect[0];
-        AudioSource audio = Pool.GetFromPool<PausableSoundObject>().GetComponent<AudioSource>();
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
         audio.volume = SfxVolumeSlider.value;
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
@@ -246,16 +246,7 @@ public class SoundManager : MonoBehaviour
     public void HolyWaterSound2()
     {
         AudioClip clip = SfxClips_Effect[1];
-        AudioSource audio = Pool.GetFromPool<PausableSoundObject>().GetComponent<AudioSource>();
-        audio.volume = SfxVolumeSlider.value;
-        audio.PlayOneShot(clip);
-        StartCoroutine(WaitForAudioFinish(audio, clip.length));
-    }
-
-    public void SatelliteBeamChargeSound()
-    {
-        AudioClip clip = SfxClips_Effect[3];
-        AudioSource audio = Pool.GetFromPool<PausableSoundObject>().GetComponent<AudioSource>();
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
         audio.volume = SfxVolumeSlider.value;
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
@@ -270,5 +261,78 @@ public class SoundManager : MonoBehaviour
         audio.volume = SfxVolumeSlider.value;
         audio.Play();
         StartCoroutine(WaitForAudioFinish(audio, Duration));
+    }
+
+    public void SatelliteBeamChargeSound()
+    {
+        AudioClip clip = SfxClips_Effect[3];
+        AudioSource audio = Pool.GetFromPool<PausableSoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void StartFireSound()
+    {
+        AudioClip clip = SfxClips_Effect[4];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void FireMaxStackSound()
+    {
+        AudioClip clip = SfxClips_Effect[5];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void ExplosionSound_Big()
+    {
+        AudioClip clip = SfxClips_Effect[6];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void ExplosionSound_Small()
+    {
+        AudioClip clip = SfxClips_Effect[7];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void AdditionalAttackSound()
+    {
+        AudioClip clip = SfxClips_Effect[8];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.pitch = Random.Range(0.9f, 1.1f);
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void ExecutionSound()
+    {
+        AudioClip clip = SfxClips_Effect[9];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void StrongAdditionalAttackSound()
+    {
+        AudioClip clip = SfxClips_Effect[10];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
 }
