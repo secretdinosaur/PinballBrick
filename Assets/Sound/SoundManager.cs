@@ -76,9 +76,24 @@ public class SoundManager : MonoBehaviour
         Bgm.clip = null;
     }
 
-    private IEnumerator WaitForAudioFinish(AudioSource source)
+    public void PausePausableSounds()
     {
-        yield return new WaitWhile(() => source.isPlaying);
+        foreach(PausableSoundObject Obj in Pool.GetComponentsInChildren<PausableSoundObject>())
+        {
+            Obj.GetComponent<AudioSource>().Pause();
+        }
+    }
+
+    public void UnPausePausableSounds()
+    {
+        foreach (PausableSoundObject Obj in Pool.GetComponentsInChildren<PausableSoundObject>())
+        {
+            Obj.GetComponent<AudioSource>().UnPause();
+        }
+    }
+    private IEnumerator WaitForAudioFinish(AudioSource source, float Duration)
+    {
+        yield return new WaitForSeconds(Duration);
         Pool.TakeToPool<SoundObject>(source.GetComponent<SoundObject>());
     }
     public void SaveVolume()
@@ -221,17 +236,39 @@ public class SoundManager : MonoBehaviour
 
     public void HolyWaterSound1()
     {
-        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        AudioClip clip = SfxClips_Effect[0];
+        AudioSource audio = Pool.GetFromPool<PausableSoundObject>().GetComponent<AudioSource>();
         audio.volume = SfxVolumeSlider.value;
-        audio.PlayOneShot(SfxClips_Effect[0]);
-        StartCoroutine(WaitForAudioFinish(audio));
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
 
     public void HolyWaterSound2()
     {
-        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        AudioClip clip = SfxClips_Effect[1];
+        AudioSource audio = Pool.GetFromPool<PausableSoundObject>().GetComponent<AudioSource>();
         audio.volume = SfxVolumeSlider.value;
-        audio.PlayOneShot(SfxClips_Effect[1]);
-        StartCoroutine(WaitForAudioFinish(audio));
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void SatelliteBeamChargeSound()
+    {
+        AudioClip clip = SfxClips_Effect[3];
+        AudioSource audio = Pool.GetFromPool<PausableSoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void SatelliteBeamSound(float Duration)
+    {
+        AudioClip clip = SfxClips_Effect[2];
+        AudioSource audio = Pool.GetFromPool<PausableSoundObject>().GetComponent<AudioSource>();
+        audio.clip = clip;
+        audio.loop = true;
+        audio.volume = SfxVolumeSlider.value;
+        audio.Play();
+        StartCoroutine(WaitForAudioFinish(audio, Duration));
     }
 }

@@ -17,9 +17,11 @@ public class SatelliteBeamObj : SpecialObj
 
     void OnEnable()
     {
+        GetComponent<SpriteRenderer>().enabled = false;
         base.OnEnable();
         TouchedBricks.Clear();
         SpecialObjType = "SatelliteBeamObj";
+        SoundManager.instance.SatelliteBeamChargeSound();
     }
 
     public void StartAttack(float Duration)
@@ -32,8 +34,12 @@ public class SatelliteBeamObj : SpecialObj
 
     IEnumerator SatelliteBeam(float Duration)
     {
+
+        yield return new WaitForSeconds(2f);
         StartCoroutine(MoveSatelliteBeam(StartCoordinate, FinishCoordinate, Duration));
-        while(true)
+        GetComponent<SpriteRenderer>().enabled = true;
+        SoundManager.instance.SatelliteBeamSound(Duration);
+        while (true)
         {
             yield return new WaitForSeconds(0.1f);
             for(int i = 0; i < detectArea.NearbyBricks.Count; i++)
@@ -61,21 +67,22 @@ public class SatelliteBeamObj : SpecialObj
         while (elapsedTime < Duration)
         {
             elapsedTime += Time.deltaTime;
-            float t = elapsedTime / 12.5f;
+            float t = elapsedTime / Duration;
             t = Mathf.SmoothStep(0, 1, t);
             transform.position = Vector2.Lerp(StartLocation, FinishLocation, t);
             yield return null;
         }
-
+        GetComponent<SpriteRenderer>().enabled = false;
         SpecialObjManager.Instance.TakeSpecialObj(this);
+
     }
 
     private Vector2 StartCoordinateSetting()
     {
         float X, Y;
 
-        X = Random.value < 0.5f ? 5f : -5f;
-        Y = Random.Range(-1.5f, 3.5f);
+        X = Random.value < 0.5f ? 4f : -4f;
+        Y = Random.Range(-2.5f, 3.5f);
 
         return new Vector2(X, Y);
     }
@@ -84,7 +91,7 @@ public class SatelliteBeamObj : SpecialObj
     {
         float X, Y;
 
-        X = StartCoordinate.x == 5f ? -5f : 5f;
+        X = StartCoordinate.x == 4f ? -4f : 4f;
         Y = Random.Range(-1f, 4f);
 
         return new Vector2(X, Y);
