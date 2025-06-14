@@ -666,6 +666,7 @@ public partial class LevelManager : MonoBehaviour
         Time.timeScale = 0f;
         LevelUpPanel.SetActive(true);
         SoundManager.instance.LevelUpSound(LevelUpPanel.GetComponent<AudioSource>());
+        SoundManager.instance.PausePausableSounds();
 
         CanvasForLevelUpPanel.SetActive(true);
         AdditionalDescriptionPanel.SetActive(false);
@@ -987,8 +988,11 @@ public partial class LevelManager : MonoBehaviour
                 StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
                 StatManager.instance.isChangedStat = false;
             }
+            SoundManager.instance.UnPausePausableSounds();
+
+            GameManager.instance.WaveNoticeText.enabled = true;
+            GameManager.instance.WaveExtraNoticeText.enabled = true;
         }
-        GameManager.instance.WaveNoticeText.enabled = true;
-        GameManager.instance.WaveExtraNoticeText.enabled = true;
+        
     }
 }

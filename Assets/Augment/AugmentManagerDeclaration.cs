@@ -219,6 +219,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
+            AugmentSet.GetComponent<SatelliteBeam>()
         };
 
         foreach (IAugment augment in TestAugments)
