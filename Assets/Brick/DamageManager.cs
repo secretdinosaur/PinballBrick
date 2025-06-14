@@ -131,6 +131,7 @@ public static partial class DamageManager //Special Effect Attack
             {
 
                 VisualEffectManager.Instance.SpawnParticle("StrongAdditionalAttack", brick.transform.position, 1);
+                SoundManager.instance.StrongAdditionalAttackSound();
             }
             else
             {

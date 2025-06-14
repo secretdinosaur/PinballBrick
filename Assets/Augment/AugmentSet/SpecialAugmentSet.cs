@@ -1147,7 +1147,7 @@ public class ShareBallAtk : SpecialAugment
 public class StrongAdditionalAttack : SpecialAugment
 {
     float StrongAttackChance = 0.01f;
-    float SuperStrongAttackChance = 0.001f;
+    float SuperStrongAttackChance = 0.0025f;
     float SuperUltraStrongAttackChance = 0.0001f;
     private void OnEnable()
     {
@@ -1166,9 +1166,9 @@ public class StrongAdditionalAttack : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             if (RandomValue < SuperUltraStrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 500f, true));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f, true));
             else if (RandomValue < SuperStrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 50f, true));
+                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 25f, true));
             else if (RandomValue < StrongAttackChance)
                 StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 10f));
         }

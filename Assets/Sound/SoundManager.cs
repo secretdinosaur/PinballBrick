@@ -326,4 +326,13 @@ public class SoundManager : MonoBehaviour
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
+
+    public void StrongAdditionalAttackSound()
+    {
+        AudioClip clip = SfxClips_Effect[10];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
 }
