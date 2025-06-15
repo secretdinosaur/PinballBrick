@@ -166,6 +166,7 @@ public static partial class DamageManager //Special Effect Attack
     public static void DamageByLightningEffect(IBrick brick, float DamageAmount, int ParticleCount)
     {
         bool isCritical = true;
+        SoundManager.instance.LightningSound();
         if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
         {
             isCritical = IsCriticalHit(brick);

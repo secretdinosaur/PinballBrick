@@ -373,4 +373,14 @@ public class SoundManager : MonoBehaviour
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
+
+    public void LightningSound()
+    {
+        AudioClip clip = SfxClips_Effect[14];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.pitch = Random.Range(0.9f, 1.1f);
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
 }
