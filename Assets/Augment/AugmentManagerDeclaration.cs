@@ -40,7 +40,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
         { 0, 0.005f },
-        { 1, 0.495f },
+        { 1, 0.045f },
         { 2, 0.1f },
         { 3, 0.25f },
         { 4, 0.4f },
@@ -219,8 +219,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<StrongAdditionalAttack>(),
-
+            AugmentSet.GetComponent<Lightning>(),
+            
         };
 
         foreach (IAugment augment in TestAugments)
