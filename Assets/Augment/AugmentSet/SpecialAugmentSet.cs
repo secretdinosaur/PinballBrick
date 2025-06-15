@@ -500,6 +500,7 @@ public class InfinitePoison : SpecialAugment
                             if (Chosen.gameObject.activeInHierarchy && Chosen.Poison == null)
                             {
                                 VisualEffectManager.Instance.SpawnParticle("InfinityPoison", transform.position, 1);
+                                SoundManager.instance.SpreadPoisonSound();
                                 Chosen.ShowText("Infection!", null, false);
                                 Chosen.DamageByPoisonEffect(AugmentManager.instance.effectDuration.PoisonDuration * StatManager.instance.Temporary_stat.EffectDuration);
                             }

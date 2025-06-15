@@ -165,7 +165,7 @@ public class SoundManager : MonoBehaviour
 
     public void BallAttackSound(AudioSource audio)
     {
-        audio.volume = SfxVolumeSlider.value / 2f;
+        audio.volume = SfxVolumeSlider.value / 3f;
         audio.PlayOneShot(SfxClips_Game[1]);
     }
 
@@ -332,6 +332,24 @@ public class SoundManager : MonoBehaviour
         AudioClip clip = SfxClips_Effect[10];
         AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
         audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void PoisonSound()
+    {
+        AudioClip clip = SfxClips_Effect[11];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value * 1.25f;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void SpreadPoisonSound()
+    {
+        AudioClip clip = SfxClips_Effect[12];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value / 1.25f;
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }

@@ -406,7 +406,7 @@ public class BrickEffectManager : MonoBehaviour
     public IEnumerator DamageByPoisonEffect(float effectDuration)   
     {
         Material PoisonMaterial = brick.PoisonEffect.GetComponent<Renderer>().material;
-
+        SoundManager.instance.PoisonSound();
         float elapsedTime = 0;
         brick.PoisonEffect.SetActive(true);
         EffectStatusSet["Poison"].IsActive = true;
@@ -484,10 +484,8 @@ public class BrickEffectManager : MonoBehaviour
             float baseDamage = (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.Persistent_stat.EffectDamageMultiplier / 2;
 
             EffectAttackDamage = isCritical
-                ? (brick.HP * ((0.03f * StatManager.instance.statMultiplier.EffectDamageMultiplier + baseDamage)
-                         * EffectStatusSet["Poison"].EffectStack * DamageManager.CriticalDamage()))
-                : (brick.HP * ((0.03f * StatManager.instance.statMultiplier.EffectDamageMultiplier + baseDamage)
-                         * EffectStatusSet["Poison"].EffectStack) + baseDamage);
+                ? (brick.HP * 0.03f + baseDamage * EffectStatusSet["Poison"].EffectStack * DamageManager.CriticalDamage())
+                : (brick.HP * 0.03f + baseDamage * EffectStatusSet["Poison"].EffectStack);
 
             float FinalEffectAttackDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)

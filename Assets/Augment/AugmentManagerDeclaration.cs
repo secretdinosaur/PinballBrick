@@ -219,7 +219,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<StrongAdditionalAttack>(),
+            AugmentSet.GetComponent<PoisonBall>(),
+            AugmentSet.GetComponent<InfinitePoison>(),
 
         };
 
