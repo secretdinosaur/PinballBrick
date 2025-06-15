@@ -340,7 +340,17 @@ public class SoundManager : MonoBehaviour
     {
         AudioClip clip = SfxClips_Effect[11];
         AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
-        audio.volume = SfxVolumeSlider.value * 1.25f;
+        audio.volume = SfxVolumeSlider.value * 2f;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void MaxStackPoisonSound()
+    {
+        AudioClip clip = SfxClips_Effect[11];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value * 2f;
+        audio.pitch = 1.5f;
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
@@ -349,7 +359,17 @@ public class SoundManager : MonoBehaviour
     {
         AudioClip clip = SfxClips_Effect[12];
         AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
-        audio.volume = SfxVolumeSlider.value / 1.25f;
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void CurseSound(float pitch)
+    {
+        AudioClip clip = SfxClips_Effect[13];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.pitch = 1 + pitch / 5;
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }

@@ -455,7 +455,7 @@ public class InfinitePoison : SpecialAugment
     Coroutine Routine = null;
     private void OnEnable()
     {
-        SetAugment("SPECIAL_16", "Infinite Poison", "Poison spreads to nearby bricks, on max stacks", "Poison", 2);
+        SetAugment("SPECIAL_16", "Infinite Poison", "Brick spreads poison to nearby bricks, on max stacks", "Poison", 2);
         SetAdditionalDescription("Poison damage : 0.5 <sprite=2> + 3% of brick's current HP per stack");
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -483,7 +483,7 @@ public class InfinitePoison : SpecialAugment
             {
                 foreach (IBrick brick in AugmentManager.instance.PoisonBrickSet)
                 {
-                    if (brick.detectArea.NearbyBricks.Count > 0 && Random.value < 0.25f)
+                    if (brick.detectArea.NearbyBricks.Count > 0 && Random.value < 0.5f)
                     {
                         List<IBrick> ChosenBricks = new List<IBrick>(brick.detectArea.NearbyBricks);
                         int infectionLimit = Random.Range(0, ChosenBricks.Count > 2 ? 2 : ChosenBricks.Count);
@@ -499,7 +499,7 @@ public class InfinitePoison : SpecialAugment
                         {
                             if (Chosen.gameObject.activeInHierarchy && Chosen.Poison == null)
                             {
-                                VisualEffectManager.Instance.SpawnParticle("InfinityPoison", transform.position, 1);
+                                VisualEffectManager.Instance.SpawnParticle("InfinityPoison", brick.transform.position, 1);
                                 SoundManager.instance.SpreadPoisonSound();
                                 Chosen.ShowText("Infection!", null, false);
                                 Chosen.DamageByPoisonEffect(AugmentManager.instance.effectDuration.PoisonDuration * StatManager.instance.Temporary_stat.EffectDuration);

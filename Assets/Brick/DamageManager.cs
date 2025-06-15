@@ -220,6 +220,7 @@ public static partial class DamageManager //Special Effect Attack
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
                 : brick.DecayDamageCalculate(damage);
+        SoundManager.instance.CurseSound(AugmentManager.instance.CurseDamageValue);
         yield return new WaitForSeconds(0.5f);
         brick.HP -= FinalDamage;
         brick.ShowText(FinalDamage.ToString("F1"), "Curse", isCritical);
@@ -414,6 +415,8 @@ public class BrickEffectManager : MonoBehaviour
 
         if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
         {
+            SoundManager.instance.MaxStackPoisonSound();
+
             PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
             PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
             PoisonMaterial.SetFloat("_InnerPower", 1.75f);
@@ -605,6 +608,7 @@ public class BrickEffectManager : MonoBehaviour
         float Chance = 1;
         while (Random.value < Chance)
         {
+            SoundManager.instance.CurseSound(multipleCount / 10 + AugmentManager.instance.CurseDamageValue - 1);
             VisualEffectManager.Instance.SpawnCurseEffect(brick.transform.position, StartingPos, multipleCount);
             multipleCount += 1.3f;
             brick.HP -= FinalDamage;
