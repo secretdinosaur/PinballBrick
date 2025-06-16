@@ -30,6 +30,7 @@ public class GoogleManager : MonoBehaviour
     {
         isSignInToggle = GameObject.Find("Canvas").transform.Find("Scroll View/Viewport/Content/Setting/Google/Toggle").GetComponent<Toggle>();
         GoogleLoginStaus = GameObject.Find("Canvas").transform.Find("Scroll View/Viewport/Content/Setting/Google/GoogleLoginStatus").GetComponent<TMP_Text>();
+
         PlayGamesPlatform.Activate();
         PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
     }
@@ -61,21 +62,79 @@ public class StatOnGoogle
 {
     public Persistent_Stat Persistent_stat;
     private string cloudSaveFileName = "PinballBrick_persistentData.json";
+    private ISavedGameClient savedGameClient;
+
     public void SavePersistentStats(Persistent_Stat stats)
     {
         Persistent_stat = stats;
-        OpenSaveGameForSave();
+        savedGameClient = PlayGamesPlatform.Instance.SavedGame;
     }
 
-    private void OpenSaveGameForSave()
+    public void SaveGame(string fileName, string data)
     {
-        ISavedGameClient saveGameClient = PlayGamesPlatform.Instance.SavedGame;
+        byte[] byteData = System.Text.Encoding.UTF8.GetBytes(data);
 
-        saveGameClient.OpenWithAutomaticConflictResolution(
-            cloudSaveFileName,
+        savedGameClient.OpenWithAutomaticConflictResolution(fileName,
             DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLastKnownGood,
-            OnSaveGameOpenedToWrite);
+            ConflictResolutionStrategy.UseLongestPlaytime,
+            (status, metadata) => OnSavedGameOpenedForSave(status, metadata, byteData));
+    }
+
+    private void OnSavedGameOpenedForSave(SavedGameRequestStatus status, ISavedGameMetadata game, byte[] data)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            savedGameClient.CommitUpdate(game, new SavedGameMetadataUpdate.Builder().Build(), data, OnGameSaved);
+        }
+        else
+        {
+            Debug.LogError("Failed to open saved game for saving.");
+        }
+    }
+
+    private void OnGameSaved(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Game saved successfully.");
+        }
+        else
+        {
+            Debug.LogError("Failed to save game.");
+        }
+    }
+
+    public void LoadGame(string fileName)
+    {
+        savedGameClient.OpenWithAutomaticConflictResolution(fileName,
+            DataSource.ReadCacheOrNetwork,
+            ConflictResolutionStrategy.UseLongestPlaytime,
+            (status, metadata) => OnSavedGameOpenedForLoad(status, metadata));
+    }
+
+    private void OnSavedGameOpenedForLoad(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            savedGameClient.ReadBinaryData(game, OnGameLoaded);
+        }
+        else
+        {
+            Debug.LogError("Failed to open saved game for loading.");
+        }
+    }
+
+    private void OnGameLoaded(SavedGameRequestStatus status, byte[] data)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            string loadedData = System.Text.Encoding.UTF8.GetString(data);
+            Debug.Log("Loaded data: " + loadedData);
+        }
+        else
+        {
+            Debug.LogError("Failed to load game.");
+        }
     }
 
     private void OnSaveGameOpenedToWrite(SavedGameRequestStatus status, ISavedGameMetadata game)

@@ -45,7 +45,11 @@ public class GameManager : MonoBehaviour
     public int Wave
     {
         get {  return wave; }
-        set { wave = value;  }
+        set 
+        { 
+            wave = value;
+            Mathf.Clamp(wave, 1, 9999999999);
+        }
     }
 
 

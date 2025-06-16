@@ -732,7 +732,7 @@ public class BrickManager : MonoBehaviour
         }
         else if (brick.IsBigBoss)
         {
-            HPPool.Add(10101);
+            HPPool.Add(2); //10101);
         }
         else
         {

@@ -78,6 +78,12 @@ public partial class IBrick : MonoBehaviour
                 {
 
                 }
+                else if (IsBigBoss)
+                {
+                    AugmentManager.instance.AddAugment(AugmentManager.AugmentSet.GetComponent<LevelUpAgain>());
+                    BrickManager.Instance.BigBossBrick = null;
+                    BrickDie();
+                }
                 else
                 {
                     if (BrickType == "HealBrick") StopCoroutine(BrickHealCoroutine);
