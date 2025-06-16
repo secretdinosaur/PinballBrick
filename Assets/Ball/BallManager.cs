@@ -151,7 +151,7 @@ public class BallManager : MonoBehaviour
         var genericMethod = method.MakeGenericMethod(ballType);
         ball = (IBall)genericMethod.Invoke(PoolManager, null);
         ball.StartPosition = StartPosition;
-        ball.linearVelocityYValue = linearVelocityYValue;
+        ball.rb.linearVelocityY = linearVelocityYValue;
         if (IsRebirth)
         {
             StartCoroutine(RebirthBallEffect(ball));

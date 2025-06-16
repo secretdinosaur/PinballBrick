@@ -140,8 +140,6 @@ public class VisualEffectManager : MonoBehaviour
                 break;
 
             case "Curse":
-                CursePS.transform.position = new Vector2(0, -10);
-                SpawnCurseEffect(ParticlePosition);
                 break;
 
             case "BallSacrifice":
@@ -160,26 +158,30 @@ public class VisualEffectManager : MonoBehaviour
         }
     }
 
-    public void SpawnCurseEffect(Vector2 Pos)
+    public void SpawnCurseEffect(Vector2 Pos, Vector2? StartingPos, float MultipleCount = 1)
     {
-        StartCoroutine(SpawnCurseEffectCo(Pos));
+        StartCoroutine(SpawnCurseEffectCo(Pos, StartingPos, MultipleCount));
     }
 
-    public IEnumerator SpawnCurseEffectCo(Vector2 Pos)
+    public IEnumerator SpawnCurseEffectCo(Vector2 Pos, Vector2? StartingPos, float MultipleCount)
     {
-        Vec = Pos - new Vector2(0, -10);
-        ParticleSystem CursePS = PoolManager.GetFromPool<CursePS>().GetComponent<ParticleSystem>();
-        CursePS.Emit(5);
+        Vector2 Startingpos = StartingPos.HasValue ? StartingPos.Value : new Vector2(UnityEngine.Random.Range(-1.5f, 1.5f), -10);
+        Vec = Pos - Startingpos;
 
-        Particle[] CurseParticles = new Particle[CursePS.particleCount];
-        CursePS.GetParticles(CurseParticles);
+        CursePS CursePS = PoolManager.GetFromPool<CursePS>();
+        UnityEngine. Color color = new UnityEngine.Color(50f / 255f, 5f / 255f, 1f / 255f) + new UnityEngine.Color(12 / 255f, 1f / 255f, 0f / 255f) * (AugmentManager.instance.CurseDamageValue - 1) * 2;
+        CursePS.GetComponent<ParticleSystemRenderer>().material.SetColor("_OuterColor", color * (MultipleCount));
 
+        CursePS.GetComponent<ParticleSystem>().Emit(5);
+        
+        Particle[] CurseParticles = new Particle[CursePS.GetComponent<ParticleSystem>().particleCount];
+        CursePS.GetComponent<ParticleSystem>().GetParticles(CurseParticles);
         Array.Sort(CurseParticles, (a, b) => b.remainingLifetime.CompareTo(a.remainingLifetime));
 
         for (int i = 0; i < CurseParticles.Length; i++)
         {
             float angle = Mathf.Atan2(Vec.y, Vec.x) * Mathf.Rad2Deg;
-            CurseParticles[i].position = new Vector2(0, -10);
+            CurseParticles[i].position = new Vector3(Startingpos.x, Startingpos.y, 0);
             CurseParticles[i].rotation = 90 - angle + UnityEngine.Random.Range(-0.1f, 0.1f);
 
             Vector3 size = CurseParticles[i].startSize3D;
@@ -187,7 +189,7 @@ public class VisualEffectManager : MonoBehaviour
             size.y = Vec.magnitude;
             CurseParticles[i].startSize3D = size;
         }
-        CursePS.SetParticles(CurseParticles);
+        CursePS.GetComponent<ParticleSystem>().SetParticles(CurseParticles);
 
         yield return new WaitForSeconds(1f);
 

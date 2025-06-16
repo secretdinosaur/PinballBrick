@@ -62,22 +62,10 @@ public class AllDamage : FieldAugment
         {
             for (int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
             {
-                IBrick brick = BrickManager.Instance.CurrentBricks[i];
-                Damage = 5f + (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
-                    * (StatManager.instance.statMultiplier.EffectDamageMultiplier * StatManager.instance.Persistent_stat.EffectDamageMultiplier);
-                StartCoroutine(SyncDamageAndEffect(Damage, brick));
+                BrickManager.Instance.CurrentBricks[i].HolyRainAttack();
             }
             yield return new WaitForSeconds(period);
         }
-    }
-
-    private IEnumerator SyncDamageAndEffect(float Damage, IBrick brick)
-    {
-        yield return new WaitForSeconds(Random.Range(0, 0.5f));
-        VisualEffectManager.Instance.SpawnParticle("AllDamage", brick.transform.position, 1);
-
-        yield return new WaitForSeconds(0.65f);
-        brick.ArbitraryDamageAttack(Damage, false, Damage.ToString("F1"), "Lightning");
     }
 }
 
@@ -89,7 +77,7 @@ public class AngryBall : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_2", "Angry Ball", "Balls briefly become enraged and move faster", 3, (float)System.Math.Round(Cooldown, 2));
+        SetAugment("FIELD_2", "Angry Ball", "Balls briefly become enraged and move faster", 3, (float)System.Math.Round(Cooldown, 2), "Buff");
         SetAdditionalDescription(null);
     }
 
@@ -111,6 +99,7 @@ public class AngryBall : FieldAugment
     {
         while(true)
         {
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(1.4f);
             foreach (Ball ball in BallManager.Instance.InGameBall)
             {
                 StartCoroutine(AngryBallEffect(ball));
@@ -125,7 +114,8 @@ public class AngryBall : FieldAugment
                 Vector3 forceDirection = rb.linearVelocity.normalized;
                 rb.AddForce(forceDirection * Power, ForceMode2D.Impulse);
             }
-
+            yield return new WaitForSeconds(0.5f);
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.4f);
             yield return new WaitForSeconds(period);
         }
     }
@@ -157,7 +147,7 @@ public class PhoenixBall : FieldAugment
     float Duration = StatManager.instance.Temporary_stat.EffectDuration * 20;
     private void OnEnable()
     {
-        SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for " + Duration.ToString("F1") + " seconds", 4, (float)System.Math.Round(Cooldown, 2));
+        SetAugment("FIELD_3", "Phoenix Ball", "The random ball become invincible for " + Duration.ToString("F1") + " seconds", 4, (float)System.Math.Round(Cooldown, 2), "Buff");
         SetAdditionalDescription(null);
     }
 
@@ -343,7 +333,7 @@ public class AutoGetExp : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_6", "Meditation", "Automatically gain 1% of the max EXP", 5, 10);
+        SetAugment("FIELD_6", "Meditation", "Automatically gain 1% of the max EXP", 5, 10, "Buff");
         SetAdditionalDescription(null);
     }
 
@@ -540,6 +530,7 @@ public override void Remove()
                 else
                 {
                     WantedBrick.HP += WantedBrick.HpTemp * 0.1f;
+                    WantedBrick.HP = Mathf.Clamp(WantedBrick.HP, 1f, WantedBrick.HpTemp);
                 }
             }
             yield return new WaitForSeconds(Cooldown);
@@ -555,7 +546,7 @@ public class LightningRod: FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_9", "Thunderstrike Zone", "Generates thunderstrike zone for " + Duration.ToString("F1") + " seconds", 2, (float)System.Math.Round(Cooldown, 2));
+        SetAugment("FIELD_9", "Thunderstrike Zone", "Generates thunderstrike zone for " + Duration.ToString("F1") + " seconds", 2, (float)System.Math.Round(Cooldown, 2), "Lightning");
         SetAdditionalDescription("Lightning damage: 0.2 <sprite=2> + 3% of brick's max HP");
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -568,6 +559,8 @@ public class LightningRod: FieldAugment
 
     public override void Remove()
     {
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
+            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LightningRod>());
         if (Routine != null)
         {
             StopCoroutine(Routine);
@@ -588,23 +581,23 @@ public class LightningRod: FieldAugment
 public class AttackOrDie : FieldAugment
 {
     Coroutine Routine = null;
-    float Duration = StatManager.instance.Temporary_stat.EffectDuration * 10;
+    float Duration = 8;
 
     private void OnEnable()
     {
-        SetAugment("FIELD_11", "Last Breath", "<sprite=0> +40%,\nballs get die if they don't hit any bricks within " + Duration.ToString("F1") +" seconds.", 2);
+        SetAugment("FIELD_11", "Last Breath", "<sprite=0> +30%,\nballs get die if they don't hit any bricks within " + Duration.ToString("F1") +" seconds.", 2, 0, "Buff");
         SetAdditionalDescription(null);
     }
 
     public override void Apply()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.4f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.3f);
         Routine = StartCoroutine(GetAttackOrDie());
     }
 
     public override void Remove()
     {
-        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.4f);
+        StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.3f);
         if (Routine != null)
         {
             StopCoroutine(Routine);
@@ -671,7 +664,7 @@ public class DecayZone : FieldAugment
     float Duration = StatManager.instance.Temporary_stat.EffectDuration * 10;
     private void OnEnable()
     {
-        SetAugment("FIELD_12", "Decay Zone", "Generate a decay zone for " + Duration.ToString("F1") + " seconds", 2, (float)System.Math.Round(Cooldown, 2));
+        SetAugment("FIELD_12", "Decay Zone", "Generate a decay zone for " + Duration.ToString("F1") + " seconds", 2, (float)System.Math.Round(Cooldown, 2), "Decay");
         SetAdditionalDescription("Decay Effect: Increases damage taken by bricks by 10% per stack");
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayBall>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -684,6 +677,7 @@ public class DecayZone : FieldAugment
 
     public override void Remove()
     {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayZone>());
         if (Routine != null)
         {
             StopCoroutine(Routine);
@@ -792,18 +786,16 @@ private void OnEnable()
                     AugmentManager.instance.effectChance.DecayChance -= 0.15f;
                     break;
                 case 4:
-                    AugmentManager.instance.effectChance.CurseChance += 0.15f;
                     while (elapsedTime < Duration)
                     {
                         for (int j = 0; j < BrickManager.Instance.CurrentBricks.Count; j++)
                         {
-                            if (Random.value < CurseChance)
-                                BrickManager.Instance.CurrentBricks[j].DamageByCurse();
+                            if (Random.value < 0.3f)
+                                BrickManager.Instance.CurrentBricks[j].HolyRainAttack();
                         }
                         elapsedTime += 1;
                         yield return new WaitForSeconds(1f);
                     }
-                    AugmentManager.instance.effectChance.CurseChance -= 0.15f;
                     break;
                 case 5:
                     while (elapsedTime < Duration)
@@ -830,7 +822,7 @@ public class DiceGamble : FieldAugment
 {
     Coroutine Routine = null;
     Coroutine Routine2 = null;
-    float Cooldown = AugmentManager.instance.FieldGlobalCooldown;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 6;
         
     private void OnEnable()
     {
@@ -871,28 +863,6 @@ public class DiceGamble : FieldAugment
         rolledDiceSet.Add(dice);
     }
 
-    IEnumerator SpawnLuckyItem()
-    {
-        int SpawnCount = 0;
-        while(SpawnCount < 30)
-        {
-            for(int i = 0; i < BrickManager.Instance.CurrentBricks.Count; i++)
-            {
-                IBrick brick = BrickManager.Instance.CurrentBricks[i];
-                if(brick.gameObject.activeSelf)
-                {
-                    ItemManager.Instance.SpawnSpecificItem("ExpBead", brick.transform.position, 3);
-                    ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 1);
-                    ItemManager.Instance.SpawnSpecificItem("Gold2", brick.transform.position, 1);
-                    ItemManager.Instance.SpawnSpecificItem("Gold3", brick.transform.position, 1);
-                    SpawnCount += 1;
-                    yield return new WaitForSeconds(0.1f);
-                }
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
     private void CalDiceSet()
     {
         rolledDiceSet.Sort();
@@ -904,12 +874,15 @@ public class DiceGamble : FieldAugment
                 case 1:
                     foreach (IBrick brick in BrickManager.Instance.CurrentBricks)
                     {
-                        StartCoroutine(brick.Execution());
+                        brick.ExecutionCor = StartCoroutine(brick.Execution());
                     }
                     break;
                 case 2:
-                    Routine2 = StartCoroutine(SpawnLuckyItem());
-                break;
+                    ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead",200, 0.1f);
+                    ItemManager.Instance.SpawnSpecificItemInRandomPosition("Gold1", 50, 0.1f);
+                    ItemManager.Instance.SpawnSpecificItemInRandomPosition("Gold2", 50, 0.1f);
+                    ItemManager.Instance.SpawnSpecificItemInRandomPosition("Gold3", 50, 0.1f);
+                    break;
                 case 3:
                     BallManager.Instance.CreateBombBall(10);
                     BallManager.Instance.CreateBall(50);
@@ -968,8 +941,8 @@ public class DiceGamble : FieldAugment
 public class Trampoline : FieldAugment
 {
     Coroutine Routine = null;
-    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 30;
-    float Duration = StatManager.instance.Temporary_stat.EffectDuration * 5;
+    float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 3;
+    float Duration = StatManager.instance.Temporary_stat.EffectDuration * 10;
     GameObject TrampolineObj;
 
     private void OnEnable()
@@ -1015,7 +988,7 @@ public class Bombardment : FieldAugment
 
     private void OnEnable()
     {
-        SetAugment("FIELD_16", "Air Strike", "Summons 5 bombs that fall from above", 2, (float)System.Math.Round(Cooldown, 2));
+        SetAugment("FIELD_16", "Air Strike", "Summons 5 bombs that fall from above", 2, (float)System.Math.Round(Cooldown, 2), "Bomb");
         SetAdditionalDescription("Bomb damage: 10 <sprite=0>");
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
             AugmentManager.instance.exceptionAugments.Add(this);
@@ -1028,6 +1001,8 @@ public class Bombardment : FieldAugment
 
     public override void Remove()
     {
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
+            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
         if (Routine != null)
         {
             StopCoroutine(Routine);

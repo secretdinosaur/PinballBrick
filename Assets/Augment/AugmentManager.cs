@@ -5,15 +5,45 @@ using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 using UnityEngine;
 using static UnityEngine.Rendering.HableCurve;
+using System.Text.RegularExpressions;
 
 public partial class AugmentManager //Utility
 {
-    string str = null;
-    public void S(string s)
+    public void printAugments()
     {
-        str += s;
-        print(str);
+        Dictionary<int, string> spriteDescriptions = new Dictionary<int, string>
+        {
+            { 0, "Attack Damage" },
+            { 1, "Critical Damage" },
+            { 2, "Effect Damage" },
+            { 3, "Critical Chance" },
+            { 6, "Effect Duration" },
+            { 8, "Gold Gain" },
+            { 10, "EXP Gain" },
+            { 11, "Cooltime Reduce" }
+        };
+
+        string ReplaceSpriteTags(string input)
+        {
+            return Regex.Replace(input, @"<sprite=(\d+)>", match =>
+            {
+                int index = int.Parse(match.Groups[1].Value);
+                return spriteDescriptions.ContainsKey(index) ? spriteDescriptions[index] : match.Value;
+            });
+        }
+
+        string str = "";
+        for(int i = 0; i < augmentsSet.Count; i++)
+        {
+            str += augmentsSet[i].Type + "\t" + augmentsSet[i].Rarity + "\t" + augmentsSet[i].Name + "\t" + augmentsSet[i].Description.Replace("\r\n", "").Replace("\n", "") + "\n";
+        }
+        print(ReplaceSpriteTags(str));
     }
+
+    private void Start()
+    {
+        printAugments();
+     }
     public bool determineSpecialAugmentType(string Type)
     {
         return activeAugments.Any(a => a.Type == Type);
@@ -87,10 +117,22 @@ public partial class AugmentManager
 
     public void RemoveAugment(IAugment augment)
     {
-        exceptionAugments.Remove(augment);
+        LockAugment(augment);
         activeAugments.Remove(augment);
         augment.Remove();
         ActivatedAugmentNumber--;
+    }
+
+    public void RemoveAugmentOnType(string augmentType)
+    {
+        var activeAugmentsCopy = activeAugments.ToList();
+        foreach (IAugment augment in activeAugmentsCopy)
+        {
+            if(augment.Type == augmentType)
+            {
+                RemoveAugment(augment);
+            }
+        }
     }
 
 
@@ -120,45 +162,5 @@ public partial class AugmentManager
     {
         if (!exceptionAugments.Contains(augment))
             exceptionAugments.Add(augment);
-    }
-    
-    private IAugment GetOppositeAugment(IAugment ChosenAugment)
-    {
-        /*
-        IAugment oppositeAugment;
-        if (ChosenAugment.ID == "STAT_15")
-        {
-            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_16");
-            if (oppositeAugment != null)
-            {
-                return oppositeAugment;
-            }
-        }
-        else if (ChosenAugment.ID == "STAT_16")
-        {
-            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_15");
-            if (oppositeAugment != null)
-            {
-                return oppositeAugment;
-            }
-        }
-        else if (ChosenAugment.ID == "STAT_17")
-        {
-            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_18");
-            if (oppositeAugment != null)
-            {
-                return oppositeAugment;
-            }
-        }
-        else if (ChosenAugment.ID == "STAT_18")
-        {
-            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_17");
-            if (oppositeAugment != null)
-            {
-                return oppositeAugment;
-            }
-        }
-        */
-        return null;
     }
 }

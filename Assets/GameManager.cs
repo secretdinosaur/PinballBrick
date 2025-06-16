@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -67,10 +68,10 @@ public class GameManager : MonoBehaviour
         GoldGainStatValueText = PausePanel.transform.Find("Stats/GoldGainIcon/GoldGainStatValueText").GetComponent<TMP_Text>();
         ExpGainStatValueText = PausePanel.transform.Find("Stats/ExpGainIcon/ExpGainStatValueText").GetComponent<TMP_Text>();
 
-        NoticeLevelText_Pause = PausePanel.transform.Find("Level").GetComponent<TMP_Text>();
-        NoticePlaytimeText_Pause = PausePanel.transform.Find("Playtime").GetComponent<TMP_Text>();
-        NoticePointText_Pause = PausePanel.transform.Find("Point").GetComponent<TMP_Text>();
-        NoticeWaveText_Pause = PausePanel.transform.Find("Wave").GetComponent<TMP_Text>();
+        NoticeLevelText_Pause = PausePanel.transform.Find("Info/Level").GetComponent<TMP_Text>();
+        NoticePlaytimeText_Pause = PausePanel.transform.Find("Info/Playtime").GetComponent<TMP_Text>();
+        NoticePointText_Pause = PausePanel.transform.Find("Info/Point").GetComponent<TMP_Text>();
+        NoticeWaveText_Pause = PausePanel.transform.Find("Info/Wave").GetComponent<TMP_Text>();
 
         NoticeLevelText_End = GameEndPanel.transform.Find("Level").GetComponent<TMP_Text>();
         NoticePlaytimeText_End = GameEndPanel.transform.Find("Playtime").GetComponent<TMP_Text>();
@@ -99,6 +100,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
+        SoundManager.instance.Bgm.mute = false;
         StartCoroutine(BallManager.Instance.CreateStartingBall());
         BrickManager.Instance.SpawnBrickRoutine = StartCoroutine(BrickManager.Instance.SpawnBricks());
     }
@@ -289,8 +291,8 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
-    public void OnClickGoToMain() //추후 수정
+    public void OnClickGoToMain()
     {
-        Application.Quit();
+        SceneManager.LoadScene("Main");
     }
 }

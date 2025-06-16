@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using NUnit.Framework;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 public partial class StatManager : MonoBehaviour
 {
     public static StatManager instance;
@@ -23,6 +24,7 @@ public partial class StatManager : MonoBehaviour
         persistent_stat_filePath = Application.persistentDataPath + "/PinballBrick_persistentData.json";
         temporary_stat_filePath = Application.persistentDataPath + "/PinballBrick_temporaryData.json";
         stat_Multiplier_filePath = Application.persistentDataPath + "/PinballBrick_multiplierData.json";
+
         if (!File.Exists(persistent_stat_filePath))
         {
             InitializePersistentStats();
@@ -52,42 +54,47 @@ public partial class StatManager : MonoBehaviour
         Temporary_stat = LoadTemporaryStat();
         statMultiplier = LoadStatMultiplier();
 
-        NoticeChangedStatPanel = GameObject.Find("Canvas").transform.Find("NoticeChangedStatPanel").gameObject;
+        NoticeChangedStatPanel = GameObject.Find("NoticeChangedStatPanel");
 
-        AttackDamageStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageStatValueText").GetComponent<TMP_Text>();
-        AttackDamageStatValueText.text = "";
-        AttackDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageChangedStatValueText").GetComponent<TMP_Text>();
-        AttackDamageChangedStatValueText.text = "";
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if(currentSceneName != "Main")
+        {
+            AttackDamageStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageStatValueText").GetComponent<TMP_Text>();
+            AttackDamageStatValueText.text = "";
+            AttackDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("AttackDamageIcon/AttackDamageChangedStatValueText").GetComponent<TMP_Text>();
+            AttackDamageChangedStatValueText.text = "";
 
-        CriticalDamageStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageStatValueText").GetComponent<TMP_Text>();
-        CriticalDamageStatValueText.text = "";
-        CriticalDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageChangedStatValueText").GetComponent<TMP_Text>();
-        CriticalDamageChangedStatValueText.text = "";
+            CriticalDamageStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageStatValueText").GetComponent<TMP_Text>();
+            CriticalDamageStatValueText.text = "";
+            CriticalDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalDamageIcon/CriticalDamageChangedStatValueText").GetComponent<TMP_Text>();
+            CriticalDamageChangedStatValueText.text = "";
 
-        CriticalChanceStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceStatValueText").GetComponent<TMP_Text>();
-        CriticalChanceStatValueText.text = "";
-        CriticalChanceChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceChangedStatValueText").GetComponent<TMP_Text>();
-        CriticalChanceChangedStatValueText.text = "";
+            CriticalChanceStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceStatValueText").GetComponent<TMP_Text>();
+            CriticalChanceStatValueText.text = "";
+            CriticalChanceChangedStatValueText = NoticeChangedStatPanel.transform.Find("CriticalChanceIcon/CriticalChanceChangedStatValueText").GetComponent<TMP_Text>();
+            CriticalChanceChangedStatValueText.text = "";
 
-        EffectDamageStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageStatValueText").GetComponent<TMP_Text>();
-        EffectDamageStatValueText.text = "";
-        EffectDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageChangedStatValueText").GetComponent<TMP_Text>();
-        EffectDamageChangedStatValueText.text = "";
+            EffectDamageStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageStatValueText").GetComponent<TMP_Text>();
+            EffectDamageStatValueText.text = "";
+            EffectDamageChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDamageIcon/EffectDamageChangedStatValueText").GetComponent<TMP_Text>();
+            EffectDamageChangedStatValueText.text = "";
 
-        EffectDurationStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationStatValueText").GetComponent<TMP_Text>();
-        EffectDurationStatValueText.text = "";
-        EffectDurationChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationChangedStatValueText").GetComponent<TMP_Text>();
-        EffectDurationChangedStatValueText.text = "";
+            EffectDurationStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationStatValueText").GetComponent<TMP_Text>();
+            EffectDurationStatValueText.text = "";
+            EffectDurationChangedStatValueText = NoticeChangedStatPanel.transform.Find("EffectDurationIcon/EffectDurationChangedStatValueText").GetComponent<TMP_Text>();
+            EffectDurationChangedStatValueText.text = "";
 
-        GoldGainStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainStatValueText").GetComponent<TMP_Text>();
-        GoldGainStatValueText.text = "";
-        GoldGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainChangedStatValueText").GetComponent<TMP_Text>();
-        GoldGainChangedStatValueText.text = "";
+            GoldGainStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainStatValueText").GetComponent<TMP_Text>();
+            GoldGainStatValueText.text = "";
+            GoldGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("GoldGainIcon/GoldGainChangedStatValueText").GetComponent<TMP_Text>();
+            GoldGainChangedStatValueText.text = "";
 
-        ExpGainStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainStatValueText").GetComponent<TMP_Text>();
-        ExpGainStatValueText.text = "";
-        ExpGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainChangedStatValueText").GetComponent<TMP_Text>();
-        ExpGainChangedStatValueText.text = "";
+            ExpGainStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainStatValueText").GetComponent<TMP_Text>();
+            ExpGainStatValueText.text = "";
+            ExpGainChangedStatValueText = NoticeChangedStatPanel.transform.Find("ExpGainIcon/ExpGainChangedStatValueText").GetComponent<TMP_Text>();
+            ExpGainChangedStatValueText.text = "";
+        }
+        
 
         TotalChangedStatValue = new List<float>
         {
@@ -255,6 +262,8 @@ public partial class StatManager
     TMP_Text ExpGainStatValueText;
     TMP_Text ExpGainChangedStatValueText;
 
+    TMP_Text StartingBallStatValueText;
+
     List<float> TotalChangedStatValue;
 
     public Coroutine ShowChangedStatRoutine;
@@ -294,12 +303,12 @@ public partial class StatManager
         while (Time.realtimeSinceStartup < startTime + 1f)
         {
             float t = (Time.realtimeSinceStartup - startTime) / 1f;
-            rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(-165f, 129f), new Vector2(165f, 129f), t);
+            rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(-320f, 129f), new Vector2(410f, 129f), t);
             canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
             yield return null;
         }
 
-        rectTransform.anchoredPosition = new Vector2(165f, 129f);
+        rectTransform.anchoredPosition = new Vector2(410f, 129f);
         canvasGroup.alpha = 1f;
 
         yield return new WaitForSecondsRealtime(1.5f);
@@ -317,7 +326,7 @@ public partial class StatManager
             yield return null;
         }
 
-        rectTransform.anchoredPosition = new Vector2(-165f, 129f);
+        rectTransform.anchoredPosition = new Vector2(-320f, 129f);
         canvasGroup.alpha = 0f;
 
         TotalChangedStatValue = new List<float>

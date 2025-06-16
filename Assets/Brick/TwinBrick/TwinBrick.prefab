@@ -72,6 +72,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TwinBrick
       objectReference: {fileID: 0}
+    - target: {fileID: 6763269690388037668, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8065087008795427907, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
     m_RemovedGameObjects: []
@@ -139,6 +147,7 @@ MonoBehaviour:
   BasicHP: 1.5
   IsBoss: 0
   IsSpecialBrick: 0
+  IsBigBoss: 0
   HPText: {fileID: 5705247543096716897}
   BrickType: 
   BrickTransform: {fileID: 0}

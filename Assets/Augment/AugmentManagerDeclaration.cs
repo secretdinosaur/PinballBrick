@@ -18,6 +18,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public int FireStackLimit;
     public int PoisonStackLimit;
     public int DecayStackLimit;
+    public int HolyStackLimit;
 
     public EffectDuration effectDuration;
 
@@ -38,22 +39,23 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
-        { 0, 0.1f },
-        { 1, 0.18f },
-        { 2, 0.18f },
-        { 3, 0.18f },
-        { 4, 0.16f },
+        { 0, 0.005f },
+        { 1, 0.045f },
+        { 2, 0.1f },
+        { 3, 0.25f },
+        { 4, 0.4f },
         { 5, 0.2f }
     };
     
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 1.3f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f, 1f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 3;
         PoisonStackLimit = 3;
         DecayStackLimit = 3;
+        HolyStackLimit = 5;
         DecayDamageMultiple = 0.1f;
         isSacrificeQuest3Cleared = false;
         SpawnBallAmount = 1;
@@ -117,7 +119,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<WeatherChange>(),
             AugmentSet.AddComponent<DiceGamble>(),
             AugmentSet.AddComponent<Trampoline>(),
-            AugmentSet.AddComponent<Bombardment>(),
             ///////////////////////// Field
             AugmentSet.AddComponent<FireBall>(),
             AugmentSet.AddComponent<Homing>(),
@@ -181,9 +182,12 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<BossDamageUp>(),
             AugmentSet.AddComponent<LevelUpAgain>(),
             AugmentSet.AddComponent<AtkUpWhenCritical>(),
+            AugmentSet.AddComponent<AdditionalEffectDamage>(),
+            AugmentSet.AddComponent<PenetratingBall>(),
             ////////////////////////// Special
             AugmentSet.AddComponent<FireEffectStackBlast>(),
             AugmentSet.AddComponent<TheFlamethrower>(),
+            AugmentSet.AddComponent<Pyromaniac>(),
 
             AugmentSet.AddComponent<DeadlyPoison>(),
             AugmentSet.AddComponent<InfinitePoison>(),
@@ -209,12 +213,14 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
             AugmentSet.AddComponent<RebornBombBall>(),
             AugmentSet.AddComponent<SuicideBoomBall>(),
+            AugmentSet.AddComponent<Bombardment>(),
+            AugmentSet.AddComponent<InstantBombBall>()
         };
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<AntiGravity>()
-
+            AugmentSet.GetComponent<AllDamage>(),
+            
         };
 
         foreach (IAugment augment in TestAugments)
@@ -225,8 +231,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        //RemoveAugment();
-            AddAugment(AugmentSet.GetComponent<Concentrate>());
     }
 }
 
@@ -252,13 +256,15 @@ public class EffectChance
     public float PoisonChance;
     public float DecayChance;
     public float CurseChance;
+    public float LightningChance;
 
-    public EffectChance(float fireChance, float poisonChance, float decayChance, float curseChance)
+    public EffectChance(float fireChance, float poisonChance, float decayChance, float curseChance, float lightningChance)
     {
         FireChance = fireChance;
         PoisonChance = poisonChance;
         DecayChance = decayChance;
         CurseChance = curseChance;
+        LightningChance = lightningChance;
     }
 }
 

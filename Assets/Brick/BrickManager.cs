@@ -68,10 +68,18 @@ public class BrickManager : MonoBehaviour
         TwinBrick,
     }
 
-    enum SpecialBrickType
+    public List<float> BrickExpValue = new List<float>
     {
-        ExpBrick,
-    }
+        10f,
+        20f,
+        12.5f,
+        20f,
+        15.5f,
+        12.5f,
+        15.5f,
+        20f,
+        10f,
+    };
 
     void Awake()
     {
@@ -152,7 +160,23 @@ public class BrickManager : MonoBehaviour
     public void TakeBrick(IBrick brick)
     {
         if (brick.IsBoss)
+        {
             WavePause = false;
+
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            {
+                int BossSpawned = 2;
+                for (int i = 0; i < CurrentBricks.Count; i++)
+                {
+                    if (CurrentBricks[i].IsBoss)
+                        BossSpawned -= 1;
+                }
+                if (BossSpawned == 1) // currentbrick does not updated yet
+                    WavePause = false;
+                else
+                    WavePause = true;
+            }
+        }
         if (brick.gameObject.activeSelf)
         {
             if (brick.Fire != null)
@@ -250,7 +274,7 @@ public class BrickManager : MonoBehaviour
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
                     || AugmentManager.instance.determineAugmentID("SPECIAL_62")
                     || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
-                SettingBrickSpawnChance();
+                //SettingBrickSpawnChance();
                 if(WaveRoutine != null)
                 {
                     StopCoroutine(WaveRoutine);
@@ -437,25 +461,34 @@ public class BrickManager : MonoBehaviour
     private float BrickExpSetting(string brickType)
     {
         if (brickType == "Brick")
-            return 10f;
+            return BrickExpValue[(int)BrickType.Brick];
+
         else if (brickType == "HardBrick")
-            return 20f;
+            return BrickExpValue[(int)BrickType.HardBrick];
+
         else if (brickType == "HealBrick")
-            return 12.5f;
+            return BrickExpValue[(int)BrickType.HealBrick];
+
         else if (brickType == "IgnoreBrick")
-            return 20f;
+            return BrickExpValue[(int)BrickType.IgnoreBrick];
+
         else if (brickType == "ShieldBrick")
-            return 15.5f;
+            return BrickExpValue[(int)BrickType.ShieldBrick];
+
         else if (brickType == "SlimeBrick")
-            return 12.5f;
+            return BrickExpValue[(int)BrickType.SlimeBrick];
+
         else if (brickType == "TeleportBrick")
-            return 15.5f;
+            return BrickExpValue[(int)BrickType.TeleportBrick];
+
         else if (brickType == "TwinBrick")
-            return 20f;
+            return BrickExpValue[(int)BrickType.TwinBrick];
+
         else if (brickType == "AbsorbBrick")
-            return 10f;
+            return BrickExpValue[(int)BrickType.AbsorbBrick];
+
         else
-            return 10f;
+            return BrickExpValue[(int)BrickType.Brick];
     }
     private IBrick GetSpecificBrick(string brickTypeName)
     {
@@ -592,8 +625,7 @@ public class BrickManager : MonoBehaviour
             if(BrickQueue.Count == 0)
             {
                 HPPool.Clear();
-                HPPool.Add(_FusionBrickHealth);
-                Debug.Log(_FusionBrickHealth);
+                HPPool.Add(_FusionBrickHealth * 0.9f);
                 brick.IsBoss = true;
                 brick.IsSpecialBrick = false;
                 Brick = GetBrick(brick);
@@ -633,15 +665,38 @@ public class BrickManager : MonoBehaviour
             IBrick Twin = SpawnSpecificBrick("TwinBrick");
             Brick.GetComponent<TwinBrick>().Twin = Twin.GetComponent<TwinBrick>();
             Twin.GetComponent<TwinBrick>().Twin = Brick.GetComponent <TwinBrick>();
-
+            Brick.GetComponent<Collider2D>().enabled = true;
+            Twin.GetComponent<Collider2D>().enabled = true;
             float rotation = UnityEngine.Random.value * 3.14f;
             Brick.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.Init(Brick.IsBoss, false, false, Brick.Point, Brick.Exp);
         }
-        if(Brick.IsBoss)
-            OnWaveStopButtonClick();
+        
+        if (Brick.IsBoss)
+        {
+            WavePause = true;
+            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            {
+                int BossSpawned = 1;
+                for(int i = 0; i < CurrentBricks.Count; i++)
+                {
+                    if (CurrentBricks[i].IsBoss)
+                        BossSpawned += 1;
+                }
+                if (BossSpawned == 2)
+                    WavePause = true;
+                else
+                    WavePause = false;
+            }
+        }
 
+        if (AugmentManager.instance.determineAugmentID("SPECIAL_81"))
+        {
+            Brick.GetComponent<Collider2D>().isTrigger = true;
+        }
+        else
+            Brick.GetComponent<Collider2D>().isTrigger = false;
         UpdateCurrentBricks(Brick);
     }
 
@@ -665,7 +720,7 @@ public class BrickManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, 1.1f) * UnityEngine.Random.Range(4f, 5f))));
+                HPPool.Add((int)(BaseBossHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1f) : 2) + (AddPerWave * 5) + 1, 1.2f) * UnityEngine.Random.Range(4.9f, 5.1f))));
             }
             _FusionBrickHealth += HPPool.Average();
         }
@@ -682,11 +737,10 @@ public class BrickManager : MonoBehaviour
         }
         else
         {
-            int HPBase = (int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1.3f) : 2) + (AddPerWave * 2) + 1, UnityEngine.Random.Range(0.9f, 1.1f))));
             //need to adjust
-            for (int j = HPBase; j < 3 + HPBase * 1.1; j++)
+            for (int j = 0; j < 3 * 1.1; j++)
             {
-                HPPool.Add(j);
+                HPPool.Add((int)(BaseBrickHealthValue * (Mathf.Pow((Wave >= 3 ? (Wave / 1f) : 2) + (AddPerWave * 5) + 1, 1.1f)) * UnityEngine.Random.Range(0.9f, 1.1f)));
             }
             _FusionBrickHealth += HPPool.Average();
         }

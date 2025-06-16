@@ -56,7 +56,7 @@ public partial class IBrick : MonoBehaviour
             if (AugmentManager.instance.determineAugmentID("SPECIAL_6") && (BrickType != "ShieldBrick" 
                 || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
             {
-                if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999)
+                if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999 && !IsSpecialBrick)
                 {
                     ExecutionCor = StartCoroutine(Execution());
                 }
@@ -81,25 +81,11 @@ public partial class IBrick : MonoBehaviour
                 else
                 {
                     if (BrickType == "HealBrick") StopCoroutine(BrickHealCoroutine);
-                    if (IsSpecialBrick)
-                    {
-                        if (BrickType == "ExpBrick")
-                        {
-                            LevelManager.Instance.GetExp(100f + GameManager.instance.Wave / 2);
-                        }
-                        else if(BrickType == "GoldBrick")
-                        {
-                            StatManager.instance.GetGold(100 + GameManager.instance.Wave / 2);
-                        }
-                        else if(BrickType == "BallBrick")
-                        {
-                            BallManager.Instance.CreateBall(2);
-                        }
-                    }
                     BrickDie();
                 }
             }
-            UpdateHPtext();
+            if(!IsSpecialBrick)
+                UpdateHPtext();
         }
     }
 
@@ -125,15 +111,6 @@ public partial class IBrick : MonoBehaviour
         //StopCoroutineAfterDie();
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
-
-    /*
-    private void StopCoroutineAfterDie()
-    {
-        if(Fire != null) { BrickEffect.StopFire(); }
-        if(Poison !=  null) { BrickEffect.StopPoison(); }
-        if(Decay != null) { BrickEffect.StopDecay(); }
-    }
-    */
 
     public void ShowText(string Text, string DamageType, bool isCritical)
     {
@@ -211,7 +188,10 @@ public partial class IBrick : MonoBehaviour
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
-        HPText.enabled = true;
+        if(!IsSpecialBrick)
+            HPText.enabled = true;
+        else
+            HPText.enabled = false;
 
     }
     public void OnEnable()
@@ -226,7 +206,10 @@ public partial class IBrick : MonoBehaviour
 
         GetComponents();
         spriteRenderer.enabled = true;
-        HPText.enabled = true;
+        if (!IsSpecialBrick)
+            HPText.enabled = true;
+        else
+            HPText.enabled = false;
         ExecutionObject1.transform.position = transform.position;
         ExecutionObject2.transform.position = transform.position;
         isGoldBrick = false;
@@ -303,7 +286,7 @@ public partial class IBrick
         RecentlyBall = ball;
         float PreviousCritChance = RecentlyBall.SpecialCriticalChance;
         RecentlyBall.AttackDelayTime = 0f;
-        if(RecentlyBall.AttackNumber % 3 == 0 && RecentlyBall.AttackNumber != 0)
+        if(RecentlyBall.AttackNumber % 4 == 0 && RecentlyBall.AttackNumber != 0)
         {
             RecentlyBall.SpecialCriticalChance = 1f;
         }
@@ -369,20 +352,21 @@ public partial class IBrick
     public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
     {
         if (!gameObject.activeSelf) return;
-        DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
+        if(Random.value < AugmentManager.instance.effectChance.LightningChance)
+            DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
     }
 
-    public void DamageByCurse()
+    public void DamageByCurse(Vector2? StartingPos = null)
     {
         if (!gameObject.activeSelf) return;
         if (AugmentManager.instance.determineAugmentID("SPECIAL_75"))
         {
-            if (Curse == null)
-                Curse = StartCoroutine(BrickEffect.DamageByCurse2());
+            if(Curse == null)
+                StartCoroutine(BrickEffect.DamageByCurse2(StartingPos));
         }
         else
         {
-            DamageManager.DamageByCurse(this);
+            StartCoroutine(DamageManager.DamageByCurse(this, StartingPos));
         }
 
     }
@@ -402,6 +386,14 @@ public partial class IBrick
         DamageManager.ExplosionDamageAttack(this, value);
     }
 
+    public void HolyRainAttack()
+    {
+        if (!gameObject.activeSelf) return;
+        BrickEffect.EffectStatusSet["Holy"].EffectStack +=
+                (BrickEffect.EffectStatusSet["Holy"].EffectStack != BrickEffect.EffectStatusSet["Holy"].EffectStackLimit) ? 1 : 0;
+        DamageManager.HolyRainDamageAttack(this);
+    }
+
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
     {
         DamageManager.ArbitraryDamageAttack(this, damage, isCritical, damageText, DamageType);
@@ -412,9 +404,12 @@ public partial class IBrick
 {  
     public IEnumerator Execution()
     {
+        if (ExecutionCor != null) yield break;
         ExecutionObject1.SetActive(true);
         ExecutionObject2.SetActive(true);
 
+        SoundManager.instance.ExecutionSound();
+        yield return new WaitForSecondsRealtime(0.02f);
         spriteRenderer.enabled = false;
         HPText.enabled = false;
         Collider.enabled = false;
@@ -427,7 +422,7 @@ public partial class IBrick
 
         Vector3 Execute1Dir;
         Vector3 Execute2Dir;
-
+        
         ExecutionObject1.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
         ExecutionObject2.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
 
@@ -454,7 +449,7 @@ public partial class IBrick
             ElapsedTime += Time.deltaTime;
             yield return null;
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
         hp -= 999999 + HpTemp;
         ShowText("EXECUTION", null, true);
         Collider.enabled = true;

@@ -25,8 +25,8 @@ public partial class IBall : MonoBehaviour
     public bool isOverDeathLine;
 
     public Queue<Vector2> PositionSet = new Queue<Vector2>();
-    public Vector3 StartPosition = new Vector3(0f, -5f, 35);
-    public float linearVelocityYValue = 10;
+    public Vector3 StartPosition;
+    public float linearVelocityYValue;
 
     public Coroutine FusionMoveRoutine = null;
 
@@ -50,7 +50,6 @@ public partial class IBall : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.position = StartPosition;
-        gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
         spriteRenderer.color = new Color(1f, 1f, 1f);
         BounceTime = 1f;
@@ -236,9 +235,22 @@ public partial class IBall : MonoBehaviour
         if(collision.gameObject.CompareTag("Brick") && !IsStucking && gameObject.activeSelf)
         {
             if (collision.gameObject.GetComponent<IBrick>().IsBoss)
-                rb.AddForce(new Vector2(Random.value * 3, Random.value * 5));
+            {
+                BallStuckCoroutine = StartCoroutine(BossReflectBall(collision.gameObject.GetComponent<IBrick>()));
+            }
             else
                 BallStuckCoroutine = StartCoroutine(BallStuckDamage(collision.gameObject.GetComponent<IBrick>()));
+        }
+    }
+
+    private IEnumerator BossReflectBall(IBrick brick)
+    {
+        IsStucking = true;
+        yield return new WaitForSeconds(2.5f);
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            rb.AddForce(new Vector2(Random.Range(-1,1) * 300, Random.value * 500));
         }
     }
 

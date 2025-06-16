@@ -30,12 +30,13 @@ public class ItemManager : MonoBehaviour
                 var method = typeof(PoolManager).GetMethod("GetFromPool");
                 var genericMethod = method.MakeGenericMethod(Type);
                 Item Item = (Item)genericMethod.Invoke(PoolManager, null);
+                Item.GetComponent<SpriteRenderer>().enabled = true;
                 Item.transform.position = BrickPosiotion;
                 Item.ItemName = ItemInfo.ItemName[i];
-                if (Item.ItemName == "ExpBead") Item.GetComponent<ExpBead>().ExpAmount = 10;
-                if (Item.ItemName == "Gold1") Item.GetComponent<Gold1>().GoldAmount = 10;
-                if (Item.ItemName == "Gold2") Item.GetComponent<Gold2>().GoldAmount = 50;
-                if (Item.ItemName == "Gold3") Item.GetComponent<Gold3>().GoldAmount = 100;
+                if (Item.ItemName == "ExpBead") Item.GetComponent<ExpBead>().ExpAmount = (10 + GameManager.instance.Wave / 3 + LevelManager.Instance.LevelBar.maxValue / 200) / 2;
+                if (Item.ItemName == "Gold1")Item.GetComponent<Gold1>().GoldAmount = (5 + GameManager.instance.Wave / 2) / 2;
+                if (Item.ItemName == "Gold2")Item.GetComponent<Gold2>().GoldAmount = (25 + GameManager.instance.Wave / 2) / 2;
+                if (Item.ItemName == "Gold3")Item.GetComponent<Gold3>().GoldAmount = (50 + GameManager.instance.Wave / 2) / 2;
                 Item.MoveItem();
                 break;
             }
@@ -58,12 +59,42 @@ public class ItemManager : MonoBehaviour
             var genericMethod = method.MakeGenericMethod(Type);
             Item item = (Item)genericMethod.Invoke(PoolManager, null);
             item.transform.position = BrickPosiotion;
+            item.GetComponent<SpriteRenderer>().enabled = true;
             item.ItemName = ItemInfo.ItemName[index];
-            if (item.ItemName == "ExpBead") item.GetComponent<ExpBead>().ExpAmount = (5f + GameManager.instance.Wave / 2) / 2;
+            if (item.ItemName == "ExpBead") item.GetComponent<ExpBead>().ExpAmount = (10 + GameManager.instance.Wave / 3 + LevelManager.Instance.LevelBar.maxValue / 200) / 2;
             if (item.ItemName == "Gold1") item.GetComponent<Gold1>().GoldAmount = (5 + GameManager.instance.Wave / 2) / 2;
             if (item.ItemName == "Gold2") item.GetComponent<Gold2>().GoldAmount = (25 + GameManager.instance.Wave / 2) / 2;
             if (item.ItemName == "Gold3") item.GetComponent<Gold3>().GoldAmount = (50 + GameManager.instance.Wave / 2) / 2;
             item.MoveItem();
+        }
+    }
+
+    public IEnumerator SpawnSpecificItemInRandomPosition(string Item, int num, float interval)
+    {
+        int index = 0;
+        for (int i = 0; i < ItemInfo.ItemName.Length; i++)
+        {
+            if (Item == ItemInfo.ItemName[i])
+                index = i;
+        }
+
+        for (int i = 0; i < num; i++)
+        {
+            Vector2 RandomPosition = new Vector2(Random.Range(-2.2f, 2.2f), Random.Range(-2.7f, 4.25f));
+
+            Type Type = Type.GetType(ItemInfo.ItemName[index]);
+            var method = typeof(PoolManager).GetMethod("GetFromPool");
+            var genericMethod = method.MakeGenericMethod(Type);
+            Item item = (Item)genericMethod.Invoke(PoolManager, null);
+            item.GetComponent<SpriteRenderer>().enabled = true;
+            item.transform.position = RandomPosition;
+            item.ItemName = ItemInfo.ItemName[index];
+            if (item.ItemName == "ExpBead") item.GetComponent<ExpBead>().ExpAmount = (10 + GameManager.instance.Wave / 3 + LevelManager.Instance.LevelBar.maxValue / 200) / 2;
+            if (item.ItemName == "Gold1") item.GetComponent<Gold1>().GoldAmount = (5 + GameManager.instance.Wave / 2) / 2;
+            if (item.ItemName == "Gold2") item.GetComponent<Gold2>().GoldAmount = (25 + GameManager.instance.Wave / 2) / 2;
+            if (item.ItemName == "Gold3") item.GetComponent<Gold3>().GoldAmount = (50 + GameManager.instance.Wave / 2) / 2;
+            item.MoveItem();
+            yield return new WaitForSeconds(interval);
         }
     }
 
@@ -74,6 +105,10 @@ public class ItemManager : MonoBehaviour
 
     public IEnumerator TakeItemCo(Item item)
     {
+        if (item.ItemName == "Gold1" || item.ItemName == "Gold2" || item.ItemName == "Gold3") SoundManager.instance.GetGoldSOund(item.GetComponent<AudioSource>());
+        if (item.ItemName == "ExpBead") SoundManager.instance.GetExpSound(item.GetComponent<AudioSource>());
+        item.GetComponent<SpriteRenderer>().enabled = false;
+
         yield return new WaitForSeconds(1);
         Type itemType = Type.GetType(item.ItemName);
         var method = typeof(PoolManager).GetMethod("TakeToPool");

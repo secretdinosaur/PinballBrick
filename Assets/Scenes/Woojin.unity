@@ -11306,6 +11306,16 @@ MonoBehaviour:
   BaseBossSpawnValue: 1
   NextBossSpawnWave: 0
   BossSpawnWaveNumber: 0
+  BrickExpValue:
+  - 10
+  - 20
+  - 12.5
+  - 20
+  - 15.5
+  - 12.5
+  - 15.5
+  - 20
+  - 10
 --- !u!114 &137631893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17632,14 +17642,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 350071e32e8a418a8fe1fe82613f90dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exceptionAugments: []
   augmentsSet: []
+  exceptionAugments: []
   RouletteAugmentsSet: []
   ActivatedAugmentNumber: 0
   activeAugments: []
   FireStackLimit: 0
   PoisonStackLimit: 0
   DecayStackLimit: 0
+  HolyStackLimit: 0
   PoisonBrickSet: []
   DecayDamageMultiple: 0
   FieldGlobalCooldown: 10
@@ -36458,7 +36469,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: ea4eb1b9fe676254eb566f597d9e4007, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -78063,7 +78074,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: ea4eb1b9fe676254eb566f597d9e4007, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -95367,6 +95378,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 280e18c3fe0a52641aee51291e63e285, type: 3}
   - {fileID: 8300000, guid: d00613518f321ea479b9447cb4b35284, type: 3}
   - {fileID: 8300000, guid: 02f9acfb54052ed499f4cc48f6cf020e, type: 3}
+  - {fileID: 8300000, guid: a461d8cdafeac0b48b5fef2b6eb0cac6, type: 3}
   SfxClips:
   - {fileID: 8300000, guid: ed5a13804e938444a9e1963a6614fb3f, type: 3}
   - {fileID: 8300000, guid: 4c6677bda0d9fc24986ea5dcdffe630a, type: 3}
@@ -111766,7 +111778,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: ea4eb1b9fe676254eb566f597d9e4007, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901

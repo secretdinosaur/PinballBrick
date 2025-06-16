@@ -5,22 +5,28 @@ using System.Collections.Generic;
 public class BrickDetect : MonoBehaviour
 {
     public List<IBrick> NearbyBricks;
+    private Collider2D Collider;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnEnable()
     {
-        if (collision.gameObject.CompareTag("Brick"))
+        Collider = GetComponent<Collider2D>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Brick"))
         {
-            if (!NearbyBricks.Contains(collision.gameObject.GetComponent<IBrick>()))
-                NearbyBricks.Add(collision.gameObject.GetComponent<IBrick>());
+            if (!NearbyBricks.Contains(other.gameObject.GetComponent<IBrick>()))
+                NearbyBricks.Add(other.gameObject.GetComponent<IBrick>());
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Brick"))
+        if (other.gameObject.CompareTag("Brick"))
         {
-            if (NearbyBricks.Contains(collision.gameObject.GetComponent<IBrick>()))
-                NearbyBricks.Remove(collision.gameObject.GetComponent<IBrick>());
+            if (NearbyBricks.Contains(other.gameObject.GetComponent<IBrick>()))
+                NearbyBricks.Remove(other.gameObject.GetComponent<IBrick>());
         }
     }
 }
