@@ -166,6 +166,7 @@ public static partial class DamageManager //Special Effect Attack
     public static void DamageByLightningEffect(IBrick brick, float DamageAmount, int ParticleCount)
     {
         bool isCritical = true;
+        SoundManager.instance.LightningSound();
         if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
         {
             isCritical = IsCriticalHit(brick);
@@ -220,6 +221,7 @@ public static partial class DamageManager //Special Effect Attack
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
                 : brick.DecayDamageCalculate(damage);
+        SoundManager.instance.CurseSound(AugmentManager.instance.CurseDamageValue);
         yield return new WaitForSeconds(0.5f);
         brick.HP -= FinalDamage;
         brick.ShowText(FinalDamage.ToString("F1"), "Curse", isCritical);
@@ -273,6 +275,8 @@ public static partial class DamageManager //Special Effect Attack
 
     public static void HolyRainDamageAttack(IBrick brick)
     {
+        if (brick.IsSpecialBrick) return;
+        if (brick.BrickType == "IgnoreBrick" && brick.GetComponent<IgnoreBrick>().Ignoring) return;
         float Multiplier = 1 + (brick.BrickEffect.EffectStatusSet["Holy"].EffectStack * 0.07f);
         float damage = 5f + (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
                     * StatManager.instance.statMultiplier.EffectDamageMultiplier * Multiplier;
@@ -406,7 +410,7 @@ public class BrickEffectManager : MonoBehaviour
     public IEnumerator DamageByPoisonEffect(float effectDuration)   
     {
         Material PoisonMaterial = brick.PoisonEffect.GetComponent<Renderer>().material;
-
+        SoundManager.instance.PoisonSound();
         float elapsedTime = 0;
         brick.PoisonEffect.SetActive(true);
         EffectStatusSet["Poison"].IsActive = true;
@@ -414,6 +418,8 @@ public class BrickEffectManager : MonoBehaviour
 
         if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
         {
+            SoundManager.instance.MaxStackPoisonSound();
+
             PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
             PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
             PoisonMaterial.SetFloat("_InnerPower", 1.75f);
@@ -484,10 +490,8 @@ public class BrickEffectManager : MonoBehaviour
             float baseDamage = (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.Persistent_stat.EffectDamageMultiplier / 2;
 
             EffectAttackDamage = isCritical
-                ? (brick.HP * ((0.03f * StatManager.instance.statMultiplier.EffectDamageMultiplier + baseDamage)
-                         * EffectStatusSet["Poison"].EffectStack * DamageManager.CriticalDamage()))
-                : (brick.HP * ((0.03f * StatManager.instance.statMultiplier.EffectDamageMultiplier + baseDamage)
-                         * EffectStatusSet["Poison"].EffectStack) + baseDamage);
+                ? (brick.HP * 0.03f + baseDamage * EffectStatusSet["Poison"].EffectStack * DamageManager.CriticalDamage())
+                : (brick.HP * 0.03f + baseDamage * EffectStatusSet["Poison"].EffectStack);
 
             float FinalEffectAttackDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
@@ -607,6 +611,7 @@ public class BrickEffectManager : MonoBehaviour
         float Chance = 1;
         while (Random.value < Chance)
         {
+            SoundManager.instance.CurseSound(multipleCount / 10 + AugmentManager.instance.CurseDamageValue - 1);
             VisualEffectManager.Instance.SpawnCurseEffect(brick.transform.position, StartingPos, multipleCount);
             multipleCount += 1.3f;
             brick.HP -= FinalDamage;

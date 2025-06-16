@@ -235,9 +235,22 @@ public partial class IBall : MonoBehaviour
         if(collision.gameObject.CompareTag("Brick") && !IsStucking && gameObject.activeSelf)
         {
             if (collision.gameObject.GetComponent<IBrick>().IsBoss)
-                rb.AddForce(new Vector2(Random.value * 3, Random.value * 5));
+            {
+                BallStuckCoroutine = StartCoroutine(BossReflectBall(collision.gameObject.GetComponent<IBrick>()));
+            }
             else
                 BallStuckCoroutine = StartCoroutine(BallStuckDamage(collision.gameObject.GetComponent<IBrick>()));
+        }
+    }
+
+    private IEnumerator BossReflectBall(IBrick brick)
+    {
+        IsStucking = true;
+        yield return new WaitForSeconds(2.5f);
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            rb.AddForce(new Vector2(Random.Range(-1,1) * 300, Random.value * 500));
         }
     }
 

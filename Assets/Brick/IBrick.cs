@@ -415,7 +415,7 @@ public partial class IBrick
         ExecutionObject2.SetActive(true);
 
         SoundManager.instance.ExecutionSound();
-        yield return new WaitForSeconds(0.02f);
+        yield return new WaitForSecondsRealtime(0.02f);
         spriteRenderer.enabled = false;
         HPText.enabled = false;
         Collider.enabled = false;
@@ -455,7 +455,7 @@ public partial class IBrick
             ElapsedTime += Time.deltaTime;
             yield return null;
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
         hp -= 999999 + HpTemp;
         ShowText("EXECUTION", null, true);
         Collider.enabled = true;
