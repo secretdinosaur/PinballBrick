@@ -226,7 +226,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     public void AddAugmentButton()
     {
         //RemoveAugment();
-            AddAugment(AugmentSet.GetComponent<ChangeNormalToGlass>());
+            AddAugment(AugmentSet.GetComponent<Concentrate>());
     }
 }
 
