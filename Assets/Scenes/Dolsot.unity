@@ -56462,7 +56462,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 137631892}
         m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
-        m_MethodName: OnBrickSpawnButtonClick
+        m_MethodName: OnSpecialBrickSpawnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -97320,7 +97320,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Brick
+  m_text: Special
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 431f3535a15396c4abb71d9cea6f43ac, type: 2}
   m_sharedMaterial: {fileID: 409990138255620586, guid: 431f3535a15396c4abb71d9cea6f43ac, type: 2}
@@ -97347,8 +97347,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

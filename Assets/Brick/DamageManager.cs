@@ -275,6 +275,8 @@ public static partial class DamageManager //Special Effect Attack
 
     public static void HolyRainDamageAttack(IBrick brick)
     {
+        if (brick.IsSpecialBrick) return;
+        if (brick.BrickType == "IgnoreBrick" && brick.GetComponent<IgnoreBrick>().Ignoring) return;
         float Multiplier = 1 + (brick.BrickEffect.EffectStatusSet["Holy"].EffectStack * 0.07f);
         float damage = 5f + (StatManager.instance.Persistent_stat.EffectDamage + StatManager.instance.Temporary_stat.EffectDamage)
                     * StatManager.instance.statMultiplier.EffectDamageMultiplier * Multiplier;

@@ -30,6 +30,7 @@ public class ItemManager : MonoBehaviour
                 var method = typeof(PoolManager).GetMethod("GetFromPool");
                 var genericMethod = method.MakeGenericMethod(Type);
                 Item Item = (Item)genericMethod.Invoke(PoolManager, null);
+                Item.GetComponent<SpriteRenderer>().enabled = true;
                 Item.transform.position = BrickPosiotion;
                 Item.ItemName = ItemInfo.ItemName[i];
                 if (Item.ItemName == "ExpBead") Item.GetComponent<ExpBead>().ExpAmount = (10 + GameManager.instance.Wave / 3 + LevelManager.Instance.LevelBar.maxValue / 200) / 2;
@@ -58,6 +59,7 @@ public class ItemManager : MonoBehaviour
             var genericMethod = method.MakeGenericMethod(Type);
             Item item = (Item)genericMethod.Invoke(PoolManager, null);
             item.transform.position = BrickPosiotion;
+            item.GetComponent<SpriteRenderer>().enabled = true;
             item.ItemName = ItemInfo.ItemName[index];
             if (item.ItemName == "ExpBead") item.GetComponent<ExpBead>().ExpAmount = (10 + GameManager.instance.Wave / 3 + LevelManager.Instance.LevelBar.maxValue / 200) / 2;
             if (item.ItemName == "Gold1") item.GetComponent<Gold1>().GoldAmount = (5 + GameManager.instance.Wave / 2) / 2;
@@ -84,6 +86,7 @@ public class ItemManager : MonoBehaviour
             var method = typeof(PoolManager).GetMethod("GetFromPool");
             var genericMethod = method.MakeGenericMethod(Type);
             Item item = (Item)genericMethod.Invoke(PoolManager, null);
+            item.GetComponent<SpriteRenderer>().enabled = true;
             item.transform.position = RandomPosition;
             item.ItemName = ItemInfo.ItemName[index];
             if (item.ItemName == "ExpBead") item.GetComponent<ExpBead>().ExpAmount = (10 + GameManager.instance.Wave / 3 + LevelManager.Instance.LevelBar.maxValue / 200) / 2;
@@ -104,6 +107,8 @@ public class ItemManager : MonoBehaviour
     {
         if (item.ItemName == "Gold1" || item.ItemName == "Gold2" || item.ItemName == "Gold3") SoundManager.instance.GetGoldSOund(item.GetComponent<AudioSource>());
         if (item.ItemName == "ExpBead") SoundManager.instance.GetExpSound(item.GetComponent<AudioSource>());
+        item.GetComponent<SpriteRenderer>().enabled = false;
+
         yield return new WaitForSeconds(1);
         Type itemType = Type.GetType(item.ItemName);
         var method = typeof(PoolManager).GetMethod("TakeToPool");

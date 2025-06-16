@@ -60,7 +60,7 @@ Material:
     - _Thickness: 0.07
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.4630444, g: 1.2456373, b: 1.3006101, a: 1}
+    - _Color: {r: 0.12595077, g: 5.3403134, b: 4.997764, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -274,7 +274,7 @@ public class BrickManager : MonoBehaviour
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
                     || AugmentManager.instance.determineAugmentID("SPECIAL_62")
                     || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
-                SettingBrickSpawnChance();
+                //SettingBrickSpawnChance();
                 if(WaveRoutine != null)
                 {
                     StopCoroutine(WaveRoutine);
@@ -665,7 +665,8 @@ public class BrickManager : MonoBehaviour
             IBrick Twin = SpawnSpecificBrick("TwinBrick");
             Brick.GetComponent<TwinBrick>().Twin = Twin.GetComponent<TwinBrick>();
             Twin.GetComponent<TwinBrick>().Twin = Brick.GetComponent <TwinBrick>();
-
+            Brick.GetComponent<Collider2D>().enabled = true;
+            Twin.GetComponent<Collider2D>().enabled = true;
             float rotation = UnityEngine.Random.value * 3.14f;
             Brick.spriteRenderer.material.SetFloat("_Rotation", rotation);
             Twin.spriteRenderer.material.SetFloat("_Rotation", rotation);

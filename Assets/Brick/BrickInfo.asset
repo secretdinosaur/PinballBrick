@@ -33,13 +33,13 @@ MonoBehaviour:
   - IgnoreBrick
   - AbsorbBrick
   BrickSpawnChance:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   - 1
-  - 0.02832832
-  - 0.17137635
-  - 0.3814051
-  - 0.31226808
-  - 0.094053335
-  - 0.0104214065
   - 0
   - 0
   SpecialBricks:
