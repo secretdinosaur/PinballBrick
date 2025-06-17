@@ -348,12 +348,12 @@ public partial class IBrick
             BrickEffect.DecayTimeUpdate(effectDuration);
         }
     }
-    
-    public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
+
+    public void DamageByLightningEffect(float DamageAmount, int ParticleCount, string type = "Lightning")
     {
         if (!gameObject.activeSelf) return;
         if(Random.value < AugmentManager.instance.effectChance.LightningChance)
-            DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
+            DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount, type);
     }
 
     public void DamageByCurse(Vector2? StartingPos = null)

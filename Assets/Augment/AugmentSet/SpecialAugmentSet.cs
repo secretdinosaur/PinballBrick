@@ -1311,6 +1311,11 @@ public class ThunderStrike : SpecialAugment
 
         RaycastHit2D[] hits;
 
+        AudioSource Sound = null;
+        if (Sound == null)
+        {
+            Sound = SoundManager.instance.ArcLinkSound(Duration);
+        }
         while (true)
         {
             float elapsed = 0;
@@ -1333,6 +1338,9 @@ public class ThunderStrike : SpecialAugment
                 {
                     VisualEffectManager.Instance.SpawnThunderStrike(Balls);
 
+                    if(!Sound.isPlaying)
+                        Sound.Play();
+                    
                     for (int i = 0; i < Balls.Count - 1; i++)
                     {
                         start = Balls[i].transform.position;
@@ -1344,7 +1352,7 @@ public class ThunderStrike : SpecialAugment
                             {
                                 IBrick brick = hits[j].collider.GetComponent<IBrick>();
 
-                                brick.DamageByLightningEffect(10, 0);
+                                brick.DamageByLightningEffect(10, 0, "ArcLink");
                             }
                     }
                     start = Balls[Balls.Count - 1].transform.position;
@@ -1356,12 +1364,17 @@ public class ThunderStrike : SpecialAugment
                         {
                             IBrick brick = hits[j].collider.GetComponent<IBrick>();
 
-                            brick.DamageByLightningEffect(10, 0);
+                            brick.DamageByLightningEffect(10, 0, "ArcLink");
                         }
+                }
+                else
+                {
+                    Sound.Pause();
                 }
                 yield return new WaitForSeconds(0.1f);
                 elapsed += 0.1f;
             }
+            Sound.Stop();
             yield return new WaitForSeconds(Cooldown);
         }
     }
@@ -1532,6 +1545,8 @@ public class BallSwarm : SpecialAugment
         var method = typeof(PoolManager).GetMethod("GetFromPool");
         var genericMethod = method.MakeGenericMethod(ballType);
         ball = (IBall)genericMethod.Invoke(BallManager.Instance.PoolManager, null);
+        ball.StartPosition = BallManager.StartPosition;
+        ball.rb.linearVelocityY = BallManager.linearVelocityYValue;
         return ball;
     }
 }

@@ -29,6 +29,7 @@ public class SoundManager : MonoBehaviour
 
     public PoolManager Pool;
 
+    public GameObject ArcLinkSoundObj;
 
     VolumeData volumeSaveData;
     private string VolumeData_filePath;
@@ -94,8 +95,16 @@ public class SoundManager : MonoBehaviour
     private IEnumerator WaitForAudioFinish(AudioSource source, float Duration)
     {
         yield return new WaitForSeconds(Duration);
-        Pool.TakeToPool<SoundObject>(source.GetComponent<SoundObject>());
+        if (source.gameObject.activeSelf)
+            Pool.TakeToPool<SoundObject>(source.GetComponent<SoundObject>());
     }
+
+    public void TakeSound(AudioSource source)
+    {
+        if(source.gameObject.activeSelf)
+            Pool.TakeToPool<SoundObject>(source.GetComponent<SoundObject>());
+    }
+
     public void SaveVolume()
     {
         SaveVolumeData(volumeSaveData);
@@ -382,5 +391,15 @@ public class SoundManager : MonoBehaviour
         audio.pitch = Random.Range(0.9f, 1.1f);
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public AudioSource ArcLinkSound(float Duration)
+    {
+        AudioClip clip = SfxClips_Effect[15];
+        AudioSource audio = ArcLinkSoundObj.GetComponent<AudioSource>();
+        audio.clip = clip;
+        audio.volume = SfxVolumeSlider.value;
+
+        return audio;
     }
 }
