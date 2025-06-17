@@ -613,6 +613,7 @@ public class BrickEffectManager : MonoBehaviour
         {
             SoundManager.instance.CurseSound(multipleCount / 10 + AugmentManager.instance.CurseDamageValue - 1);
             VisualEffectManager.Instance.SpawnCurseEffect(brick.transform.position, StartingPos, multipleCount);
+            yield return new WaitForSeconds(0.2f);
             multipleCount += 1.3f;
             brick.HP -= FinalDamage;
             brick.ShowText(FinalDamage.ToString("F1"), "Curse", isCritical);

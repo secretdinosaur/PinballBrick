@@ -58,13 +58,13 @@ public class BrickManager : MonoBehaviour
     enum BrickType
     {
         Brick,
-        HealBrick,
-        ShieldBrick,
-        SlimeBrick,
         HardBrick,
+        HealBrick,
+        SlimeBrick,
+        ShieldBrick,
         TeleportBrick,
-        AbsorbBrick,
         IgnoreBrick,
+        AbsorbBrick,
         TwinBrick,
     }
 
@@ -73,12 +73,12 @@ public class BrickManager : MonoBehaviour
         10f,
         20f,
         12.5f,
-        20f,
-        15.5f,
-        12.5f,
-        15.5f,
-        20f,
         10f,
+        20f,
+        15f,
+        20f,
+        20f,
+        20f,
     };
 
     void Awake()
@@ -274,7 +274,7 @@ public class BrickManager : MonoBehaviour
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
                     || AugmentManager.instance.determineAugmentID("SPECIAL_62")
                     || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
-                //SettingBrickSpawnChance();
+                SettingBrickSpawnChance();
                 if(WaveRoutine != null)
                 {
                     StopCoroutine(WaveRoutine);
@@ -505,13 +505,13 @@ public class BrickManager : MonoBehaviour
     private void SettingBrickSpawnChance()
     {
         int Wave = GameManager.instance.Wave;
-        float sigma = 20f;
+        float sigma = 55f;
         float remain = 0;
         BrickInfo.BrickSpawnChance = new float[BrickInfo.BrickSpawnChance.Length];
         for (int i = 0; i < BrickInfo.BrickSpawnChance.Length - 1; i++)
         {
             float center = i * 20f;
-            float x = Wave < 80 ? Wave : 80;
+            float x = Wave - 20;
 
             float value = Mathf.Exp(-(x - center) * (x - center) / (2 * sigma * sigma));
             BrickInfo.BrickSpawnChance[i] = value;
@@ -523,12 +523,12 @@ public class BrickManager : MonoBehaviour
             for (int i = 0; i < BrickInfo.BrickSpawnChance.Length - 1; i++)
             {
                 BrickInfo.BrickSpawnChance[i] /= sum;
-                if(Wave < 11 && i == (int)BrickType.HealBrick)
+                if(Wave < 11 && i == (int)BrickType.HardBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
                 }
-                else if (Wave < 21 && i == (int)BrickType.ShieldBrick)
+                else if (Wave < 21 && i == (int)BrickType.HealBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
@@ -538,7 +538,7 @@ public class BrickManager : MonoBehaviour
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
                 }
-                else if (Wave < 41 && i == (int)BrickType.HardBrick)
+                else if (Wave < 41 && i == (int)BrickType.ShieldBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
@@ -548,12 +548,12 @@ public class BrickManager : MonoBehaviour
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
                 }
-                else if (Wave < 61 && i == (int)BrickType.AbsorbBrick)
+                else if (Wave < 61 && i == (int)BrickType.IgnoreBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
                 }
-                else if (Wave < 71 && i == (int)BrickType.IgnoreBrick)
+                else if (Wave < 71 && i == (int)BrickType.AbsorbBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
