@@ -223,6 +223,8 @@ public class GameManager : MonoBehaviour
     int displayedPointValue = 0;
     public void GameEnd()
     {
+        StatManager.instance.SavePersistentStats(); //for save gold
+
         if (BallManager.Instance.InGameBall.Count > 0)
         {
             foreach (IBall ball in BallManager.Instance.InGameBall)

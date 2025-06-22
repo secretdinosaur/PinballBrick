@@ -52,7 +52,7 @@ public class UpgradeManager : MonoBehaviour
     void Start()
     {
         Instance = this;
-        PersistentStat = StatManager.instance.LoadPersistentStats();
+        PersistentStat = StatManager.instance.Persistent_stat;
         levels = new int[] { PersistentStat.AttackDamageLevel, PersistentStat.EffectDamageLevel, PersistentStat.BonusEXPLevel, PersistentStat.CriChanceLevel, PersistentStat.CriDamageLevel, PersistentStat.StartingBallLevel};
         Panels = new GameObject[] { AttDamage, EffDamage, BonusEXP, CriChance, CriDamage, StartingBall};
         SetUpgradePanel();
@@ -198,8 +198,8 @@ public class UpgradeManager : MonoBehaviour
         PersistentStat.CriticalDamage = 1 + (levels[4] - levels[4] / 10 - 1) * 0.005f + levels[4] / 10 * 0.02f;
         PersistentStat.StartingBall = 5 + (levels[5] - levels[5] / 10 - 1) + levels[5] / 10 * 3;
 
-
-        StatManager.instance.SavePersistentStats(PersistentStat);
+        StatManager.instance.Persistent_stat = PersistentStat;
+        StatManager.instance.SavePersistentStats();
     }
 
     int GetUpgradeCost(int statNum)

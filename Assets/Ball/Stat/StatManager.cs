@@ -5,10 +5,13 @@ using TMPro;
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using GooglePlayGames.BasicApi.SavedGame;
+using GooglePlayGames.BasicApi;
+using GooglePlayGames;
+using System.Text;
 public partial class StatManager : MonoBehaviour
 {
     public static StatManager instance;
-    private StatOnGoogle StatOnGoogle;
     
     public Persistent_Stat Persistent_stat; // If you want to use it elsewhere, use this variable
     public Temporary_Stat Temporary_stat; //
@@ -16,42 +19,14 @@ public partial class StatManager : MonoBehaviour
     public static float AttackDamage;
     public static float EffectDamage;
 
-    private string persistent_stat_filePath;
-    private string temporary_stat_filePath;
-    private string stat_Multiplier_filePath;
     void Awake()
     {
         instance = this;
-        persistent_stat_filePath = Application.persistentDataPath + "/PinballBrick_persistentData.json";
-        temporary_stat_filePath = Application.persistentDataPath + "/PinballBrick_temporaryData.json";
-        stat_Multiplier_filePath = Application.persistentDataPath + "/PinballBrick_multiplierData.json";
 
-        if (GoogleManager.instance.isSignIn)
-        {
-            StatOnGoogle = new StatOnGoogle();
-            StatOnGoogle.LoadPersistentStats();
-            StatOnGoogle.Persistent_stat = Persistent_stat;
-
-            InitializeTemporaryStats();
-            Temporary_stat = LoadTemporaryStat();
-
-            InitializeStatMultiplier();
-            statMultiplier = LoadStatMultiplier();
-        }
-        else
-        {
-            if (!File.Exists(persistent_stat_filePath))
-            {
-                InitializePersistentStats();
-            }
-            Persistent_stat = LoadPersistentStats();
-            
-            InitializeTemporaryStats();
-            Temporary_stat = LoadTemporaryStat();
-
-            InitializeStatMultiplier();
-            statMultiplier = LoadStatMultiplier();
-        }
+        LoadPersistentStats();
+        InitializeTemporaryStats();
+        InitializeStatMultiplier();
+        UpdateUniversalStat();
 
         NoticeChangedStatPanel = GameObject.Find("NoticeChangedStatPanel");
 
@@ -102,42 +77,10 @@ public partial class StatManager : MonoBehaviour
 
         ShowChangedStatRoutine = null;
         isChangedStat = false;
-
-        AttackDamage = (Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier;
-        EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
-    }
-    void InitializePersistentStats() // persistent stats
-    {
-        Persistent_Stat initialStats = new Persistent_Stat
-        {
-            AttackDamage = 5f,
-            EffectDamage = 5f,
-            StartingBall = 5,
-            BonusExp = 1f,
-            CriticalChance = 0.0f,
-            CriticalDamage = 1.1f,
-            BonusGold = 1f,
-            Gold = 100000f,
-
-            AttackDamageMultiplier = 1f,
-            EffectDamageMultiplier = 1f,
-
-            AttackDamageLevel = 1,
-            EffectDamageLevel = 1,
-            BonusEXPLevel = 1,
-            BonusGoldLevel = 1,
-            CriChanceLevel = 1,
-            CriDamageLevel = 1,
-            StartingBallLevel = 1
-        };
-
-        string json = JsonUtility.ToJson(initialStats, true);
-        File.WriteAllText(persistent_stat_filePath, json);
     }
 
     public void InitializeTemporaryStats() // temporary stats
     {
-        File.Delete(temporary_stat_filePath);
         Temporary_Stat initialStats = new Temporary_Stat
         {
             StatLevel = new[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -150,86 +93,200 @@ public partial class StatManager : MonoBehaviour
             ExpGain = 0.0f,
             SummonBall = 5
         };
-        
-        string json = JsonUtility.ToJson(initialStats, true);
-        File.WriteAllText(temporary_stat_filePath, json);
+        Temporary_stat = initialStats;
     }
     
     public void InitializeStatMultiplier() // stat multiplier
     {
-        File.Delete(stat_Multiplier_filePath);
         StatMultiplier initialMultiplier = new StatMultiplier
         {
             AttackDamageMultiplier = 1.0f,
             EffectDamageMultiplier = 1.0f
         };
-        
-        string json = JsonUtility.ToJson(initialMultiplier, true);
-        File.WriteAllText(stat_Multiplier_filePath, json);
-    }
-    public Persistent_Stat LoadPersistentStats()
-    {
-        string json = File.ReadAllText(persistent_stat_filePath);
-        return JsonUtility.FromJson<Persistent_Stat>(json);
-    }
-    public void SavePersistentStats(Persistent_Stat stats)
-    {
-        string json = JsonUtility.ToJson(stats, true);
-        File.WriteAllText(persistent_stat_filePath, json);
-
-        json = File.ReadAllText(persistent_stat_filePath);
-        Persistent_stat = JsonUtility.FromJson<Persistent_Stat>(json);
-    }
-
-    public Temporary_Stat LoadTemporaryStat() // Just Load
-    {
-        string json = File.ReadAllText(temporary_stat_filePath);
-        return JsonUtility.FromJson<Temporary_Stat>(json);
+        statMultiplier = initialMultiplier;
     }
     
-    public void SaveTemporaryStat(Temporary_Stat stats) //Save and Synchronization
+    public void UpdateUniversalStat()
     {
-        string json = JsonUtility.ToJson(stats, true);
-        File.WriteAllText(temporary_stat_filePath, json);
-        
-        json = File.ReadAllText(temporary_stat_filePath);
-        Temporary_stat = JsonUtility.FromJson<Temporary_Stat>(json);
-
-        AttackDamage = (Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier;
-        EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
-    }
-    
-    public StatMultiplier LoadStatMultiplier() // Just Load
-    {
-        string json = File.ReadAllText(stat_Multiplier_filePath);
-        return JsonUtility.FromJson<StatMultiplier>(json);
-    }
-    
-    public void SaveStatMultiplier(StatMultiplier stats) //Save and Synchronization
-    {
-        string json = JsonUtility.ToJson(stats, true);
-        File.WriteAllText(stat_Multiplier_filePath, json);
-        
-        json = File.ReadAllText(stat_Multiplier_filePath);
-        statMultiplier = JsonUtility.FromJson<StatMultiplier>(json);
-
         AttackDamage = (Persistent_stat.AttackDamage + Temporary_stat.AttackDamage) * statMultiplier.AttackDamageMultiplier;
         EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
     }
 
-    public void RunAttackDamageUpFewSec(float setTime, float AttackUpValue)
+    #region Save and Load Persistent Stat
+
+    private string cloudSaveFileName = "PersistentStat_SaveData.dat";
+
+    Persistent_Stat initialStats = new Persistent_Stat
     {
-        StartCoroutine(AttackDamageUpFewSec(setTime, AttackUpValue));
+        AttackDamage = 5f,
+        EffectDamage = 5f,
+        StartingBall = 5,
+        BonusExp = 1f,
+        CriticalChance = 0.0f,
+        CriticalDamage = 1.1f,
+        BonusGold = 1f,
+        Gold = 0f,
+
+        AttackDamageMultiplier = 1f,
+        EffectDamageMultiplier = 1f,
+
+        AttackDamageLevel = 1,
+        EffectDamageLevel = 1,
+        BonusEXPLevel = 1,
+        BonusGoldLevel = 1,
+        CriChanceLevel = 1,
+        CriDamageLevel = 1,
+        StartingBallLevel = 1
+    };
+
+    public void SavePersistentStats()
+    {
+        OpenSavePersistentStats();
     }
 
-    IEnumerator AttackDamageUpFewSec(float setTime, float AttackUpValue)
+    private void OpenSavePersistentStats()
     {
-        statMultiplier.AttackDamageMultiplier += AttackUpValue;
-        SaveStatMultiplier(statMultiplier);
-        yield return new WaitForSeconds(setTime);
-        statMultiplier.AttackDamageMultiplier -= AttackUpValue;
-        SaveStatMultiplier(statMultiplier);
+        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+
+            savedGameClient.OpenWithAutomaticConflictResolution(cloudSaveFileName,
+                DataSource.ReadCacheOrNetwork,
+                ConflictResolutionStrategy.UseLastKnownGood,
+                OnSavedPersistentStatsOpend);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            SavePersistentStatOnLocal();
+        }
     }
+
+    private void OnSavedPersistentStatsOpend(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success to connect online");
+
+            var update = new SavedGameMetadataUpdate.Builder().Build();
+
+            var json = JsonUtility.ToJson(StatManager.instance.Persistent_stat);
+            byte[] bytes = Encoding.UTF8.GetBytes(json);
+
+            Debug.Log("Save Data : " + bytes);
+
+            savedGameClient.CommitUpdate(game, update, bytes, OnSavedPersistentStatsWritten);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            SavePersistentStatOnLocal();
+        }
+    }
+
+    private void OnSavedPersistentStatsWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success");
+        }
+        else
+        {
+            Debug.Log("Fail");
+        }
+    }
+
+    public void LoadPersistentStats()
+    {
+        OpenLoadPersistentStats();
+    }
+
+    private void OpenLoadPersistentStats()
+    {
+        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+
+            savedGameClient.OpenWithAutomaticConflictResolution(cloudSaveFileName,
+                DataSource.ReadCacheOrNetwork,
+                ConflictResolutionStrategy.UseLastKnownGood,
+                LoadPersistentStatsData);
+        }
+        else
+        {
+            LoadPersistentStatOnLocal();
+        }
+    }
+
+    private void LoadPersistentStatsData(SavedGameRequestStatus status, ISavedGameMetadata data)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success to connect online");
+
+            savedGameClient.ReadBinaryData(data, OnLoadedPersistentStatsData);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            LoadPersistentStatOnLocal();
+        }
+    }
+
+    private void OnLoadedPersistentStatsData(SavedGameRequestStatus status, byte[] loadedData)
+    {
+        string data = System.Text.Encoding.UTF8.GetString(loadedData);
+
+        if (data == "")
+        {
+            Debug.Log("There's no data, try to save default data");
+            SavePersistentStats();
+        }
+        else
+        {
+            Debug.Log("Loaded data : " + data);
+
+            Persistent_stat = JsonUtility.FromJson<Persistent_Stat>(data);
+        }
+    }
+
+    private void SavePersistentStatOnLocal() // Save Persistent Stat on local session
+    {
+        string json = JsonUtility.ToJson(Persistent_stat, true);
+        File.WriteAllText(Application.persistentDataPath + "/PinballBrick_persistentData.json", json);
+
+        Debug.Log("Save Successfully on local session");
+        LoadPersistentStatOnLocal();
+    }
+    private void LoadPersistentStatOnLocal() // Load Persistent Stat on local session
+    {
+        string json;
+        if (!File.Exists(Application.persistentDataPath + "/PinballBrick_persistentData.json"))
+        {
+            Debug.Log("There's no data, try to save default data to the local session");
+
+            InitializePersistentStats();
+        }
+        else
+        {
+            json = File.ReadAllText(Application.persistentDataPath + "/PinballBrick_persistentData.json");
+            Persistent_stat = JsonUtility.FromJson<Persistent_Stat>(json);
+        }
+        Debug.Log("Load Successfully on local session");
+    }
+    private void InitializePersistentStats() // Initialize Persistent Stat on local session
+    {
+        string json = JsonUtility.ToJson(initialStats, true);
+        File.WriteAllText(Application.persistentDataPath + "/PinballBrick_persistentData.json", json);
+        Debug.Log("Initialize Successfully on local session");
+    }
+
+    #endregion
 
     public void GetGold(int Value)
     {
@@ -499,14 +556,14 @@ public partial class StatManager
             Temporary_stat.EffectDamage += value * 0.2f;
             TotalChangedStatValue[3] += value * 0.2f;
         }
-        SaveTemporaryStat(Temporary_stat);
+        UpdateUniversalStat();
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_CriticalDamage(float value)
     {
         Temporary_stat.CriticalDamage += value;
         TotalChangedStatValue[1] += value;
-        SaveTemporaryStat(Temporary_stat);
+        UpdateUniversalStat();
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_CriticalChance(float value)
@@ -554,7 +611,7 @@ public partial class StatManager
                 TotalChangedStatValue[2] += (float)System.Math.Round(value, 2);
             }
         }
-        SaveTemporaryStat(Temporary_stat);
+        UpdateUniversalStat();
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_EffectDamage(float value)
@@ -566,28 +623,28 @@ public partial class StatManager
             Temporary_stat.AttackDamage += value * 0.2f;
             TotalChangedStatValue[0] += value * 0.2f;
         }
-        SaveTemporaryStat(Temporary_stat);
+        UpdateUniversalStat();
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_EffectDuration(float value)
     {
         Temporary_stat.EffectDuration += (float)System.Math.Round(value, 2);
         TotalChangedStatValue[4] += (float)System.Math.Round(value, 2);
-        SaveTemporaryStat(Temporary_stat);
+        UpdateUniversalStat();
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_GoldGain(float value)
     {
         Temporary_stat.GoldGain += (float)System.Math.Round(value, 2);
         TotalChangedStatValue[5] += (float)System.Math.Round(value, 2);
-        SaveTemporaryStat(Temporary_stat);
+        UpdateUniversalStat();
         isChangedStat = true;
     }
     public void ChangeTemporaryStats_ExpGain(float value)
     {
         Temporary_stat.ExpGain += (float)System.Math.Round(value, 2);
         TotalChangedStatValue[6] += (float)System.Math.Round(value, 2);
-        SaveTemporaryStat(Temporary_stat);
+        UpdateUniversalStat();
         isChangedStat = true;
     }
     public void ChangeStatMultiplier_AttackDamageMultiplier(float value)
@@ -596,14 +653,13 @@ public partial class StatManager
         {
             statMultiplier.AttackDamageMultiplier *= (float)System.Math.Round(value, 3);
             TotalChangedStatValue[7] *= (float)System.Math.Round(value, 2);
-            SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
             statMultiplier.AttackDamageMultiplier /= (float)System.Math.Round(-value, 3);
             TotalChangedStatValue[7] /= (float)System.Math.Round(-value, 2);
-            SaveStatMultiplier(statMultiplier);
         }
+        UpdateUniversalStat();
         isChangedStat = true;
     }
     public void ChangeStatMultiplier_EffectDamageMultiplier(float value)
@@ -612,14 +668,13 @@ public partial class StatManager
         {
             statMultiplier.EffectDamageMultiplier *= (float)System.Math.Round(value, 3);
             TotalChangedStatValue[8] *= (float)System.Math.Round(value, 2);
-            SaveStatMultiplier(statMultiplier);
         }
         else if(value < 0)
         {
             statMultiplier.EffectDamageMultiplier /= (float)System.Math.Round(-value, 3);
             TotalChangedStatValue[8] /= (float)System.Math.Round(-value, 2);
-            SaveStatMultiplier(statMultiplier);
         }
+        UpdateUniversalStat();
         isChangedStat = true;
     }
 }
