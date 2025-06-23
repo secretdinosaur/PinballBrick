@@ -28,6 +28,10 @@ public partial class StatManager : MonoBehaviour
         InitializeStatMultiplier();
         UpdateUniversalStat();
 
+        string json = JsonUtility.ToJson(Persistent_stat, true);
+        Debug.LogWarning("Stat Manager : \n" + json);
+
+
         NoticeChangedStatPanel = GameObject.Find("NoticeChangedStatPanel");
 
         string currentSceneName = SceneManager.GetActiveScene().name;
@@ -81,29 +85,27 @@ public partial class StatManager : MonoBehaviour
 
     public void InitializeTemporaryStats() // temporary stats
     {
-        Temporary_Stat initialStats = new Temporary_Stat
+        Temporary_stat = new Temporary_Stat
         {
             StatLevel = new[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             AttackDamage = 0f,
             CriticalDamage = 0.0f,
             CriticalChance = 0.0f,
-            EffectDamage = 0.5f,
+            EffectDamage = 0.0f,
             EffectDuration = 1f,
             GoldGain = 0.0f,
             ExpGain = 0.0f,
             SummonBall = 5
         };
-        Temporary_stat = initialStats;
     }
     
     public void InitializeStatMultiplier() // stat multiplier
     {
-        StatMultiplier initialMultiplier = new StatMultiplier
+        statMultiplier = new StatMultiplier
         {
             AttackDamageMultiplier = 1.0f,
             EffectDamageMultiplier = 1.0f
         };
-        statMultiplier = initialMultiplier;
     }
     
     public void UpdateUniversalStat()
@@ -114,9 +116,9 @@ public partial class StatManager : MonoBehaviour
 
     #region Save and Load Persistent Stat
 
-    private string cloudSaveFileName = "PersistentStat_SaveData.dat";
+    private string cloudSaveFileName = "PersistentStat_SaveData.json";
 
-    Persistent_Stat initialStats = new Persistent_Stat
+    Persistent_Stat initialPersistentStats = new Persistent_Stat
     {
         AttackDamage = 5f,
         EffectDamage = 5f,
@@ -172,7 +174,7 @@ public partial class StatManager : MonoBehaviour
 
             var update = new SavedGameMetadataUpdate.Builder().Build();
 
-            var json = JsonUtility.ToJson(StatManager.instance.Persistent_stat);
+            var json = JsonUtility.ToJson(Persistent_stat);
             byte[] bytes = Encoding.UTF8.GetBytes(json);
 
             Debug.Log("Save Data : " + bytes);
@@ -240,18 +242,88 @@ public partial class StatManager : MonoBehaviour
 
     private void OnLoadedPersistentStatsData(SavedGameRequestStatus status, byte[] loadedData)
     {
+        if (loadedData == null || loadedData.Length == 0)
+        {
+            Debug.Log("No cloud data found. Saving default data to cloud.");
+            SaveDefaultPersistentStats();
+            return;
+        }
+
         string data = System.Text.Encoding.UTF8.GetString(loadedData);
 
         if (data == "")
         {
             Debug.Log("There's no data, try to save default data");
-            SavePersistentStats();
+            SaveDefaultPersistentStats();
         }
         else
         {
             Debug.Log("Loaded data : " + data);
 
             Persistent_stat = JsonUtility.FromJson<Persistent_Stat>(data);
+            synchronizeToUpgradeManagerWithStatManager();
+        }
+    }
+
+    public void SaveDefaultPersistentStats()
+    {
+        OpenSaveDefaultPersistentStats();
+    }
+
+    private void OpenSaveDefaultPersistentStats()
+    {
+        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+
+            savedGameClient.OpenWithAutomaticConflictResolution(cloudSaveFileName,
+                DataSource.ReadCacheOrNetwork,
+                ConflictResolutionStrategy.UseLastKnownGood,
+                OnSavedDefaultPersistentStatsOpend);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            InitializePersistentStats();
+        }
+    }
+
+    private void OnSavedDefaultPersistentStatsOpend(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success to connect online");
+
+            var update = new SavedGameMetadataUpdate.Builder().Build();
+
+            var json = JsonUtility.ToJson(initialPersistentStats);
+            byte[] bytes = Encoding.UTF8.GetBytes(json);
+
+            Persistent_stat = initialPersistentStats;
+            synchronizeToUpgradeManagerWithStatManager();
+
+            Debug.Log("Save Data : " + bytes);
+            savedGameClient.CommitUpdate(game, update, bytes, OnSavedDefaultPersistentStatsWritten);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            InitializePersistentStats();
+        }
+    }
+
+    private void OnSavedDefaultPersistentStatsWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success");
+        }
+        else
+        {
+            Debug.Log("Fail");
         }
     }
 
@@ -261,7 +333,6 @@ public partial class StatManager : MonoBehaviour
         File.WriteAllText(Application.persistentDataPath + "/PinballBrick_persistentData.json", json);
 
         Debug.Log("Save Successfully on local session");
-        LoadPersistentStatOnLocal();
     }
     private void LoadPersistentStatOnLocal() // Load Persistent Stat on local session
     {
@@ -276,14 +347,36 @@ public partial class StatManager : MonoBehaviour
         {
             json = File.ReadAllText(Application.persistentDataPath + "/PinballBrick_persistentData.json");
             Persistent_stat = JsonUtility.FromJson<Persistent_Stat>(json);
+            synchronizeToUpgradeManagerWithStatManager();
         }
         Debug.Log("Load Successfully on local session");
+
     }
     private void InitializePersistentStats() // Initialize Persistent Stat on local session
     {
-        string json = JsonUtility.ToJson(initialStats, true);
+        string json = JsonUtility.ToJson(initialPersistentStats, true);
         File.WriteAllText(Application.persistentDataPath + "/PinballBrick_persistentData.json", json);
         Debug.Log("Initialize Successfully on local session");
+
+        Persistent_stat = JsonUtility.FromJson<Persistent_Stat>(json);
+        synchronizeToUpgradeManagerWithStatManager();
+    }
+
+    private void synchronizeToUpgradeManagerWithStatManager()
+    {
+        if(UpgradeManager.Instance != null)
+        {
+            UpgradeManager.Instance.levels = new int[]
+            {
+                Persistent_stat.AttackDamageLevel,
+                Persistent_stat.EffectDamageLevel,
+                Persistent_stat.BonusEXPLevel,
+                Persistent_stat.CriChanceLevel,
+                Persistent_stat.CriDamageLevel,
+                Persistent_stat.StartingBallLevel
+            };
+            UpgradeManager.Instance.SetUpgradePanel();
+        }
     }
 
     #endregion

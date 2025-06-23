@@ -15,7 +15,10 @@ public class GoogleManager : MonoBehaviour
 
     void Awake()
     {
-        Login();
+        if (!PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            Login();
+        }
     }
 
     public void Login()
