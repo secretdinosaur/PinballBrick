@@ -1,0 +1,23 @@
+# ninja log v5
+78	4279	7723585929906677	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	9a9d604ea20c16ff
+47	4253	7723585929896713	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	b83cee98f27a37f3
+4638	5253	7723585940405538	F:/Github/PinballBrick/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/4w18723s/obj/arm64-v8a/libswappywrapper.so	96507bfe27159f76
+54	4308	7723585930496022	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	af6b1691694bb9ff
+33	4371	7723585931089544	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	af6d10a89a7aa8a9
+101	4293	7723585930625676	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	72bb4ed6cedc1771
+4254	6578	7723585953640994	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	3eb2f2a080134bf4
+4294	4637	7723585934256900	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	8bfe83764f91e596
+64	5169	7723585939500807	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	f6c11ac82c9acaa2
+4280	6338	7723585951243980	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	da4fc1d9729c5006
+6579	6720	7723585955068361	F:/Github/PinballBrick/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/4w18723s/obj/arm64-v8a/libgame.so	ce9b0a587b56a744
+24	5378	7723606370528247	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	b83cee98f27a37f3
+101	5391	7723606370647946	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	72bb4ed6cedc1771
+36	5420	7723606370747659	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	af6b1691694bb9ff
+62	5524	7723606372047969	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	af6d10a89a7aa8a9
+5421	5882	7723606375650040	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	8bfe83764f91e596
+111	6201	7723606378770725	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	3eb2f2a080134bf4
+71	6534	7723606382118218	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	f6c11ac82c9acaa2
+5882	6629	7723606383141917	F:/Github/PinballBrick/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/4w18723s/obj/arm64-v8a/libswappywrapper.so	96507bfe27159f76
+5379	7847	7723606395346753	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	9a9d604ea20c16ff
+5392	7993	7723606396845052	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	da4fc1d9729c5006
+7994	8125	7723606398164140	F:/Github/PinballBrick/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/4w18723s/obj/arm64-v8a/libgame.so	ce9b0a587b56a744

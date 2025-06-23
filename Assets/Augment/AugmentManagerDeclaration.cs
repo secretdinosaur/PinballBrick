@@ -219,8 +219,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<AllDamage>(),
-            
+
         };
 
         foreach (IAugment augment in TestAugments)

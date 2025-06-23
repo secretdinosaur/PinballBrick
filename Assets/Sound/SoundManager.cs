@@ -59,7 +59,7 @@ public class SoundManager : MonoBehaviour
         Sfx.volume = volumeSaveData.SfxVolume;
         SfxVolumeSlider.value = volumeSaveData.SfxVolume;
 
-        Bgm.mute = true;
+        Bgm.mute = true; //이거 뮤트가 아니라 멈췄다가 실행되게 하기 GameManager에 StartGame 코루틴이랑 연동해서 사용
 
         BgmPlaylist = new Queue<int>();
         List<int> X = new List<int>();

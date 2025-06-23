@@ -22,4 +22,10 @@ public class SceneMove : MonoBehaviour
     {
         SceneManager.LoadScene("Shop");
     }
+
+    public void GoToTitle()
+    {
+        SceneManager.LoadScene("Title");
+    }
+
 }
