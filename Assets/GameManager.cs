@@ -5,6 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using static UnityEngine.Rendering.DebugUI;
 using UnityEngine.SceneManagement;
+using GooglePlayGames;
 
 public class GameManager : MonoBehaviour
 {
@@ -223,6 +224,7 @@ public class GameManager : MonoBehaviour
     int displayedPointValue = 0;
     public void GameEnd()
     {
+        LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore);
         StatManager.instance.SavePersistentStats(); //for save gold
 
         if (BallManager.Instance.InGameBall.Count > 0)

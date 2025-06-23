@@ -148,7 +148,7 @@ public partial class StatManager : MonoBehaviour
 
     private void OpenSavePersistentStats()
     {
-        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
             ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
 
@@ -208,7 +208,7 @@ public partial class StatManager : MonoBehaviour
 
     private void OpenLoadPersistentStats()
     {
-        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
             ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
 
@@ -272,7 +272,7 @@ public partial class StatManager : MonoBehaviour
 
     private void OpenSaveDefaultPersistentStats()
     {
-        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
             ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
 

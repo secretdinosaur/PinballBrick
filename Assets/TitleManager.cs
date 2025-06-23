@@ -15,7 +15,7 @@ public class TitleManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
             isGooglePlayLoginToggle.isOn = true;
             isGooglePlayLoginText.text = "Success to Login";
