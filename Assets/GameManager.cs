@@ -50,11 +50,27 @@ public class GameManager : MonoBehaviour
         { 
             wave = value;
             Mathf.Clamp(wave, 1, 9999999999);
+            ReachedWave = value;
         }
     }
 
+    private int reachedWave;
+    public int ReachedWave
+    {
+        get { return reachedWave; }
+        set
+        {
+            if(value > reachedWave)
+            {
+                reachedWave = value;
+            }
+        }
+    }
 
+    public int LevelUpCount;
+    public int PassedWave;
     public int DestroyedBricks;
+    public int DestroyedBossBricks;
     public int SummonedBalls;
     public int DiedBalls;
     void Awake()
@@ -86,8 +102,13 @@ public class GameManager : MonoBehaviour
 
         WaveNoticeText = GameObject.Find("Canvas").transform.Find("WaveNoticeText").GetComponent<TMP_Text>();
         WaveExtraNoticeText = GameObject.Find("Canvas").transform.Find("WaveExtraNoticeText").GetComponent<TMP_Text>();
+        
         Wave = 0;
+        LevelUpCount = 0;
+        ReachedWave = 0;
+        PassedWave = 0;
         DestroyedBricks = 0;
+        DestroyedBossBricks = 0;
         SummonedBalls = 0;
         DiedBalls = 0;
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
@@ -226,6 +247,7 @@ public class GameManager : MonoBehaviour
     {
         LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore);
         StatManager.instance.SavePersistentStats(); //for save gold
+        AchievementManager.instance.AchievementCheck(DestroyedBricks, PassedWave, ReachedWave, SummonedBalls, LevelUpCount, DestroyedBossBricks);
 
         if (BallManager.Instance.InGameBall.Count > 0)
         {
