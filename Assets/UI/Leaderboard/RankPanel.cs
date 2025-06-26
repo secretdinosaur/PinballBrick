@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class RankPanel : MonoBehaviour
 {
-    public int userRank;
-    public string userName;
-    public long userScore;
+    public int userRank = 1;
+    public string userName = "user";
+    public long userScore = 0;
 
     private TMP_Text Rank;
     private TMP_Text Name;
@@ -14,7 +14,7 @@ public class RankPanel : MonoBehaviour
     private void Awake()
     {
         Name = transform.Find("Name").GetComponent<TMP_Text>();
-        Name = transform.Find("Name").GetComponent<TMP_Text>();
+        Rank = transform.Find("Rank").GetComponent<TMP_Text>();
         Score = transform.Find("Score").GetComponent<TMP_Text>();
     }
 

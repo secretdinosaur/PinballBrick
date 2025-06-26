@@ -23,8 +23,8 @@ public class GoogleManager : MonoBehaviour
 
     public void Login()
     {
-        PlayGamesPlatform.Activate();
         PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+        PlayGamesPlatform.Activate();
     }
 
     internal void ProcessAuthentication(SignInStatus status)

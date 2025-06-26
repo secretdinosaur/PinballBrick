@@ -1,4 +1,4 @@
-using GooglePlayGames.BasicApi;
+﻿using GooglePlayGames.BasicApi;
 using GooglePlayGames;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -6,91 +6,58 @@ using TMPro;
 using UnityEngine;
 using static System.Net.WebRequestMethods;
 using UnityEngine.SocialPlatforms;
+using Unity.VisualScripting;
+using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class LeaderboardManager : MonoBehaviour
 {
     public static LeaderboardManager instance;
     
     public GameObject RankPanel;
-    private RankPanel[] Ranking;
+    public List<RankPanel> Ranking;
     private GameObject MyRank;
 
+    private GameObject RankPanelParent;
+    private GameObject MyRankPanelParent;
+
+    private const int PageSize = 25;
+    private int _scoreOffset;
+    private HashSet<string> _loadedUserIds = new HashSet<string>();
+
+    [SerializeField]
     string userId;
+    [SerializeField]
     string userName;
 
     private void Awake()
     {
         instance = this;
+        List<RankPanel> Ranking = new List<RankPanel>();
+        if (SceneManager.GetActiveScene().name == "Main")
+        {
+            if (PlayGamesPlatform.Instance.IsAuthenticated())
+            {
+                userId = PlayGamesPlatform.Instance.GetUserId();
+                userName = PlayGamesPlatform.Instance.GetUserDisplayName();
+                LoadAllTopScores();
+            }
+            else
+            {
+                userId = "local";
+                userName = "localUser";
+            }
 
-        if (PlayGamesPlatform.Instance.IsAuthenticated())
-        {
-            string userId = PlayGamesPlatform.Instance.GetUserId();
-            string userName = PlayGamesPlatform.Instance.GetUserDisplayName();
-        }
-        else
-        {
-            userId = "local";
-            userName = "local user";
-        }
-
-        RankingSetting();
-    }
-
-    private void RankingSetting()
-    {
-        GameObject RankPanelParent = GameObject.Find("Canvas").transform.Find("Scroll View/Viewport/Content/Ranking/TotalRanking/Scroll View/Viewport/Content").gameObject;
-        GameObject MyRankPanelParent = GameObject.Find("Canvas").transform.Find("Scroll View/Viewport/Content/Ranking/MyRanking").gameObject;
-        Ranking = new RankPanel[PlayGamesPlatform.Instance.IsAuthenticated() ? 100 : 1];
-
-        if (PlayGamesPlatform.Instance.IsAuthenticated())
-        {
-            PlayGamesPlatform.Instance.LoadScores(
-            GPGSIds.leaderboard_point,
-            LeaderboardStart.TopScores,
-            1,
-            LeaderboardCollection.Public,
-            LeaderboardTimeSpan.AllTime,
-            data => {
-                if (data.Valid)
-                {
-                    targetCount = (int)data.ApproximateCount;
-                }
-                else
-                {
-                    Debug.LogWarning("LoadScores fail");
-                }
-            });
-        }
-        else
-        {
-            targetCount = 1;
-        }
-        
-        for (int i = 0; i < Ranking.Length; i++)
-        {
-            GameObject Rank = Instantiate(RankPanel, RankPanelParent.transform);
-        }
-        MyRank = Instantiate(RankPanel, MyRankPanelParent.transform);
-
-        LoadTopScores();
-        LoadMyRank();
-    }
-
-    public void LoadTopScores()
-    {
-        if (PlayGamesPlatform.Instance.IsAuthenticated())
-        {
-            LoadTop100Scores();
-        }
-        else
-        {
-            Ranking[0].ChangeInformation(1, userName, PlayerPrefs.GetInt("HighScore"));
+            RankPanelParent = GameObject.Find("Canvas").transform.Find("Scroll View/Viewport/Content/Ranking/TotalRanking/Scroll View/Viewport/Content").gameObject;
+            MyRankPanelParent = GameObject.Find("Canvas").transform.Find("Scroll View/Viewport/Content/Ranking/MyRanking").gameObject;
+            LoadMyRank();
         }
     }
 
     public void LoadMyRank()
     {
-        if(PlayGamesPlatform.Instance.IsAuthenticated())
+        MyRank = Instantiate(RankPanel, MyRankPanelParent.transform);
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
             PlayGamesPlatform.Instance.LoadScores(
                 GPGSIds.leaderboard_point,
@@ -101,8 +68,7 @@ public class LeaderboardManager : MonoBehaviour
                 (LeaderboardScoreData data) => {
                     if (data.Valid && data.Scores.Length > 0)
                     {
-                        string playerId = userName;
-                        long playerScore = data.Scores[0].value;
+                        long playerScore = data.PlayerScore.value;
                         int playerRank = data.PlayerScore.rank;
 
                         MyRank.GetComponent<RankPanel>().ChangeInformation(playerRank, userName, playerScore);
@@ -115,88 +81,90 @@ public class LeaderboardManager : MonoBehaviour
         }
     }
 
-    List<IScore> allScores;
-    int targetCount = 100;
-
-    public void LoadTop100Scores()
+    public void LoadAllTopScores()
     {
-        allScores = new List<IScore>();
+        _scoreOffset = 0;
+        foreach (var panel in Ranking)
+            Destroy(panel.gameObject);
+        Ranking.Clear();
 
-        PlayGamesPlatform.Instance.LoadScores(
-            GPGSIds.leaderboard_point,
-            LeaderboardStart.TopScores,
-            25,
-            LeaderboardCollection.Public,
-            LeaderboardTimeSpan.AllTime,
-            (LeaderboardScoreData data) => {
-                if (data.Valid)
-                {
-                    allScores.AddRange(data.Scores);
-                    if (data.NextPageToken != null && allScores.Count < targetCount)
-                    {
-                        LoadMoreScores(data.NextPageToken);
-                    }
-                    else
-                    {
-                        LoadUserProfilesAndUpdate();
-                    }
-                }
-            });
+        LoadScoresPage(null);
     }
 
-    void LoadMoreScores(ScorePageToken token)
+    private void LoadScoresPage(ScorePageToken pageToken)
     {
-        PlayGamesPlatform.Instance.LoadMoreScores(token, 25, (LeaderboardScoreData data) =>
+        if (pageToken == null)
         {
-            if (data.Valid)
-            {
-                allScores.AddRange(data.Scores);
-
-                if (data.NextPageToken != null && allScores.Count < targetCount)
-                {
-                    LoadMoreScores(data.NextPageToken);
-                }
-                else
-                {
-                    LoadUserProfilesAndUpdate();
-                }
-            }
-        });
+            PlayGamesPlatform.Instance.LoadScores(
+                GPGSIds.leaderboard_point,
+                LeaderboardStart.TopScores,
+                PageSize,
+                LeaderboardCollection.Public,
+                LeaderboardTimeSpan.AllTime,
+                OnScoresLoaded);
+        }
+        else
+        {
+            PlayGamesPlatform.Instance.LoadMoreScores(
+                pageToken,
+                PageSize,
+                OnScoresLoaded);
+        }
     }
 
-    void LoadUserProfilesAndUpdate()
+    private void OnScoresLoaded(LeaderboardScoreData data)
     {
-        int count = Mathf.Min(allScores.Count, targetCount);
-        string[] userIds = new string[count];
+        Debug.Log($"LoadScores callback. valid={data.Valid}, returned={data.Scores.Length}");
+        if (!data.Valid || data.Scores.Length == 0 || data.Scores == null)
+            return;
 
-        for (int i = 0; i < count; i++)
+        var newUserIds = data.Scores
+            .Select(s => s.userID)
+            .Where(id => !_loadedUserIds.Contains(id))
+            .Distinct()
+            .ToArray();
+
+        if (newUserIds.All(item => item == null))
+            return;
+
+        int pageCount = data.Scores.Length;
+        for (int i = 0; i < pageCount; i++)
         {
-            userIds[i] = allScores[i].userID;
+            GameObject Rank = Instantiate(RankPanel, RankPanelParent.transform);
+            Ranking.Add(Rank.GetComponent<RankPanel>());
         }
 
-        PlayGamesPlatform.Instance.LoadUsers(userIds, (users) =>
+        foreach (var id in newUserIds)
         {
-            for (int i = 0; i < count; i++)
+            _loadedUserIds.Add(id);
+        }
+        PlayGamesPlatform.Instance.LoadUsers(newUserIds, users =>
+        {
+            for (int i = 0; i < pageCount; i++)
             {
-                string playerId = allScores[i].userID;
-                long playerScore = allScores[i].value;
-                string playerName = "";
+                var scoreEntry = data.Scores[i];
+                string playerId = scoreEntry.userID;
+                long playerScore = scoreEntry.value;
+                string playerName = users.FirstOrDefault(u => u.id == playerId)?.userName ?? "Unknown";
 
-                foreach (var user in users)
-                {
-                    if (user.id == playerId)
-                    {
-                        playerName = user.userName;
-                        break;
-                    }
-                }
+                int globalRankIndex = _scoreOffset + i;
+                Ranking[globalRankIndex]
+                    .ChangeInformation(globalRankIndex + 1, playerName, playerScore);
 
-
-                Ranking[i].ChangeInformation(i + 1, playerName, playerScore);
+                Debug.Log($"{globalRankIndex + 1}. {playerName} – {playerScore}");
+            }
+            
+            _scoreOffset += pageCount;
+            if (_scoreOffset < 100 && data.NextPageToken != null)
+            {
+                LoadScoresPage(data.NextPageToken);
+            }
+            else
+            {
+                Debug.Log("All pages are loaded");
             }
         });
     }
-
 
     public void RecordScore(long Score)
     {
@@ -205,16 +173,29 @@ public class LeaderboardManager : MonoBehaviour
             if (success)
             {
                 Debug.Log("Save score successfully");
+                if (PlayerPrefs.GetInt("HighScore") < ScoreManager.Instance.TotalScore)
+                {
+                    PlayerPrefs.SetInt("HighScore", ScoreManager.Instance.TotalScore);
+                }
             }
             else
             {
-                Debug.Log("Save score fail. Save score to local");
-                if (PlayerPrefs.GetInt("HighScore") > ScoreManager.Instance.TotalScore)
+                if (!PlayerPrefs.HasKey("HighScore"))
                 {
+                    PlayerPrefs.SetInt("HighScore", ScoreManager.Instance.TotalScore);
+                    return;
+                }
+                if (PlayerPrefs.GetInt("HighScore") < ScoreManager.Instance.TotalScore)
+                {
+                    Debug.Log("HighScore!\nSave score fail. Save score to local");
                     PlayerPrefs.SetInt("HighScore", ScoreManager.Instance.TotalScore);
                 }
             }
         });
     }
 
+    public void OpenGoogleLeaderboard()
+    {
+        PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_point);
+    }
 }

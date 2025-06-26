@@ -12557,6 +12557,7 @@ GameObject:
   - component: {fileID: 218456171}
   - component: {fileID: 218456172}
   - component: {fileID: 218456173}
+  - component: {fileID: 218456174}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -12740,6 +12741,22 @@ MonoBehaviour:
   DestroyedBricks: 0
   SummonedBalls: 0
   DiedBalls: 0
+--- !u!114 &218456174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218456163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc3cfd9694fd66545a4588eecd671ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RankPanel: {fileID: 0}
+  Ranking: []
+  userId: 
+  userName: 
 --- !u!1 &236723706
 GameObject:
   m_ObjectHideFlags: 0
