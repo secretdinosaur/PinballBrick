@@ -88,6 +88,7 @@ public partial class IBall : MonoBehaviour
             BallManager.Instance.inGameSpecialBallPosition.Add(gameObject.GetComponent<Transform>());
             BallManager.Instance.inGameSpecialBallCollider.Add(gameObject.GetComponent<Collider2D>());
         }
+        SoundManager.instance.BallSpawnSound(gameObject.GetComponent<AudioSource>());
     }
 
     public void BallDied()
