@@ -177,6 +177,7 @@ public class BrickManager : MonoBehaviour
                     WavePause = true;
             }
         }
+        SoundManager.instance.BrickDieSound();
         if (brick.gameObject.activeSelf)
         {
             if (brick.Fire != null)

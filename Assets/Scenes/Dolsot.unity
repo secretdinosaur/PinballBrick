@@ -91280,6 +91280,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b43463700d57dc542a11f29a84e1c2b9, type: 3}
   - {fileID: 8300000, guid: def04c82f1c63bb47807b8d63bbf0ae1, type: 3}
   - {fileID: 8300000, guid: dc0e9a6464481704197f1a08cf0915a4, type: 3}
+  - {fileID: 8300000, guid: fd956c8e3ccedf64e8cd178e9f0e1b08, type: 3}
+  - {fileID: 8300000, guid: ab6296f4be54d684b822e5c949edeb27, type: 3}
   SfxClips_Effect:
   - {fileID: 8300000, guid: 1f205d176a46cea4fb64256c54042e16, type: 3}
   - {fileID: 8300000, guid: b5942704aab3dda4894a5ccc770300b0, type: 3}

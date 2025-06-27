@@ -169,6 +169,7 @@ public class SoundManager : MonoBehaviour
     public void SpawnBrickSound(AudioSource audio)
     {
         audio.volume = SfxVolumeSlider.value / 2f;
+        audio.pitch = Random.Range(0.9f, 1.1f);
         audio.PlayOneShot(SfxClips_Game[0]);
     }
 
@@ -246,13 +247,25 @@ public class SoundManager : MonoBehaviour
     public void BallSpawnSound(AudioSource audio)
     {
         audio.volume = SfxVolumeSlider.value;
+        audio.pitch = Random.Range(0.9f, 1.1f);
         audio.PlayOneShot(SfxClips_Game[12]);
     }
 
     public void SpawnBossSound(AudioSource audio)
     {
-        audio.volume = SfxVolumeSlider.value / 2f;
+        audio.volume = SfxVolumeSlider.value;
         audio.PlayOneShot(SfxClips_Game[13]);
+    }
+
+
+    public void BrickDieSound()
+    {
+        AudioClip clip = SfxClips_Game[14];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        audio.pitch = Random.Range(0.9f, 1.1f);
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
 
     public void HolyWaterSound1()
