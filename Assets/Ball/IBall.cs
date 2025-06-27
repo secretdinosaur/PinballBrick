@@ -179,13 +179,15 @@ public partial class IBall : MonoBehaviour
                 {
                     BounceTime += 0.02f;
                     MaxBounce++;
-                    spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
+                    if(BallType != "GhostBall")
+                        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
                 }
             }
             else if (collision.gameObject.CompareTag("Brick"))
             {
                 MaxBounce = 0;
-                spriteRenderer.color = BrickColor;
+                if (BallType != "GhostBall")
+                    spriteRenderer.color = BrickColor;
             }
         }
         if (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball"))
@@ -280,25 +282,42 @@ public partial class IBall : MonoBehaviour
 
 public partial class IBall //Homing
 {
-    private float homingThrust = 150f;
-    private float detectionRadius = 1.6f;
+    private float homingThrust = 40f;
     private float rotationSpeed = 40f;
 
     public Rigidbody2D rb;
     private Transform currentTarget = new RectTransform();
 
+    float DetectDistance = 1.5f;
+
+    public Coroutine HomingRoutine = null;
     public void FixedUpdate()
     {
         if (AugmentManager.instance.determineAugmentID("SPECIAL_2")) //Homing
         {
-            if (currentTarget != null)
+            if (currentTarget != null && HomingRoutine == null)
             {
-                Vector2 directionToTarget = (currentTarget.position - transform.position).normalized;
-                float angle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
-                rb.rotation = Mathf.LerpAngle(rb.rotation, angle, rotationSpeed * Time.fixedDeltaTime);
-                rb.AddForce(directionToTarget * homingThrust);
+                HomingRoutine = StartCoroutine(HomingProcess());
             }
         }
+    }
+
+    private IEnumerator HomingProcess()
+    {
+        rb.linearVelocity = rb.linearVelocity / 1.25f;
+        while (currentTarget != null && (new Vector2(currentTarget.position.x, currentTarget.position.y) - new Vector2(transform.position.x, transform.position.y)).magnitude > 1f)
+        {
+
+            Vector2 directionToTarget = (currentTarget.position - transform.position).normalized;
+            float angle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
+            rb.rotation = Mathf.LerpAngle(rb.rotation, angle, rotationSpeed * Time.fixedDeltaTime);
+            rb.AddForce(directionToTarget * homingThrust);
+
+            yield return null;
+        }
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        HomingRoutine = null;
     }
 
     private void UpdateCurrentTarget()
@@ -311,7 +330,7 @@ public partial class IBall //Homing
             foreach (IBrick target in detectArea.NearbyBricks)
             {
                 float distance = Vector2.Distance(transform.position, target.gameObject.transform.position);
-                if (distance < closestDistance)
+                if (distance < closestDistance && distance < DetectDistance)
                 {
                     closestDistance = distance;
                     closestTarget = target.gameObject.transform;

@@ -219,8 +219,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<BallSwarm>(),
-            AugmentSet.GetComponent<ThunderStrike>(),
+            //AugmentSet.GetComponent<Homing>(),
 
         };
 
@@ -232,6 +231,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
+        AddAugment(AugmentSet.GetComponent<Homing>());
     }
 }
 
