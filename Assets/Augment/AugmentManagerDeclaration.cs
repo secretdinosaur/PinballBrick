@@ -219,7 +219,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            //AugmentSet.GetComponent<Homing>(),
 
         };
 

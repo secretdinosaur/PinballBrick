@@ -411,6 +411,7 @@ public class BrickManager : MonoBehaviour
         return Brick;
     }
 
+    #region BrickSetting
     private int CalWaveToSpawnBoss()
     {
         int Wave = GameManager.instance.Wave;
@@ -490,17 +491,6 @@ public class BrickManager : MonoBehaviour
         else
             return BrickExpValue[(int)BrickType.Brick];
     }
-    private IBrick GetSpecificBrick(string brickTypeName)
-    {
-        IBrick brick = new IBrick();
-
-        Type brickType = Type.GetType(brickTypeName);
-        var method = typeof(PoolManager).GetMethod("GetFromPool");
-        var genericMethod = method.MakeGenericMethod(brickType);
-        brick = (IBrick)genericMethod.Invoke(PoolManager, null);
-        UpdateCurrentBricks(brick);
-        return brick;
-    }
 
     private void SettingBrickSpawnChance()
     {
@@ -516,7 +506,7 @@ public class BrickManager : MonoBehaviour
             float value = Mathf.Exp(-(x - center) * (x - center) / (2 * sigma * sigma));
             BrickInfo.BrickSpawnChance[i] = value;
         }
-        
+
         float sum = BrickInfo.BrickSpawnChance.Sum();
         if (sum > 0f)
         {
@@ -570,7 +560,7 @@ public class BrickManager : MonoBehaviour
                 }
             }
         }
-        if(remain > 0f)
+        if (remain > 0f)
         {
             BrickInfo.BrickSpawnChance[0] += remain;
         }
@@ -608,6 +598,19 @@ public class BrickManager : MonoBehaviour
         brick.IsBoss = false;
         brick.IsSpecialBrick = false;
         brick.IsBigBoss = true;
+        return brick;
+    }
+    #endregion
+
+    private IBrick GetSpecificBrick(string brickTypeName)
+    {
+        IBrick brick = new IBrick();
+
+        Type brickType = Type.GetType(brickTypeName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(brickType);
+        brick = (IBrick)genericMethod.Invoke(PoolManager, null);
+        UpdateCurrentBricks(brick);
         return brick;
     }
 
@@ -733,7 +736,7 @@ public class BrickManager : MonoBehaviour
         }
         else if (brick.IsBigBoss)
         {
-            HPPool.Add(10101);
+            HPPool.Add(2); //10101);
         }
         else
         {

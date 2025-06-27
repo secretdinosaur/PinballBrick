@@ -43,89 +43,17 @@ public class UpgradeManager : MonoBehaviour
         1.05f,
         1.2f,
     };
-    private Persistent_Stat PersistentStat;
-    int[] levels;
+    public int[] levels;
     GameObject[] Panels;
 
     public static UpgradeManager Instance;
 
-    void Start()
+    void Awake()
     {
         Instance = this;
-        PersistentStat = StatManager.instance.LoadPersistentStats();
-        levels = new int[] { PersistentStat.AttackDamageLevel, PersistentStat.EffectDamageLevel, PersistentStat.BonusEXPLevel, PersistentStat.CriChanceLevel, PersistentStat.CriDamageLevel, PersistentStat.StartingBallLevel};
         Panels = new GameObject[] { AttDamage, EffDamage, BonusEXP, CriChance, CriDamage, StartingBall};
-        SetUpgradePanel();
     }
 
-    void SetUpgradePanel()
-    {
-        List<float> statList = new List<float>
-        {
-            PersistentStat.AttackDamage,
-            PersistentStat.EffectDamage,
-            PersistentStat.BonusExp,
-            PersistentStat.CriticalChance,
-            PersistentStat.CriticalDamage,
-            PersistentStat.StartingBall
-        };
-
-        List<int> LevelList = new List<int>
-        {
-            PersistentStat.AttackDamageLevel,
-            PersistentStat.EffectDamageLevel,
-            PersistentStat.BonusEXPLevel,
-            PersistentStat.CriChanceLevel,
-            PersistentStat.CriDamageLevel,
-            PersistentStat.StartingBallLevel
-        };
-
-        
-        TMP_Text[] texts;
-        for(int i = 0; i < 6; i++)
-        {
-            if(i == 2)// bonus exp
-            {
-                if ((levels[i] + 1) % 10 == 0)
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F0") + "%" + " -> " + ((statList[i] + Descriptions[i + 6] - 1) * 100).ToString("F0") + "%";
-                else
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F0") + "%" + " -> " + ((statList[i] + Descriptions[i] - 1) * 100).ToString("F0") + "%";
-            }
-            else if (i == 4) // cri damage
-            {
-                if ((levels[i] + 1) % 10 == 0)
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F1") + "%" + " -> " + ((statList[i] + Descriptions[i + 6] - 1) * 100).ToString("F1") + "%";
-                else
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F1") + "%" + " -> " + ((statList[i] + Descriptions[i] - 1) * 100).ToString("F1") + "%";
-            }
-            else if (i == 3) // cri chance
-            {
-                if ((levels[i] + 1) % 10 == 0)
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i]) * 100).ToString("F1") + "%" + " -> " + ((statList[i] + Descriptions[i + 6]) * 100).ToString("F1") + "%";
-                else
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i]) * 100).ToString("F1") + "%" + " -> " + ((statList[i] + Descriptions[i]) * 100).ToString("F1") + "%";
-            }
-            else if(i == 0 || i == 1) // damage
-            {
-                if ((levels[i] + 1) % 10 == 0)
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1") + " -> " + (statList[i] + Descriptions[i + 6]).ToString("F1");
-                else
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1") + " -> " + (statList[i] + Descriptions[i]).ToString("F1");
-            }
-            else // starting ball
-            {
-                if ((levels[i] + 1) % 10 == 0)
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F0") + " -> " + (statList[i] + Descriptions[i + 6]).ToString("F0");
-                else
-                    Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F0") + " -> " + (statList[i] + Descriptions[i]).ToString("F0");
-            }
-
-            Panels[i].GetComponentsInChildren<TMP_Text>()[2].text = GetUpgradeCost(i).ToString();
-            Panels[i].GetComponentsInChildren<TMP_Text>()[3].text = LevelList[i].ToString();
-        }
-        
-        GoldText.text = ChangeNumber(PersistentStat.Gold.ToString());
-    }
 
     public static string ChangeNumber(string number)
     {
@@ -167,10 +95,10 @@ public class UpgradeManager : MonoBehaviour
     public void Purchase(int statNum)
     {
         int Cost = GetUpgradeCost(statNum);
-        if (PersistentStat.Gold > Cost)
+        if (StatManager.instance.Persistent_stat.Gold >= Cost)
         {
             levels[statNum] += 1;
-            PersistentStat.Gold -= Cost;
+            StatManager.instance.Persistent_stat.Gold -= Cost;
             SetPersistentStat();
             SetUpgradePanel();
         }
@@ -180,26 +108,122 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-
-
-    void SetPersistentStat()
+    public void SetPersistentStat()
     {
-        PersistentStat.AttackDamageLevel = levels[0];
-        PersistentStat.EffectDamageLevel = levels[1];
-        PersistentStat.BonusEXPLevel = levels[2];
-        PersistentStat.CriChanceLevel = levels[3];
-        PersistentStat.CriDamageLevel = levels[4];
-        PersistentStat.StartingBallLevel = levels[5];
+        StatManager.instance.Persistent_stat.AttackDamageLevel = levels[0];
+        StatManager.instance.Persistent_stat.EffectDamageLevel = levels[1];
+        StatManager.instance.Persistent_stat.BonusEXPLevel = levels[2];
+        StatManager.instance.Persistent_stat.CriChanceLevel = levels[3];
+        StatManager.instance.Persistent_stat.CriDamageLevel = levels[4];
+        StatManager.instance.Persistent_stat.StartingBallLevel = levels[5];
 
-        PersistentStat.AttackDamage = 5 + (levels[0] - levels[0] / 10 - 1) * 0.1f + levels[0] / 10 * 0.3f;
-        PersistentStat.EffectDamage = 5 + (levels[1] - levels[1] / 10 - 1) * 0.1f + levels[1] / 10 * 0.3f;
-        PersistentStat.BonusExp = 1 + (levels[2] - levels[2] / 10 - 1) * 0.03f + levels[2] / 10 * 0.1f;
-        PersistentStat.CriticalChance = (levels[3] - levels[3] / 10 - 1) * 0.005f + levels[3] / 10 * 0.02f;
-        PersistentStat.CriticalDamage = 1 + (levels[4] - levels[4] / 10 - 1) * 0.005f + levels[4] / 10 * 0.02f;
-        PersistentStat.StartingBall = 5 + (levels[5] - levels[5] / 10 - 1) + levels[5] / 10 * 3;
+        StatManager.instance.Persistent_stat.AttackDamage = 5 + (levels[0] - levels[0] / 10 - 1) * 0.1f + levels[0] / 10 * 0.3f;
+        StatManager.instance.Persistent_stat.EffectDamage = 5 + (levels[1] - levels[1] / 10 - 1) * 0.1f + levels[1] / 10 * 0.3f;
+        StatManager.instance.Persistent_stat.BonusExp = 1 + (levels[2] - levels[2] / 10 - 1) * 0.03f + levels[2] / 10 * 0.1f;
+        StatManager.instance.Persistent_stat.CriticalChance = (levels[3] - levels[3] / 10 - 1) * 0.005f + levels[3] / 10 * 0.02f;
+        StatManager.instance.Persistent_stat.CriticalDamage = 1 + (levels[4] - levels[4] / 10 - 1) * 0.005f + levels[4] / 10 * 0.02f;
+        StatManager.instance.Persistent_stat.StartingBall = 5 + (levels[5] - levels[5] / 10 - 1) + levels[5] / 10 * 3;
+
+        StatManager.instance.SavePersistentStats();
+    }
+
+    public void SetUpgradePanel()
+    {
+        List<float> statList = new List<float>
+        {
+            StatManager.instance.Persistent_stat.AttackDamage,
+            StatManager.instance.Persistent_stat.EffectDamage,
+            StatManager.instance.Persistent_stat.BonusExp,
+            StatManager.instance.Persistent_stat.CriticalChance,
+            StatManager.instance.Persistent_stat.CriticalDamage,
+            StatManager.instance.Persistent_stat.StartingBall
+        };
+
+        List<int> LevelList = new List<int>
+        {
+            StatManager.instance.Persistent_stat.AttackDamageLevel,
+            StatManager.instance.Persistent_stat.EffectDamageLevel,
+            StatManager.instance.Persistent_stat.BonusEXPLevel,
+            StatManager.instance.Persistent_stat.CriChanceLevel,
+            StatManager.instance.Persistent_stat.CriDamageLevel,
+            StatManager.instance.Persistent_stat.StartingBallLevel
+        };
 
 
-        StatManager.instance.SavePersistentStats(PersistentStat);
+        TMP_Text[] texts;
+        for (int i = 0; i < 6; i++)
+        {
+            switch (i)
+            {
+                case 0: //Attack Damage
+                    if ((levels[i] + 1) % 10 == 0)
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1") 
+                            + " -> " + 
+                            (statList[i] + Descriptions[i + 6]).ToString("F1");
+                    else
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1")
+                            + " -> " + 
+                            (statList[i] + Descriptions[i]).ToString("F1");
+                    break;
+                case 1: //Effect Damage
+                    if ((levels[i] + 1) % 10 == 0)
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1")
+                            + " -> " + 
+                            (statList[i] + Descriptions[i + 6]).ToString("F1");
+                    else
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1") 
+                            + " -> " +
+                            (statList[i] + Descriptions[i]).ToString("F1");
+                    break;
+                case 2:// bonus exp
+                    if ((levels[i] + 1) % 10 == 0)
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F0")
+                            + "%" + " -> " + 
+                            ((statList[i] + Descriptions[i + 6] - 1) * 100).ToString("F0") + "%";
+                    else
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F0")
+                            + "%" + " -> " + 
+                            ((statList[i] + Descriptions[i] - 1) * 100).ToString("F0") + "%";
+                    break;
+                case 3: //Critical Chance
+                    if ((levels[i] + 1) % 10 == 0)
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i]) * 100).ToString("F1")
+                            + "%" + " -> " + 
+                            ((statList[i] + Descriptions[i + 6]) * 100).ToString("F1") + "%";
+                    else
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i]) * 100).ToString("F1")
+                            + "%" + " -> " + 
+                            ((statList[i] + Descriptions[i]) * 100).ToString("F1") + "%";
+                    break;
+                case 4: //Critical Damage
+                    if ((levels[i] + 1) % 10 == 0)
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F1")
+                            + "%" + " -> " + 
+                            ((statList[i] + Descriptions[i + 6] - 1) * 100).ToString("F1") + "%";
+                    else
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F1")
+                            + "%" + " -> " + 
+                            ((statList[i] + Descriptions[i] - 1) * 100).ToString("F1") + "%";
+                    break;
+                case 5: //Starting Ball
+                    if ((levels[i] + 1) % 10 == 0)
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F0")
+                            + " -> " + 
+                            (statList[i] + Descriptions[i + 6]).ToString("F0");
+                    else
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F0") 
+                            + " -> " + 
+                            (statList[i] + Descriptions[i]).ToString("F0");
+                    break;
+                default:
+                    break;
+
+            }
+            Panels[i].GetComponentsInChildren<TMP_Text>()[2].text = GetUpgradeCost(i).ToString();
+            Panels[i].GetComponentsInChildren<TMP_Text>()[3].text = LevelList[i].ToString();
+        }
+
+        GoldText.text = ChangeNumber(StatManager.instance.Persistent_stat.Gold.ToString("F0"));
     }
 
     int GetUpgradeCost(int statNum)

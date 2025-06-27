@@ -45,7 +45,11 @@ public class GameManager : MonoBehaviour
     public int Wave
     {
         get {  return wave; }
-        set { wave = value;  }
+        set 
+        { 
+            wave = value;
+            Mathf.Clamp(wave, 1, 9999999999);
+        }
     }
 
 
@@ -219,6 +223,8 @@ public class GameManager : MonoBehaviour
     int displayedPointValue = 0;
     public void GameEnd()
     {
+        StatManager.instance.SavePersistentStats(); //for save gold
+
         if (BallManager.Instance.InGameBall.Count > 0)
         {
             foreach (IBall ball in BallManager.Instance.InGameBall)

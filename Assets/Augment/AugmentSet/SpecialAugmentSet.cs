@@ -361,7 +361,6 @@ public class BigBoss : SpecialAugment
             yield return new WaitForSeconds(30f);
             BrickManager.Instance.TeleportBrickPosition(BrickManager.Instance.BigBossBrick);
         }
-        AugmentManager.instance.AddAugment(gameObject.GetComponent<LevelUpAgain>());
     }
 }
 
@@ -3005,7 +3004,7 @@ public class LevelUpAgain : SpecialAugment
 
     public override void Remove()
     {
-        
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LevelUpAgain>());
     }
 
     public override void AfterLevelUpEffect()
