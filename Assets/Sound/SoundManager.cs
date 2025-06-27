@@ -249,6 +249,12 @@ public class SoundManager : MonoBehaviour
         audio.PlayOneShot(SfxClips_Game[12]);
     }
 
+    public void SpawnBossSound(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value / 2f;
+        audio.PlayOneShot(SfxClips_Game[13]);
+    }
+
     public void HolyWaterSound1()
     {
         AudioClip clip = SfxClips_Effect[0];
