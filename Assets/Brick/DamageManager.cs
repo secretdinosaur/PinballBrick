@@ -163,10 +163,11 @@ public static partial class DamageManager //Special Effect Attack
             MaxAttackTime -= TimeCount;
         }
     }
-    public static void DamageByLightningEffect(IBrick brick, float DamageAmount, int ParticleCount)
+    public static void DamageByLightningEffect(IBrick brick, float DamageAmount, int ParticleCount, string type)
     {
         bool isCritical = true;
-        SoundManager.instance.LightningSound();
+        if(type == "Lightning")
+            SoundManager.instance.LightningSound();
         if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
         {
             isCritical = IsCriticalHit(brick);

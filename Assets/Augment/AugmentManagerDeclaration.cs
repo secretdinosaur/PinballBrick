@@ -230,6 +230,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
+        AddAugment(AugmentSet.GetComponent<Homing>());
     }
 }
 

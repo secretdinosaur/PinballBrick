@@ -84,10 +84,12 @@ public class AngryBall : FieldAugment
     public override void Apply()
     {
         Routine = StartCoroutine(StartAngryBall(Cooldown, Power));
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<TargetMark>());
     }
 
     public override void Remove()
     {
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<TargetMark>());
         if (Routine != null)
         {
             StopCoroutine(Routine);
@@ -200,6 +202,7 @@ public class TargetMark : FieldAugment
 
     public override void Apply()
     {
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<AngryBall>());
         Target = GameObject.Find("Target");
         TargetMat = Target.GetComponent<Renderer>().material;
         Target.SetActive(false);
@@ -208,6 +211,7 @@ public class TargetMark : FieldAugment
 
     public override void Remove()
     {
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<AngryBall>());
         if (Routine != null)
         {
             StopCoroutine(Routine);

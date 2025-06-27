@@ -795,7 +795,21 @@ public class BrickManager : MonoBehaviour
 
     public IBrick GetRandomBrick()
     {
+        bool CheckIsThereBrick = false;
+        for(int i = 0; i < CurrentBricks.Count; i++)
+        {
+            if (!CurrentBricks[i].IsSpecialBrick)
+                CheckIsThereBrick = true;
+        }
+
+        if (!CheckIsThereBrick) return null;
         IBrick brick = CurrentBricks[UnityEngine.Random.Range(0, CurrentBricks.Count)];
+
+        if(CheckIsThereBrick)
+            while (!brick.IsSpecialBrick)
+            {
+                brick = CurrentBricks[UnityEngine.Random.Range(0, CurrentBricks.Count)];
+            }
         return brick;
     }
 
