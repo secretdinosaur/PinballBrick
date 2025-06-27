@@ -15,7 +15,6 @@ public class BombBall : IBall
         BoomCount = 3;
         BallType = "BombBall";
         BallBaseDamage = 0;
-        GameManager.instance.SummonedBalls += 1;
         gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
         isInstantBomb = AugmentManager.instance.determineAugmentID("SPECIAL_78");
         if (!isInstantBomb)

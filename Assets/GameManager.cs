@@ -60,23 +60,21 @@ public class GameManager : MonoBehaviour
         get { return reachedWave; }
         set
         {
-            if(value > reachedWave)
+            if (value > reachedWave)
             {
                 reachedWave = value;
+                if (value > StatManager.instance.Statistics.ReachedWave)
+                {
+                    RecordStatistics.ReachedWave = value;
+                }
             }
         }
     }
+    public StatisticsSet RecordStatistics;
 
-    public int LevelUpCount;
-    public int PassedWave;
-    public int DestroyedBricks;
-    public int DestroyedBossBricks;
-    public int SummonedBalls;
-    public int DiedBalls;
     void Awake()
     {
         instance = this;
-
 
         PausePanel = GameObject.Find("Canvas").transform.Find("PausePanel").gameObject;
         GameEndPanel = GameObject.Find("Canvas").transform.Find("GameEndPanel").gameObject;
@@ -104,13 +102,9 @@ public class GameManager : MonoBehaviour
         WaveExtraNoticeText = GameObject.Find("Canvas").transform.Find("WaveExtraNoticeText").GetComponent<TMP_Text>();
         
         Wave = 0;
-        LevelUpCount = 0;
-        ReachedWave = 0;
-        PassedWave = 0;
-        DestroyedBricks = 0;
-        DestroyedBossBricks = 0;
-        SummonedBalls = 0;
-        DiedBalls = 0;
+
+        RecordStatistics = new StatisticsSet();
+
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
 
         StartCoroutine(StartGame());
@@ -245,9 +239,19 @@ public class GameManager : MonoBehaviour
     int displayedPointValue = 0;
     public void GameEnd()
     {
+
         LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore);
         StatManager.instance.SavePersistentStats(); //for save gold
-        AchievementManager.instance.AchievementCheck(DestroyedBricks, PassedWave, ReachedWave, SummonedBalls, LevelUpCount, DestroyedBossBricks);
+        AchievementManager.instance.AchievementCheck(
+            RecordStatistics.DestroyedBricks, 
+            RecordStatistics.PassedWave,
+            RecordStatistics.ReachedWave, 
+            RecordStatistics.SummonedBalls, 
+            RecordStatistics.LevelUpCount, 
+            RecordStatistics.DestroyedBossBricks);
+
+        RecordStatistics.Playtime += TimeManager.instance.time;
+        StatManager.instance.UpdateStatistics(RecordStatistics);
 
         if (BallManager.Instance.InGameBall.Count > 0)
         {
@@ -302,7 +306,7 @@ public class GameManager : MonoBehaviour
             })
         ).Insert(
             4.5f,
-            DOVirtual.Float(0, DestroyedBricks, 1f, value =>
+            DOVirtual.Float(0, RecordStatistics.DestroyedBricks, 1f, value =>
             {
                 NoticeDestroyedBricksText_End.text = "Destroyed Bricks : " + Mathf.RoundToInt(value).ToString();
             })

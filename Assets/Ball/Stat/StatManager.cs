@@ -27,6 +27,7 @@ public partial class StatManager : MonoBehaviour
         InitializeTemporaryStats();
         InitializeStatMultiplier();
         UpdateUniversalStat();
+        SettingStatisticsSet();
 
         string json = JsonUtility.ToJson(Persistent_stat, true);
         Debug.LogWarning("Stat Manager : \n" + json);
@@ -114,7 +115,7 @@ public partial class StatManager : MonoBehaviour
         EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
     }
 
-    #region Save and Load Persistent Stat
+    #region c Persistent Stat
 
     private string cloudSaveFileName = "PersistentStat_SaveData.json";
 
@@ -384,6 +385,15 @@ public partial class StatManager : MonoBehaviour
     public void GetGold(int Value)
     {
         Persistent_stat.Gold += Value * (Persistent_stat.BonusGold + Temporary_stat.GoldGain);
+        if (SceneManager.GetActiveScene().name == "Dolsot")
+        {
+            GameManager.instance.RecordStatistics.GainedGold += Value * (Persistent_stat.BonusGold + Temporary_stat.GoldGain);
+        }
+        else
+        {
+            Statistics.GainedGold += Value * (Persistent_stat.BonusGold + Temporary_stat.GoldGain);
+            SaveStatisticsSet();
+        }
     }
 }
 
@@ -769,5 +779,275 @@ public partial class StatManager
         }
         UpdateUniversalStat();
         isChangedStat = true;
+    }
+}
+
+public partial class StatManager //for other stats
+{
+    public StatisticsSet Statistics;
+    private void SettingStatisticsSet()
+    {
+        LoadStatisticsSet();
+    }
+
+    #region Save and Load Statistics
+    private string cloudSaveFileName_StatisticsSet = "StatisticsSet_SaveData.json";
+
+    StatisticsSet initialStatistics = new StatisticsSet
+    {
+        LevelUpCount = 0,
+        AchievedAugmentCount = 0,
+        AchievedRareAugmentCount = 0,
+        GainedGold = 0,
+        ReachedWave = 0,
+        PassedWave = 0,
+        DestroyedBricks = 0,
+        DestroyedBossBricks = 0,
+        SummonedBalls = 0,
+        DiedBalls = 0,
+        Playtime = 0
+    };
+
+
+    public void SaveStatisticsSet()
+    {
+        OpenSaveStatisticsSet();
+    }
+
+    private void OpenSaveStatisticsSet()
+    {
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+
+            savedGameClient.OpenWithAutomaticConflictResolution(cloudSaveFileName_StatisticsSet,
+                DataSource.ReadCacheOrNetwork,
+                ConflictResolutionStrategy.UseLastKnownGood,
+                OnSavedStatisticsSetOpend);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            SaveStatisticsSetOnLocal();
+        }
+    }
+
+    private void OnSavedStatisticsSetOpend(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success to connect online");
+
+            var update = new SavedGameMetadataUpdate.Builder().Build();
+
+            var json = JsonUtility.ToJson(Statistics);
+            byte[] bytes = Encoding.UTF8.GetBytes(json);
+
+            Debug.Log("Save Data : " + bytes);
+
+            savedGameClient.CommitUpdate(game, update, bytes, OnSavedStatisticsSetWritten);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            SaveStatisticsSetOnLocal();
+        }
+    }
+
+    private void OnSavedStatisticsSetWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success");
+        }
+        else
+        {
+            Debug.Log("Fail");
+        }
+    }
+
+    public void LoadStatisticsSet()
+    {
+        OpenLoadStatisticsSet();
+    }
+
+    private void OpenLoadStatisticsSet()
+    {
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+
+            savedGameClient.OpenWithAutomaticConflictResolution(cloudSaveFileName_StatisticsSet,
+                DataSource.ReadCacheOrNetwork,
+                ConflictResolutionStrategy.UseLastKnownGood,
+                LoadStatisticsSetData);
+        }
+        else
+        {
+            LoadStatisticsSetOnLocal();
+        }
+    }
+
+    private void LoadStatisticsSetData(SavedGameRequestStatus status, ISavedGameMetadata data)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success to connect online");
+
+            savedGameClient.ReadBinaryData(data, OnLoadedStatisticsSetData);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            LoadStatisticsSetOnLocal();
+        }
+    }
+
+    private void OnLoadedStatisticsSetData(SavedGameRequestStatus status, byte[] loadedData)
+    {
+        if (loadedData == null || loadedData.Length == 0)
+        {
+            Debug.Log("No cloud data found. Saving default data to cloud.");
+            SaveDefaultStatisticsSet();
+            return;
+        }
+
+        string data = System.Text.Encoding.UTF8.GetString(loadedData);
+
+        if (data == "")
+        {
+            Debug.Log("There's no data, try to save default data");
+            SaveDefaultStatisticsSet();
+        }
+        else
+        {
+            Debug.Log("Loaded data : " + data);
+
+            Statistics = JsonUtility.FromJson<StatisticsSet>(data);
+        }
+    }
+
+    public void SaveDefaultStatisticsSet()
+    {
+        OpenSaveDefaultStatisticsSet();
+    }
+
+    private void OpenSaveDefaultStatisticsSet()
+    {
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+
+            savedGameClient.OpenWithAutomaticConflictResolution(cloudSaveFileName_StatisticsSet,
+                DataSource.ReadCacheOrNetwork,
+                ConflictResolutionStrategy.UseLastKnownGood,
+                OnSavedDefaultStatisticsSetOpend);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            InitializeStatisticsSet();
+        }
+    }
+
+    private void OnSavedDefaultStatisticsSetOpend(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success to connect online");
+
+            var update = new SavedGameMetadataUpdate.Builder().Build();
+
+            var json = JsonUtility.ToJson(initialStatistics);
+            byte[] bytes = Encoding.UTF8.GetBytes(json);
+
+            Statistics = initialStatistics;
+
+            Debug.Log("Save Data : " + bytes);
+            savedGameClient.CommitUpdate(game, update, bytes, OnSavedDefaultStatisticsSetWritten);
+        }
+        else
+        {
+            Debug.Log("Fail to connect online");
+
+            InitializeStatisticsSet();
+        }
+    }
+
+    private void OnSavedDefaultStatisticsSetWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            Debug.Log("Success");
+        }
+        else
+        {
+            Debug.Log("Fail");
+        }
+    }
+
+    private void SaveStatisticsSetOnLocal() // Save Statistics on local session
+    {
+        string json = JsonUtility.ToJson(Statistics, true);
+        File.WriteAllText(Application.persistentDataPath + "/PinballBrick_StatisticsData.json", json);
+
+        Debug.Log("Save Successfully on local session");
+    }
+    private void LoadStatisticsSetOnLocal() // Load Statistics on local session
+    {
+        string json;
+        if (!File.Exists(Application.persistentDataPath + "/PinballBrick_StatisticsData.json"))
+        {
+            Debug.Log("There's no data, try to save default data to the local session");
+
+            InitializeStatisticsSet();
+        }
+        else
+        {
+            json = File.ReadAllText(Application.persistentDataPath + "/PinballBrick_StatisticsData.json");
+            Statistics = JsonUtility.FromJson<StatisticsSet>(json);
+        }
+        Debug.Log("Load Successfully on local session");
+
+    }
+    private void InitializeStatisticsSet() // Initialize Statistics on local session
+    {
+        string json = JsonUtility.ToJson(initialStatistics, true);
+        File.WriteAllText(Application.persistentDataPath + "/PinballBrick_StatisticsData.json", json);
+        Debug.Log("Initialize Successfully on local session");
+
+        Statistics = JsonUtility.FromJson<StatisticsSet>(json);
+    }
+    #endregion
+
+    public void UpdateStatistics(StatisticsSet statisticsSet)
+    {
+        Statistics.LevelUpCount += statisticsSet.LevelUpCount;
+        Statistics.AchievedAugmentCount += statisticsSet.AchievedAugmentCount;
+        Statistics.AchievedRareAugmentCount += statisticsSet.AchievedRareAugmentCount;
+
+        Statistics.GainedGold += statisticsSet.GainedGold;
+
+        Statistics.ReachedWave = 
+            Statistics.ReachedWave < statisticsSet.ReachedWave ? 
+            statisticsSet.ReachedWave : Statistics.ReachedWave;
+        Statistics.PassedWave += statisticsSet.PassedWave;
+
+        Statistics.DestroyedBricks += statisticsSet.DestroyedBricks;
+        Statistics.DestroyedBossBricks += statisticsSet.DestroyedBossBricks;
+
+        Statistics.SummonedBalls += statisticsSet.SummonedBalls;
+        Statistics.DiedBalls += statisticsSet.DiedBalls;
+
+        Statistics.Playtime += statisticsSet.Playtime;
+
+        SaveStatisticsSet();
     }
 }

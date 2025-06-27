@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using GooglePlayGames;
 
 public partial class AchievementManager : MonoBehaviour
 {
@@ -194,27 +195,29 @@ public partial class AchievementManager : MonoBehaviour
                     break;
             }
         }
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
+        {
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_NEWBIE>(), PassedWave);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_NOVICE>(), PassedWave);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_VETERAN>(), PassedWave);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_MASTER>(), PassedWave);
 
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_NEWBIE>(), PassedWave);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_NOVICE>(), PassedWave);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_VETERAN>(), PassedWave);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_MASTER>(), PassedWave);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_BREAKER>(), DestroyedBricks);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_DESTROYER>(), DestroyedBricks);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_ANNIHILATOR>(), DestroyedBricks);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_OBLITERATOR>(), DestroyedBricks);
 
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_BREAKER>(), DestroyedBricks);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_DESTROYER>(), DestroyedBricks);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_ANNIHILATOR>(), DestroyedBricks);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_OBLITERATOR>(), DestroyedBricks);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_1>(), ReachedWave);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_2>(), ReachedWave);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_3>(), ReachedWave);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_4>(), ReachedWave);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_5>(), ReachedWave);
 
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_1>(), ReachedWave);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_2>(), ReachedWave);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_3>(), ReachedWave);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_4>(), ReachedWave);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_5>(), ReachedWave);
-
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_SPAWNER>(), SpawnedBalls);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_MACHINE>(), SpawnedBalls);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_PRODUCTION_LINE>(), SpawnedBalls);
-        AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_FACTORY>(), SpawnedBalls);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_SPAWNER>(), SpawnedBalls);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_MACHINE>(), SpawnedBalls);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_PRODUCTION_LINE>(), SpawnedBalls);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_FACTORY>(), SpawnedBalls);
+        }
     }
 
     public void UpdateInGameAchievement()
@@ -298,6 +301,7 @@ public partial class AchievementManager
         {
             PlayerPrefs.SetInt("1_Level", PlayerPrefs.GetInt("1_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("1_Reward"));
+            UpgradeManager.Instance.UpdateGoldUI();
             PlayerPrefs.SetInt("1_Goal", PlayerPrefs.GetInt("1_Goal") + 3 + PlayerPrefs.GetInt("2_Level"));
             PlayerPrefs.SetInt("1_Reward", PlayerPrefs.GetInt("1_Reward") + 39);
             UpdateInGameAchievement();
@@ -310,7 +314,8 @@ public partial class AchievementManager
         {
             PlayerPrefs.SetInt("2_Level", PlayerPrefs.GetInt("2_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("2_Reward"));
-            PlayerPrefs.SetInt("2_Goal", PlayerPrefs.GetInt("2_Goal") + 20 + PlayerPrefs.GetInt("2_Level"));
+            UpgradeManager.Instance.UpdateGoldUI();
+            PlayerPrefs.SetInt("2_Goal", PlayerPrefs.GetInt("2_Goal") + 4 + PlayerPrefs.GetInt("2_Level"));
             PlayerPrefs.SetInt("2_Reward", PlayerPrefs.GetInt("2_Reward") + 45);
             UpdateInGameAchievement();
         }
@@ -322,7 +327,8 @@ public partial class AchievementManager
         {
             PlayerPrefs.SetInt("3_Level", PlayerPrefs.GetInt("3_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("3_Reward"));
-            PlayerPrefs.SetInt("3_Goal", PlayerPrefs.GetInt("3_Goal") + 22 + PlayerPrefs.GetInt("3_Level"));
+            UpgradeManager.Instance.UpdateGoldUI();
+            PlayerPrefs.SetInt("3_Goal", PlayerPrefs.GetInt("3_Goal") + 5 + PlayerPrefs.GetInt("3_Level"));
             PlayerPrefs.SetInt("3_Reward", PlayerPrefs.GetInt("3_Reward") + 45);
             UpdateInGameAchievement();
         }
@@ -334,7 +340,8 @@ public partial class AchievementManager
         {
             PlayerPrefs.SetInt("4_Level", PlayerPrefs.GetInt("4_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("4_Reward"));
-            PlayerPrefs.SetInt("4_Goal", PlayerPrefs.GetInt("4_Goal") + 8 + PlayerPrefs.GetInt("4_Level"));
+            UpgradeManager.Instance.UpdateGoldUI();
+            PlayerPrefs.SetInt("4_Goal", PlayerPrefs.GetInt("4_Goal") + 4 + PlayerPrefs.GetInt("4_Level"));
             PlayerPrefs.SetInt("4_Reward", PlayerPrefs.GetInt("4_Reward") + 53);
             UpdateInGameAchievement();
         }
@@ -346,7 +353,8 @@ public partial class AchievementManager
         {
             PlayerPrefs.SetInt("5_Level", PlayerPrefs.GetInt("5_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("5_Reward"));
-            PlayerPrefs.SetInt("5_Goal", PlayerPrefs.GetInt("5_Goal") + 5 + PlayerPrefs.GetInt("5_Level"));
+            UpgradeManager.Instance.UpdateGoldUI();
+            PlayerPrefs.SetInt("5_Goal", PlayerPrefs.GetInt("5_Goal") + 3 + PlayerPrefs.GetInt("5_Level"));
             PlayerPrefs.SetInt("5_Reward", PlayerPrefs.GetInt("5_Reward") + 67);
             UpdateInGameAchievement();
         }

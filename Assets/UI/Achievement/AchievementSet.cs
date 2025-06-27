@@ -244,7 +244,7 @@ public class ACHIEVEMENT_PINBALLBRICKS_MASTER : IAchievement
 
 public class ACHIEVEMENT_BRICK_BREAKER: IAchievement
 {
-    private int Count;
+    private float progressBuffer = 0f;
     public void OnEnable()
     {
         SetAchievement(GPGSIds.achievement_brick_breaker, "Brick Breaker", "Destroy 500 bricks");
@@ -257,24 +257,31 @@ public class ACHIEVEMENT_BRICK_BREAKER: IAchievement
 
     public override void Progress(int Progress)
     {
-        Progress = Progress / 4 <= 0 ? Progress : Progress / 4;
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress / 4, (achieve) =>
+        int x;
+        progressBuffer += Progress / 4;
+        if(progressBuffer >= 1f)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
+            x = (int)progressBuffer;
+            progressBuffer -= x;
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
+            {
+                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
+                    foreach (var ach in achievements)
                     {
-                        Rewards();
+                        if (ach.id == AchievementID && ach.completed)
+                        {
+                            Rewards();
+                        }
                     }
-                }
+                });
             });
-        });
+        }
     }
 }
 
 public class ACHIEVEMENT_BRICK_DESTROYER : IAchievement
 {
+    private float progressBuffer = 0f;
     public void OnEnable()
     {
         SetAchievement(GPGSIds.achievement_brick_destroyer, "Brick Destroyer", "Destroy 2,000 bricks");
@@ -287,24 +294,31 @@ public class ACHIEVEMENT_BRICK_DESTROYER : IAchievement
 
     public override void Progress(int Progress)
     {
-        Progress = Progress / 4 <= 0 ? Progress : Progress / 4;
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress / 4, (achieve) =>
+        int x;
+        progressBuffer += Progress / 4;
+        if (progressBuffer >= 1f)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
+            x = (int)progressBuffer;
+            progressBuffer -= x;
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
+            {
+                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
+                    foreach (var ach in achievements)
                     {
-                        Rewards();
+                        if (ach.id == AchievementID && ach.completed)
+                        {
+                            Rewards();
+                        }
                     }
-                }
+                });
             });
-        });
+        }
     }
 }
 
 public class ACHIEVEMENT_BRICK_ANNIHILATOR : IAchievement
 {
+    private float progressBuffer = 0f;
     public void OnEnable()
     {
         SetAchievement(GPGSIds.achievement_brick_annihilator, "Brick Annihilator", "Destroy 10,000 bricks");
@@ -317,24 +331,31 @@ public class ACHIEVEMENT_BRICK_ANNIHILATOR : IAchievement
 
     public override void Progress(int Progress)
     {
-        Progress = Progress / 4 <= 0 ? Progress : Progress / 4;
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress / 4, (achieve) =>
+        int x;
+        progressBuffer += Progress / 4;
+        if (progressBuffer >= 1f)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
+            x = (int)progressBuffer;
+            progressBuffer -= x;
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
+            {
+                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
+                    foreach (var ach in achievements)
                     {
-                        Rewards();
+                        if (ach.id == AchievementID && ach.completed)
+                        {
+                            Rewards();
+                        }
                     }
-                }
+                });
             });
-        });
+        }
     }
 }
 
 public class ACHIEVEMENT_BRICK_OBLITERATOR : IAchievement
 {
+    private float progressBuffer = 0f;
     public void OnEnable()
     {
         SetAchievement(GPGSIds.achievement_brick_obliterator, "Brick Obliterator", "Destroy 40,000 bricks");
@@ -347,19 +368,25 @@ public class ACHIEVEMENT_BRICK_OBLITERATOR : IAchievement
 
     public override void Progress(int Progress)
     {
-        Progress = Progress / 4 <= 0 ? Progress : Progress / 4;
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress / 4, (achieve) =>
+        int x;
+        progressBuffer += Progress / 4;
+        if (progressBuffer >= 1f)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
+            x = (int)progressBuffer;
+            progressBuffer -= x;
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
+            {
+                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
+                    foreach (var ach in achievements)
                     {
-                        Rewards();
+                        if (ach.id == AchievementID && ach.completed)
+                        {
+                            Rewards();
+                        }
                     }
-                }
+                });
             });
-        });
+        }
     }
 }
 
@@ -515,6 +542,7 @@ public class ACHIEVEMENT_WAVE_CLIMBER_5 : IAchievement
 
 public class ACHIEVEMENT_BALL_SPAWNER : IAchievement
 {
+    private float progressBuffer = 0f;
     public void OnEnable()
     {
         SetAchievement(GPGSIds.achievement_ball_spawner, "Ball Spawner", "Spawn 100 Balls");
@@ -527,24 +555,31 @@ public class ACHIEVEMENT_BALL_SPAWNER : IAchievement
 
     public override void Progress(int Progress)
     {
-        Progress = Progress / 10 <= 0 ? Progress : Progress / 10;
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress / 10, (achieve) =>
+        int x;
+        progressBuffer += Progress / 10;
+        if (progressBuffer >= 1f)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
+            x = (int)progressBuffer;
+            progressBuffer -= x;
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
+            {
+                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
+                    foreach (var ach in achievements)
                     {
-                        Rewards();
+                        if (ach.id == AchievementID && ach.completed)
+                        {
+                            Rewards();
+                        }
                     }
-                }
+                });
             });
-        });
+        }
     }
 }
 
 public class ACHIEVEMENT_BALL_MACHINE : IAchievement
 {
+    private float progressBuffer = 0f;
     public void OnEnable()
     {
         SetAchievement(GPGSIds.achievement_ball_machine, "Ball Machine", "Spawn 1,000 Balls");
@@ -557,24 +592,31 @@ public class ACHIEVEMENT_BALL_MACHINE : IAchievement
 
     public override void Progress(int Progress)
     {
-        Progress = Progress / 10 <= 0 ? Progress : Progress / 10;
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress / 10, (achieve) =>
+        int x;
+        progressBuffer += Progress / 10;
+        if (progressBuffer >= 1f)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
+            x = (int)progressBuffer;
+            progressBuffer -= x;
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
+            {
+                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
+                    foreach (var ach in achievements)
                     {
-                        Rewards();
+                        if (ach.id == AchievementID && ach.completed)
+                        {
+                            Rewards();
+                        }
                     }
-                }
+                });
             });
-        });
+        }
     }
 }
 
 public class ACHIEVEMENT_BALL_PRODUCTION_LINE : IAchievement
 {
+    private float progressBuffer = 0f;
     public void OnEnable()
     {
         SetAchievement(GPGSIds.achievement_ball_production_line, "Ball Production Line", "Spawn 10,000 Balls");
@@ -587,24 +629,31 @@ public class ACHIEVEMENT_BALL_PRODUCTION_LINE : IAchievement
 
     public override void Progress(int Progress)
     {
-        Progress = Progress / 10 <= 0 ? Progress : Progress / 10;
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress / 10, (achieve) =>
+        int x;
+        progressBuffer += Progress / 10;
+        if (progressBuffer >= 1f)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
+            x = (int)progressBuffer;
+            progressBuffer -= x;
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
+            {
+                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
+                    foreach (var ach in achievements)
                     {
-                        Rewards();
+                        if (ach.id == AchievementID && ach.completed)
+                        {
+                            Rewards();
+                        }
                     }
-                }
+                });
             });
-        });
+        }
     }
 }
 
 public class ACHIEVEMENT_BALL_FACTORY : IAchievement
 {
+    private float progressBuffer = 0f;
     public void OnEnable()
     {
         SetAchievement(GPGSIds.achievement_ball_factory, "Ball Factory", "Spawn 100,000 Balls");
@@ -617,18 +666,24 @@ public class ACHIEVEMENT_BALL_FACTORY : IAchievement
 
     public override void Progress(int Progress)
     {
-        Progress = Progress / 10 <= 0 ? Progress : Progress / 10;
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress / 10, (achieve) =>
+        int x;
+        progressBuffer += Progress / 10;
+        if (progressBuffer >= 1f)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
+            x = (int)progressBuffer;
+            progressBuffer -= x;
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
+            {
+                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
+                    foreach (var ach in achievements)
                     {
-                        Rewards();
+                        if (ach.id == AchievementID && ach.completed)
+                        {
+                            Rewards();
+                        }
                     }
-                }
+                });
             });
-        });
+        }
     }
 }
