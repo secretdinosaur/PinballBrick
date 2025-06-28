@@ -11,6 +11,5 @@ public abstract class IAchievement : MonoBehaviour
         this.AchievementName = AchievementName;
         this.AchievementDescription = AchievementDescription;
     }
-    public virtual void Rewards() { }
     public virtual void Progress(int Progress) { }
 }

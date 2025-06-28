@@ -9,6 +9,7 @@ using GooglePlayGames;
 using System;
 using System.Linq;
 using System.Collections;
+using UnityEngine.SocialPlatforms.Impl;
 
 public partial class AchievementManager : MonoBehaviour
 {
@@ -17,7 +18,6 @@ public partial class AchievementManager : MonoBehaviour
     public List<IAchievement> AchievementList;
 
     public List<List<object>> InGameAchievementProgress;
-
 
     enum InGameAchievementList
     {
@@ -67,6 +67,7 @@ public partial class AchievementManager : MonoBehaviour
             gameObject.AddComponent<ACHIEVEMENT_BALL_PRODUCTION_LINE>(),
             gameObject.AddComponent<ACHIEVEMENT_BALL_FACTORY>(),
         };
+
         LoadDailyQuests();
         GetComponent();
 
@@ -168,6 +169,11 @@ public partial class AchievementManager : MonoBehaviour
 
         if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_LEVEL_UP>(), statistics.LevelUpCount);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_AUGMENTATION>(), statistics.AchievedAugmentCount);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_EUREKA>(), statistics.AchievedRareAugmentCount);
+            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_GIANT_SLAYER>(), statistics.DestroyedBossBricks);
+
             AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_NEWBIE>(), statistics.PassedWave);
             AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_NOVICE>(), statistics.PassedWave);
             AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_VETERAN>(), statistics.PassedWave);

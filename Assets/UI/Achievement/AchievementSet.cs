@@ -10,31 +10,11 @@ public class ACHIEVEMENT_LEVEL_UP : IAchievement
         SetAchievement(GPGSIds.achievement_level_up, "Level Up!", "Level up for the first time");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(200);
-    }
-
     public override void Progress(int Progress)
     {
-        if (PlayGamesPlatform.Instance.IsAuthenticated())
+        if(Progress >= 1)
         {
-            PlayGamesPlatform.Instance.IncrementAchievement(GPGSIds.achievement_level_up, 1, (achieve) =>
-            {
-                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                    foreach (var ach in achievements)
-                    {
-                        if (ach.id == AchievementID && ach.completed)
-                        {
-                            Rewards();
-                        }
-                    }
-                });
-            });
-        }
-        else
-        {
-
+            PlayGamesPlatform.Instance.ReportProgress(AchievementID, 100.0f, null);
         }
     }
 }
@@ -46,25 +26,12 @@ public class ACHIEVEMENT_AUGMENTATION: IAchievement
         SetAchievement(GPGSIds.achievement_augmentation, "Augmentation!", "Choose augmentation for the first time");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(200);
-    }
-
     public override void Progress(int Progress)
     {
-        PlayGamesPlatform.Instance.IncrementAchievement(GPGSIds.achievement_augmentation, 1, (achieve) =>
+        if (Progress >= 1)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+            PlayGamesPlatform.Instance.ReportProgress(AchievementID, 100.0f, null);
+        }
     }
 }
 
@@ -75,25 +42,12 @@ public class ACHIEVEMENT_EUREKA : IAchievement
         SetAchievement(GPGSIds.achievement_eureka, "Eureka!", "Obtain the rarest augmentation");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(1000);
-    }
-
     public override void Progress(int Progress)
     {
-        PlayGamesPlatform.Instance.IncrementAchievement(GPGSIds.achievement_eureka, 1, (achieve) =>
+        if (Progress >= 1)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+            PlayGamesPlatform.Instance.ReportProgress(AchievementID, 100.0f, null);
+        }
     }
 }
 
@@ -104,25 +58,12 @@ public class ACHIEVEMENT_GIANT_SLAYER: IAchievement
         SetAchievement(GPGSIds.achievement_giant_slayer, "Giant Slayer", "Defeat the boss for the first time");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(200);
-    }
-
     public override void Progress(int Progress)
     {
-        PlayGamesPlatform.Instance.IncrementAchievement(GPGSIds.achievement_giant_slayer, 1, (achieve) =>
+        if (Progress >= 1)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+            PlayGamesPlatform.Instance.ReportProgress(AchievementID, 100.0f, null);
+        }
     }
 }
 
@@ -133,25 +74,9 @@ public class ACHIEVEMENT_PINBALLBRICKS_NEWBIE : IAchievement
         SetAchievement(GPGSIds.achievement_pinballbricks_newbie, "Pinballbricks Newbie", "Passed 10 Waves");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(200);
-    }
-
     public override void Progress(int Progress)
     {
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, (achieve) =>
-        {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, null);
     }
 }
 
@@ -162,25 +87,9 @@ public class ACHIEVEMENT_PINBALLBRICKS_NOVICE : IAchievement
         SetAchievement(GPGSIds.achievement_pinballbricks_novice, "Pinballbricks Novice", "Passed 100 Waves");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(500);
-    }
-
     public override void Progress(int Progress)
     {
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, (achieve) =>
-        {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, null);
     }
 }
 
@@ -191,25 +100,9 @@ public class ACHIEVEMENT_PINBALLBRICKS_VETERAN : IAchievement
         SetAchievement(GPGSIds.achievement_pinballbricks_veteran, "Pinballbricks Veteran", "Passed 1,000 Waves");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(1000);
-    }
-
     public override void Progress(int Progress)
     {
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, (achieve) =>
-        {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, null);
     }
 }
 
@@ -220,25 +113,9 @@ public class ACHIEVEMENT_PINBALLBRICKS_MASTER : IAchievement
         SetAchievement(GPGSIds.achievement_pinballbricks_master, "Pinballbricks Master", "Passed 5,000 Waves");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(3000);
-    }
-
     public override void Progress(int Progress)
     {
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, (achieve) =>
-        {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, null);
     }
 }
 
@@ -250,10 +127,6 @@ public class ACHIEVEMENT_BRICK_BREAKER: IAchievement
         SetAchievement(GPGSIds.achievement_brick_breaker, "Brick Breaker", "Destroy 500 bricks");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(200);
-    }
 
     public override void Progress(int Progress)
     {
@@ -263,18 +136,7 @@ public class ACHIEVEMENT_BRICK_BREAKER: IAchievement
         {
             x = (int)progressBuffer;
             progressBuffer -= x;
-            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
-            {
-                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                    foreach (var ach in achievements)
-                    {
-                        if (ach.id == AchievementID && ach.completed)
-                        {
-                            Rewards();
-                        }
-                    }
-                });
-            });
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, null);
         }
     }
 }
@@ -287,11 +149,6 @@ public class ACHIEVEMENT_BRICK_DESTROYER : IAchievement
         SetAchievement(GPGSIds.achievement_brick_destroyer, "Brick Destroyer", "Destroy 2,000 bricks");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(500);
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -300,18 +157,7 @@ public class ACHIEVEMENT_BRICK_DESTROYER : IAchievement
         {
             x = (int)progressBuffer;
             progressBuffer -= x;
-            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
-            {
-                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                    foreach (var ach in achievements)
-                    {
-                        if (ach.id == AchievementID && ach.completed)
-                        {
-                            Rewards();
-                        }
-                    }
-                });
-            });
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, null);
         }
     }
 }
@@ -324,11 +170,6 @@ public class ACHIEVEMENT_BRICK_ANNIHILATOR : IAchievement
         SetAchievement(GPGSIds.achievement_brick_annihilator, "Brick Annihilator", "Destroy 10,000 bricks");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(2000);
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -337,18 +178,7 @@ public class ACHIEVEMENT_BRICK_ANNIHILATOR : IAchievement
         {
             x = (int)progressBuffer;
             progressBuffer -= x;
-            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
-            {
-                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                    foreach (var ach in achievements)
-                    {
-                        if (ach.id == AchievementID && ach.completed)
-                        {
-                            Rewards();
-                        }
-                    }
-                });
-            });
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, null);
         }
     }
 }
@@ -361,11 +191,6 @@ public class ACHIEVEMENT_BRICK_OBLITERATOR : IAchievement
         SetAchievement(GPGSIds.achievement_brick_obliterator, "Brick Obliterator", "Destroy 40,000 bricks");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(6000);
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -374,18 +199,7 @@ public class ACHIEVEMENT_BRICK_OBLITERATOR : IAchievement
         {
             x = (int)progressBuffer;
             progressBuffer -= x;
-            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
-            {
-                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                    foreach (var ach in achievements)
-                    {
-                        if (ach.id == AchievementID && ach.completed)
-                        {
-                            Rewards();
-                        }
-                    }
-                });
-            });
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, null);
         }
     }
 }
@@ -397,26 +211,12 @@ public class ACHIEVEMENT_WAVE_CLIMBER_1 : IAchievement
         SetAchievement(GPGSIds.achievement_wave_climber_1, "Wave Climber 1", "Reaches Wave 20");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(200);
-    }
-
     public override void Progress(int Progress)
     {
-        float x = (Progress / 20) * 100;
-        PlayGamesPlatform.Instance.ReportProgress(GPGSIds.achievement_wave_climber_1, x, (achieve) =>
+        if(Progress >= 20)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+            PlayGamesPlatform.Instance.ReportProgress(AchievementID, 100.0f, null);
+        }
     }
 }
 
@@ -427,26 +227,12 @@ public class ACHIEVEMENT_WAVE_CLIMBER_2 : IAchievement
         SetAchievement(GPGSIds.achievement_wave_climber_2, "Wave Climber 2", "Reaches Wave 40");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(400);
-    }
-
     public override void Progress(int Progress)
     {
-        float x = (Progress / 40) * 100;
-        PlayGamesPlatform.Instance.ReportProgress(GPGSIds.achievement_wave_climber_2, x, (achieve) =>
+        if (Progress >= 40)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+            PlayGamesPlatform.Instance.ReportProgress(AchievementID, 100.0f, null);
+        }
     }
 }
 
@@ -456,27 +242,12 @@ public class ACHIEVEMENT_WAVE_CLIMBER_3 : IAchievement
     {
         SetAchievement(GPGSIds.achievement_wave_climber_3, "Wave Climber 3", "Reaches Wave 60");
     }
-
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(600);
-    }
-
     public override void Progress(int Progress)
     {
-        float x = (Progress / 60) * 100;
-        PlayGamesPlatform.Instance.ReportProgress(GPGSIds.achievement_wave_climber_3, x, (achieve) =>
+        if (Progress >= 60)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+            PlayGamesPlatform.Instance.ReportProgress(AchievementID, 100.0f, null);
+        }
     }
 }
 
@@ -487,26 +258,12 @@ public class ACHIEVEMENT_WAVE_CLIMBER_4 : IAchievement
         SetAchievement(GPGSIds.achievement_wave_climber_4, "Wave Climber 4", "Reaches Wave 80");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(800);
-    }
-
     public override void Progress(int Progress)
     {
-        float x = (Progress / 80) * 100;
-        PlayGamesPlatform.Instance.ReportProgress(GPGSIds.achievement_wave_climber_4, x, (achieve) =>
+        if (Progress >= 80)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+            PlayGamesPlatform.Instance.ReportProgress(AchievementID, 100.0f, null);
+        }
     }
 }
 
@@ -517,26 +274,12 @@ public class ACHIEVEMENT_WAVE_CLIMBER_5 : IAchievement
         SetAchievement(GPGSIds.achievement_wave_climber_5, "Wave Climber 5", "Reaches Wave 100");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(1000);
-    }
-
     public override void Progress(int Progress)
     {
-        float x = (Progress / 100) * 100;
-        PlayGamesPlatform.Instance.ReportProgress(GPGSIds.achievement_wave_climber_5, x, (achieve) =>
+        if (Progress >= 100)
         {
-            PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                foreach (var ach in achievements)
-                {
-                    if (ach.id == AchievementID && ach.completed)
-                    {
-                        Rewards();
-                    }
-                }
-            });
-        });
+            PlayGamesPlatform.Instance.ReportProgress(AchievementID, 100.0f, null);
+        }
     }
 }
 
@@ -548,11 +291,6 @@ public class ACHIEVEMENT_BALL_SPAWNER : IAchievement
         SetAchievement(GPGSIds.achievement_ball_spawner, "Ball Spawner", "Spawn 100 Balls");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(200);
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -561,18 +299,7 @@ public class ACHIEVEMENT_BALL_SPAWNER : IAchievement
         {
             x = (int)progressBuffer;
             progressBuffer -= x;
-            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
-            {
-                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                    foreach (var ach in achievements)
-                    {
-                        if (ach.id == AchievementID && ach.completed)
-                        {
-                            Rewards();
-                        }
-                    }
-                });
-            });
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, null);
         }
     }
 }
@@ -585,11 +312,6 @@ public class ACHIEVEMENT_BALL_MACHINE : IAchievement
         SetAchievement(GPGSIds.achievement_ball_machine, "Ball Machine", "Spawn 1,000 Balls");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(500);
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -598,18 +320,7 @@ public class ACHIEVEMENT_BALL_MACHINE : IAchievement
         {
             x = (int)progressBuffer;
             progressBuffer -= x;
-            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
-            {
-                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                    foreach (var ach in achievements)
-                    {
-                        if (ach.id == AchievementID && ach.completed)
-                        {
-                            Rewards();
-                        }
-                    }
-                });
-            });
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, null);
         }
     }
 }
@@ -622,11 +333,6 @@ public class ACHIEVEMENT_BALL_PRODUCTION_LINE : IAchievement
         SetAchievement(GPGSIds.achievement_ball_production_line, "Ball Production Line", "Spawn 10,000 Balls");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(2000);
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -635,18 +341,7 @@ public class ACHIEVEMENT_BALL_PRODUCTION_LINE : IAchievement
         {
             x = (int)progressBuffer;
             progressBuffer -= x;
-            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
-            {
-                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                    foreach (var ach in achievements)
-                    {
-                        if (ach.id == AchievementID && ach.completed)
-                        {
-                            Rewards();
-                        }
-                    }
-                });
-            });
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, null);
         }
     }
 }
@@ -659,11 +354,6 @@ public class ACHIEVEMENT_BALL_FACTORY : IAchievement
         SetAchievement(GPGSIds.achievement_ball_factory, "Ball Factory", "Spawn 100,000 Balls");
     }
 
-    public override void Rewards()
-    {
-        StatManager.instance.GetGold(6000);
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -672,18 +362,7 @@ public class ACHIEVEMENT_BALL_FACTORY : IAchievement
         {
             x = (int)progressBuffer;
             progressBuffer -= x;
-            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, (achieve) =>
-            {
-                PlayGamesPlatform.Instance.LoadAchievements((achievements) => {
-                    foreach (var ach in achievements)
-                    {
-                        if (ach.id == AchievementID && ach.completed)
-                        {
-                            Rewards();
-                        }
-                    }
-                });
-            });
+            PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, x, null);
         }
     }
 }
