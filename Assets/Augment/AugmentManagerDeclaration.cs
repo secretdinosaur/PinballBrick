@@ -126,7 +126,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<AdditionalThreeAttack>(),
             AugmentSet.AddComponent<CriticalAdditionalAttack>(),
             AugmentSet.AddComponent<Execution>(),
-            AugmentSet.AddComponent<PercentDamage>(),
+            AugmentSet.AddComponent<EffectChanceUp>(),
             AugmentSet.AddComponent<DeathExp>(),
             AugmentSet.AddComponent<DeathGold>(),
             AugmentSet.AddComponent<BigBoss>(),

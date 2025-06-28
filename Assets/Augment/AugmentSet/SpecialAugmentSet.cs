@@ -162,24 +162,30 @@ public class Execution : SpecialAugment
     public override void Remove(){ }
 }
 
-public class PercentDamage : SpecialAugment
+public class EffectChanceUp : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_7", "Rupture", "The ball deals 1% of brick's HP with each attack", "Special", 3);
+        SetAugment("SPECIAL_7", "Catalyst", "All effect hit chance +7%", "Special", 3);
         SetAdditionalDescription(null);
     }
 
-    public override void Apply(){ }
-
-    public override void Remove(){ }
-
-    public override void BeforeAttackEffect(IBrick Brick)
+    public override void Apply()
     {
-        if (Brick.gameObject.activeSelf)
-        { 
-            Brick.ArbitraryDamageAttack(Brick.HpTemp * 0.01f, false, "1%", null);
-        }
+        AugmentManager.instance.effectChance.FireChance += 0.07f;
+        AugmentManager.instance.effectChance.PoisonChance += 0.07f;
+        AugmentManager.instance.effectChance.DecayChance += 0.07f;
+        AugmentManager.instance.effectChance.CurseChance += 0.07f;
+        AugmentManager.instance.effectChance.LightningChance += 0.07f;
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.effectChance.FireChance -= 0.07f;
+        AugmentManager.instance.effectChance.PoisonChance -= 0.07f;
+        AugmentManager.instance.effectChance.DecayChance -= 0.07f;
+        AugmentManager.instance.effectChance.CurseChance -= 0.07f;
+        AugmentManager.instance.effectChance.LightningChance -= 0.07f;
     }
 }
 
@@ -2456,7 +2462,7 @@ public class CriticalOnEffect : SpecialAugment
 {
     private void OnEnable()
     {
-        SetAugment("SPECIAL_59", "Effect Catalyst", "Effect attacks can deal critical hits", "Special", 3);
+        SetAugment("SPECIAL_59", "Effect Amplification", "Effect attacks can deal critical hits", "Special", 3);
         SetAdditionalDescription(null);
     }
 
@@ -3115,11 +3121,11 @@ public class Pyromaniac : SpecialAugment
 
 
         StatManager.instance.ChangeTemporaryStats_EffectDamage(2f);
-        AugmentManager.instance.effectChance.FireChance = 1f;
-        AugmentManager.instance.effectChance.PoisonChance = -99f;
-        AugmentManager.instance.effectChance.DecayChance = -99f;
-        AugmentManager.instance.effectChance.CurseChance = -99f;
-        AugmentManager.instance.effectChance.LightningChance = -99f;
+        AugmentManager.instance.effectChance.FireChance += 1f;
+        AugmentManager.instance.effectChance.PoisonChance += -99f;
+        AugmentManager.instance.effectChance.DecayChance += -99f;
+        AugmentManager.instance.effectChance.CurseChance += -99f;
+        AugmentManager.instance.effectChance.LightningChance += -99f;
     }
 
     public override void Remove()
@@ -3134,11 +3140,11 @@ public class Pyromaniac : SpecialAugment
 
 
         StatManager.instance.ChangeTemporaryStats_EffectDamage(-2f);
-        AugmentManager.instance.effectChance.FireChance = 0.3f;
-        AugmentManager.instance.effectChance.PoisonChance = 0.3f;
-        AugmentManager.instance.effectChance.DecayChance = 0.3f;
-        AugmentManager.instance.effectChance.CurseChance = 0.3f;
-        AugmentManager.instance.effectChance.LightningChance = 1f;
+        AugmentManager.instance.effectChance.FireChance += -1f;
+        AugmentManager.instance.effectChance.PoisonChance += 99f;
+        AugmentManager.instance.effectChance.DecayChance += 99f;
+        AugmentManager.instance.effectChance.CurseChance += 99f;
+        AugmentManager.instance.effectChance.LightningChance += 99f;
     }
 }
 
