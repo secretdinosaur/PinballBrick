@@ -114,7 +114,7 @@ public partial class AugmentManager
         augment.Apply();
         ActivatedAugmentNumber++;
         GameManager.instance.RecordStatistics.AchievedAugmentCount++;
-        if (augment.Rarity >= 1)
+        if (augment.Rarity <= 1)
             GameManager.instance.RecordStatistics.AchievedRareAugmentCount++;
     }
 
