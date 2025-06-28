@@ -13,9 +13,10 @@ public class StatisticsSet
     
     public int DestroyedBricks;
     public int DestroyedBossBricks;
-    
+    public int DestroyedSpecialBricks;
+
     public int SummonedBalls;
     public int DiedBalls;
 
-    public float Playtime;
+    public int Playtime;
 }

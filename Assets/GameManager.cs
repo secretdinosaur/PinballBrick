@@ -239,18 +239,11 @@ public class GameManager : MonoBehaviour
     int displayedPointValue = 0;
     public void GameEnd()
     {
+        RecordStatistics.Playtime += TimeManager.instance.time;
 
         LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore);
         StatManager.instance.SavePersistentStats(); //for save gold
-        AchievementManager.instance.AchievementCheck(
-            RecordStatistics.DestroyedBricks, 
-            RecordStatistics.PassedWave,
-            RecordStatistics.ReachedWave, 
-            RecordStatistics.SummonedBalls, 
-            RecordStatistics.LevelUpCount, 
-            RecordStatistics.DestroyedBossBricks);
-
-        RecordStatistics.Playtime += TimeManager.instance.time;
+        AchievementManager.instance.AchievementCheck(RecordStatistics);
         StatManager.instance.UpdateStatistics(RecordStatistics);
 
         if (BallManager.Instance.InGameBall.Count > 0)

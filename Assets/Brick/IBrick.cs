@@ -107,6 +107,8 @@ public partial class IBrick : MonoBehaviour
         GameManager.instance.RecordStatistics.DestroyedBricks++;
         if (IsBoss)
             GameManager.instance.RecordStatistics.DestroyedBossBricks++;
+        if(IsSpecialBrick)
+            GameManager.instance.RecordStatistics.DestroyedSpecialBricks++;
         Fever.StartFever = true;
         Fever.Instance.CalFeverCount();
         Fever.Instance.FeverGauge = 100;

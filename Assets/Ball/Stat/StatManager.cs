@@ -1042,6 +1042,7 @@ public partial class StatManager //for other stats
 
         Statistics.DestroyedBricks += statisticsSet.DestroyedBricks;
         Statistics.DestroyedBossBricks += statisticsSet.DestroyedBossBricks;
+        Statistics.DestroyedSpecialBricks += statisticsSet.DestroyedSpecialBricks;
 
         Statistics.SummonedBalls += statisticsSet.SummonedBalls;
         Statistics.DiedBalls += statisticsSet.DiedBalls;

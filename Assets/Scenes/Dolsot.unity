@@ -12739,10 +12739,6 @@ MonoBehaviour:
   GameEndPanel: {fileID: 0}
   WaveNoticeText: {fileID: 8099476}
   WaveExtraNoticeText: {fileID: 1866361304}
-  PassedWave: 0
-  DestroyedBricks: 0
-  SummonedBalls: 0
-  DiedBalls: 0
 --- !u!114 &218456174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12772,6 +12768,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AchievementList: []
+  questSet: {fileID: 11400000, guid: 09fda9303f024d54b96b080065b1305d, type: 2}
+  DailyQuestSet: []
 --- !u!1 &236723706
 GameObject:
   m_ObjectHideFlags: 0
@@ -84584,7 +84582,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 137631892}
         m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
-        m_MethodName: OnBrickSpawnButtonClick
+        m_MethodName: OnBossSpawnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
