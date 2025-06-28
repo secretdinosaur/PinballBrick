@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using GooglePlayGames;
 using System;
 using System.Linq;
+using System.Collections;
 
 public partial class AchievementManager : MonoBehaviour
 {
@@ -35,8 +36,6 @@ public partial class AchievementManager : MonoBehaviour
         Value,
         Reward
     }
-
-
 
     private void Awake()
     {
@@ -308,6 +307,17 @@ public partial class AchievementManager //daily quest
     private const string LastResetKey = "LastQuestReset";
     private const string DailyQuestKeyPrefix = "DailyQuest_";
 
+    IEnumerator ResetTimer()
+    {
+        while (true)
+        {
+            TimeSpan Time = DateTime.UtcNow - DateTime.UtcNow.Date;
+            TimeSpan remaining = TimeSpan.FromHours(24) - Time;
+            DailyQuestResetTimer.text = remaining.ToString(@"hh\:mm\:ss");
+            yield return new WaitForSecondsRealtime(1f);
+        }
+    }
+
     void LoadDailyQuests()
     {
         string lastDate = PlayerPrefs.GetString(LastResetKey, "");
@@ -498,6 +508,8 @@ public partial class AchievementManager
     private Slider DailyQuest_2_Slider;
     private Slider DailyQuest_3_Slider;
 
+    private TMP_Text DailyQuestResetTimer;
+
     private void GetComponent()
     {
         if (SceneManager.GetActiveScene().name == "Main")
@@ -585,8 +597,12 @@ public partial class AchievementManager
             DailyQuest_3_Slider = GameObject.Find("Canvas").
                 transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_3/Slider").GetComponent<Slider>();
 
+            DailyQuestResetTimer = GameObject.Find("Canvas").
+                transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/ResetTimer").GetComponent<TMP_Text>();
+
             UpdateInGameAchievement();
             DailyQuestUpdate();
+            StartCoroutine(ResetTimer());
         }
     }
 }
