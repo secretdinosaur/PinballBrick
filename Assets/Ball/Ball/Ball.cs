@@ -8,6 +8,5 @@ public class Ball : IBall
         base.OnEnable();
         BallType = "Ball";
         BallBaseDamage = 0;
-        GameManager.instance.SummonedBalls += 1;
     }
 }

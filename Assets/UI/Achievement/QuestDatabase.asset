@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d743bbf6e39c08843834cf0f21077880, type: 3}
+  m_Name: QuestDatabase
+  m_EditorClassIdentifier: 
+  allQuests:
+  - QuestId: PassedWave
+    QuestName: Passed Wave
+    QuestGoal: 20
+    QuestProgressValue: 0
+    QuestRewards: 200
+    isCleared: 0
+  - QuestId: ReachedWave
+    QuestName: Reached Wave
+    QuestGoal: 20
+    QuestProgressValue: 0
+    QuestRewards: 200
+    isCleared: 0
+  - QuestId: DestroyBrick
+    QuestName: Destroy Brick
+    QuestGoal: 50
+    QuestProgressValue: 0
+    QuestRewards: 150
+    isCleared: 0
+  - QuestId: DestroyBoss
+    QuestName: Destroy Boss
+    QuestGoal: 2
+    QuestProgressValue: 0
+    QuestRewards: 250
+    isCleared: 0
+  - QuestId: DestroySpecialBrick
+    QuestName: Destroy Special Brick
+    QuestGoal: 6
+    QuestProgressValue: 0
+    QuestRewards: 180
+    isCleared: 0
+  - QuestId: SpawnBall
+    QuestName: Spawn Ball
+    QuestGoal: 20
+    QuestProgressValue: 0
+    QuestRewards: 150
+    isCleared: 0
+  - QuestId: Play5Minutes
+    QuestName: Play 5 Minutes
+    QuestGoal: 300
+    QuestProgressValue: 0
+    QuestRewards: 300
+    isCleared: 0

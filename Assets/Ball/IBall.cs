@@ -88,6 +88,7 @@ public partial class IBall : MonoBehaviour
             BallManager.Instance.inGameSpecialBallPosition.Add(gameObject.GetComponent<Transform>());
             BallManager.Instance.inGameSpecialBallCollider.Add(gameObject.GetComponent<Collider2D>());
         }
+        GameManager.instance.RecordStatistics.SummonedBalls++;
     }
 
     public void BallDied()
@@ -126,7 +127,7 @@ public partial class IBall : MonoBehaviour
                     FusionMoveRoutine = null;
                 }
                 GetComponent<Collider2D>().enabled = false;
-                GameManager.instance.DiedBalls += 1;
+                StatManager.instance.Statistics.DiedBalls += 1;
             }
         }
         BallManager.Instance.TakeBall(this);

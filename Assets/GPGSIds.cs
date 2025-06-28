@@ -29,19 +29,23 @@ public static class GPGSIds
         public const string achievement_pinballbricks_veteran = "CgkI_tiIjsAcEAIQBw"; // <GPGSID>
         public const string achievement_brick_breaker = "CgkI_tiIjsAcEAIQEg"; // <GPGSID>
         public const string achievement_brick_destroyer = "CgkI_tiIjsAcEAIQEw"; // <GPGSID>
+        public const string achievement_ball_spawner = "CgkI_tiIjsAcEAIQHQ"; // <GPGSID>
         public const string achievement_level_up = "CgkI_tiIjsAcEAIQBA"; // <GPGSID>
         public const string achievement_wave_climber_1 = "CgkI_tiIjsAcEAIQFg"; // <GPGSID>
         public const string achievement_brick_obliterator = "CgkI_tiIjsAcEAIQFQ"; // <GPGSID>
         public const string achievement_wave_climber_4 = "CgkI_tiIjsAcEAIQGQ"; // <GPGSID>
         public const string achievement_pinballbricks_newbie = "CgkI_tiIjsAcEAIQBQ"; // <GPGSID>
+        public const string achievement_ball_production_line = "CgkI_tiIjsAcEAIQHw"; // <GPGSID>
         public const string achievement_wave_climber_3 = "CgkI_tiIjsAcEAIQGA"; // <GPGSID>
         public const string achievement_wave_climber_5 = "CgkI_tiIjsAcEAIQGg"; // <GPGSID>
         public const string leaderboard_point = "CgkI_tiIjsAcEAIQAw"; // <GPGSID>
         public const string achievement_wave_climber_2 = "CgkI_tiIjsAcEAIQFw"; // <GPGSID>
+        public const string achievement_ball_factory = "CgkI_tiIjsAcEAIQIA"; // <GPGSID>
         public const string achievement_brick_annihilator = "CgkI_tiIjsAcEAIQFA"; // <GPGSID>
         public const string achievement_pinballbricks_novice = "CgkI_tiIjsAcEAIQBg"; // <GPGSID>
         public const string achievement_augmentation = "CgkI_tiIjsAcEAIQCQ"; // <GPGSID>
         public const string achievement_eureka = "CgkI_tiIjsAcEAIQEQ"; // <GPGSID>
+        public const string achievement_ball_machine = "CgkI_tiIjsAcEAIQHg"; // <GPGSID>
 
 }
 

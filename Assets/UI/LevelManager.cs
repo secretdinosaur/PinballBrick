@@ -183,6 +183,7 @@ public partial class LevelManager : MonoBehaviour
         Level++;
         LevelBarMaxValueSet(Level);
         LevelUpQueue.Enqueue(Level);
+        GameManager.instance.RecordStatistics.LevelUpCount++;
         foreach (IAugment augment in AugmentManager.instance.activeAugments)
             augment.AfterLevelUpEffect();
     }
