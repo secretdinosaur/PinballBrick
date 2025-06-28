@@ -1432,11 +1432,15 @@ public class SpawnBallAmountMultiple1 : SpecialAugment
     public override void Apply() 
     {
         AugmentManager.instance.SpawnBallAmount = 2;
+
+        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple2>());
     }
 
     public override void Remove()
     {
         AugmentManager.instance.SpawnBallAmount = 1;
+
+        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple2>());
     }
 }
 
@@ -1446,6 +1450,8 @@ public class SpawnBallAmountMultiple2 : SpecialAugment
     {
         SetAugment("SPECIAL_37", "3x!!", "All summoned balls are tripled", "Special", 0);
         SetAdditionalDescription(null);
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple1>()))
+            AugmentManager.instance.exceptionAugments.Add(this);
     }
 
     public override void Apply()
@@ -1456,6 +1462,8 @@ public class SpawnBallAmountMultiple2 : SpecialAugment
     public override void Remove()
     {
         AugmentManager.instance.SpawnBallAmount = 1;
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple1>()))
+            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple2>());
     }
 }
 public class BallSwarm : SpecialAugment
@@ -1510,15 +1518,11 @@ public class BallSwarm : SpecialAugment
             {
                 Upgrade = true;
                 StatManager.instance.ChangeTemporaryStats_AttackDamage(2f);
-                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-                StatManager.instance.isChangedStat = false;
             }
             if (BallManager.Instance.InGameBall.Count < 15 && BallManager.Instance.LeftBallCount == 0 && Upgrade)
             {
                 Upgrade = false;
                 StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
-                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-                StatManager.instance.isChangedStat = false;
             }
         }
     }
@@ -1600,16 +1604,12 @@ public class LonelyBall : SpecialAugment
             {
                 Upgrade = true;
                 StatManager.instance.ChangeTemporaryStats_AttackDamage(2f);
-                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-                StatManager.instance.isChangedStat = false;
                 //BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(2, 2, 2);
             }
             if (BallManager.Instance.InGameBall.Count > 5 && BallManager.Instance.LeftBallCount == 0 && Upgrade)
             {
                 Upgrade = false;
                 StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
-                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-                StatManager.instance.isChangedStat = false;
                 //BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(1, 1, 1);
             }
         }

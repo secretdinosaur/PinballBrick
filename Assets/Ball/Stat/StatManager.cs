@@ -81,7 +81,6 @@ public partial class StatManager : MonoBehaviour
         };
 
         ShowChangedStatRoutine = null;
-        isChangedStat = false;
     }
 
     public void InitializeTemporaryStats() // temporary stats
@@ -115,7 +114,7 @@ public partial class StatManager : MonoBehaviour
         EffectDamage = (Persistent_stat.EffectDamage + Temporary_stat.EffectDamage) * statMultiplier.EffectDamageMultiplier;
     }
 
-    #region c Persistent Stat
+    #region Save and Load Persistent Stat
 
     private string cloudSaveFileName = "PersistentStat_SaveData.json";
 
@@ -429,9 +428,18 @@ public partial class StatManager
 
     public Coroutine ShowChangedStatRoutine;
 
-    public bool isChangedStat;
+    float startTime;
 
-    public IEnumerator ShowChangedStat()
+    private void GetShowChangedStat()
+    {
+        if(ShowChangedStatRoutine != null)
+        {
+            StopCoroutine(ShowChangedStatRoutine);
+        }
+        ShowChangedStatRoutine = StartCoroutine(ShowChangedStat());
+    }
+
+    private IEnumerator ShowChangedStat()
     {
         CanvasGroup canvasGroup = NoticeChangedStatPanel.GetComponent<CanvasGroup>();
         RectTransform rectTransform = NoticeChangedStatPanel.GetComponent<RectTransform>();
@@ -459,12 +467,13 @@ public partial class StatManager
 
         UpdateChangedStatValueText();
 
-        float startTime = Time.realtimeSinceStartup;
+        startTime = Time.realtimeSinceStartup;
 
         while (Time.realtimeSinceStartup < startTime + 1f)
         {
             float t = (Time.realtimeSinceStartup - startTime) / 1f;
-            rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(-320f, 129f), new Vector2(410f, 129f), t);
+            rectTransform.anchoredPosition = 
+                Vector2.Lerp(new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y), new Vector2(410f, 129f), t); //new Vector2(-320f, 129f)
             canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
             yield return null;
         }
@@ -480,7 +489,8 @@ public partial class StatManager
         {
             float t = (Time.realtimeSinceStartup - startTime) / 1f;
 
-            rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(165f, 129f), new Vector2(-165f, 129f), t);
+            rectTransform.anchoredPosition =
+                Vector2.Lerp(new Vector2(165f, 129f), new Vector2(-165f, 129f), t);
 
             canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
 
@@ -495,6 +505,8 @@ public partial class StatManager
             0, 0, 0, 0, 0, 0, 0, 1, 1
         };
     }
+
+
 
     private void UpdateChangedStatValueText()
     {
@@ -660,14 +672,14 @@ public partial class StatManager
             TotalChangedStatValue[3] += value * 0.2f;
         }
         UpdateUniversalStat();
-        isChangedStat = true;
+        GetShowChangedStat();
     }
     public void ChangeTemporaryStats_CriticalDamage(float value)
     {
         Temporary_stat.CriticalDamage += value;
         TotalChangedStatValue[1] += value;
         UpdateUniversalStat();
-        isChangedStat = true;
+        GetShowChangedStat();
     }
     public void ChangeTemporaryStats_CriticalChance(float value)
     {
@@ -715,7 +727,7 @@ public partial class StatManager
             }
         }
         UpdateUniversalStat();
-        isChangedStat = true;
+        GetShowChangedStat();
     }
     public void ChangeTemporaryStats_EffectDamage(float value)
     {
@@ -727,28 +739,28 @@ public partial class StatManager
             TotalChangedStatValue[0] += value * 0.2f;
         }
         UpdateUniversalStat();
-        isChangedStat = true;
+        GetShowChangedStat();
     }
     public void ChangeTemporaryStats_EffectDuration(float value)
     {
         Temporary_stat.EffectDuration += (float)System.Math.Round(value, 2);
         TotalChangedStatValue[4] += (float)System.Math.Round(value, 2);
         UpdateUniversalStat();
-        isChangedStat = true;
+        GetShowChangedStat();
     }
     public void ChangeTemporaryStats_GoldGain(float value)
     {
         Temporary_stat.GoldGain += (float)System.Math.Round(value, 2);
         TotalChangedStatValue[5] += (float)System.Math.Round(value, 2);
         UpdateUniversalStat();
-        isChangedStat = true;
+        GetShowChangedStat();
     }
     public void ChangeTemporaryStats_ExpGain(float value)
     {
         Temporary_stat.ExpGain += (float)System.Math.Round(value, 2);
         TotalChangedStatValue[6] += (float)System.Math.Round(value, 2);
         UpdateUniversalStat();
-        isChangedStat = true;
+        GetShowChangedStat();
     }
     public void ChangeStatMultiplier_AttackDamageMultiplier(float value)
     {
@@ -763,7 +775,7 @@ public partial class StatManager
             TotalChangedStatValue[7] /= (float)System.Math.Round(-value, 2);
         }
         UpdateUniversalStat();
-        isChangedStat = true;
+        GetShowChangedStat();
     }
     public void ChangeStatMultiplier_EffectDamageMultiplier(float value)
     {
@@ -778,7 +790,7 @@ public partial class StatManager
             TotalChangedStatValue[8] /= (float)System.Math.Round(-value, 2);
         }
         UpdateUniversalStat();
-        isChangedStat = true;
+        GetShowChangedStat();
     }
 }
 
