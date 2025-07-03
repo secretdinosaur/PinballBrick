@@ -330,14 +330,16 @@ public class BrickEffectManager : MonoBehaviour
 
     public IEnumerator DamageByFireEffect(float effectDuration)
     {
+        SoundManager.instance.StartFireSound();
+
         EffectStatusSet["Fire"].IsActive = true;
         FireEffectDuration = effectDuration;
         float interval = 0.2f;
 
         if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
         {
-            brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 5f);
-                brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 86 / 255f, 0) * 2f);
+            brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
+                brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 86 / 255f, 0) * 5f);
             brick.lineRenderer.material.SetFloat("_FireHeight", 0.7f);
         }
         else
@@ -346,8 +348,8 @@ public class BrickEffectManager : MonoBehaviour
                 brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 181 / 255f, 0) * 2f);
             brick.lineRenderer.material.SetFloat("_FireHeight", 1.5f);
         }
+
         brick.lineRenderer.enabled = true;
-        SoundManager.instance.StartFireSound();
         while (FireEffectDuration > 0f)
         {
             if (brick.BrickType == "IgnoreBrick")
@@ -393,6 +395,8 @@ public class BrickEffectManager : MonoBehaviour
                 : (brick.BrickType == "ShieldBrick" && !brick.GetComponent<ShieldBrick>().IsShieldDestroyed)
                 ? 1
                 : brick.DecayDamageCalculate(EffectAttackDamage);
+            print(StatManager.instance.Temporary_stat.EffectDamage);
+            print(StatManager.instance.statMultiplier.EffectDamageMultiplier);
             brick.HP -= FinalEffectAttackDamage;
             brick.ShowText(FinalEffectAttackDamage.ToString("F1"), "Fire", isCritical);
             FireEffectDuration -= interval;

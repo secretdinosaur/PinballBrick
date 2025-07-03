@@ -258,12 +258,36 @@ public class SoundManager : MonoBehaviour
     }
 
 
-    public void BrickDieSound()
+    public void BrickDieSound(string BrickType)
     {
         AudioClip clip = SfxClips_Game[14];
         AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
         audio.volume = SfxVolumeSlider.value;
-        audio.pitch = Random.Range(0.9f, 1.1f);
+        switch(BrickType)
+        {
+            case "HardBrick":
+            case "IgnoreBrick":
+                audio.pitch = Random.Range(0.5f, 0.6f);
+                break;
+            case "Brick":
+            case "TwinBrick":
+                audio.pitch = Random.Range(0.9f, 1.1f);
+                break;
+            case "HealBrick":
+            case "TeleportBrick":
+            case "AbsorbBrick":
+                audio.pitch = Random.Range(1.2f, 1.3f);
+                break;
+            
+            case "SlimeBrick":
+                audio.pitch = Random.Range(1.5f, 1.6f);
+                break;
+            case "GoldBrick":
+            case "ExpBrick":
+            case "BallBrick":
+                audio.pitch = Random.Range(2f, 2.1f);
+                break;
+        }
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
