@@ -169,6 +169,7 @@ public class SoundManager : MonoBehaviour
     public void SpawnBrickSound(AudioSource audio)
     {
         audio.volume = SfxVolumeSlider.value / 2f;
+        audio.pitch = Random.Range(0.9f, 1.1f);
         audio.PlayOneShot(SfxClips_Game[0]);
     }
 
@@ -243,6 +244,54 @@ public class SoundManager : MonoBehaviour
         audio.PlayOneShot(SfxClips_Game[11]);
     }
 
+    public void BallSpawnSound(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value;
+        audio.pitch = Random.Range(0.9f, 1.1f);
+        audio.PlayOneShot(SfxClips_Game[12]);
+    }
+
+    public void SpawnBossSound(AudioSource audio)
+    {
+        audio.volume = SfxVolumeSlider.value;
+        audio.PlayOneShot(SfxClips_Game[13]);
+    }
+
+
+    public void BrickDieSound(string BrickType)
+    {
+        AudioClip clip = SfxClips_Game[14];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value;
+        switch(BrickType)
+        {
+            case "HardBrick":
+            case "IgnoreBrick":
+                audio.pitch = Random.Range(0.5f, 0.6f);
+                break;
+            case "Brick":
+            case "TwinBrick":
+                audio.pitch = Random.Range(0.9f, 1.1f);
+                break;
+            case "HealBrick":
+            case "TeleportBrick":
+            case "AbsorbBrick":
+                audio.pitch = Random.Range(1.2f, 1.3f);
+                break;
+            
+            case "SlimeBrick":
+                audio.pitch = Random.Range(1.5f, 1.6f);
+                break;
+            case "GoldBrick":
+            case "ExpBrick":
+            case "BallBrick":
+                audio.pitch = Random.Range(2f, 2.1f);
+                break;
+        }
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
     public void HolyWaterSound1()
     {
         AudioClip clip = SfxClips_Effect[0];
@@ -288,6 +337,12 @@ public class SoundManager : MonoBehaviour
         audio.volume = SfxVolumeSlider.value;
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
+
+        AudioClip clip2 = SfxClips_Effect[16];
+        AudioSource audio2 = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio2.volume = SfxVolumeSlider.value;
+        audio2.PlayOneShot(clip2);
+        StartCoroutine(WaitForAudioFinish(audio2, clip2.length));
     }
 
     public void FireMaxStackSound()

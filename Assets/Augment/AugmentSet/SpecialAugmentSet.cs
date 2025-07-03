@@ -921,9 +921,8 @@ public class InfiniteGrowBall : SpecialAugment
     private void OnEnable()
     {
         SetAugment("SPECIAL_25", "Infinite Grow Ball", "The ball's attack power increases after destroying bricks", "Grow Ball", 3);
-        SetAdditionalDescription("When a ball dies, its increased stats are reset" +
-            "<sprite=0> +0.1 per destroyed bricks\n" +
-            "<sprite=0> +0.2 per destroyed boss bricks");
+        SetAdditionalDescription("Ball's <sprite=0> +0.1 per destroyed bricks\n" +
+            "Ball's <sprite=0> +0.2 per destroyed boss bricks");
     }
 
     public override void Apply() 
@@ -1233,15 +1232,15 @@ public class RandomEffect : SpecialAugment
                 int Number = Random.Range(1, 4);
                 if (Number == 1)
                 {
-                    Brick.BrickEffect.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration);
+                    Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration);
                 }
                 else if (Number == 2)
                 {
-                    Brick.BrickEffect.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration);
+                    Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration);
                 }
                 else if (Number == 3)
                 {
-                    Brick.BrickEffect.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration);
+                    Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration);
                 }
                 return;
             }

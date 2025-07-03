@@ -330,14 +330,20 @@ public class BrickEffectManager : MonoBehaviour
 
     public IEnumerator DamageByFireEffect(float effectDuration)
     {
+        bool IsMaxStackSounded = false;
         EffectStatusSet["Fire"].IsActive = true;
         FireEffectDuration = effectDuration;
         float interval = 0.2f;
 
         if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
         {
-            brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 5f);
-                brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 86 / 255f, 0) * 2f);
+            if (IsMaxStackSounded)
+            {
+                SoundManager.instance.FireMaxStackSound();
+                IsMaxStackSounded = true;
+            }
+            brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 10f);
+                brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 86 / 255f, 0) * 5f);
             brick.lineRenderer.material.SetFloat("_FireHeight", 0.7f);
         }
         else
@@ -346,8 +352,8 @@ public class BrickEffectManager : MonoBehaviour
                 brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 181 / 255f, 0) * 2f);
             brick.lineRenderer.material.SetFloat("_FireHeight", 1.5f);
         }
+
         brick.lineRenderer.enabled = true;
-        SoundManager.instance.StartFireSound();
         while (FireEffectDuration > 0f)
         {
             if (brick.BrickType == "IgnoreBrick")
@@ -366,7 +372,11 @@ public class BrickEffectManager : MonoBehaviour
             float EffectAttackDamage;
             if (EffectStatusSet["Fire"].EffectStack == EffectStatusSet["Fire"].EffectStackLimit)
             {
-                SoundManager.instance.FireMaxStackSound();
+                if(IsMaxStackSounded)
+                {
+                    SoundManager.instance.FireMaxStackSound();
+                    IsMaxStackSounded = true;
+                }
                 brick.lineRenderer.material.SetColor("_OuterFireColor", new Color(255 / 255f, 8 / 255f, 0) * 5f);
                 brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 86 / 255f, 0) * 2f);
                 brick.lineRenderer.material.SetFloat("_FireHeight", 0.7f);
@@ -383,10 +393,10 @@ public class BrickEffectManager : MonoBehaviour
             }
 
             EffectAttackDamage = isCritical
-                ? (StatManager.instance.Temporary_stat.EffectDamage *
+                ? ((StatManager.instance.Temporary_stat.EffectDamage + StatManager.instance.Persistent_stat.EffectDamage) *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier / 2)
                   * EffectStatusSet["Fire"].EffectStack * DamageManager.CriticalDamage()
-                : (StatManager.instance.Temporary_stat.EffectDamage *
+                : ((StatManager.instance.Temporary_stat.EffectDamage + StatManager.instance.Persistent_stat.EffectDamage) *
                    StatManager.instance.statMultiplier.EffectDamageMultiplier / 2)
                   * EffectStatusSet["Fire"].EffectStack;
             float FinalEffectAttackDamage = GameManager.instance.isGameEnded || brick.IsSpecialBrick ? 0
@@ -405,13 +415,15 @@ public class BrickEffectManager : MonoBehaviour
         brick.lineRenderer.enabled = false;
         brick.Fire = null;
         EffectStatusSet["Fire"].EffectStack = 0;
+        EffectStatusSet["Fire"].IsActive = false;
+        IsMaxStackSounded = false;
     }
 
     public float initialDuration;
     public IEnumerator DamageByPoisonEffect(float effectDuration)   
     {
+        bool IsMaxStackSounded = false;
         Material PoisonMaterial = brick.PoisonEffect.GetComponent<Renderer>().material;
-        SoundManager.instance.PoisonSound();
         float elapsedTime = 0;
         brick.PoisonEffect.SetActive(true);
         EffectStatusSet["Poison"].IsActive = true;
@@ -419,7 +431,12 @@ public class BrickEffectManager : MonoBehaviour
 
         if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
         {
-            SoundManager.instance.MaxStackPoisonSound();
+
+            if (IsMaxStackSounded)
+            {
+                SoundManager.instance.MaxStackPoisonSound();
+                IsMaxStackSounded = true;
+            }
 
             PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
             PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
@@ -471,6 +488,11 @@ public class BrickEffectManager : MonoBehaviour
             }
             if (EffectStatusSet["Poison"].EffectStack == EffectStatusSet["Poison"].EffectStackLimit)
             {
+                if (IsMaxStackSounded)
+                {
+                    SoundManager.instance.MaxStackPoisonSound();
+                    IsMaxStackSounded = true;
+                }
                 PoisonMaterial.SetColor("_Color", new Color(103 / 255f, 180 / 255f, 0) * 1.5f);
                 PoisonMaterial.SetColor("_InnerColor", new Color(214 / 255f, 0 / 255f, 1));
                 PoisonMaterial.SetFloat("_InnerPower", 1.75f);
@@ -551,7 +573,7 @@ public class BrickEffectManager : MonoBehaviour
         EffectStatusSet["Poison"].IsActive = false;
         brick.PoisonEffect.SetActive(false);
         EffectStatusSet["Poison"].EffectStack = 0;
-        
+        IsMaxStackSounded = false;
         brick.PoisonEffect.SetActive(false);
         if (AugmentManager.instance.PoisonBrickSet.Contains(brick))
         {
