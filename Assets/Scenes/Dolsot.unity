@@ -91329,6 +91329,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 92c8321ee99f80047bc47d046f78ee37, type: 3}
   - {fileID: 8300000, guid: c8b0b7339250cea43a6e7ac4e114b83b, type: 3}
   - {fileID: 8300000, guid: 9d447a74f139aab43bd1de7ea829b23f, type: 3}
+  - {fileID: 8300000, guid: 59653a025080e8240b810f7bf1a7a5bc, type: 3}
   Bgm: {fileID: 0}
   Sfx: {fileID: 0}
   Pool: {fileID: 0}

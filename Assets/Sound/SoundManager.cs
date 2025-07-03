@@ -337,6 +337,12 @@ public class SoundManager : MonoBehaviour
         audio.volume = SfxVolumeSlider.value;
         audio.PlayOneShot(clip);
         StartCoroutine(WaitForAudioFinish(audio, clip.length));
+
+        AudioClip clip2 = SfxClips_Effect[16];
+        AudioSource audio2 = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio2.volume = SfxVolumeSlider.value;
+        audio2.PlayOneShot(clip2);
+        StartCoroutine(WaitForAudioFinish(audio2, clip2.length));
     }
 
     public void FireMaxStackSound()

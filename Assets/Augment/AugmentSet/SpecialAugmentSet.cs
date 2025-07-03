@@ -1232,15 +1232,15 @@ public class RandomEffect : SpecialAugment
                 int Number = Random.Range(1, 4);
                 if (Number == 1)
                 {
-                    Brick.BrickEffect.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration);
+                    Brick.DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration);
                 }
                 else if (Number == 2)
                 {
-                    Brick.BrickEffect.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration);
+                    Brick.DamageByPoisonEffect(StatManager.instance.Temporary_stat.EffectDuration);
                 }
                 else if (Number == 3)
                 {
-                    Brick.BrickEffect.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration);
+                    Brick.DecayEffect(StatManager.instance.Temporary_stat.EffectDuration);
                 }
                 return;
             }
