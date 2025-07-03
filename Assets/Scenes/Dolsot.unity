@@ -12699,6 +12699,8 @@ GameObject:
   - component: {fileID: 218456171}
   - component: {fileID: 218456172}
   - component: {fileID: 218456173}
+  - component: {fileID: 218456174}
+  - component: {fileID: 218456175}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -12879,9 +12881,37 @@ MonoBehaviour:
   GameEndPanel: {fileID: 0}
   WaveNoticeText: {fileID: 8099476}
   WaveExtraNoticeText: {fileID: 1866361304}
-  DestroyedBricks: 0
-  SummonedBalls: 0
-  DiedBalls: 0
+--- !u!114 &218456174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218456163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc3cfd9694fd66545a4588eecd671ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RankPanel: {fileID: 0}
+  Ranking: []
+  userId: 
+  userName: 
+--- !u!114 &218456175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218456163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b9492d0aa1ce4c46af188356a5516a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AchievementList: []
+  questSet: {fileID: 11400000, guid: 09fda9303f024d54b96b080065b1305d, type: 2}
+  DailyQuestSet: []
 --- !u!1 &236723706
 GameObject:
   m_ObjectHideFlags: 0
@@ -84675,7 +84705,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 137631892}
         m_TargetAssemblyTypeName: BrickManager, Assembly-CSharp
-        m_MethodName: OnBrickSpawnButtonClick
+        m_MethodName: OnBossSpawnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

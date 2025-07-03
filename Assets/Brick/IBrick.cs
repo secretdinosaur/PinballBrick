@@ -104,7 +104,11 @@ public partial class IBrick : MonoBehaviour
         }
         if(BrickType == "TwinBrick") GetComponent<TwinBrick>().Twin = null;
         if(BrickType == "HealBrick") spriteRenderer.material.SetColor("_Color", GetComponent<HealBrick>().startColor);
-        GameManager.instance.DestroyedBricks++;
+        GameManager.instance.RecordStatistics.DestroyedBricks++;
+        if (IsBoss)
+            GameManager.instance.RecordStatistics.DestroyedBossBricks++;
+        if(IsSpecialBrick)
+            GameManager.instance.RecordStatistics.DestroyedSpecialBricks++;
         Fever.StartFever = true;
         Fever.Instance.CalFeverCount();
         Fever.Instance.FeverGauge = 100;

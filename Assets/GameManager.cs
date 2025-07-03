@@ -5,6 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using static UnityEngine.Rendering.DebugUI;
 using UnityEngine.SceneManagement;
+using GooglePlayGames;
 
 public class GameManager : MonoBehaviour
 {
@@ -49,17 +50,31 @@ public class GameManager : MonoBehaviour
         { 
             wave = value;
             Mathf.Clamp(wave, 1, 9999999999);
+            ReachedWave = value;
         }
     }
 
+    private int reachedWave;
+    public int ReachedWave
+    {
+        get { return reachedWave; }
+        set
+        {
+            if (value > reachedWave)
+            {
+                reachedWave = value;
+                if (value > StatManager.instance.Statistics.ReachedWave)
+                {
+                    RecordStatistics.ReachedWave = value;
+                }
+            }
+        }
+    }
+    public StatisticsSet RecordStatistics;
 
-    public int DestroyedBricks;
-    public int SummonedBalls;
-    public int DiedBalls;
     void Awake()
     {
         instance = this;
-
 
         PausePanel = GameObject.Find("Canvas").transform.Find("PausePanel").gameObject;
         GameEndPanel = GameObject.Find("Canvas").transform.Find("GameEndPanel").gameObject;
@@ -85,10 +100,11 @@ public class GameManager : MonoBehaviour
 
         WaveNoticeText = GameObject.Find("Canvas").transform.Find("WaveNoticeText").GetComponent<TMP_Text>();
         WaveExtraNoticeText = GameObject.Find("Canvas").transform.Find("WaveExtraNoticeText").GetComponent<TMP_Text>();
+        
         Wave = 0;
-        DestroyedBricks = 0;
-        SummonedBalls = 0;
-        DiedBalls = 0;
+
+        RecordStatistics = new StatisticsSet();
+
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
 
         StartCoroutine(StartGame());
@@ -223,7 +239,12 @@ public class GameManager : MonoBehaviour
     int displayedPointValue = 0;
     public void GameEnd()
     {
+        RecordStatistics.Playtime += TimeManager.instance.time;
+
+        LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore);
         StatManager.instance.SavePersistentStats(); //for save gold
+        AchievementManager.instance.AchievementCheck(RecordStatistics);
+        StatManager.instance.UpdateStatistics(RecordStatistics);
 
         if (BallManager.Instance.InGameBall.Count > 0)
         {
@@ -278,7 +299,7 @@ public class GameManager : MonoBehaviour
             })
         ).Insert(
             4.5f,
-            DOVirtual.Float(0, DestroyedBricks, 1f, value =>
+            DOVirtual.Float(0, RecordStatistics.DestroyedBricks, 1f, value =>
             {
                 NoticeDestroyedBricksText_End.text = "Destroyed Bricks : " + Mathf.RoundToInt(value).ToString();
             })

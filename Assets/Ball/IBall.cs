@@ -89,6 +89,7 @@ public partial class IBall : MonoBehaviour
             BallManager.Instance.inGameSpecialBallCollider.Add(gameObject.GetComponent<Collider2D>());
         }
         SoundManager.instance.BallSpawnSound(gameObject.GetComponent<AudioSource>());
+        GameManager.instance.RecordStatistics.SummonedBalls++;
     }
 
     public void BallDied()
@@ -127,7 +128,7 @@ public partial class IBall : MonoBehaviour
                     FusionMoveRoutine = null;
                 }
                 GetComponent<Collider2D>().enabled = false;
-                GameManager.instance.DiedBalls += 1;
+                StatManager.instance.Statistics.DiedBalls += 1;
             }
         }
         BallManager.Instance.TakeBall(this);

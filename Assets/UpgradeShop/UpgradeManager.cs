@@ -222,7 +222,11 @@ public class UpgradeManager : MonoBehaviour
             Panels[i].GetComponentsInChildren<TMP_Text>()[2].text = GetUpgradeCost(i).ToString();
             Panels[i].GetComponentsInChildren<TMP_Text>()[3].text = LevelList[i].ToString();
         }
+        UpdateGoldUI();
+    }
 
+    public void UpdateGoldUI()
+    {
         GoldText.text = ChangeNumber(StatManager.instance.Persistent_stat.Gold.ToString("F0"));
     }
 

@@ -332,6 +332,7 @@ public class BrickManager : MonoBehaviour
             {
                 BrickQueue = null;
                 GameManager.instance.Wave += 1;
+                GameManager.instance.RecordStatistics.PassedWave += 1;
 
                 int WaitingTime = 0;
                 while (WaitingTime < BaseWaitingTimeValue && CurrentBricks.Count > 5)
@@ -774,6 +775,10 @@ public class BrickManager : MonoBehaviour
             SpawnBrickRoutine = null;
         }
         GameManager.instance.Wave += Num;
+        if(Num > 0)
+        {
+            GameManager.instance.RecordStatistics.PassedWave += Num;
+        }
         SpawnBrickRoutine = StartCoroutine(SpawnBricks());
     }
 

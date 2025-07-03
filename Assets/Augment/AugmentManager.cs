@@ -113,6 +113,9 @@ public partial class AugmentManager
         activeAugments.Add(augment);
         augment.Apply();
         ActivatedAugmentNumber++;
+        GameManager.instance.RecordStatistics.AchievedAugmentCount++;
+        if (augment.Rarity <= 1)
+            GameManager.instance.RecordStatistics.AchievedRareAugmentCount++;
     }
 
     public void RemoveAugment(IAugment augment)

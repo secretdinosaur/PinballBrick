@@ -1843,7 +1843,7 @@ public class EnhanceCurseAttack : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.CurseDamageValue += (GameManager.instance.DiedBalls * 0.3f) * 0.015f;
+        AugmentManager.instance.CurseDamageValue += (GameManager.instance.RecordStatistics.DiedBalls * 0.3f) * 0.015f;
     }
 
     public override void Remove() 
