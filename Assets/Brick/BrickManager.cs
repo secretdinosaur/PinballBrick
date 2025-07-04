@@ -177,6 +177,7 @@ public class BrickManager : MonoBehaviour
                     WavePause = true;
             }
         }
+        SoundManager.instance.BrickDieSound(brick.BrickType);
         if (brick.gameObject.activeSelf)
         {
             if (brick.Fire != null)
@@ -639,7 +640,11 @@ public class BrickManager : MonoBehaviour
 
                 Vector2 randomPosition = GenerateRandomPosition();
                 Brick.transform.position = new Vector3(randomPosition.x, randomPosition.y, 35);
-                SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
+                if(Brick.IsBoss)
+                    SoundManager.instance.SpawnBossSound(Brick.GetComponent<AudioSource>());
+
+                else
+                    SoundManager.instance.SpawnBrickSound(Brick.GetComponent<AudioSource>());
                 _FusionBrickHealth = 0;
                 _FusionBrickNum = 0;
             }

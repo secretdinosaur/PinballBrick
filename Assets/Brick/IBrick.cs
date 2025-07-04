@@ -311,6 +311,7 @@ public partial class IBrick
                 (BrickEffect.EffectStatusSet["Fire"].EffectStack != BrickEffect.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
         if (Fire == null)
         {
+            SoundManager.instance.StartFireSound();
             Fire = StartCoroutine(BrickEffect.DamageByFireEffect(effectDuration));
         }
         else
@@ -326,6 +327,8 @@ public partial class IBrick
         if (Poison == null)
         {
             Poison = StartCoroutine(BrickEffect.DamageByPoisonEffect(effectDuration));
+            SoundManager.instance.PoisonSound();
+
             if (AugmentManager.instance.determineAugmentID("SPECIAL_55"))
             {
                 DecayEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.DecayDuration);
