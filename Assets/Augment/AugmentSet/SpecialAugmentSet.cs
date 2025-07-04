@@ -48,16 +48,16 @@ public class FireBall : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<FireEffectStackBlast>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<TheFlamethrower>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Pyromaniac>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<FireEffectStackBlast>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<TheFlamethrower>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<Pyromaniac>().FirstOrDefault());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<FireEffectStackBlast>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<TheFlamethrower>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Pyromaniac>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<FireEffectStackBlast>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<TheFlamethrower>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Pyromaniac>().FirstOrDefault());
     }
 
     public override void AfterMainAttackEffect(IBrick Brick)
@@ -216,8 +216,8 @@ public class FireEffectStackBlast : SpecialAugment
 
     public override void Remove()
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FireBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<FireEffectStackBlast>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<FireBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<FireEffectStackBlast>().FirstOrDefault());
     }
 
     public override void AfterMainAttackEffect(IBrick Brick)
@@ -258,8 +258,8 @@ public class ChainLightning : SpecialAugment
 
     public override void Remove()
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ChainLightning>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<Lightning>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<ChainLightning>().FirstOrDefault());
     }
 
     public override void BeforeAttackEffect(IBrick Brick)
@@ -418,16 +418,16 @@ public class Lightning : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<ThunderStrike>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<ChainLightning>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LightningRod>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<ThunderStrike>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<ChainLightning>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<LightningRod>().FirstOrDefault());
     }
 
     public override void Remove() 
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ThunderStrike>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ChainLightning>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LightningRod>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<ThunderStrike>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<ChainLightning>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<LightningRod>().FirstOrDefault());
     }
 
     public override void AfterAttackEffect(IBrick brick)
@@ -448,18 +448,18 @@ public class PoisonBall : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DeadlyPoison>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<InfinitePoison>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DeadlyPoison>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<InfinitePoison>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DeadlyPoison>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<InfinitePoison>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DeadlyPoison>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<InfinitePoison>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault());
     }
 
     public override void AfterMainAttackEffect(IBrick Brick)
@@ -491,8 +491,8 @@ public class InfinitePoison : SpecialAugment
     {
         BrickManager.Instance.StopCoroutine(Routine);
         Routine = null;
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<InfinitePoison>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<PoisonBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<InfinitePoison>().FirstOrDefault());
     }
 
     IEnumerator GetInfinitePoison()
@@ -553,8 +553,8 @@ public class DeadlyPoison : SpecialAugment
     {
         AugmentManager.instance.PoisonStackLimit = 3;
         AugmentManager.instance.effectChance.PoisonChance -= 0.15f;
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DeadlyPoison>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<PoisonBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DeadlyPoison>().FirstOrDefault());
     }
 }
 public class Chaos : SpecialAugment
@@ -676,16 +676,16 @@ public class DecayBall : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<PowerfulDecay>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayExplosion>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayZone>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<PowerfulDecay>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DecayExplosion>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DecayZone>().FirstOrDefault());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<PowerfulDecay>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayExplosion>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayZone>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<PowerfulDecay>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayExplosion>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayZone>().FirstOrDefault());
     }
 
     public override void BeforeAttackEffect(IBrick Brick)
@@ -717,7 +717,7 @@ public class PowerfulDecay : SpecialAugment
     {
         AugmentManager.instance.DecayDamageMultiple = 1.1f;
         AugmentManager.instance.effectChance.DecayChance -= 0.15f;
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<PowerfulDecay>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<PowerfulDecay>().FirstOrDefault());
     }
 }
 public class DecayExplosion : SpecialAugment
@@ -737,7 +737,7 @@ public class DecayExplosion : SpecialAugment
 
     public override void Remove() 
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayExplosion>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayExplosion>().FirstOrDefault());
     }
 
     public override void AfterBrickDieEffect(IBrick Brick)
@@ -824,8 +824,8 @@ public class TheFlamethrower : SpecialAugment
 
         BallManager.Instance.isOnFlamerower = false;
 
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FireBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<TheFlamethrower>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<FireBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<TheFlamethrower>().FirstOrDefault());
     }
 }
 
@@ -961,12 +961,12 @@ public class InfiniteGrowBall : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<ShareBallAtk>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<ShareBallAtk>().FirstOrDefault());
     }
 
     public override void Remove() 
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ShareBallAtk>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<ShareBallAtk>().FirstOrDefault());
     }
 
     public override void AfterBrickDieEffect(IBrick Brick)
@@ -998,13 +998,13 @@ public class SacrificeQuest1 : SpecialAugment
         QuestAlarm.Instance.SetQuest("Sacrifice I", "Sacrificed", ClearRequiredCount, ClearRequiredCount);
         if (isCleared) 
         {
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest1>());
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SacrificeQuest1>().FirstOrDefault());
             StatManager.instance.ChangeTemporaryStats_AttackDamage(-1.5f);
             StatManager.instance.ChangeTemporaryStats_EffectDamage(-1.5f);
         }
         else
         {
-            AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest1>());
+            AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SacrificeQuest1>().FirstOrDefault());
         }
     }
 
@@ -1018,7 +1018,7 @@ public class SacrificeQuest1 : SpecialAugment
             StatManager.instance.ChangeTemporaryStats_AttackDamage(1.5f);
             StatManager.instance.ChangeTemporaryStats_EffectDamage(1.5f);
 
-            AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest2>());
+            AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SacrificeQuest2>().FirstOrDefault());
             isCleared = true;
         }
     }
@@ -1046,13 +1046,13 @@ public class SacrificeQuest2 : SpecialAugment
         QuestAlarm.Instance.SetQuest("Sacrifice II", "Sacrificed", ClearRequiredCount, ClearRequiredCount);
         if (isCleared)
         {
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest2>());
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SacrificeQuest2>().FirstOrDefault());
             StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.17f);
             StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.17f);
         }
         else
         {
-            AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest2>());
+            AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SacrificeQuest2>().FirstOrDefault());
         }
     }
 
@@ -1067,7 +1067,7 @@ public class SacrificeQuest2 : SpecialAugment
             StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.17f);
             StatManager.instance.GetGold(500);
 
-            AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest3>());
+            AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SacrificeQuest3>().FirstOrDefault());
             isCleared = true;
         }
     }
@@ -1092,11 +1092,11 @@ public class SacrificeQuest3 : SpecialAugment
         QuestAlarm.Instance.SetQuest("Sacrifice III", "Sacrificed", ClearRequiredCount, ClearRequiredCount);
         if (isCleared)
         {
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest3>());
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SacrificeQuest3>().FirstOrDefault());
         }
         else
         {
-            AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SacrificeQuest3>());
+            AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SacrificeQuest3>().FirstOrDefault());
         }
     }
 
@@ -1168,8 +1168,8 @@ public class ShareBallAtk : SpecialAugment
 
     public override void Remove() 
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<InfiniteGrowBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ShareBallAtk>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<InfiniteGrowBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<ShareBallAtk>().FirstOrDefault());
     }
 
     public override void AfterDeathEffect(IBall ball)
@@ -1340,8 +1340,8 @@ public class ThunderStrike : SpecialAugment
 
     public override void Remove()
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ThunderStrike>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<Lightning>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<ThunderStrike>().FirstOrDefault());
         BrickManager.Instance.StopCoroutine(routine);
     }
 
@@ -1481,14 +1481,14 @@ public class SpawnBallAmountMultiple1 : SpecialAugment
     {
         AugmentManager.instance.SpawnBallAmount = 2;
 
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple2>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SpawnBallAmountMultiple2>().FirstOrDefault());
     }
 
     public override void Remove()
     {
         AugmentManager.instance.SpawnBallAmount = 1;
 
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple2>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SpawnBallAmountMultiple2>().FirstOrDefault());
     }
 }
 
@@ -1510,8 +1510,8 @@ public class SpawnBallAmountMultiple2 : SpecialAugment
     public override void Remove()
     {
         AugmentManager.instance.SpawnBallAmount = 1;
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple1>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple2>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<SpawnBallAmountMultiple1>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SpawnBallAmountMultiple2>().FirstOrDefault());
     }
 }
 public class BallSwarm : SpecialAugment
@@ -1529,7 +1529,7 @@ public class BallSwarm : SpecialAugment
     public override void Apply()
     {
         AugmentManager.instance.AugmentRoutines.Add("BallSwarm", GetBallSwarm());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LonelyBall>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<LonelyBall>().FirstOrDefault());
         if (BallManager.Instance.InGameBall.Count > 15)
         {
             for (int i = 0; i < BallManager.Instance.InGameBall.Count - 15; i++)
@@ -1543,7 +1543,7 @@ public class BallSwarm : SpecialAugment
     public override void Remove()
     {
         AugmentManager.instance.AugmentRoutines.Stop("BallSwarm");
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LonelyBall>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<LonelyBall>().FirstOrDefault());
         if (Upgrade)
             StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
     }
@@ -1615,7 +1615,7 @@ public class LonelyBall : SpecialAugment
     {
         AugmentManager.instance.AugmentRoutines.Add("LonelyBall", GetLonelyBall());
 
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<BallSwarm>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<BallSwarm>().FirstOrDefault());
         if (BallManager.Instance.InGameBall.Count > 5)
         {
             for (int i = 0; i < BallManager.Instance.InGameBall.Count - 5; i++)
@@ -1630,7 +1630,7 @@ public class LonelyBall : SpecialAugment
     {
         AugmentManager.instance.AugmentRoutines.Stop("LonelyBall");
 
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<BallSwarm>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<BallSwarm>().FirstOrDefault());
         if (Upgrade)
             StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
     }
@@ -1698,8 +1698,8 @@ public class SuicideBoomBall : SpecialAugment
 
     public override void Remove() 
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SuicideBoomBall>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<SpawnBombBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SuicideBoomBall>().FirstOrDefault());
     }
 
     public override void AfterMainAttackEffect(IBrick Brick)
@@ -1830,16 +1830,16 @@ public class CurseBall : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SummonGhostBall>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<EnhanceCurseAttack>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<ContinuingCurseAttack>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SummonGhostBall>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<EnhanceCurseAttack>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<EnhanceCurseAttack>().FirstOrDefault());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SummonGhostBall>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<EnhanceCurseAttack>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ContinuingCurseAttack>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SummonGhostBall>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<EnhanceCurseAttack>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<EnhanceCurseAttack>().FirstOrDefault());
     }
 
     public override void AfterDeathEffect(IBall ball)
@@ -1871,8 +1871,8 @@ public class SummonGhostBall : SpecialAugment
 
     public override void Remove()
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SummonGhostBall>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<CurseBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SummonGhostBall>().FirstOrDefault());
 
     }
 
@@ -1899,8 +1899,8 @@ public class EnhanceCurseAttack : SpecialAugment
 
     public override void Remove() 
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<EnhanceCurseAttack>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<CurseBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<EnhanceCurseAttack>().FirstOrDefault());
         AugmentManager.instance.CurseDamageValue = 1f;
     }
 
@@ -1943,18 +1943,18 @@ public class SpawnBombBall : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<RebornBombBall>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<SuicideBoomBall>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<InstantBombBall>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<RebornBombBall>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SuicideBoomBall>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<Bombardment>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<InstantBombBall>().FirstOrDefault());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<RebornBombBall>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<SuicideBoomBall>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<InstantBombBall>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<RebornBombBall>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SuicideBoomBall>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Bombardment>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<InstantBombBall>().FirstOrDefault());
     }
 }
 public class ChangeNormalToGlass : SpecialAugment
@@ -1991,8 +1991,8 @@ public class RebornBombBall : SpecialAugment
 
     public override void Remove() 
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<RebornBombBall>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<SpawnBombBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<RebornBombBall>().FirstOrDefault());
     }
 }
 public class OneMoreChance : SpecialAugment
@@ -2432,16 +2432,16 @@ public class DecayingPoison: SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault());
         AugmentManager.instance.effectDuration.FireDuration += 1f;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
-            AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FlammablePoison>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<PoisonBall>().FirstOrDefault()) ||
+            AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault());
         AugmentManager.instance.effectDuration.FireDuration -= 1f;
     }
 }
@@ -2458,16 +2458,16 @@ public class FlammablePoison: SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault());
         AugmentManager.instance.effectDuration.DecayDuration += 2f;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayingPoison>());
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
-            AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayingPoison>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<FlammablePoison>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<PoisonBall>().FirstOrDefault()) ||
+            AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault());
         AugmentManager.instance.effectDuration.DecayDuration -= 2f;
     }
 }
@@ -2654,7 +2654,7 @@ public class MoreAndWeakBricks : SpecialAugment
         BrickManager.Instance.BaseBossHealthValue = 0.66f;
         BrickManager.Instance.BaseWaitingTimeValue = 6;
         BrickManager.Instance.BrickExpValue = BrickManager.Instance.BrickExpValue.Select(x => x * 0.5f).ToList();
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<LessAndStrongBricks>().FirstOrDefault());
     }
 
     public override void Remove()
@@ -2664,7 +2664,7 @@ public class MoreAndWeakBricks : SpecialAugment
         BrickManager.Instance.BaseBossHealthValue = 1f;
         BrickManager.Instance.BaseWaitingTimeValue = 5;
         BrickManager.Instance.BrickExpValue = BrickManager.Instance.BrickExpValue.Select(x => x * 2f).ToList();
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<LessAndStrongBricks>().FirstOrDefault());
     }
 }
 
@@ -2685,7 +2685,7 @@ public class LessAndStrongBricks : SpecialAugment
         BrickManager.Instance.BaseBossHealthValue = 1.33f;
         BrickManager.Instance.BaseWaitingTimeValue = 4;
         BrickManager.Instance.BrickExpValue = BrickManager.Instance.BrickExpValue.Select(x => x * 2f).ToList();
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<MoreAndWeakBricks>().FirstOrDefault());
     }
 
     public override void Remove()
@@ -2695,7 +2695,7 @@ public class LessAndStrongBricks : SpecialAugment
         BrickManager.Instance.BaseBossHealthValue = 1f;
         BrickManager.Instance.BaseWaitingTimeValue = 5;
         BrickManager.Instance.BrickExpValue = BrickManager.Instance.BrickExpValue.Select(x => x * 0.5f).ToList();
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<MoreAndWeakBricks>().FirstOrDefault());
     }
 }
 
@@ -3101,8 +3101,8 @@ public class ContinuingCurseAttack : SpecialAugment
 
     public override void Remove()
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ContinuingCurseAttack>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<CurseBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<ContinuingCurseAttack>().FirstOrDefault());
     }
 }
 
@@ -3123,7 +3123,7 @@ public class LevelUpAgain : SpecialAugment
 
     public override void Remove()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LevelUpAgain>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<LevelUpAgain>().FirstOrDefault());
     }
 
     public override void AfterLevelUpEffect()
@@ -3205,8 +3205,8 @@ public class InstantBombBall : SpecialAugment
 
     public override void Remove()
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<InstantBombBall>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<SpawnBombBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<InstantBombBall>().FirstOrDefault());
     }
 }
 
@@ -3227,10 +3227,10 @@ public class Pyromaniac : SpecialAugment
         AugmentManager.instance.RemoveAugmentOnType("Lightning");
         AugmentManager.instance.RemoveAugmentOnType("Curse");
 
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<PoisonBall>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayBall>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Lightning>());
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<CurseBall>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<PoisonBall>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayBall>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<CurseBall>().FirstOrDefault());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Lightning>().FirstOrDefault());
 
 
         StatManager.instance.ChangeTemporaryStats_EffectDamage(2f);
@@ -3243,13 +3243,13 @@ public class Pyromaniac : SpecialAugment
 
     public override void Remove()
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FireBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Pyromaniac>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<FireBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Pyromaniac>().FirstOrDefault());
 
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<PoisonBall>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<DecayBall>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Lightning>());
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<CurseBall>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<PoisonBall>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DecayBall>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<CurseBall>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<Lightning>().FirstOrDefault());
 
 
         StatManager.instance.ChangeTemporaryStats_EffectDamage(-2f);

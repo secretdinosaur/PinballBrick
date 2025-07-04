@@ -16,7 +16,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     //private List<int> usedIndexes;
     public int ActivatedAugmentNumber;
     public List<IAugment> activeAugments = new List<IAugment>();
-    public static GameObject AugmentSet;
     
     public EffectChance effectChance;
     public int FireStackLimit;
@@ -74,7 +73,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         ActivatedAugmentNumber = 0;
         ExceptedAugmentNumber = 0;
         ClearAllAugments();
-        AugmentSet = GameObject.Find("AugmentSet").gameObject;
         AugmentRoutines = new AugmentRoutine(this);
 
         exceptionAugments = new List<IAugment>
@@ -245,7 +243,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            
+            new SatelliteBeam(),
+            new LightningRod(),
+            new DecayZone(),
+            new Bombardment()
         };
 
         foreach (IAugment augment in TestAugments)
@@ -256,7 +257,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(AugmentSet.GetComponent<Perfectionism>());
+        AddAugment(augmentsSet.OfType<Perfectionism>().FirstOrDefault());
     }
 }
 
@@ -308,7 +309,7 @@ public class EffectDuration
     }
 }
 
-public class AugmentRoutine : MonoBehaviour
+public class AugmentRoutine
 {
     private readonly MonoBehaviour runner;
     private readonly Dictionary<string, Coroutine> routines = new();

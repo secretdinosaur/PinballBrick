@@ -80,7 +80,7 @@ public partial class IBrick : MonoBehaviour
                 }
                 else if (IsBigBoss)
                 {
-                    AugmentManager.instance.AddAugment(AugmentManager.AugmentSet.GetComponent<LevelUpAgain>());
+                    AugmentManager.instance.AddAugment(AugmentManager.instance.augmentsSet.OfType<LevelUpAgain>().FirstOrDefault());
                     BrickManager.Instance.BigBossBrick = null;
                     BrickDie();
                 }

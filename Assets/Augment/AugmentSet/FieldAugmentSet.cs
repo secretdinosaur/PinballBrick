@@ -9,6 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Drawing;
 using Color = UnityEngine.Color;
 using Redcode.Pools;
+using System.Linq;
 
 /*
 public class Example : FieldAugment
@@ -86,12 +87,12 @@ public class AngryBall : FieldAugment
     public override void Apply()
     {
         AugmentManager.instance.AugmentRoutines.Add("AngryBall", StartAngryBall(Cooldown, Power));
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<TargetMark>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<TargetMark>().FirstOrDefault());
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<TargetMark>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<TargetMark>().FirstOrDefault());
         if (AugmentManager.instance.AugmentRoutines.hasKey("AngryBall"))
         {
             AugmentManager.instance.AugmentRoutines.Stop("AngryBall");
@@ -209,7 +210,7 @@ public class TargetMark : FieldAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<AngryBall>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<AngryBall>().FirstOrDefault());
         Target = GameObject.Find("Target");
         TargetMat = Target.GetComponent<Renderer>().material;
         Target.SetActive(false);
@@ -218,7 +219,7 @@ public class TargetMark : FieldAugment
 
     public override void Remove()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<AngryBall>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<AngryBall>().FirstOrDefault());
         if (AugmentManager.instance.AugmentRoutines.hasKey("TargetMark"))
         {
             AugmentManager.instance.AugmentRoutines.Stop("TargetMark");
@@ -312,12 +313,13 @@ public class SatelliteBeam : FieldAugment
     public override string AdditionalDescription => "On hit damage: 10 <sprite=2>\nContinuous damage: <sprite=2>";
     public override bool isFollowUpAugment => false;
 
+    Coroutine Routine;
     float Cooldown = AugmentManager.instance.FieldGlobalCooldown * 6;
     float Duration = StatManager.instance.Temporary_stat.EffectDuration * 20;
 
     public override void Apply()
     {
-        AugmentManager.instance.AugmentRoutines.Add("SatelliteBeam", FireSatelliteBeam(Cooldown, Duration));
+        Routine = AugmentManager.instance.AugmentRoutines.Add("SatelliteBeam", FireSatelliteBeam(Cooldown, Duration));
     }
 
     public override void Remove()
@@ -576,8 +578,8 @@ public class LightningRod: FieldAugment
 
     public override void Remove()
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LightningRod>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<Lightning>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<LightningRod>().FirstOrDefault());
         if (AugmentManager.instance.AugmentRoutines.hasKey("LightningRod"))
         {
             AugmentManager.instance.AugmentRoutines.Stop("LightningRod");
@@ -694,7 +696,7 @@ public class DecayZone : FieldAugment
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<DecayZone>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayZone>().FirstOrDefault());
         if (AugmentManager.instance.AugmentRoutines.hasKey("DecayZone"))
         {
             AugmentManager.instance.AugmentRoutines.Stop("DecayZone");
@@ -1017,8 +1019,8 @@ public class Bombardment : FieldAugment
 
     public override void Remove()
     {
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
-            AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Bombardment>());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<SpawnBombBall>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Bombardment>().FirstOrDefault());
         if (AugmentManager.instance.AugmentRoutines.hasKey("Bombardment"))
         {
             AugmentManager.instance.AugmentRoutines.Stop("Bombardment");

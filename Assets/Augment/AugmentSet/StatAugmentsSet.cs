@@ -357,14 +357,14 @@ public class WeakButStrongEffect : StatAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<WeakButStrongAtk>().FirstOrDefault());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.88f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(1.12f);
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<WeakButStrongAtk>().FirstOrDefault());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.88f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-1.12f);
     }
@@ -381,14 +381,14 @@ public class WeakButStrongAtk : StatAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<WeakButStrongEffect>().FirstOrDefault());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(1.12f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(0.88f);
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<WeakButStrongEffect>().FirstOrDefault());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-1.12f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-0.88f);
     }
@@ -553,14 +553,14 @@ public class Perfectionism : StatAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<MassivelyCriticalDamageUp>().FirstOrDefault());
         StatManager.instance.ChangeTemporaryStats_CriticalChance(1 - StatManager.instance.Persistent_stat.CriticalChance);
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.6f);
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<MassivelyCriticalDamageUp>().FirstOrDefault());
         StatManager.instance.ChangeTemporaryStats_CriticalChance(-StatManager.instance.Temporary_stat.CriticalChance);
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.6f);
     }
@@ -578,14 +578,14 @@ public class MassivelyCriticalDamageUp : StatAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Perfectionism>().FirstOrDefault());
         LevelManager.Instance.StatUpValue[1][0] *= 2;
         LevelManager.Instance.StatUpValue[1][1] *= 2;
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<Perfectionism>().FirstOrDefault());
         LevelManager.Instance.StatUpValue[1][0] /= 2;
         LevelManager.Instance.StatUpValue[1][1] /= 2;
     }
