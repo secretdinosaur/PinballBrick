@@ -26,11 +26,12 @@ public class Example : StatAugment
 
 public class AtkUp2 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_1", "Super Ball II", "<sprite=0> +1.3", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_1";
+    public override string Name => "Super Ball II";
+    public override string Description => "<sprite=0> +1.3";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -45,11 +46,12 @@ public class AtkUp2 : StatAugment
 
 public class AtkUp3 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_2", "Super Ball III", "<sprite=0> +2.5", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_2";
+    public override string Name => "Super Ball III";
+    public override string Description => "<sprite=0> +2.5";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -64,11 +66,12 @@ public class AtkUp3 : StatAugment
 
 public class CritChance35Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_3", "Sharpness III", "<sprite=3> +15%", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_3";
+    public override string Name => "Sharpness III";
+    public override string Description => "<sprite=3> +15%";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -83,11 +86,12 @@ public class CritChance35Up : StatAugment
 
 public class CritDamage15Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_4", "Fatal Attack I", "<sprite=1> +15%", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_4";
+    public override string Name => "Fatal Attack I";
+    public override string Description => "<sprite=1> +15%";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -102,11 +106,12 @@ public class CritDamage15Up : StatAugment
 
 public class CritDamage30Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_5", "Fatal Attack II", "<sprite=1> +30%", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_5";
+    public override string Name => "Fatal Attack II";
+    public override string Description => "<sprite=1> +30%";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -121,10 +126,12 @@ public class CritDamage30Up : StatAugment
 
 public class DecreaseFieldCooldown10 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_6", "Time Accelerator II", "<sprite=10> -10%", 4);
-    }
+    public override string ID => "STAT_6";
+    public override string Name => "Time Accelerator II";
+    public override string Description => "<sprite=10> -10%";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -139,11 +146,12 @@ public class DecreaseFieldCooldown10 : StatAugment
 
 public class EffectDuration10 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_7", "Sticky Ball I", "<sprite=6> +10%", 5);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_7";
+    public override string Name => "Sticky Ball I";
+    public override string Description => "<sprite=6> +10%";
+    public override int Rarity => 5;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -158,11 +166,12 @@ public class EffectDuration10 : StatAugment
 
 public class ExpGain30Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_8", "Researcher II", "<sprite=9> +15%", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_8";
+    public override string Name => "Researcher II";
+    public override string Description => "<sprite=9> +15%";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -177,11 +186,12 @@ public class ExpGain30Up : StatAugment
 
 public class AtkUp1 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_9", "Super Ball I", "<sprite=0> +1", 5);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_9";
+    public override string Name => "Super Ball I";
+    public override string Description => "<sprite=0> +1";
+    public override int Rarity => 5;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -196,11 +206,12 @@ public class AtkUp1 : StatAugment
 
 public class CritChance10Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_10", "Sharpness I", "<sprite=3> +5%", 5);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_10";
+    public override string Name => "Sharpness I";
+    public override string Description => "<sprite=3> +5%";
+    public override int Rarity => 5;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -215,11 +226,12 @@ public class CritChance10Up : StatAugment
 
 public class CritChance20Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_11", "Sharpness II", "<sprite=3> +8%", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_11";
+    public override string Name => "Sharpness II";
+    public override string Description => "<sprite=3> +8%";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -234,11 +246,12 @@ public class CritChance20Up : StatAugment
 
 public class GoldGain10Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_12", "Gold Rush I", "<sprite=8> +20%", 5);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_12";
+    public override string Name => "Gold Rush I";
+    public override string Description => "<sprite=8> +20%";
+    public override int Rarity => 5;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -253,11 +266,12 @@ public class GoldGain10Up : StatAugment
 
 public class GoldGain30Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_13", "Gold Rush II", "<sprite=8> +30%", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_13";
+    public override string Name => "Gold Rush II";
+    public override string Description => "<sprite=8> +30%";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -272,11 +286,12 @@ public class GoldGain30Up : StatAugment
 
 public class GoldGain50Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_14", "Gold Rush III", "<sprite=8> +50%", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_14";
+    public override string Name => "Gold Rush III";
+    public override string Description => "<sprite=8> +50%";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -291,11 +306,12 @@ public class GoldGain50Up : StatAugment
 
 public class AttackAndEffectUp : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_15", "Supreme Ball", "<sprite=0>, <sprite=2> +15%", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_15";
+    public override string Name => "Supreme Ball";
+    public override string Description => "<sprite=0>, <sprite=2> +15%";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -312,11 +328,12 @@ public class AttackAndEffectUp : StatAugment
 
 public class EffectDamageUp1 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_16", "Psychic Ball I", "<sprite=2> +1", 5);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_16";
+    public override string Name => "Psychic Ball I";
+    public override string Description => "<sprite=2> +1";
+    public override int Rarity => 5;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -331,13 +348,12 @@ public class EffectDamageUp1 : StatAugment
 
 public class WeakButStrongEffect : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_17", "Magician", "<sprite=0> -12%\n<sprite=2> +12%", 3);
-        SetAdditionalDescription(null);
-        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<WeakButStrongAtk>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "STAT_17";
+    public override string Name => "Magician";
+    public override string Description => "<sprite=0> -12%\n<sprite=2> +12%";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -356,13 +372,12 @@ public class WeakButStrongEffect : StatAugment
 
 public class WeakButStrongAtk : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_18", "Fighter", "<sprite=0> +12%\n<sprite=2> -12%", 3);
-        SetAdditionalDescription(null);
-        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<WeakButStrongEffect>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "STAT_18";
+    public override string Name => "Fighter";
+    public override string Description => "<sprite=0> +12%\n<sprite=2> -12%";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -381,10 +396,12 @@ public class WeakButStrongAtk : StatAugment
 
 public class DecreaseFieldCooldown5 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_19", "Time Accelerator I", "<sprite=10> +5%", 5);
-    }
+    public override string ID => "STAT_19";
+    public override string Name => "Time Accelerator I";
+    public override string Description => "<sprite=10> +5%";
+    public override int Rarity => 5;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -399,11 +416,12 @@ public class DecreaseFieldCooldown5 : StatAugment
 
 public class DecreaseFieldCooldown20 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_20", "Time Accelerator III", "<sprite=10> +20%", 3);
-    }
-
+    public override string ID => "STAT_20";
+    public override string Name => "Time Accelerator III";
+    public override string Description => "<sprite=10> +20%";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
     public override void Apply()
     {
         AugmentManager.instance.FieldGlobalCooldown *= 0.8f;
@@ -417,11 +435,12 @@ public class DecreaseFieldCooldown20 : StatAugment
 
 public class CritChanceToAttackDamage : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_21", "Risk Management", "<sprite=3> is fixed at 0%\nConverts 1% <sprite=3> to <sprite=0> +0.04 ", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_21";
+    public override string Name => "Risk Management";
+    public override string Description => "<sprite=3> is fixed at 0%\nConverts 1% <sprite=3> to <sprite=0> +0.04";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -436,15 +455,17 @@ public class CritChanceToAttackDamage : StatAugment
 
 public class RandomStatUpOrDown : StatAugment
 {
+    public override string ID => "STAT_22";
+    public override string Name => "Stat Roulette";
+    public override string Description => "<sprite=0>, <sprite=1>, <sprite=2>, <sprite=3> randomly increase or decrease";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
+
     public float ChangeAttackDamage;
     public float ChangeEffectDamage;
     public float ChangeCritDamage;
     public float ChangeCritChance;
-    private void OnEnable()
-    {
-        SetAugment("STAT_22", "Stat Roulette", "<sprite=0>, <sprite=1>, <sprite=2>, <sprite=3> randomly increase or decrease", 4);
-        SetAdditionalDescription(null);
-    }
 
     public override void Apply()
     {
@@ -497,11 +518,12 @@ public class RandomStatUpOrDown : StatAugment
 
 public class Trinity : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_23", "Trinity", "<sprite=0>, <sprite=2>, <sprite=3> 33.3% up and Exp gain 20%", 0);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_23";
+    public override string Name => "Trinity";
+    public override string Description => "<sprite=0>, <sprite=2>, <sprite=3> 33.3% up and Exp gain 20%";
+    public override int Rarity => 0;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -522,13 +544,12 @@ public class Trinity : StatAugment
 
 public class Perfectionism : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_24", "Perfectionism", "<sprite=3> becomes 100%,\n <sprite=0> -50%", 2);
-        SetAdditionalDescription(null);
-        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<MassivelyCriticalDamageUp>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "STAT_24";
+    public override string Name => "Perfectionism";
+    public override string Description => "<sprite=3> becomes 100%,\n <sprite=0> -50%";
+    public override int Rarity => 2;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -547,18 +568,16 @@ public class Perfectionism : StatAugment
 
 public class MassivelyCriticalDamageUp : StatAugment
 {
-    bool isGetAugment;
-    private void OnEnable()
-    {
-        SetAugment("STAT_25", "Waiter", "Max <sprite=3> becomes 10%,\n Critical damage upgrade values are doubled after level up", 2);
-        SetAdditionalDescription(null);
-        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Perfectionism>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "STAT_25";
+    public override string Name => "Waiter";
+    public override string Description => "Max <sprite=3> becomes 10%,\n Critical damage upgrade values are doubled after level up";
+    public override int Rarity => 2;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
+
 
     public override void Apply()
     {
-        isGetAugment = true;
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
         LevelManager.Instance.StatUpValue[1][0] *= 2;
         LevelManager.Instance.StatUpValue[1][1] *= 2;
@@ -566,7 +585,6 @@ public class MassivelyCriticalDamageUp : StatAugment
 
     public override void Remove()
     {
-        isGetAugment = false;
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<Perfectionism>());
         LevelManager.Instance.StatUpValue[1][0] /= 2;
         LevelManager.Instance.StatUpValue[1][1] /= 2;
@@ -575,11 +593,12 @@ public class MassivelyCriticalDamageUp : StatAugment
 
 public class ExpGain10Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_26", "Researcher I", "<sprite=9> +10%", 5);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_26";
+    public override string Name => "Researcher I";
+    public override string Description => "<sprite=9> +10%";
+    public override int Rarity => 5;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -594,11 +613,12 @@ public class ExpGain10Up : StatAugment
 
 public class ExpGain50Up : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_27", "Researcher III", "<sprite=9> +30%", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_27";
+    public override string Name => "Researcher III";
+    public override string Description => "<sprite=9> +30%";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -613,13 +633,15 @@ public class ExpGain50Up : StatAugment
 
 public class AttackEffectBothUp : StatAugment
 {
+    public override string ID => "STAT_28";
+    public override string Name => "Greedy";
+    public override string Description => "<sprite=0>, <sprite=2> stats share 20% of each other's increase";
+    public override int Rarity => 1;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
+
     float UpgradeAttackStat;
     float UpgradeEffectStat;
-    private void OnEnable()
-    {
-        SetAugment("STAT_28", "Greedy", "<sprite=0>, <sprite=2> stats share 20% of each other's increase", 1);
-        SetAdditionalDescription(null);
-    }
 
     public override void Apply()
     {
@@ -642,11 +664,12 @@ public class AttackEffectBothUp : StatAugment
 
 public class AllStatUp : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_29", "Awake", "All stat up", 1);
-        SetAdditionalDescription("Gain stats equal to twice the amount gained from level ups");
-    }
+    public override string ID => "STAT_29";
+    public override string Name => "Awake";
+    public override string Description => "All stat up";
+    public override int Rarity => 1;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -671,11 +694,12 @@ public class AllStatUp : StatAugment
 
 public class EffectDamageUp2 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_30", "Psychic Ball II", "<sprite=2> +1.3", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_30";
+    public override string Name => "Psychic Ball II";
+    public override string Description => "<sprite=2> +1.3";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -690,11 +714,12 @@ public class EffectDamageUp2 : StatAugment
 
 public class EffectDamageUp3 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_31", "Psychic Ball III", "<sprite=2> +2.5", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_31";
+    public override string Name => "Psychic Ball III";
+    public override string Description => "<sprite=2> +2.5";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -709,12 +734,14 @@ public class EffectDamageUp3 : StatAugment
 
 public class LevelUpMania : StatAugment
 {
+    public override string ID => "STAT_32";
+    public override string Name => "Level Up Mania";
+    public override string Description => "After level up, <sprite=9> +2%";
+    public override int Rarity => 5;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
+
     float TotalUpgradedValue;
-    private void OnEnable()
-    {
-        SetAugment("STAT_32", "Level Up Mania", "After level up, <sprite=9> +2%", 5);
-        SetAdditionalDescription(null);
-    }
 
     public override void Apply()
     {
@@ -735,11 +762,12 @@ public class LevelUpMania : StatAugment
 
 public class EffectDuration15 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_33", "Sticky Ball II", "<sprite=6> +15%", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_33";
+    public override string Name => "Sticky Ball II";
+    public override string Description => "<sprite=6> +15%";
+    public override int Rarity => 4;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -754,11 +782,12 @@ public class EffectDuration15 : StatAugment
 
 public class EffectDuration30 : StatAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("STAT_34", "Sticky Ball III", "<sprite=6> +30%", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "STAT_34";
+    public override string Name => "Sticky Ball III";
+    public override string Description => "<sprite=6> +30%";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -773,27 +802,27 @@ public class EffectDuration30 : StatAugment
 
 public class LateBloomer : StatAugment
 {
+    public override string ID => "STAT_35";
+    public override string Name => "Late Bloomer";
+    public override string Description => "<sprite=0>, <sprite=2> -50% and Gain +3% <sprite=0>, <sprite=2> each wave is cleared (up to 75%)";
+    public override int Rarity => 3;
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
+
     public int PassedWave = 0;
-    Coroutine Routine;
-    private void OnEnable()
-    {
-        SetAugment("STAT_35", "Late Bloomer", "<sprite=0>, <sprite=2> -50% and Gain +3% <sprite=0>, <sprite=2> each wave is cleared (up to 75%)", 3);
-        SetAdditionalDescription(null);
-    }
 
     public override void Apply()
     {
-        Routine = StartCoroutine(StatUpRoutine());
+        AugmentManager.instance.AugmentRoutines.Add("LateBloomer", GetLateBloomer());
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(0.5f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(0.5f);
     }
 
     public override void Remove()
     {
-        if(Routine != null)
+        if (AugmentManager.instance.AugmentRoutines.hasKey("LateBloomer"))
         {
-            StopCoroutine(Routine);
-            Routine = null;
+            AugmentManager.instance.AugmentRoutines.Stop("LateBloomer");
         }
         StatManager.instance.ChangeStatMultiplier_AttackDamageMultiplier(-0.5f);
         StatManager.instance.ChangeStatMultiplier_EffectDamageMultiplier(-0.5f);
@@ -807,7 +836,9 @@ public class LateBloomer : StatAugment
         }
     }
 
-    IEnumerator StatUpRoutine()
+
+
+    IEnumerator GetLateBloomer()
     {
         int PreviousWave = GameManager.instance.Wave;
         while (PassedWave <= 25)
@@ -824,5 +855,6 @@ public class LateBloomer : StatAugment
             }
             PreviousWave = GameManager.instance.Wave;
         }
+        AugmentManager.instance.AugmentRoutines.Stop("LateBloomer");
     }
 }

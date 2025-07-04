@@ -38,11 +38,13 @@ public class Example : SpecialAugment
 
 public class FireBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_1", "FireBall", "Bricks have a 30% chance to catch fire when struck by a ball", "Fire", 4);
-        SetAdditionalDescription("Fire damage : <sprite=2> 50% per stack");
-    }
+    public override string ID => "SPECIAL_1";
+    public override string Name => "FireBall";
+    public override string Description => "Bricks have a 30% chance to catch fire when struck by a ball";
+    public override int Rarity => 4;
+    public override string Type => "Fire";
+    public override string AdditionalDescription => "Fire damage : <sprite=2> 50% per stack";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -70,11 +72,13 @@ public class FireBall : SpecialAugment
 
 public class Homing : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_2", "Magnetic Ball", "Ball chases bricks within range", "Special", 1);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_2";
+    public override string Name => "Magnetic Ball";
+    public override string Description => "Ball chases bricks within range";
+    public override int Rarity => 1;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
     public override void Apply()
     {
 
@@ -88,11 +92,13 @@ public class Homing : SpecialAugment
 
 public class BouncePower: SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_3", "Thrust", "<sprite=0> +2%  for each wall bounce up to a maximum of 10%", "Special", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_3";
+    public override string Name => "Thrust";
+    public override string Description => "<sprite=0> +2%  for each wall bounce up to a maximum of 10%";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply(){ }
 
@@ -107,12 +113,13 @@ public class BouncePower: SpecialAugment
 
 public class AdditionalThreeAttack: SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_4", "Afterimage", "Rapid three additional attacks follow after ball hits", "Special", 1);
-        SetAdditionalDescription(
-            "Additional attack : <sprite=0> 25%\n");
-    }
+    public override string ID => "SPECIAL_4";
+    public override string Name => "Afterimage";
+    public override string Description => "Rapid three additional attacks follow after ball hits";
+    public override int Rarity => 1;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Additional attack : <sprite=0> 25%";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply(){ }
 
@@ -122,20 +129,20 @@ public class AdditionalThreeAttack: SpecialAugment
     {
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
-            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.25f, 0.1f, 0.2f));
+            BrickManager.Instance.StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.25f, 0.1f, 0.2f));
         }
     }
 }
 
 public class CriticalAdditionalAttack : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_5", "Deadpoint", "Additional attack follows after critical attack", "Special", 4);
-        SetAdditionalDescription(
-            "Additional attack : <sprite=0> 25%");
-    }
-
+    public override string ID => "SPECIAL_5";
+    public override string Name => "Deadpoint";
+    public override string Description => "Additional attack follows after critical attack";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Additional attack : <sprite=0> 25%";
+    public override bool isFollowUpAugment => false;
     public override void Apply(){  }
 
     public override void Remove(){ }
@@ -144,19 +151,20 @@ public class CriticalAdditionalAttack : SpecialAugment
     {
         if (Brick.gameObject.activeSelf) //Critical Additional Attack
         {
-            StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.25f));
+            BrickManager.Instance.StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.25f));
         }
     }
 }
 
 public class Execution : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_6", "Execution", "THe ball executes bricks with less than 15% of max HP", "Special", 2);
-        SetAdditionalDescription(null);
-    }
-
+    public override string ID => "SPECIAL_6";
+    public override string Name => "Execution";
+    public override string Description => "The ball executes bricks with less than 15% of max HP";
+    public override int Rarity => 2;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
     public override void Apply(){ }
 
     public override void Remove(){ }
@@ -164,11 +172,13 @@ public class Execution : SpecialAugment
 
 public class EffectChanceUp : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_7", "Catalyst", "All effect hit chance +7%", "Special", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_7";
+    public override string Name => "Catalyst";
+    public override string Description => "All effect hit chance +7%";
+    public override int Rarity => 3;
+    public override string Type => "Effect";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -191,16 +201,14 @@ public class EffectChanceUp : SpecialAugment
 
 public class FireEffectStackBlast : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_8", "Fire Burst", "An explosion occurs and spreads fire when the brick reaches maximum fire stack", "Fire", 3);
-        SetAdditionalDescription(
-            "Fire damage : <sprite=2> 50% per stack\n" +
-            "Explosion damage: <sprite=2> 300%");
-        if(!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FireBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
-
+    public override string ID => "SPECIAL_8";
+    public override string Name => "Fire Burst";
+    public override string Description => "An explosion occurs and spreads fire when the brick reaches maximum fire stack";
+    public override int Rarity => 3;
+    public override string Type => "Fire";
+    public override string AdditionalDescription => "Fire damage : <sprite=2> 50% per stack\n" +
+                                    "Explosion damage: <sprite=2> 300%";
+    public override bool isFollowUpAugment => true;
     public override void Apply()
     {
         
@@ -238,13 +246,13 @@ public class FireEffectStackBlast : SpecialAugment
 
 public class ChainLightning : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_9", "Chain Lightning", "Lightning chains to 3 nearby bricks", "Lightning", 2);
-        SetAdditionalDescription("Lightning damage: <sprite=2> 20% + 3% of brick's max HP");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_9";
+    public override string Name => "Chain Lightning";
+    public override string Description => "Lightning chains to 3 nearby bricks";
+    public override int Rarity => 2;
+    public override string Type => "Lightning";
+    public override string AdditionalDescription => "Lightning damage: <sprite=2> 20% + 3% of brick's max HP";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply(){ }
 
@@ -287,18 +295,19 @@ public class ChainLightning : SpecialAugment
         {
             OrderedTargetBricks[i].DamageByLightningEffect(1, 0);
         }
-        StartCoroutine(VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks));
+        BrickManager.Instance.StartCoroutine(VisualEffectManager.Instance.SpawnChainLightning(OrderedTargetBricks));
     }
 }
 
 public class DeathExp : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_10", "Death EXP", "Gain EXP when the ball drops", "Special", 5);
-        SetAdditionalDescription(null);
-    }
-
+    public override string ID => "SPECIAL_10";
+    public override string Name => "Death EXP";
+    public override string Description => "Gain EXP when the ball drops";
+    public override int Rarity => 5;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
     public override void Apply(){ }
 
     public override void Remove(){ }
@@ -311,11 +320,13 @@ public class DeathExp : SpecialAugment
 
 public class DeathGold : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_11", "Death Gold", "Gain Gold when the ball drops", "Special", 5);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_11";
+    public override string Name => "Death Gold";
+    public override string Description => "Gain Gold when the ball drops";
+    public override int Rarity => 5;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply(){ }
 
@@ -329,15 +340,17 @@ public class DeathGold : SpecialAugment
 
 public class BigBoss : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_12", "Big Boss", "Summons a 'Big Boss' with extremely high HP\nDefeating it grants great rewards", "Special", 2);
-        SetAdditionalDescription("Despite being called the Big Boss,\nit is not treated as an actual boss");
-    }
+    public override string ID => "SPECIAL_12";
+    public override string Name => "Big Boss";
+    public override string Description => "Summons a 'Big Boss' with extremely high HP\nDefeating it grants great rewards";
+    public override int Rarity => 2;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Despite being called the Big Boss,\nit is not treated as an actual boss";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
-        StartCoroutine(SettingBigBoss());
+        BrickManager.Instance.StartCoroutine(SettingBigBoss());
     }
 
     public override void Remove()
@@ -356,7 +369,7 @@ public class BigBoss : SpecialAugment
             yield return new WaitUntil(() => BrickManager.Instance.BrickQueue != null);
             BrickManager.Instance.BrickQueue.Enqueue(BrickManager.Instance.SettingBigBoss());
         }
-        StartCoroutine(BigBossAbility());
+        BrickManager.Instance.StartCoroutine(BigBossAbility());
     }
 
     IEnumerator BigBossAbility()
@@ -372,11 +385,13 @@ public class BigBoss : SpecialAugment
 
 public class ChangeBallSpawnPosition : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_13", "Unexpected Strategy", "A ball is summoned from top", "Special", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_13";
+    public override string Name => "Unexpected Strategy";
+    public override string Description => "A ball is summoned from top";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -393,11 +408,13 @@ public class ChangeBallSpawnPosition : SpecialAugment
 
 public class Lightning : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_14", "Lightning Attack", "An additional lightning strike occurs on attack", "Lightning", 4);
-        SetAdditionalDescription("Lightning damage : <sprite=2> 20% + 3% of brick's max HP");
-    }
+    public override string ID => "SPECIAL_14";
+    public override string Name => "Lightning Attack";
+    public override string Description => "An additional lightning strike occurs on attack";
+    public override int Rarity => 4;
+    public override string Type => "Lightning";
+    public override string AdditionalDescription => "Lightning damage : <sprite=2> 20% + 3% of brick's max HP";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply() 
     {
@@ -421,11 +438,13 @@ public class Lightning : SpecialAugment
 
 public class PoisonBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_15", "Poison Ball", "30% chance to poison on hit", "Poison", 4);
-        SetAdditionalDescription("Poison damage : <sprite=2> 50% + 3% of brick's current HP per stack");
-    }
+    public override string ID => "SPECIAL_15";
+    public override string Name => "Poison Ball";
+    public override string Description => "30% chance to poison on hit";
+    public override int Rarity => 4;
+    public override string Type => "Poison";
+    public override string AdditionalDescription => "Poison damage : <sprite=2> 50% + 3% of brick's current HP per stack";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply() 
     {
@@ -455,25 +474,22 @@ public class PoisonBall : SpecialAugment
 
 public class InfinitePoison : SpecialAugment
 {
-    bool isGetAugment = false;
+    public override string ID => "SPECIAL_16";
+    public override string Name => "Infinite Poison";
+    public override string Description => "Brick spreads poison to nearby bricks, on max stacks";
+    public override int Rarity => 2;
+    public override string Type => "Poison";
+    public override string AdditionalDescription => "Poison damage : <sprite=2> 50% + 3% of brick's current HP per stack";
+    public override bool isFollowUpAugment => true;
     Coroutine Routine = null;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_16", "Infinite Poison", "Brick spreads poison to nearby bricks, on max stacks", "Poison", 2);
-        SetAdditionalDescription("Poison damage : <sprite=2> 50% + 3% of brick's current HP per stack");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
     public override void Apply()
     {
-        isGetAugment = true;
-        Routine = StartCoroutine(GetInfinitePoison());
+        Routine = BrickManager.Instance.StartCoroutine(GetInfinitePoison());
     }
 
     public override void Remove() 
     {
-        isGetAugment = false;
-        StopCoroutine(Routine);
+        BrickManager.Instance.StopCoroutine(Routine);
         Routine = null;
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
             AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<InfinitePoison>());
@@ -519,14 +535,13 @@ public class InfinitePoison : SpecialAugment
 
 public class DeadlyPoison : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_17", "Deadly Poison", "+15% poison chance, make max poison stacks to 5.", "Poison", 3);
-        SetAdditionalDescription(
-            "Max stack up 3 to 5\n");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_17";
+    public override string Name => "Deadly Poison";
+    public override string Description => "+15% poison chance, make max poison stacks to 5.";
+    public override int Rarity => 3;
+    public override string Type => "Poison";
+    public override string AdditionalDescription => "Max stack up 3 to 5";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -544,22 +559,25 @@ public class DeadlyPoison : SpecialAugment
 }
 public class Chaos : SpecialAugment
 {
+    public override string ID => "SPECIAL_18";
+    public override string Name => "Chaos";
+    public override string Description => "Random stat up or down\nThen, randomly teleport to a wave between the current wave +5 and +20";
+    public override int Rarity => 1;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
     GameObject Curtain;
     List<float> TotalChangedStatValue;
-    private void OnEnable()
+
+    public override void Apply()
     {
-        SetAugment("SPECIAL_18", "Chaos", "Random stat up or down\nThen, randomly teleport to a wave between the current wave +5 and +20", "Special", 1);
-        SetAdditionalDescription(null);
         Curtain = GameObject.Find("Canvas").transform.Find("Curtain").gameObject;
         Curtain.SetActive(false);
         TotalChangedStatValue = new List<float>
         {
             0, 0, 0, 0, 0
         };
-    }
 
-    public override void Apply()
-    {
         int RandomNumber = Random.Range(3, 5);
         for(int i = 0; i < RandomNumber; i++)
         {
@@ -648,11 +666,13 @@ public class Chaos : SpecialAugment
 }
 public class DecayBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_18", "Decay Ball", "hance to decay on hit", "Decay", 4);
-        SetAdditionalDescription("Decay Effect: Increases damage taken by bricks by 10% per stack");
-    }
+    public override string ID => "SPECIAL_19";
+    public override string Name => "Decay Ball";
+    public override string Description => "Chance to decay on hit";
+    public override int Rarity => 4;
+    public override string Type => "Decay";
+    public override string AdditionalDescription => "Decay Effect: Increases damage taken by bricks by 10% per stack";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply() 
     {
@@ -679,12 +699,13 @@ public class DecayBall : SpecialAugment
 }
 public class PowerfulDecay : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_19", "Powerful Decay", "Decay chance +15%, increase decay damage increase rate to 15%", "Decay", 3);
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_20";
+    public override string Name => "Powerful Decay";
+    public override string Description => "Decay chance +15%, increase decay damage increase rate to 15%";
+    public override int Rarity => 3;
+    public override string Type => "Decay";
+    public override string AdditionalDescription => "Decay Effect: Increases damage taken by bricks by 10% per stack";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -701,14 +722,13 @@ public class PowerfulDecay : SpecialAugment
 }
 public class DecayExplosion : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_20", "Decay Explosion", "Brick explodes when die with max decay stack", "Decay", 2);
-        SetAdditionalDescription(
-            "Explosion damage: 5% of brick's max health");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_21";
+    public override string Name => "Decay Explosion";
+    public override string Description => "Brick explodes when dying in decay";
+    public override int Rarity => 2;
+    public override string Type => "Decay";
+    public override string AdditionalDescription => "Explosion damage: 5% of brick's max health";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -753,11 +773,13 @@ public class DecayExplosion : SpecialAugment
 
 public class ExplosionWithBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_21", "Elasticity", "Balls bounce further when they collide with each other", "Special", 5);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_22";
+    public override string Name => "Elasticity";
+    public override string Description => "Balls bounce further when they collide with each other";
+    public override int Rarity => 5;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply() { }
 
@@ -766,15 +788,14 @@ public class ExplosionWithBall : SpecialAugment
 
 public class TheFlamethrower : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_22", "Fire Aura", "Generates a fire aura around the balls that deals damage and may ignite bricks", "Fire", 2);
-        SetAdditionalDescription("Aura damage : <sprite=2> 20% per stack\n" +
-            "Fire damage : <sprite=2> 50% per stack");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FireBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
-    
+    public override string ID => "SPECIAL_23";
+    public override string Name => "Fire Aura";
+    public override string Description => "Generates a fire aura around the balls that deals damage and may ignite bricks";
+    public override int Rarity => 2;
+    public override string Type => "Fire";
+    public override string AdditionalDescription => "Aura damage : <sprite=2> 20% per stack\n" +
+                                                    "Fire damage : <sprite=2> 50% per stack";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply() 
     {
@@ -810,14 +831,17 @@ public class TheFlamethrower : SpecialAugment
 
 public class LevelUpQuest : SpecialAugment
 {
+    public override string ID => "SPECIAL_24";
+    public override string Name => "Slayer";
+    public override string Description => "Receive 50% EXP and a quest. Complete the quest to level up";
+    public override int Rarity => 5;
+    public override string Type => "Quest";
+    public override string AdditionalDescription => "Quest: Destroy 100 bricks";
+    public override bool isFollowUpAugment => false;
+
     private int KilledEnemy = 0;
     private bool isCleared = false;
     private int ClearRequiredCount = 100;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_23", "Slayer", "Receive 50% EXP and a quest. Complete the quest to level up", "Quest", 5);
-        SetAdditionalDescription("Quest: Destroy 100 bricks");
-    }
 
     public override void Apply()
     {
@@ -846,17 +870,19 @@ public class LevelUpQuest : SpecialAugment
 }
 public class GrowBallQuest : SpecialAugment
 {
+    public override string ID => "SPECIAL_25";
+    public override string Name => "Grow Ball";
+    public override string Description => "Accept a grow ball quest.\nComplete it to attack damage up";
+    public override int Rarity => 5;
+    public override string Type => "Quest";
+    public override string AdditionalDescription => "Quest: Destroy 100 bricks\n" +
+                                                    "<sprite=0> +0.02 per destroyed bricks\n" +
+                                                    "<sprite=0> +0.04 per destroyed boss bricks";
+    public override bool isFollowUpAugment => false;
     private int KilledEnemy;
     private float KeepAtk;
     private bool isCleared = false;
     int ClearRequiredCount = 100;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_24", "Grow Ball", "Accept a grow ball quest.\nComplete it to attack damage up", "Quest", 5);
-        SetAdditionalDescription("Quest: Destroy 100 bricks\n" +
-            "<sprite=0> +0.02 per destroyed bricks\n" +
-            "<sprite=0> +0.04 per destroyed boss bricks");
-    }
 
     public override void Apply()
     {
@@ -885,7 +911,7 @@ public class GrowBallQuest : SpecialAugment
             {
                 StatManager.instance.ChangeTemporaryStats_AttackDamage(KeepAtk + 1);
                 isCleared = true;
-                StartCoroutine(GrowBall());
+                BrickManager.Instance.StartCoroutine(GrowBall());
             }
         }
     }
@@ -924,12 +950,14 @@ public class GrowBallQuest : SpecialAugment
 
 public class InfiniteGrowBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_25", "Infinite Grow Ball", "The ball's attack power increases after destroying bricks", "Grow Ball", 3);
-        SetAdditionalDescription("Ball's <sprite=0> +0.1 per destroyed bricks\n" +
-            "Ball's <sprite=0> +0.2 per destroyed boss bricks");
-    }
+    public override string ID => "SPECIAL_26";
+    public override string Name => "Infinite Grow Ball";
+    public override string Description => "The ball's attack power increases after destroying bricks";
+    public override int Rarity => 3;
+    public override string Type => "Grow Ball";
+    public override string AdditionalDescription => "Ball's <sprite=0> +0.1 per destroyed bricks\n" +
+            "Ball's <sprite=0> +0.2 per destroyed boss bricks";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply() 
     {
@@ -949,14 +977,16 @@ public class InfiniteGrowBall : SpecialAugment
 }
 public class SacrificeQuest1 : SpecialAugment
 {
+    public override string ID => "SPECIAL_27";
+    public override string Name => "Sacrifice I";
+    public override string Description => "Accept a sacrifice I quest.\nComplete it to Receive a weak reward";
+    public override int Rarity => 5;
+    public override string Type => "Quest";
+    public override string AdditionalDescription => "Quest: Sacrifice 40 balls for <sprite=0> +1, <sprite=2> +1";
+    public override bool isFollowUpAugment => false;
     private int SacrificeNumber = 0;
     int ClearRequiredCount = 40;
     private bool isCleared;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_26", "Sacrifice I", "Accept a sacrifice I quest.\nComplete it to Receive a weak reward", "Quest", 5);
-        SetAdditionalDescription("Quest: Sacrifice 40 balls for <sprite=0> +1, <sprite=2> +1");
-    }
 
     public override void Apply() 
     {
@@ -995,16 +1025,16 @@ public class SacrificeQuest1 : SpecialAugment
 }
 public class SacrificeQuest2 : SpecialAugment
 {
+    public override string ID => "SPECIAL_28";
+    public override string Name => "Sacrifice II";
+    public override string Description => "Accept a sacrifice II quest.\nComplete it to Receive a moderate reward";
+    public override int Rarity => 3;
+    public override string Type => "Quest";
+    public override string AdditionalDescription => "Quest: sacrifice 70 balls for <sprite=0> +15%, <sprite=2> +15%, 500 Gold";
+    public override bool isFollowUpAugment => true;
     private int SacrificeNumber = 0;
     private bool isCleared;
     int ClearRequiredCount = 70;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_27", "Sacrifice II", "Accept a sacrifice II quest.\nComplete it to Receive a moderate reward", "Quest", 3);
-        SetAdditionalDescription("Quest: sacrifice 70 balls for <sprite=0> +15%, <sprite=2> +15%, 500 Gold");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SacrificeQuest1>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
 
     public override void Apply() 
     {
@@ -1044,16 +1074,16 @@ public class SacrificeQuest2 : SpecialAugment
 }
 public class SacrificeQuest3 : SpecialAugment
 {
+    public override string ID => "SPECIAL_29";
+    public override string Name => "Sacrifice III";
+    public override string Description => "Accept a sacrifice III quest.\nComplete it to Receive a powerful reward";
+    public override int Rarity => 2;
+    public override string Type => "Quest";
+    public override string AdditionalDescription => "Quest: sacrifice 100 balls for secret reward";
+    public override bool isFollowUpAugment => true;
     private int SacrificeNumber = 0;
     int ClearRequiredCount = 100;
     private bool isCleared;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_28", "Sacrifice III", "Accept a sacrifice III quest.\nComplete it to Receive a powerful reward", "Quest", 2);
-        SetAdditionalDescription("Quest: sacrifice 100 balls for secret reward");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SacrificeQuest2>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sacrifice III", "Sacrificed", SacrificeNumber, ClearRequiredCount); }
 
@@ -1084,6 +1114,14 @@ public class SacrificeQuest3 : SpecialAugment
 }
 public class AttackAfterAdditionalBall : SpecialAugment
 {
+    public override string ID => "SPECIAL_30";
+    public override string Name => "Sincerity";
+    public override string Description => "A ball is created every 100 hits";
+    public override int Rarity => 5;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
+
     private int attackNumber = 0;
     private int RequiredCount = 100;
     private int AttackNumber
@@ -1095,17 +1133,12 @@ public class AttackAfterAdditionalBall : SpecialAugment
         set
         {
             attackNumber = value;
-            if(attackNumber >= RequiredCount)
+            if (attackNumber >= RequiredCount)
             {
                 BallManager.Instance.CreateBall(1);
                 attackNumber = 0;
             }
         }
-    }
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_29", "Sincerity", "A ball is created every 100 hits", "Special", 5);
-        SetAdditionalDescription(null);
     }
 
     public override void Apply() { QuestAlarm.Instance.SetQuest("Sincerity", "Attack", AttackNumber, RequiredCount); }
@@ -1123,13 +1156,13 @@ public class AttackAfterAdditionalBall : SpecialAugment
 }
 public class ShareBallAtk : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_30", "Inheritance", "Fallen ball's 70% attack power\ndivided among current balls", "Grow Ball", 5);
-        SetAdditionalDescription(null);
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<InfiniteGrowBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_31";
+    public override string Name => "Inheritance";
+    public override string Description => "Fallen ball's 70% attack power\ndivided among current balls";
+    public override int Rarity => 5;
+    public override string Type => "Grow Ball";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => true;
 
     public override void Apply() { }
 
@@ -1150,15 +1183,18 @@ public class ShareBallAtk : SpecialAugment
 }
 public class StrongAdditionalAttack : SpecialAugment
 {
+    public override string ID => "SPECIAL_32";
+    public override string Name => "One in a thousand";
+    public override string Description => "A powerful additional attack triggers at low chance";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Strong additional attack : <sprite=0>  1000%for 1% chance\n" +
+            "It seems there are more powerful attacks...";
+    public override bool isFollowUpAugment => false;
+
     float StrongAttackChance = 0.01f;
     float SuperStrongAttackChance = 0.0025f;
     float SuperUltraStrongAttackChance = 0.0001f;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_31", "One in a thousand", "A powerful additional attack triggers at low chance", "Special", 3);
-        SetAdditionalDescription("Strong additional attack : <sprite=0>  1000%for 1% chance\n" +
-            "It seems there are more powerful attacks...");
-    }
 
     public override void Apply() { }
 
@@ -1170,17 +1206,25 @@ public class StrongAdditionalAttack : SpecialAugment
         if (Brick.gameObject.activeSelf && Brick.BrickType != "IgnoreBrick" && Brick.BrickType != "BlackBrick")
         {
             if (RandomValue < SuperUltraStrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f, true));
+                BrickManager.Instance.StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 100f, true));
             else if (RandomValue < SuperStrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 25f, true));
+                BrickManager.Instance.StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 25f, true));
             else if (RandomValue < StrongAttackChance)
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 10f));
+                BrickManager.Instance.StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 10f));
         }
     }
 }
 
 public class RandomEffect : SpecialAugment
 {
+    public override string ID => "SPECIAL_33";
+    public override string Name => "Random Effect Attack";
+    public override string Description => "A random effect triggers on attack\nit may be positive or negative";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
+
     private Dictionary<string, float> ProbabilitySet = new Dictionary<string, float>()
     {
         { "WeakAdditionalDamage", 0.5f },
@@ -1192,13 +1236,6 @@ public class RandomEffect : SpecialAugment
         //{ "BossSpawn", 0.01f },
         { "Execution", 0.01f },
     };
-
-
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_32", "Random Effect Attack", "A random effect triggers on attack\nit may be positive or negative", "Special", 3);
-        SetAdditionalDescription(null);
-    }
 
     public override void Apply() { }
 
@@ -1215,14 +1252,14 @@ public class RandomEffect : SpecialAugment
             accumulatedProbability += ProbabilitySet["WeakAdditionalDamage"];
             if (RandomValue < accumulatedProbability)
             {
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.5f));
+                BrickManager.Instance.StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.5f));
                 return;
             }
 
             accumulatedProbability += ProbabilitySet["AdditionalDamage"];
             if (RandomValue < accumulatedProbability)
             {
-                StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.8f));
+                BrickManager.Instance.StartCoroutine(DamageManager.AdditionalAttack(Brick, 0.1f, 0.1f, 0.8f));
                 return;
             }
 
@@ -1284,27 +1321,28 @@ public class RandomEffect : SpecialAugment
 
 public class ThunderStrike : SpecialAugment
 {
+    public override string ID => "SPECIAL_34";
+    public override string Name => "Arc Link";
+    public override string Description => "All balls are linked by electricity for " + Duration + "seconds";
+    public override int Rarity => 1;
+    public override string Type => "Lightning";
+    public override string AdditionalDescription => "Lightning damage : <sprite=2> 20% + 3% of brick's max HP";
+    public override bool isFollowUpAugment => true;
+    public override float CoolTime => AugmentManager.instance.FieldGlobalCooldown / 2;
+
     Coroutine routine = null;
-    float Cooldown = AugmentManager.instance.FieldGlobalCooldown / 2;
     float Duration = StatManager.instance.Temporary_stat.EffectDuration * 3;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_33", "Arc Link", "All balls are linked by electricity for " + Duration + "seconds", "Lightning", 1, Cooldown);
-        SetAdditionalDescription("Lightning damage : <sprite=2> 20% + 3% of brick's max HP");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
 
     public override void Apply() 
     {
-        routine = StartCoroutine(MakeBallThunder());
+        routine = BrickManager.Instance.StartCoroutine(MakeBallThunder());
     }
 
     public override void Remove()
     {
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<Lightning>()))
             AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<ThunderStrike>());
-        StopCoroutine(routine);
+        BrickManager.Instance.StopCoroutine(routine);
     }
 
     private IEnumerator MakeBallThunder()
@@ -1378,17 +1416,19 @@ public class ThunderStrike : SpecialAugment
                 elapsed += 0.1f;
             }
             Sound.Stop();
-            yield return new WaitForSeconds(Cooldown);
+            yield return new WaitForSeconds(CoolTime);
         }
     }
 }
 public class RebirthBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_34", "Immortality", "Adds a 5% chance to revive after the ball died", "Special", 5);
-        SetAdditionalDescription("Excluding certain balls");
-    }
+    public override string ID => "SPECIAL_35";
+    public override string Name => "Immortality";
+    public override string Description => "Adds a 5% chance to revive after the ball died";
+    public override int Rarity => 5;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Excluding certain balls";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply() { }
 
@@ -1407,11 +1447,13 @@ public class RebirthBall : SpecialAugment
 
 public class BossKillBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_35", "Uprising", "Summons a special brick when the boss is defeated", "Special", 5);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_36";
+    public override string Name => "Uprising";
+    public override string Description => "Summons a special brick when the boss is defeated";
+    public override int Rarity => 5;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply() { }
 
@@ -1428,12 +1470,13 @@ public class BossKillBall : SpecialAugment
 
 public class SpawnBallAmountMultiple1 : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_36", "2x!", "All summoned balls are doubled", "Special", 1);
-        SetAdditionalDescription(null);
-    }
-
+    public override string ID => "SPECIAL_37";
+    public override string Name => "2x!";
+    public override string Description => "All summoned balls are doubled";
+    public override int Rarity => 1;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
     public override void Apply() 
     {
         AugmentManager.instance.SpawnBallAmount = 2;
@@ -1451,13 +1494,13 @@ public class SpawnBallAmountMultiple1 : SpecialAugment
 
 public class SpawnBallAmountMultiple2 : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_37", "3x!!", "All summoned balls are tripled", "Special", 0);
-        SetAdditionalDescription(null);
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBallAmountMultiple1>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_38";
+    public override string Name => "3x!!";
+    public override string Description => "All summoned balls are tripled";
+    public override int Rarity => 0;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -1473,21 +1516,19 @@ public class SpawnBallAmountMultiple2 : SpecialAugment
 }
 public class BallSwarm : SpecialAugment
 {
-    bool isGetAugment = false;
+    public override string ID => "SPECIAL_39";
+    public override string Name => "Ball Swarm";
+    public override string Description => "<sprite=0> +2 \nwhen 15 or more balls are summoned";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Extra balls are stored\n" +
+        "and released one by one when the count falls below 15";
+    public override bool isFollowUpAugment => false;
+
     bool Upgrade = false;
-
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_38", "Ball Swarm", "<sprite=0> +2 \nwhen 15 or more balls are summoned", "Special", 4);
-        SetAdditionalDescription("Extra balls are stored and released one by one when the count falls below 15");
-        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<LonelyBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
-
     public override void Apply()
     {
-        isGetAugment = true;
-
+        AugmentManager.instance.AugmentRoutines.Add("BallSwarm", GetBallSwarm());
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LonelyBall>());
         if (BallManager.Instance.InGameBall.Count > 15)
         {
@@ -1501,16 +1542,15 @@ public class BallSwarm : SpecialAugment
 
     public override void Remove()
     {
-        isGetAugment = false;
-
+        AugmentManager.instance.AugmentRoutines.Stop("BallSwarm");
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<LonelyBall>());
         if (Upgrade)
             StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
     }
 
-    private void Update()
+    IEnumerator GetBallSwarm()
     {
-        if (isGetAugment)
+        while (true)
         {
             if (BallManager.Instance.InGameBall.Count <= 15)
             {
@@ -1529,6 +1569,7 @@ public class BallSwarm : SpecialAugment
                 Upgrade = false;
                 StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
             }
+            yield return null;
         }
     }
 
@@ -1559,20 +1600,20 @@ public class BallSwarm : SpecialAugment
 }
 public class LonelyBall : SpecialAugment
 {
-    bool isGetAugment = false;
+    public override string ID => "SPECIAL_40";
+    public override string Name => "Lonely Ball";
+    public override string Description => "<sprite=0> +2 \nwhen 5 or less balls are summoned";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Extra balls are stored\n" +
+            "and released one by one when the count falls below 5";
+    public override bool isFollowUpAugment => false;
+
     bool Upgrade = false;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_39", "Lonely Ball", "<sprite=0> +2 \nwhen 5 or less balls are summoned", "Special", 4);
-        SetAdditionalDescription("Extra balls are stored\n" +
-            "and released one by one when the count falls below 5");
-        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<BallSwarm>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
 
     public override void Apply()
     {
-        isGetAugment = true;
+        AugmentManager.instance.AugmentRoutines.Add("LonelyBall", GetLonelyBall());
 
         AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<BallSwarm>());
         if (BallManager.Instance.InGameBall.Count > 5)
@@ -1587,18 +1628,18 @@ public class LonelyBall : SpecialAugment
 
     public override void Remove()
     {
-        isGetAugment = false;
+        AugmentManager.instance.AugmentRoutines.Stop("LonelyBall");
 
         AugmentManager.instance.UnlockAugment(AugmentManager.AugmentSet.GetComponent<BallSwarm>());
         if (Upgrade)
             StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
     }
 
-    private void Update()
+    IEnumerator GetLonelyBall()
     {
-        if (isGetAugment)
+        while (true)
         {
-            if(BallManager.Instance.InGameBall.Count <= 5)
+            if (BallManager.Instance.InGameBall.Count <= 5)
             {
                 int ballsToAdd = Mathf.Min(5 - BallManager.Instance.InGameBall.Count, BallManager.Instance.LeftBallCount);
                 CreateBall(ballsToAdd);
@@ -1617,9 +1658,9 @@ public class LonelyBall : SpecialAugment
                 StatManager.instance.ChangeTemporaryStats_AttackDamage(-2f);
                 //BallManager.Instance.InGameBall[0].Renderer.sharedMaterial.color = new Color(1, 1, 1);
             }
+            yield return null;
         }
     }
-
     public void CreateBall(int num)
     {
         for(int i = 0; i < num; i++)
@@ -1645,13 +1686,13 @@ public class LonelyBall : SpecialAugment
 }
 public class SuicideBoomBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_40", "Potential Bomb", "A low chance for the ball to explode after an attack", "Bomb", 1);
-        SetAdditionalDescription("Explosion damage: 30 + <sprite=2> 300%");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_41";
+    public override string Name => "Potential Bomb";
+    public override string Description => "A low chance for the ball to explode after an attack";
+    public override int Rarity => 1;
+    public override string Type => "Bomb";
+    public override string AdditionalDescription => "Explosion damage: 30 + <sprite=2> 300%";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply() { }
 
@@ -1678,11 +1719,13 @@ public class SuicideBoomBall : SpecialAugment
 }
 public class SplitBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_41", "Diffraction", "Balls Have a 1% chance to split after an attack", "Special", 1);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_42";
+    public override string Name => "Diffraction";
+    public override string Description => "Balls Have a 1% chance to split after an attack";
+    public override int Rarity => 1;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -1699,7 +1742,7 @@ public class SplitBall : SpecialAugment
         if(Random.value < 0.04f)
         {
             IBall RecentlyBall = Brick.RecentlyBall;
-            StartCoroutine(SplitBallEffect(RecentlyBall));
+            AugmentManager.instance.StartCoroutine(SplitBallEffect(RecentlyBall));
             CreateBall(AugmentManager.instance.SpawnBallAmount, RecentlyBall);
         }
     }
@@ -1759,7 +1802,7 @@ public class SplitBall : SpecialAugment
                     ball.linearVelocityYValue -= 3f;
                 }
                 ball.gameObject.SetActive(true);
-                StartCoroutine(SplitBallEffect(ball));
+                AugmentManager.instance.StartCoroutine(SplitBallEffect(ball));
             }
         }     
     }
@@ -1777,11 +1820,13 @@ public class SplitBall : SpecialAugment
 }
 public class CurseBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_42", "Curse Ball", "When the ball falls, \n30% chance of curse damage to a random block", "Curse", 4);
-        SetAdditionalDescription("Curse damage : <sprite=0> 150%");
-    }
+    public override string ID => "SPECIAL_43";
+    public override string Name => "Curse Ball";
+    public override string Description => "When the ball falls, \n30% chance of curse damage to a random block";
+    public override int Rarity => 4;
+    public override string Type => "Curse";
+    public override string AdditionalDescription => "Curse damage : <sprite=0> 150%";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -1809,15 +1854,15 @@ public class CurseBall : SpecialAugment
 
 public class SummonGhostBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_43", "Revenant", "When the ball falls, \nSummon ghost ball at low chance", "Curse", 3);
-        SetAdditionalDescription("Summoned ghost balls do not collide with each balls \n" +
+    public override string ID => "SPECIAL_44";
+    public override string Name => "Revenant";
+    public override string Description => "When the ball falls, \nSummon ghost ball at low chance";
+    public override int Rarity => 3;
+    public override string Type => "Curse";
+    public override string AdditionalDescription => "Summoned ghost balls do not collide with each balls \n" +
             "and disappear after 8 seconds\n" +
-            "When a Ghost Ball is disappear, Curse Attack activates with a 100% chance");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+            "When a Ghost Ball is disappear, Curse Attack activates with a 100% chance";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply() 
     {
@@ -1839,13 +1884,13 @@ public class SummonGhostBall : SpecialAugment
 }
 public class EnhanceCurseAttack : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_44", "Endless Revenge", "Curse damage increases by 1.5% whenever the ball dies", "Curse", 2);
-        SetAdditionalDescription("30% of the balls that already died will be counted");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_45";
+    public override string Name => "Endless Revenge";
+    public override string Description => "Curse damage increases by 1.5% whenever the ball dies";
+    public override int Rarity => 2;
+    public override string Type => "Curse";
+    public override string AdditionalDescription => "30% of the balls that already died will be counted";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply() 
     {
@@ -1866,11 +1911,13 @@ public class EnhanceCurseAttack : SpecialAugment
 }
 public class DeathEffectTwice : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_45", "Die Again?", "All actions performed after the ball's death are doubled", "Special", 1);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_46";
+    public override string Name => "Die Again?";
+    public override string Description => "All actions performed after the ball's death are doubled";
+    public override int Rarity => 1;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -1885,12 +1932,14 @@ public class DeathEffectTwice : SpecialAugment
 
 public class SpawnBombBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_46", "Bomb Maniac", "Low chance of bomb ball on summon", "Bomb", 3);
-        SetAdditionalDescription("The summoned bomb ball explodes after 3 seconds\n" +
-            "Explosion damage: <sprite=2> 1000%");
-    }
+    public override string ID => "SPECIAL_47";
+    public override string Name => "Bomb Maniac";
+    public override string Description => "Low chance of bomb ball on summon";
+    public override int Rarity => 3;
+    public override string Type => "Bomb";
+    public override string AdditionalDescription => "The summoned bomb ball explodes after 3 seconds\n" +
+            "Explosion damage: <sprite=2> 1000%";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -1910,11 +1959,13 @@ public class SpawnBombBall : SpecialAugment
 }
 public class ChangeNormalToGlass : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_47", "Glassification", "The basic ball becomes a glass ball", "Special", 4);
-        SetAdditionalDescription("<sprite=0> +4\nballs have a 1% chance to break on hit");
-    }
+    public override string ID => "SPECIAL_48";
+    public override string Name => "Glassification";
+    public override string Description => "The basic ball becomes a glass ball";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "<sprite=0> +4\nballs have a 1% chance to break on hit";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -1928,13 +1979,13 @@ public class ChangeNormalToGlass : SpecialAugment
 }
 public class RebornBombBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_48", "Bomb Modification", "Bomb ball revive at a low chance after explode", "Bomb", 4);
-        SetAdditionalDescription(null);
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_49";
+    public override string Name => "Bomb Modification";
+    public override string Description => "Bomb ball revive at a low chance after explode";
+    public override int Rarity => 4;
+    public override string Type => "Bomb";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => true;
 
     public override void Apply() { }
 
@@ -1946,44 +1997,53 @@ public class RebornBombBall : SpecialAugment
 }
 public class OneMoreChance : SpecialAugment
 {
-    bool isRevived = true;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_49", "One More Chance", "If no balls exist,\nsummon 5 balls at once", "Special", 4);
-    }
+    public override string ID => "SPECIAL_50";
+    public override string Name => "One More Chance";
+    public override string Description => "If no balls exist,\nsummon 5 balls at once";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply() 
     {
-        isRevived = false;
+        AugmentManager.instance.AugmentRoutines.Add("OneMoreChance", GetOneMoreChance());
     }
 
     public override void Remove() 
     {
-        isRevived = true;
+        AugmentManager.instance.AugmentRoutines.Stop("OneMoreChance");
     }
 
-    public void Update()
+    IEnumerator GetOneMoreChance()
     {
-        if (!isRevived && BallManager.Instance.InGameBall.Count <= 0)
+        while (true)
         {
-            BallManager.Instance.CreateBall(5);
-            isRevived = true;
+            if (BallManager.Instance.InGameBall.Count <= 0)
+            {
+                BallManager.Instance.CreateBall(5);
+                yield break;
+            }
+            yield return null;
         }
     }
 }
 
 public class Concentrate : SpecialAugment
 {
+    public override string ID => "SPECIAL_51";
+    public override string Name => "Concentrate";
+    public override string Description => "Stats increase massively, \nbut 10 ball fall, it's game over";
+    public override int Rarity => 0;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Attack, Effect Damage +300%\n" +
+            "Set current balls to 10\n" +
+            "Balls destroyed will converted to <sprite=0> +0.2, <sprite=2> + 0.2";
+    public override bool isFollowUpAugment => false;
+
     int MaxCount = 10;
     int Count = 10;
     int DestroyedBall = 0;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_50", "Concentrate", "Stats increase massively, \nbut 10 ball fall, it's game over", "Special", 0);
-        SetAdditionalDescription("Attack, Effect Damage +300%\n" +
-            "Set current balls to 10\n" +
-            "Balls destroyed will converted to <sprite=0> +0.2, <sprite=2> + 0.2");
-    }
 
     public override void Apply()
     {
@@ -2042,29 +2102,35 @@ public class Concentrate : SpecialAugment
 }
 public class GroupViolence: SpecialAugment
 {
-    bool isGetAugment = false;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_51", "Group Violence", "After attack, transfers 10% of Attack damage to the brick with the highest HP", "Special", 3);
-        SetAdditionalDescription("Applies only to normal attacks and specific effects attacks");
-    }
+    public override string ID => "SPECIAL_52";
+    public override string Name => "Group Violence";
+    public override string Description => "After attack, transfers 10% of Attack damage to the brick with the highest HP";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Applies only to normal attacks and specific effects attacks";
+    public override bool isFollowUpAugment => false;
+
 
     public override void Apply()
     {
-        isGetAugment = true;
+        AugmentManager.instance.AugmentRoutines.Add("GroupViolence", GetGroupViolence());
     }
 
     public override void Remove() 
     {
-        isGetAugment = false;
+        AugmentManager.instance.AugmentRoutines.Stop("GroupViolence");
     }
 
-    public void Update()
+    IEnumerator GetGroupViolence()
     {
-        if (isGetAugment && BrickManager.Instance.CurrentBricks.Count > 0)
+        while (true)
         {
-            float maxHp = BrickManager.Instance.CurrentBricks.Max(b => b.HP);
-            BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp && b.BrickType != "IgnoreBrick");
+            if (BrickManager.Instance.CurrentBricks.Count > 0)
+            {
+                float maxHp = BrickManager.Instance.CurrentBricks.Max(b => b.HP);
+                BrickManager.Instance.MainBrick = BrickManager.Instance.CurrentBricks.FirstOrDefault(b => b.HP == maxHp && b.BrickType != "IgnoreBrick");
+            }
+            yield return null;
         }
     }
 
@@ -2077,41 +2143,46 @@ public class GroupViolence: SpecialAugment
 }
 public class Oneness: SpecialAugment
 {
-    IBall MainBall = null;
-    bool isGetAugment = false;
-    Coroutine routine;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_52", "Oneness", "All balls merge into one,\nthe ball becomes stronger as it merges", "Special", 2);
-        SetAdditionalDescription("<sprite=0> +30% of merged ball's <sprite=0>");
-    }
+    public override string ID => "SPECIAL_53";
+    public override string Name => "Oneness";
+    public override string Description => "All balls merge into one,\nthe ball becomes stronger as it merges";
+    public override int Rarity => 2;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "<sprite=0> +30% of merged ball's <sprite=0>";
+    public override bool isFollowUpAugment => false;
 
-    private void Update()
+    IBall MainBall = null;
+
+    IEnumerator GetOneness()
     {
-        if(isGetAugment == true && MainBall == null)
-            StartCoroutine(WaitforMainBall());
-        else if(isGetAugment)
+        while (true)
         {
-            for (int i = 0; i < BallManager.Instance.InGameBall.Count; i++)
+            if (MainBall == null)
+                AugmentManager.instance.StartCoroutine(WaitforMainBall());
+            else
             {
-                if (BallManager.Instance.InGameBall[i] != MainBall && BallManager.Instance.InGameBall[i].FusionMoveRoutine == null)
-                    BallManager.Instance.InGameBall[i].FusionMoveRoutine = StartCoroutine(MoveToPosition(BallManager.Instance.InGameBall[i], MainBall, 5f, 5f));
+                for (int i = 0; i < BallManager.Instance.InGameBall.Count; i++)
+                {
+                    if (BallManager.Instance.InGameBall[i] != MainBall && BallManager.Instance.InGameBall[i].FusionMoveRoutine == null)
+                        BallManager.Instance.InGameBall[i].FusionMoveRoutine = AugmentManager.instance.StartCoroutine(MoveToPosition(BallManager.Instance.InGameBall[i], MainBall, 5f, 5f));
+                }
             }
+            yield return null;
         }
     }
 
     public override void Apply() 
     {
         IBall MainBall = null;
-        isGetAugment = true;
-        routine = StartCoroutine(WaitforMainBall());
+        AugmentManager.instance.AugmentRoutines.Add("Oneness_1", GetOneness());
+        AugmentManager.instance.AugmentRoutines.Add("Oneness_2", WaitforMainBall());
     }
 
     public override void Remove()
     {
         IBall MainBall = null;
-        isGetAugment = false;
-        StopCoroutine(routine);
+        AugmentManager.instance.AugmentRoutines.Stop("Oneness_1");
+        AugmentManager.instance.AugmentRoutines.Stop("Oneness_2");
     }
 
     IEnumerator OnenessBallEffect(IBall RecentlyBall)
@@ -2166,7 +2237,7 @@ public class Oneness: SpecialAugment
             }
             yield return null;
         }
-        StartCoroutine(OnenessBallEffect(MainBall));
+        AugmentManager.instance.StartCoroutine(OnenessBallEffect(MainBall));
         MainBall.GrowthAttackDamage += ((StatManager.instance.Persistent_stat.AttackDamage + StatManager.instance.Temporary_stat.AttackDamage) 
             * StatManager.instance.statMultiplier.AttackDamageMultiplier)
             * 0.3f;
@@ -2184,12 +2255,15 @@ public class Oneness: SpecialAugment
 }
 public class HappyBirthday : SpecialAugment
 {
+    public override string ID => "SPECIAL_54";
+    public override string Name => "Happy Birth Day";
+    public override string Description => "<sprite=0> +5 when ball is summoned for " + Duration + " seconds";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
+
     float Duration = StatManager.instance.Temporary_stat.EffectDuration;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_53", "Happy Birth Day", "<sprite=0> +5 when ball is summoned for " + Duration + " seconds", "Special", 4);
-        SetAdditionalDescription(null);
-    }
 
     public override void Apply() {    }
 
@@ -2212,11 +2286,14 @@ public class HappyBirthday : SpecialAugment
 
 public class MidasHand : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_54", "Midas Hand", "Attacked bricks have a low chance to\ntransform into golden blocks", "Special", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_55";
+    public override string Name => "Midas Hand";
+    public override string Description => "Attacked bricks have a low chance to\ntransform into golden blocks";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
+
     Coroutine Routine = null;
     public override void Apply() { }
 
@@ -2274,12 +2351,15 @@ public class MidasHand : SpecialAugment
 
 public class HalfBallSacrifice : SpecialAugment
 {
+    public override string ID => "SPECIAL_56";
+    public override string Name => "Mass Sacrifice";
+    public override string Description => "Sacrifice half of the balls,\nand increse corresponding attack damage";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "<sprite=0> +0.2 for each sacrificed ball";
+    public override bool isFollowUpAugment => false;
+
     float AtkUpValue = 0;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_55", "Mass Sacrifice", "Sacrifice half of the balls,\nand increse corresponding attack damage", "Special", 4);
-        SetAdditionalDescription("<sprite=0> +0.2 for each sacrificed ball");
-    }
 
     public override void Apply() 
     {
@@ -2287,7 +2367,7 @@ public class HalfBallSacrifice : SpecialAugment
         {
             for(int i = 0; i < BallManager.Instance.InGameBall.Count / 2; i++)
             {
-                StartCoroutine(BallRemoveEffect(BallManager.Instance.InGameBall[i]));
+                AugmentManager.instance.StartCoroutine(BallRemoveEffect(BallManager.Instance.InGameBall[i]));
                 AtkUpValue += 0.2f;
             }
             StatManager.instance.ChangeTemporaryStats_AttackDamage(AtkUpValue);
@@ -2309,12 +2389,14 @@ public class HalfBallSacrifice : SpecialAugment
 
 public class Chronobreak : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_54", "Chronobreak", "lose half of augment, Attack and Effect Damage\nThen, return to Wave 1", "Special", 0);
-        SetAdditionalDescription("All bricks and balls are destroyed, then 10 balls are summoned \n" +
-            "Certain bricks and balls are excluded");
-    }
+    public override string ID => "SPECIAL_57";
+    public override string Name => "Chronobreak";
+    public override string Description => "lose half of augment, Attack and Effect Damage\nThen, return to Wave 1";
+    public override int Rarity => 0;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "All bricks and balls are destroyed, then 10 balls are summoned \n" +
+            "Certain bricks and balls are excluded";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2340,14 +2422,13 @@ public class Chronobreak : SpecialAugment
 
 public class DecayingPoison: SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_55", "Decaying Poison", "When poisoned, decay is also applied", "Poison", 3);
-        SetAdditionalDescription("Increases damage taken by bricks by 10% per stack");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
-            !AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FlammablePoison>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_58";
+    public override string Name => "Decaying Poison";
+    public override string Description => "When poisoned, decay is also applied";
+    public override int Rarity => 3;
+    public override string Type => "Poison";
+    public override string AdditionalDescription => "Increases damage taken by bricks by 10% per stack";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -2367,14 +2448,13 @@ public class DecayingPoison: SpecialAugment
 
 public class FlammablePoison: SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_56", "Flammable Poison", "When poisoned, fire is also applied", "Poison", 3);
-        SetAdditionalDescription("<sprite=2> 50% per stack");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<PoisonBall>()) ||
-            !AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<DecayingPoison>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_59";
+    public override string Name => "Flammable Poison";
+    public override string Description => "When poisoned, fire is also applied";
+    public override int Rarity => 3;
+    public override string Type => "Poison";
+    public override string AdditionalDescription => "<sprite=2> 50% per stack";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -2394,11 +2474,13 @@ public class FlammablePoison: SpecialAugment
 
 public class CritAfterThreeAttack : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_57", "Weakness Detection", "The fourth attack always triggers a critical hit", "Special", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_60";
+    public override string Name => "Weakness Detection";
+    public override string Description => "The fourth attack always triggers a critical hit";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2419,11 +2501,13 @@ public class CritAfterThreeAttack : SpecialAugment
 
 public class DamageInfection : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_58", "Miraculous Technique", "Ball attacks all nearby bricks,\nIt count as direct hits by the ball", "Special", 0);
-        SetAdditionalDescription("Applies all effects triggered by direct hits");
-    }
+    public override string ID => "SPECIAL_61";
+    public override string Name => "Miraculous Technique";
+    public override string Description => "Ball attacks all nearby bricks,\nIt count as direct hits by the ball";
+    public override int Rarity => 0;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Applies all effects triggered by direct hits";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2459,11 +2543,13 @@ public class DamageInfection : SpecialAugment
 
 public class CriticalOnEffect : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_59", "Effect Amplification", "Effect attacks can deal critical hits", "Special", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_62";
+    public override string Name => "Effect Amplification";
+    public override string Description => "Effect attacks can deal critical hits";
+    public override int Rarity => 3;
+    public override string Type => "Effect";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -2478,11 +2564,13 @@ public class CriticalOnEffect : SpecialAugment
 
 public class RollDiceBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_60", "Roll the Dice!", "Roll dice instead of summoning balls.\nsummon as many balls as the dice show.", "Special", 1);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_63";
+    public override string Name => "Roll the Dice!";
+    public override string Description => "Roll dice instead of summoning balls.\nsummon as many balls as the dice show.";
+    public override int Rarity => 1;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2497,11 +2585,13 @@ public class RollDiceBall : SpecialAugment
 
 public class PortalBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_61", "Portal Ball", "Hits may cause the ball to \nteleport to the random brick's position", "Special", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_64";
+    public override string Name => "Portal Ball";
+    public override string Description => "Hits may cause the ball to \nteleport to the random brick's position";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2526,11 +2616,13 @@ public class PortalBall : SpecialAugment
 
 public class InfiniteRapid : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_62", "Rapidfire", "<sprite=2> +1.8, <sprite=6> +15%,\nAll waves appear as transformed rapid waves", "Special", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_65";
+    public override string Name => "Rapidfire";
+    public override string Description => "<sprite=2> +1.8, <sprite=6> +15%,\nAll waves appear as transformed rapid waves";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2547,13 +2639,13 @@ public class InfiniteRapid : SpecialAugment
 
 public class MoreAndWeakBricks : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_63", "Legion", "Every Bricks appear 50% more frequently, \nbut their health is reduced by 33%", "Special", 3);
-        SetAdditionalDescription("Special bricks are excluded");
-        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<LessAndStrongBricks>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_66";
+    public override string Name => "Legion";
+    public override string Description => "Every Bricks appear 50% more frequently, \nbut their health is reduced by 33%.";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Special bricks are excluded";
+    public override bool isFollowUpAugment => false;
     
     public override void Apply()
     {
@@ -2578,13 +2670,13 @@ public class MoreAndWeakBricks : SpecialAugment
 
 public class LessAndStrongBricks : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_63", "Elite Group", "Every Bricks appear 50% less frequently, \nbut their health is increased by 33%.", "Special", 3);
-        SetAdditionalDescription("Special bricks are excluded");
-        if (AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<MoreAndWeakBricks>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_67";
+    public override string Name => "Elite Group";
+    public override string Description => "Every Bricks appear 50% less frequently, \nbut their health is increased by 33%.";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Special bricks are excluded";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2609,11 +2701,13 @@ public class LessAndStrongBricks : SpecialAugment
 
 public class DoubleBoss : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_64", "Twins!", "The boss splits into two, \neach having 66% the original health.", "Special", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_68";
+    public override string Name => "Twins!";
+    public override string Description => "The boss splits into two, \neach having 66% the original health.";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2630,11 +2724,13 @@ public class DoubleBoss : SpecialAugment
 
 public class FusionBricks : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_65", "Only One", "Waves are replaced by one brick with combined health.", "Special", 2);
-        SetAdditionalDescription("It is treated as a boss");
-    }
+    public override string ID => "SPECIAL_69";
+    public override string Name => "Only One";
+    public override string Description => "Waves are replaced by one brick with combined health.";
+    public override int Rarity => 2;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "It is treated as a boss";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2657,11 +2753,13 @@ public class FusionBricks : SpecialAugment
 
 public class GainBallAfterLevelUp : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_66", "Promotion Gift", "After level up, roll a dice \nand gain that many balls", "Special", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_70";
+    public override string Name => "Promotion Gift";
+    public override string Description => "After level up, roll a dice \nand gain that many balls.";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2681,11 +2779,13 @@ public class GainBallAfterLevelUp : SpecialAugment
 
 public class SpecialBrickChanceUp : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_67", "Lucky Day", "Special bricks spawn more frequently.", "Special", 3);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_71";
+    public override string Name => "Lucky Day";
+    public override string Description => "Special bricks spawn more frequently.";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2700,12 +2800,13 @@ public class SpecialBrickChanceUp : SpecialAugment
 
 public class IncreseStatUpValue : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_68", "Stick to the Basics", "Gain 24% more stats when selecting after level up.", "Special", 1);
-        SetAdditionalDescription(null);
-    }
-
+    public override string ID => "SPECIAL_72";
+    public override string Name => "Stick to the Basics";
+    public override string Description => "Gain 24% more stats when selecting after level up.";
+    public override int Rarity => 1;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
     public override void Apply()
     {
         LevelManager.Instance.BaseStatUpValue = 1.24f;
@@ -2719,24 +2820,25 @@ public class IncreseStatUpValue : SpecialAugment
 
 public class GoalWaveBonus : SpecialAugment
 {
-    bool isGetAugment;
-    bool[] Goals;
-    int NextGoalWave = 5;
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_69", "Milestone", "Receive rewards upon reaching certain waves.", "Special", 3);
-        SetAdditionalDescription("Wave 5: Small exp\n" +
+    public override string ID => "SPECIAL_73";
+    public override string Name => "Milestone";
+    public override string Description => "Receive rewards upon reaching certain waves.";
+    public override int Rarity => 3;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Wave 5: Small exp\n" +
             "Wave 10: 15 Balls\n" +
             "Wave 30: <sprite=0> +5%, <sprite=3> +5%\n" +
             "Wave 50: Moderate exp\n" +
             "Wave 70: 25 Balls, <sprite=0> +5%, <sprite=3> +5%\n" +
-            "Wave 100: Huge exp, <sprite=0> +10%, <sprite=3> +10%\n"
-            );
-    }
+            "Wave 100: Huge exp, <sprite=0> +10%, <sprite=3> +10%\n";
+    public override bool isFollowUpAugment => false;
+
+    bool[] Goals;
+    int NextGoalWave = 5;
 
     public override void Apply()
     {
-        isGetAugment = true;
+        AugmentManager.instance.AugmentRoutines.Add("Milestone", GetMilestone());
         Goals = new bool[6];
 
         if (GameManager.instance.Wave < 5)
@@ -2755,8 +2857,8 @@ public class GoalWaveBonus : SpecialAugment
 
     public override void Remove()
     {
-        isGetAugment = false;
-        for(int i = 0; i < Goals.Length; i++)
+        AugmentManager.instance.AugmentRoutines.Stop("Milestone");
+        for (int i = 0; i < Goals.Length; i++)
         {
             if (Goals[i])
             {
@@ -2781,23 +2883,23 @@ public class GoalWaveBonus : SpecialAugment
         }
     }
 
-    private void Update()
+    IEnumerator GetMilestone()
     {
-        if (isGetAugment)
+        while (true)
         {
-            if(NextGoalWave == 999)
+            if (NextGoalWave == 999)
             {
-                return;
+                yield break;
             }
             else
                 QuestAlarm.Instance.SetQuest("Milestone", "Wave", GameManager.instance.Wave, NextGoalWave);
-            if(GameManager.instance.Wave == 5 && !Goals[0])
+            if (GameManager.instance.Wave == 5 && !Goals[0])
             {
                 Goals[0] = true;
                 ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead", 10, 0.1f);
                 NextGoalWave = 10;
             }
-            else if(GameManager.instance.Wave == 10 && !Goals[1])
+            else if (GameManager.instance.Wave == 10 && !Goals[1])
             {
                 Goals[1] = true;
                 for (int i = 0; i < 3; i++)
@@ -2816,7 +2918,7 @@ public class GoalWaveBonus : SpecialAugment
             else if (GameManager.instance.Wave == 50 && !Goals[3])
             {
                 Goals[3] = true;
-                StartCoroutine(ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead", 40, 0.1f));
+                AugmentManager.instance.StartCoroutine(ItemManager.Instance.SpawnSpecificItemInRandomPosition("ExpBead", 40, 0.1f));
                 NextGoalWave = 70;
             }
             else if (GameManager.instance.Wave == 70 && !Goals[4])
@@ -2840,17 +2942,20 @@ public class GoalWaveBonus : SpecialAugment
                 QuestAlarm.Instance.SetQuest("Milestone", "Wave", 100, 100);
                 NextGoalWave = 999;
             }
+            yield return null;
         }
     }
 }
 
 public class ReducesExp10: SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_70", "Brilliant Idea I", "Reduces exp required to level up by 10%", "Special", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_74";
+    public override string Name => "Brilliant Idea I";
+    public override string Description => "Reduces exp required to level up by 10%";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2867,11 +2972,13 @@ public class ReducesExp10: SpecialAugment
 
 public class ReducesExp15 : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_71", "Brilliant Idea II", "Reduces exp required to level up by 15%", "Special", 2);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_75";
+    public override string Name => "Brilliant Idea II";
+    public override string Description => "Reduces exp required to level up by 15%";
+    public override int Rarity => 2;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2888,11 +2995,13 @@ public class ReducesExp15 : SpecialAugment
 
 public class WaveFourBoss : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_72", "Curse of the Number 4", "All stats 16% Up\nEvery 4 waves, a Rapid Wave activates and a enhanced boss appears", "Special", 1);
-        SetAdditionalDescription("Except gold gain stat");
-    }
+    public override string ID => "SPECIAL_76";
+    public override string Name => "Curse of the Number 4";
+    public override string Description => "All stats 16% Up\nEvery 4 waves, a Rapid Wave activates and a enhanced boss appears";
+    public override int Rarity => 1;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "Except gold gain stat";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2925,12 +3034,14 @@ public class WaveFourBoss : SpecialAugment
 
 public class RerollAugments : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_73", "Reroll", "Refreshes the currently available augments", "Special", 5);
-        SetAdditionalDescription("This augment may appear again after being selected\n" +
-            "and it won't appear again right away after a refresh");
-    }
+    public override string ID => "SPECIAL_77";
+    public override string Name => "Reroll";
+    public override string Description => "Refreshes the currently available augments";
+    public override int Rarity => 5;
+    public override string Type => "Special";
+    public override string AdditionalDescription => "This augmentation may appear again after being selected\n" +
+            "and it won't appear again right away after a refresh";
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2946,11 +3057,13 @@ public class RerollAugments : SpecialAugment
 
 public class BossDamageUp : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_74", "Boss Killer", "+10% Additional damage to boss", "Special", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_78";
+    public override string Name => "Boss Killer";
+    public override string Description => "+10% Additional damage to boss";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -2973,13 +3086,13 @@ public class BossDamageUp : SpecialAugment
 
 public class ContinuingCurseAttack : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_75", "Possession", "The curse can activate multiple times based on a specific chance", "Curse", 2);
-        SetAdditionalDescription(null);
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<CurseBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_79";
+    public override string Name => "Possession";
+    public override string Description => "The curse can activate multiple times based on a specific chance";
+    public override int Rarity => 2;
+    public override string Type => "Curse";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -2995,12 +3108,13 @@ public class ContinuingCurseAttack : SpecialAugment
 
 public class LevelUpAgain : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_76", "Blessing", "Level up once more after level up and holy attack on all bricks", "Special", 6);
-        SetAdditionalDescription(null);
-        AugmentManager.instance.LockAugment(AugmentManager.AugmentSet.GetComponent<LevelUpAgain>());
-    }
+    public override string ID => "SPECIAL_80";
+    public override string Name => "Blessing";
+    public override string Description => "Level up once more after level up and holy attack on all bricks";
+    public override int Rarity => 6;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -3029,18 +3143,19 @@ public class LevelUpAgain : SpecialAugment
 
 public class AtkUpWhenCritical : SpecialAugment
 {
-    Coroutine Routine;
-    int setTime = 3;
+    public override string ID => "SPECIAL_81";
+    public override string Name => "Lucky Streak";
+    public override string Description => "When critical attack hits, <sprite=0> +1.8\nfor 3 seconds";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_77", "Lucky Streak", "When critical attack hits, <sprite=0> +1.8\nfor 3 seconds", "Special", 4);
-        SetAdditionalDescription(null);
-    }
+    int setTime = 3;
 
     public override void Apply()
     {
-        Routine = null;
+
     }
 
     public override void Remove()
@@ -3050,9 +3165,9 @@ public class AtkUpWhenCritical : SpecialAugment
 
     public override void CriticalAttackEffect(IBrick Brick)
     {
-        if (Routine == null)
+        if (!AugmentManager.instance.AugmentRoutines.hasKey("LuckyStreak"))
         {
-            Routine = StartCoroutine(AttackDamageUpFewSec(1.8f));
+            AugmentManager.instance.AugmentRoutines.Add("LuckyStreak", AttackDamageUpFewSec(setTime));
         }
         else
         {
@@ -3069,20 +3184,19 @@ public class AtkUpWhenCritical : SpecialAugment
             setTime--;
         }
         StatManager.instance.ChangeTemporaryStats_AttackDamage(-AttackUpValue);
-        setTime = 3;
-        Routine = null;
+        AugmentManager.instance.AugmentRoutines.Stop("LuckyStreak");
     }
 }
 
 public class InstantBombBall : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_78", "Instant Bomb", "Bomb ball is changed to explode immediately after attacking the brick", "Bomb", 4);
-        SetAdditionalDescription(null);
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<SpawnBombBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_82";
+    public override string Name => "Instant Bomb";
+    public override string Description => "Bomb ball is changed to explode immediately after attacking the brick";
+    public override int Rarity => 4;
+    public override string Type => "Bomb";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -3098,13 +3212,13 @@ public class InstantBombBall : SpecialAugment
 
 public class Pyromaniac : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_79", "Pyromaniac", "<sprite=2> +2, Bricks always catch fire when hit\nNo other effects will apply", "Fire", 4);
-        SetAdditionalDescription("Lose all other effect augments");
-        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.AugmentSet.GetComponent<FireBall>()))
-            AugmentManager.instance.exceptionAugments.Add(this);
-    }
+    public override string ID => "SPECIAL_83";
+    public override string Name => "Pyromaniac";
+    public override string Description => "<sprite=2> +2, Bricks always catch fire when hit\nNo other effects will apply";
+    public override int Rarity => 4;
+    public override string Type => "Fire";
+    public override string AdditionalDescription => "Lose all other effect augments";
+    public override bool isFollowUpAugment => true;
 
     public override void Apply()
     {
@@ -3149,11 +3263,13 @@ public class Pyromaniac : SpecialAugment
 
 public class AdditionalEffectDamage : SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_80", "Dual Wield", "Deals additional damage equal to 10% of the <sprite=2> after the attack", "Special", 4);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_84";
+    public override string Name => "Dual Wield";
+    public override string Description => "Deals additional damage equal to 10% of the <sprite=2> after the attack";
+    public override int Rarity => 4;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
@@ -3174,11 +3290,13 @@ public class AdditionalEffectDamage : SpecialAugment
 
 public class PenetratingBall: SpecialAugment
 {
-    private void OnEnable()
-    {
-        SetAugment("SPECIAL_81", "Penetrating Ball", "The ball passes through the brick. <sprite=0> -75%, <sprite=2> -75%", "Special", 0);
-        SetAdditionalDescription(null);
-    }
+    public override string ID => "SPECIAL_85";
+    public override string Name => "Penetrating Ball";
+    public override string Description => "The ball passes through the brick. <sprite=0> -75%, <sprite=2> -75%";
+    public override int Rarity => 0;
+    public override string Type => "Special";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => false;
 
     public override void Apply()
     {
