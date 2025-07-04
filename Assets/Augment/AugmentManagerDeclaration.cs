@@ -37,6 +37,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public bool isLevelUpOnceAgain;
 
+    [SerializeField]
+    public static IAugment RandomAugment;
+
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
         { 0, 0.005f },
@@ -76,15 +79,15 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<AtkUp1>(),
             AugmentSet.AddComponent<AtkUp2>(),
             AugmentSet.AddComponent<AtkUp3>(),
-            AugmentSet.AddComponent<CritChance10Up>(),
-            AugmentSet.AddComponent<CritChance20Up>(),
-            AugmentSet.AddComponent<CritChance35Up>(),
-            AugmentSet.AddComponent<CritDamage15Up>(),
-            AugmentSet.AddComponent<CritDamage30Up>(),
-            AugmentSet.AddComponent<GoldGain10Up>(),
-            AugmentSet.AddComponent<GoldGain30Up>(),
-            AugmentSet.AddComponent<GoldGain50Up>(),
-            AugmentSet.AddComponent<CritChanceToAttackDamage>(),
+            AugmentSet.AddComponent < CritChance10Up >(),
+            AugmentSet.AddComponent < CritChance20Up >(),
+            AugmentSet.AddComponent < CritChance35Up >(),
+            AugmentSet.AddComponent < CritDamage15Up >(),
+            AugmentSet.AddComponent < CritDamage30Up >(),
+            AugmentSet.AddComponent < GoldGain10Up >(),
+            AugmentSet.AddComponent < GoldGain30Up >(),
+            AugmentSet.AddComponent < GoldGain50Up >(),
+            AugmentSet.AddComponent < CritChanceToAttackDamage >(),
             AugmentSet.AddComponent<EffectDamageUp1>(),
             AugmentSet.AddComponent<EffectDamageUp2>(),
             AugmentSet.AddComponent<EffectDamageUp3>(),
@@ -217,9 +220,15 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             AugmentSet.AddComponent<InstantBombBall>()
         };
 
+        if(RandomAugment != null)
+        {
+            AddAugment(RandomAugment);
+            RandomAugment = null;
+        }
+
         List<IAugment> TestAugments = new List<IAugment>
         {
-            AugmentSet.GetComponent<Trinity>()
+            
         };
 
         foreach (IAugment augment in TestAugments)

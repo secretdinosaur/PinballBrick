@@ -4,7 +4,18 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Collections;
-public class UpgradeManager : MonoBehaviour
+public partial class UpgradeManager : MonoBehaviour
+{
+    public static UpgradeManager Instance;
+
+    void Awake()
+    {
+        Instance = this;
+        Panels = new GameObject[] { AttDamage, EffDamage, BonusEXP, CriChance, CriDamage, StartingBall};
+    }
+}
+
+public partial class UpgradeManager
 {
     public GameObject AttDamage;
     public GameObject EffDamage;
@@ -45,16 +56,6 @@ public class UpgradeManager : MonoBehaviour
     };
     public int[] levels;
     GameObject[] Panels;
-
-    public static UpgradeManager Instance;
-
-    void Awake()
-    {
-        Instance = this;
-        Panels = new GameObject[] { AttDamage, EffDamage, BonusEXP, CriChance, CriDamage, StartingBall};
-    }
-
-
     public static string ChangeNumber(string number)
     {
         char[] unitAlphabet = new char[3] { 'K', 'M', 'B' };
@@ -85,7 +86,7 @@ public class UpgradeManager : MonoBehaviour
 
     public IEnumerator RepeatPurchace(int pressedNum)
     {
-        while(true)
+        while (true)
         {
             Purchase(pressedNum);
             yield return new WaitForSeconds(0.1f);
@@ -157,62 +158,62 @@ public class UpgradeManager : MonoBehaviour
             {
                 case 0: //Attack Damage
                     if ((levels[i] + 1) % 10 == 0)
-                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1") 
-                            + " -> " + 
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1")
+                            + " -> " +
                             (statList[i] + Descriptions[i + 6]).ToString("F1");
                     else
                         Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1")
-                            + " -> " + 
+                            + " -> " +
                             (statList[i] + Descriptions[i]).ToString("F1");
                     break;
                 case 1: //Effect Damage
                     if ((levels[i] + 1) % 10 == 0)
                         Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1")
-                            + " -> " + 
+                            + " -> " +
                             (statList[i] + Descriptions[i + 6]).ToString("F1");
                     else
-                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1") 
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F1")
                             + " -> " +
                             (statList[i] + Descriptions[i]).ToString("F1");
                     break;
                 case 2:// bonus exp
                     if ((levels[i] + 1) % 10 == 0)
                         Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F0")
-                            + "%" + " -> " + 
+                            + "%" + " -> " +
                             ((statList[i] + Descriptions[i + 6] - 1) * 100).ToString("F0") + "%";
                     else
                         Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F0")
-                            + "%" + " -> " + 
+                            + "%" + " -> " +
                             ((statList[i] + Descriptions[i] - 1) * 100).ToString("F0") + "%";
                     break;
                 case 3: //Critical Chance
                     if ((levels[i] + 1) % 10 == 0)
                         Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i]) * 100).ToString("F1")
-                            + "%" + " -> " + 
+                            + "%" + " -> " +
                             ((statList[i] + Descriptions[i + 6]) * 100).ToString("F1") + "%";
                     else
                         Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i]) * 100).ToString("F1")
-                            + "%" + " -> " + 
+                            + "%" + " -> " +
                             ((statList[i] + Descriptions[i]) * 100).ToString("F1") + "%";
                     break;
                 case 4: //Critical Damage
                     if ((levels[i] + 1) % 10 == 0)
                         Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F1")
-                            + "%" + " -> " + 
+                            + "%" + " -> " +
                             ((statList[i] + Descriptions[i + 6] - 1) * 100).ToString("F1") + "%";
                     else
                         Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = ((statList[i] - 1) * 100).ToString("F1")
-                            + "%" + " -> " + 
+                            + "%" + " -> " +
                             ((statList[i] + Descriptions[i] - 1) * 100).ToString("F1") + "%";
                     break;
                 case 5: //Starting Ball
                     if ((levels[i] + 1) % 10 == 0)
                         Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F0")
-                            + " -> " + 
+                            + " -> " +
                             (statList[i] + Descriptions[i + 6]).ToString("F0");
                     else
-                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F0") 
-                            + " -> " + 
+                        Panels[i].GetComponentsInChildren<TMP_Text>()[1].text = statList[i].ToString("F0")
+                            + " -> " +
                             (statList[i] + Descriptions[i]).ToString("F0");
                     break;
                 default:
@@ -233,10 +234,39 @@ public class UpgradeManager : MonoBehaviour
     int GetUpgradeCost(int statNum)
     {
         int Cost = 0;
-        if(levels[statNum] % 10 != 9)
+        if (levels[statNum] % 10 != 9)
             Cost = (int)(UpgradeInfo.UpgradeBasicCosts[statNum] * Mathf.Pow(UpgradeCostCoefficient[statNum], levels[statNum]));
         else
             Cost = (int)(UpgradeInfo.UpgradeBasicCosts[statNum] * Mathf.Pow(UpgradeCostCoefficient[statNum], levels[statNum])) * 2;
         return Cost;
+    }
+} //Stat Upgrade
+
+public partial class UpgradeManager //Powers
+{
+    public GameObject RandomAugment;
+
+    public void SettingRandomAugment()
+    {
+        Color color =
+            AugmentManager.RandomAugment.Rarity == 1 ? new Color(1.0f, 0f, 129 / 255f) * 2 :
+            AugmentManager.RandomAugment.Rarity == 2 ? Color.yellow * 2 :
+            AugmentManager.RandomAugment.Rarity == 3 ? new Color(1.0f, 0.41f, 0.71f) * 2 :
+            new Color(51 / 255f, 1f, 4 / 255f) * 2;
+
+        string colorCode = ColorUtility.ToHtmlStringRGB(color);
+
+        RandomAugment.GetComponentsInChildren<TMP_Text>()[1].text = "The next game will start with\n" +
+             "<color=#" + colorCode + ">" + AugmentManager.RandomAugment.Name + "</color>";
+    }
+
+    public void GetRandomAugment()
+    {
+        AugmentManager.RandomAugment =
+            Random.value < 0.05 ? AugmentManager.instance.GetRandomAugmentByRarity(1) :
+            Random.value < 0.15 ? AugmentManager.instance.GetRandomAugmentByRarity(2) :
+            Random.value < 0.4 ? AugmentManager.instance.GetRandomAugmentByRarity(3) :
+            AugmentManager.instance.GetRandomAugmentByRarity(4);
+        SettingRandomAugment();
     }
 }
