@@ -984,11 +984,6 @@ public partial class LevelManager : MonoBehaviour
         {
             if (AugmentManager.instance.isLevelUpOnceAgain)
                 AugmentManager.instance.isLevelUpOnceAgain = false;
-            if (StatManager.instance.isChangedStat)
-            {
-                StatManager.instance.ShowChangedStatRoutine = StartCoroutine(StatManager.instance.ShowChangedStat());
-                StatManager.instance.isChangedStat = false;
-            }
             SoundManager.instance.UnPausePausableSounds();
 
             GameManager.instance.WaveNoticeText.enabled = true;
