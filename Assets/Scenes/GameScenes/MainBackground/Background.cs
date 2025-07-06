@@ -16,7 +16,6 @@ public class Background : MonoBehaviour
         
     }
     public List<Vector2> availablePositions = new List<Vector2>();
-    public List<Vector2> usingPositions = new List<Vector2>();
     void InitializeGrid()
     {
         Bricks = GetComponentsInChildren<SpriteRenderer>();
@@ -36,10 +35,12 @@ public class Background : MonoBehaviour
         for(int i = 0; i < 60; i++)
         {
             Bricks[i].transform.position = availablePositions[i];
+            Bricks[i].enabled = false;
         }
     }
 
     private void BackgroundProcess()
     {
+
     }
 }
