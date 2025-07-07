@@ -25,6 +25,8 @@ public partial class UpgradeManager
     public GameObject StartingBall;
     public UpgradeInfo UpgradeInfo;
 
+    public GameObject[] UpgradeButtons;
+
     public TMP_Text GoldText;
     float[] Descriptions =
         {
@@ -105,7 +107,7 @@ public partial class UpgradeManager
         }
         else
         {
-            print("lack of gold");
+            //
         }
     }
 
@@ -154,6 +156,15 @@ public partial class UpgradeManager
         TMP_Text[] texts;
         for (int i = 0; i < 6; i++)
         {
+            int Cost = GetUpgradeCost(i);
+            if (StatManager.instance.Persistent_stat.Gold >= Cost)
+            {
+                UpgradeButtons[i].GetComponent<Image>().material.SetFloat("_HasEnoughMoney", 1);
+            }
+            else
+            {
+                UpgradeButtons[i].GetComponent<Image>().material.SetFloat("_HasEnoughMoney", 0);
+            }
             switch (i)
             {
                 case 0: //Attack Damage

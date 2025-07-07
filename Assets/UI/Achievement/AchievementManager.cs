@@ -19,6 +19,8 @@ public partial class AchievementManager : MonoBehaviour
 
     public List<List<object>> InGameAchievementProgress;
 
+    public GameObject[] CompleteButtons;
+
     enum InGameAchievementList
     {
         LevelUp,
@@ -225,18 +227,36 @@ public partial class AchievementManager : MonoBehaviour
 
         AchievementSlider_1.maxValue = PlayerPrefs.GetInt("1_Goal");
         AchievementSlider_1.value = PlayerPrefs.GetInt("1_Value");
-        
+            AchievementSlider_1.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_1.value / AchievementSlider_1.maxValue));
+            CompleteButtons[0].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_1.value / AchievementSlider_1.maxValue));
+
+
+
         AchievementSlider_2.maxValue = PlayerPrefs.GetInt("2_Goal");
         AchievementSlider_2.value = PlayerPrefs.GetInt("2_Value");
+            AchievementSlider_2.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_2.value / AchievementSlider_2.maxValue));
+            CompleteButtons[1].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_1.value / AchievementSlider_2.maxValue));
+
 
         AchievementSlider_3.maxValue = PlayerPrefs.GetInt("3_Goal");
         AchievementSlider_3.value = PlayerPrefs.GetInt("3_Value");
+        AchievementSlider_2.maxValue = PlayerPrefs.GetInt("2_Goal");
+        AchievementSlider_2.value = PlayerPrefs.GetInt("2_Value");
+            AchievementSlider_3.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_3.value / AchievementSlider_3.maxValue));
+        CompleteButtons[2].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_3.value / AchievementSlider_3.maxValue));
+
 
         AchievementSlider_4.maxValue = PlayerPrefs.GetInt("4_Goal");
         AchievementSlider_4.value = PlayerPrefs.GetInt("4_Value");
+            AchievementSlider_4.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_4.value / AchievementSlider_4.maxValue));
+            CompleteButtons[3].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_4.value / AchievementSlider_4.maxValue));
+
 
         AchievementSlider_5.maxValue = PlayerPrefs.GetInt("5_Goal");
         AchievementSlider_5.value = PlayerPrefs.GetInt("5_Value");
+            AchievementSlider_5.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_5.value / AchievementSlider_5.maxValue));
+            CompleteButtons[4].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_5.value / AchievementSlider_5.maxValue));
+
     }
 
     public void OnAchievementButton_1()
@@ -420,12 +440,19 @@ public partial class AchievementManager //daily quest
 
         DailyQuest_1_Slider.maxValue = DailyQuestSet[0].QuestGoal;
         DailyQuest_1_Slider.value = DailyQuestSet[0].QuestProgressValue;
+        DailyQuest_1_Slider.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_1_Slider.value / DailyQuest_1_Slider.maxValue));
+        CompleteButtons[5].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_1_Slider.value / DailyQuest_1_Slider.maxValue));
+
 
         DailyQuest_2_Slider.maxValue = DailyQuestSet[1].QuestGoal;
         DailyQuest_2_Slider.value = DailyQuestSet[1].QuestProgressValue;
+        DailyQuest_2_Slider.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_2_Slider.value / DailyQuest_2_Slider.maxValue));
+        CompleteButtons[6].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_2_Slider.value / DailyQuest_2_Slider.maxValue));
 
         DailyQuest_3_Slider.maxValue = DailyQuestSet[2].QuestGoal;
         DailyQuest_3_Slider.value = DailyQuestSet[2].QuestProgressValue;
+        DailyQuest_3_Slider.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_3_Slider.value / DailyQuest_3_Slider.maxValue));
+        CompleteButtons[7].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_3_Slider.value / DailyQuest_3_Slider.maxValue));
     }
 
     public void OnDailyQuestClear_1()
