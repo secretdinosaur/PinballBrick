@@ -381,7 +381,6 @@ public partial class IBrick
         {
             StartCoroutine(DamageManager.DamageByCurse(this, StartingPos));
         }
-
     }
 
     public float DecayDamageCalculate(float Damage)

@@ -43,8 +43,9 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public void SpawnSpecificItem(string Item, Vector2 BrickPosiotion, int num)
+    public void SpawnSpecificItem(string Item, Vector2 BrickPosiotion, int num, Action<float> callback)
     {
+        float callbackValue = 0;
         int index = 0;
         for (int i = 0; i < ItemInfo.ItemName.Length; i++)
         {
@@ -52,7 +53,7 @@ public class ItemManager : MonoBehaviour
                 index = i;
         }
 
-        for(int i = 0; i < num; i++)
+        for (int i = 0; i < num; i++)
         {
             Type Type = Type.GetType(ItemInfo.ItemName[index]);
             var method = typeof(PoolManager).GetMethod("GetFromPool");
@@ -61,12 +62,34 @@ public class ItemManager : MonoBehaviour
             item.transform.position = BrickPosiotion;
             item.GetComponent<SpriteRenderer>().enabled = true;
             item.ItemName = ItemInfo.ItemName[index];
-            if (item.ItemName == "ExpBead") item.GetComponent<ExpBead>().ExpAmount = (10 + GameManager.instance.Wave / 3 + LevelManager.Instance.LevelBar.maxValue / 200) / 2;
-            if (item.ItemName == "Gold1") item.GetComponent<Gold1>().GoldAmount = (5 + GameManager.instance.Wave / 2) / 2;
-            if (item.ItemName == "Gold2") item.GetComponent<Gold2>().GoldAmount = (25 + GameManager.instance.Wave / 2) / 2;
-            if (item.ItemName == "Gold3") item.GetComponent<Gold3>().GoldAmount = (50 + GameManager.instance.Wave / 2) / 2;
+            if (item.ItemName == "ExpBead")
+            { 
+                ExpBead itemType = item.GetComponent<ExpBead>();
+                itemType.ExpAmount = (10 + GameManager.instance.Wave / 3 + LevelManager.Instance.LevelBar.maxValue / 200) / 2;
+                callbackValue += itemType.ExpAmount;
+            }
+            if (item.ItemName == "Gold1")
+            {
+                Gold1 itemType = item.GetComponent<Gold1>();
+                itemType.GoldAmount = (5 + GameManager.instance.Wave / 2) / 2;
+                callbackValue += itemType.GoldAmount;
+            }
+            if (item.ItemName == "Gold2")
+            {
+                Gold2 itemType = item.GetComponent<Gold2>();
+                itemType.GoldAmount = (25 + GameManager.instance.Wave / 2) / 2;
+                callbackValue += itemType.GoldAmount;
+            }
+            if (item.ItemName == "Gold3")
+            {
+                Gold3 itemType = item.GetComponent<Gold3>();
+                itemType.GoldAmount = (50 + GameManager.instance.Wave / 2) / 2;
+                callbackValue += itemType.GoldAmount;
+            }
             item.MoveItem();
         }
+        if (callback != null)
+            callback.Invoke(callbackValue);
     }
 
     public IEnumerator SpawnSpecificItemInRandomPosition(string Item, int num, float interval)

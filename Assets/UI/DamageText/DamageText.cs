@@ -71,6 +71,14 @@ public class DamageText : MonoBehaviour
                 Routine = StartCoroutine(ShowDamageTextPoison());
                 damageText.color = Color.magenta;
                 break;
+            case "Gold":
+                Routine = StartCoroutine(ShowDamageTextRandom());
+                damageText.color = new Color(1, 1, 160f / 255f);
+                break;
+            case "Exp":
+                Routine = StartCoroutine(ShowDamageTextRandom());
+                damageText.color = new Color(161f / 255f, 1, 1);
+                break;
             default:
                 Routine = StartCoroutine(ShowDamageTextRandom());
                 damageText.color = Color.white;

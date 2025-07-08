@@ -208,14 +208,22 @@ public class BrickManager : MonoBehaviour
                 brick.StopCoroutine(brick.ExecutionCor);
             }
             if (brick.BrickType == "ExpBrick")
-                ItemManager.Instance.SpawnSpecificItem("ExpBead", brick.transform.position, 10);
+            {
+                ItemManager.Instance.SpawnSpecificItem("ExpBead", brick.transform.position, 10,
+                    (GainValue) => brick.ShowText("+" + GainValue.ToString("F1"), "Exp", false));
+            }            
             else if (brick.BrickType == "GoldBrick")
             {
-                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3);
-                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 4);
-                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3);
+                float GoldValue = 0;
+                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3,
+                    (GainValue) => GoldValue += GainValue);
+                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 4,
+                    (GainValue) => GoldValue += GainValue);
+                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3,
+                    (GainValue) => GoldValue += GainValue);
+                brick.ShowText("+" + GoldValue.ToString("F1"), "Gold", false);
             }
-            else if(brick.BrickType != "BallBrick")
+            else if (brick.BrickType != "BallBrick")
                 ItemManager.Instance.SpawnItem(brick.transform.position);
 
             availablePositions.Add(brick.transform.position);
