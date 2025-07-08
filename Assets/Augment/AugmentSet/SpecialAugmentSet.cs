@@ -1231,7 +1231,7 @@ public class RandomEffect : SpecialAugment
         { "Nothing", 0.3f },
         { "AdditionalDamage",  0.1f},
         { "RandomEffect", 0.04f },
-        { "FullHealth", 0.02f },
+        { "HealBrick", 0.02f },
         { "BrickSpawn", 0.02f },
         //{ "BossSpawn", 0.01f },
         { "Execution", 0.01f },
@@ -1288,10 +1288,10 @@ public class RandomEffect : SpecialAugment
                 return;
             }
 
-            accumulatedProbability += ProbabilitySet["FullHealth"];
+            accumulatedProbability += ProbabilitySet["HealBrick"];
             if (RandomValue < accumulatedProbability)
             {
-                Brick.HP = Brick.HpTemp;
+                Brick.HP += Brick.HpTemp * 0.1f;
                 return;
             }
 

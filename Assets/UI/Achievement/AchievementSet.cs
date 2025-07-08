@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class ACHIEVEMENT_LEVEL_UP : IAchievement
+public class ACHIEVEMENT_LEVEL_UP : GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_level_up, "Level Up!", "Level up for the first time");
-    }
+    public override string AchievementID => GPGSIds.achievement_level_up;
 
     public override void Progress(int Progress)
     {
@@ -19,12 +16,9 @@ public class ACHIEVEMENT_LEVEL_UP : IAchievement
     }
 }
 
-public class ACHIEVEMENT_AUGMENTATION: IAchievement
+public class ACHIEVEMENT_AUGMENTATION: GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_augmentation, "Augmentation!", "Choose augmentation for the first time");
-    }
+    public override string AchievementID => GPGSIds.achievement_augmentation;
 
     public override void Progress(int Progress)
     {
@@ -35,12 +29,9 @@ public class ACHIEVEMENT_AUGMENTATION: IAchievement
     }
 }
 
-public class ACHIEVEMENT_EUREKA : IAchievement
+public class ACHIEVEMENT_EUREKA : GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_eureka, "Eureka!", "Obtain the rarest augmentation");
-    }
+    public override string AchievementID => GPGSIds.achievement_eureka;
 
     public override void Progress(int Progress)
     {
@@ -51,12 +42,9 @@ public class ACHIEVEMENT_EUREKA : IAchievement
     }
 }
 
-public class ACHIEVEMENT_GIANT_SLAYER: IAchievement
+public class ACHIEVEMENT_GIANT_SLAYER: GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_giant_slayer, "Giant Slayer", "Defeat the boss for the first time");
-    }
+    public override string AchievementID => GPGSIds.achievement_giant_slayer;
 
     public override void Progress(int Progress)
     {
@@ -67,12 +55,9 @@ public class ACHIEVEMENT_GIANT_SLAYER: IAchievement
     }
 }
 
-public class ACHIEVEMENT_PINBALLBRICKS_NEWBIE : IAchievement
+public class ACHIEVEMENT_PINBALLBRICKS_NEWBIE : GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_pinballbricks_newbie, "Pinballbricks Newbie", "Passed 10 Waves");
-    }
+    public override string AchievementID => GPGSIds.achievement_pinballbricks_newbie;
 
     public override void Progress(int Progress)
     {
@@ -80,12 +65,9 @@ public class ACHIEVEMENT_PINBALLBRICKS_NEWBIE : IAchievement
     }
 }
 
-public class ACHIEVEMENT_PINBALLBRICKS_NOVICE : IAchievement
+public class ACHIEVEMENT_PINBALLBRICKS_NOVICE : GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_pinballbricks_novice, "Pinballbricks Novice", "Passed 100 Waves");
-    }
+    public override string AchievementID => GPGSIds.achievement_pinballbricks_novice;
 
     public override void Progress(int Progress)
     {
@@ -93,12 +75,18 @@ public class ACHIEVEMENT_PINBALLBRICKS_NOVICE : IAchievement
     }
 }
 
-public class ACHIEVEMENT_PINBALLBRICKS_VETERAN : IAchievement
+public class ACHIEVEMENT_PINBALLBRICKS_VETERAN : GoogleAchievement
 {
-    public void OnEnable()
+    public override string AchievementID => GPGSIds.achievement_pinballbricks_veteran;
+    public override void Progress(int Progress)
     {
-        SetAchievement(GPGSIds.achievement_pinballbricks_veteran, "Pinballbricks Veteran", "Passed 1,000 Waves");
+        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, null);
     }
+}
+
+public class ACHIEVEMENT_PINBALLBRICKS_MASTER : GoogleAchievement
+{
+    public override string AchievementID => GPGSIds.achievement_pinballbricks_master;
 
     public override void Progress(int Progress)
     {
@@ -106,28 +94,10 @@ public class ACHIEVEMENT_PINBALLBRICKS_VETERAN : IAchievement
     }
 }
 
-public class ACHIEVEMENT_PINBALLBRICKS_MASTER : IAchievement
+public class ACHIEVEMENT_BRICK_BREAKER: GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_pinballbricks_master, "Pinballbricks Master", "Passed 5,000 Waves");
-    }
-
-    public override void Progress(int Progress)
-    {
-        PlayGamesPlatform.Instance.IncrementAchievement(AchievementID, Progress, null);
-    }
-}
-
-public class ACHIEVEMENT_BRICK_BREAKER: IAchievement
-{
+    public override string AchievementID => GPGSIds.achievement_brick_breaker;
     private float progressBuffer = 0f;
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_brick_breaker, "Brick Breaker", "Destroy 500 bricks");
-    }
-
-
     public override void Progress(int Progress)
     {
         int x;
@@ -141,14 +111,10 @@ public class ACHIEVEMENT_BRICK_BREAKER: IAchievement
     }
 }
 
-public class ACHIEVEMENT_BRICK_DESTROYER : IAchievement
+public class ACHIEVEMENT_BRICK_DESTROYER : GoogleAchievement
 {
+    public override string AchievementID => GPGSIds.achievement_brick_destroyer;
     private float progressBuffer = 0f;
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_brick_destroyer, "Brick Destroyer", "Destroy 2,000 bricks");
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -162,14 +128,10 @@ public class ACHIEVEMENT_BRICK_DESTROYER : IAchievement
     }
 }
 
-public class ACHIEVEMENT_BRICK_ANNIHILATOR : IAchievement
+public class ACHIEVEMENT_BRICK_ANNIHILATOR : GoogleAchievement
 {
+    public override string AchievementID => GPGSIds.achievement_brick_annihilator;
     private float progressBuffer = 0f;
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_brick_annihilator, "Brick Annihilator", "Destroy 10,000 bricks");
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -183,14 +145,10 @@ public class ACHIEVEMENT_BRICK_ANNIHILATOR : IAchievement
     }
 }
 
-public class ACHIEVEMENT_BRICK_OBLITERATOR : IAchievement
+public class ACHIEVEMENT_BRICK_OBLITERATOR : GoogleAchievement
 {
+    public override string AchievementID => GPGSIds.achievement_brick_obliterator;
     private float progressBuffer = 0f;
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_brick_obliterator, "Brick Obliterator", "Destroy 40,000 bricks");
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -204,13 +162,9 @@ public class ACHIEVEMENT_BRICK_OBLITERATOR : IAchievement
     }
 }
 
-public class ACHIEVEMENT_WAVE_CLIMBER_1 : IAchievement
+public class ACHIEVEMENT_WAVE_CLIMBER_1 : GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_wave_climber_1, "Wave Climber 1", "Reaches Wave 20");
-    }
-
+    public override string AchievementID => GPGSIds.achievement_wave_climber_1;
     public override void Progress(int Progress)
     {
         if(Progress >= 20)
@@ -220,13 +174,9 @@ public class ACHIEVEMENT_WAVE_CLIMBER_1 : IAchievement
     }
 }
 
-public class ACHIEVEMENT_WAVE_CLIMBER_2 : IAchievement
+public class ACHIEVEMENT_WAVE_CLIMBER_2 : GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_wave_climber_2, "Wave Climber 2", "Reaches Wave 40");
-    }
-
+    public override string AchievementID => GPGSIds.achievement_wave_climber_2;
     public override void Progress(int Progress)
     {
         if (Progress >= 40)
@@ -236,12 +186,9 @@ public class ACHIEVEMENT_WAVE_CLIMBER_2 : IAchievement
     }
 }
 
-public class ACHIEVEMENT_WAVE_CLIMBER_3 : IAchievement
+public class ACHIEVEMENT_WAVE_CLIMBER_3 : GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_wave_climber_3, "Wave Climber 3", "Reaches Wave 60");
-    }
+    public override string AchievementID => GPGSIds.achievement_wave_climber_3;
     public override void Progress(int Progress)
     {
         if (Progress >= 60)
@@ -251,13 +198,9 @@ public class ACHIEVEMENT_WAVE_CLIMBER_3 : IAchievement
     }
 }
 
-public class ACHIEVEMENT_WAVE_CLIMBER_4 : IAchievement
+public class ACHIEVEMENT_WAVE_CLIMBER_4 : GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_wave_climber_4, "Wave Climber 4", "Reaches Wave 80");
-    }
-
+    public override string AchievementID => GPGSIds.achievement_wave_climber_4;
     public override void Progress(int Progress)
     {
         if (Progress >= 80)
@@ -267,13 +210,9 @@ public class ACHIEVEMENT_WAVE_CLIMBER_4 : IAchievement
     }
 }
 
-public class ACHIEVEMENT_WAVE_CLIMBER_5 : IAchievement
+public class ACHIEVEMENT_WAVE_CLIMBER_5 : GoogleAchievement
 {
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_wave_climber_5, "Wave Climber 5", "Reaches Wave 100");
-    }
-
+    public override string AchievementID => GPGSIds.achievement_wave_climber_5;
     public override void Progress(int Progress)
     {
         if (Progress >= 100)
@@ -283,14 +222,10 @@ public class ACHIEVEMENT_WAVE_CLIMBER_5 : IAchievement
     }
 }
 
-public class ACHIEVEMENT_BALL_SPAWNER : IAchievement
+public class ACHIEVEMENT_BALL_SPAWNER : GoogleAchievement
 {
+    public override string AchievementID => GPGSIds.achievement_ball_spawner;
     private float progressBuffer = 0f;
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_ball_spawner, "Ball Spawner", "Spawn 100 Balls");
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -304,14 +239,10 @@ public class ACHIEVEMENT_BALL_SPAWNER : IAchievement
     }
 }
 
-public class ACHIEVEMENT_BALL_MACHINE : IAchievement
+public class ACHIEVEMENT_BALL_MACHINE : GoogleAchievement
 {
+    public override string AchievementID => GPGSIds.achievement_ball_machine;
     private float progressBuffer = 0f;
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_ball_machine, "Ball Machine", "Spawn 1,000 Balls");
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -325,14 +256,10 @@ public class ACHIEVEMENT_BALL_MACHINE : IAchievement
     }
 }
 
-public class ACHIEVEMENT_BALL_PRODUCTION_LINE : IAchievement
+public class ACHIEVEMENT_BALL_PRODUCTION_LINE : GoogleAchievement
 {
+    public override string AchievementID => GPGSIds.achievement_ball_production_line;
     private float progressBuffer = 0f;
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_ball_production_line, "Ball Production Line", "Spawn 10,000 Balls");
-    }
-
     public override void Progress(int Progress)
     {
         int x;
@@ -346,14 +273,10 @@ public class ACHIEVEMENT_BALL_PRODUCTION_LINE : IAchievement
     }
 }
 
-public class ACHIEVEMENT_BALL_FACTORY : IAchievement
+public class ACHIEVEMENT_BALL_FACTORY : GoogleAchievement
 {
+    public override string AchievementID => GPGSIds.achievement_ball_factory;
     private float progressBuffer = 0f;
-    public void OnEnable()
-    {
-        SetAchievement(GPGSIds.achievement_ball_factory, "Ball Factory", "Spawn 100,000 Balls");
-    }
-
     public override void Progress(int Progress)
     {
         int x;
