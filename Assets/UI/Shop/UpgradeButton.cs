@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class UpgradeButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -9,7 +10,7 @@ public class UpgradeButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public float holdDelay = 1f;
     public float repeatRate = 0.1f;
     private float holdTimer = 0f;
-    int pressedNum;
+    public int pressedNum;
     void Update()
     {
         if (isPointerDown)
@@ -39,10 +40,5 @@ public class UpgradeButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             StopCoroutine(repeatCoroutine);
             repeatCoroutine = null;
         }
-    }
-
-    public void ButtonPress(int i)
-    {
-        pressedNum = i;
     }
 }

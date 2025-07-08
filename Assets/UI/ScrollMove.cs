@@ -12,6 +12,9 @@ public class ScrollMove : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     private float targetPosition;
     float Startpos;
     float Endpos;
+
+    public GameObject[] UnderBarButtons;
+    public float MinimumScrollValue;
     void Start()
     {
         if (scrollRect == null)
@@ -25,11 +28,11 @@ public class ScrollMove : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     {
         float Endpos = content.anchoredPosition.x;
         int CurrentIndex = (int)(-(Startpos + 720) / itemSize);
-        if (Startpos > Endpos)
+        if (Startpos > Endpos + MinimumScrollValue)
         {
             targetPosition = -(CurrentIndex + 1) * itemSize - 720;
         }
-        else if(Startpos < Endpos)
+        else if(Startpos < Endpos - MinimumScrollValue)
         {
             targetPosition = -(CurrentIndex - 1) * itemSize - 720;
         }
@@ -54,5 +57,16 @@ public class ScrollMove : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     public void OnUnderBarButtonClick(int i)
     {
         content.anchoredPosition = new Vector2(-i * itemSize - itemSize / 2, content.anchoredPosition.y);
+        for(int j = 0; j < 5; j++)
+        {
+            if(j != i)
+            {
+                UnderBarButtons[j].GetComponent<Image>().material.SetFloat("_Alpha", 1.5f);
+            }
+            else
+            {
+                UnderBarButtons[j].GetComponent<Image>().material.SetFloat("_Alpha", 2.5f);
+            }
+        }
     }
 }
