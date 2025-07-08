@@ -47,27 +47,31 @@ public partial class AchievementManager : MonoBehaviour
 
         AchievementList = new List<IAchievement>
         {
-            gameObject.AddComponent<ACHIEVEMENT_LEVEL_UP>(),
-            gameObject.AddComponent<ACHIEVEMENT_AUGMENTATION>(),
-            gameObject.AddComponent<ACHIEVEMENT_EUREKA>(),
-            gameObject.AddComponent<ACHIEVEMENT_GIANT_SLAYER>(),
-            gameObject.AddComponent<ACHIEVEMENT_PINBALLBRICKS_NEWBIE>(),
-            gameObject.AddComponent<ACHIEVEMENT_PINBALLBRICKS_NOVICE>(),
-            gameObject.AddComponent<ACHIEVEMENT_PINBALLBRICKS_VETERAN>(),
-            gameObject.AddComponent<ACHIEVEMENT_PINBALLBRICKS_MASTER>(),
-            gameObject.AddComponent<ACHIEVEMENT_BRICK_BREAKER>(),
-            gameObject.AddComponent<ACHIEVEMENT_BRICK_DESTROYER>(),
-            gameObject.AddComponent<ACHIEVEMENT_BRICK_ANNIHILATOR>(),
-            gameObject.AddComponent<ACHIEVEMENT_BRICK_OBLITERATOR>(),
-            gameObject.AddComponent<ACHIEVEMENT_WAVE_CLIMBER_1>(),
-            gameObject.AddComponent<ACHIEVEMENT_WAVE_CLIMBER_2>(),
-            gameObject.AddComponent<ACHIEVEMENT_WAVE_CLIMBER_3>(),
-            gameObject.AddComponent<ACHIEVEMENT_WAVE_CLIMBER_4>(),
-            gameObject.AddComponent<ACHIEVEMENT_WAVE_CLIMBER_5>(),
-            gameObject.AddComponent<ACHIEVEMENT_BALL_SPAWNER>(),
-            gameObject.AddComponent<ACHIEVEMENT_BALL_MACHINE>(),
-            gameObject.AddComponent<ACHIEVEMENT_BALL_PRODUCTION_LINE>(),
-            gameObject.AddComponent<ACHIEVEMENT_BALL_FACTORY>(),
+            new ACHIEVEMENT_LEVEL_UP(),
+            new ACHIEVEMENT_AUGMENTATION(),
+            new ACHIEVEMENT_EUREKA(),
+            new ACHIEVEMENT_GIANT_SLAYER(),
+            
+            new ACHIEVEMENT_PINBALLBRICKS_NEWBIE(),
+            new ACHIEVEMENT_PINBALLBRICKS_NOVICE(),
+            new ACHIEVEMENT_PINBALLBRICKS_VETERAN(),
+            new ACHIEVEMENT_PINBALLBRICKS_MASTER(),
+            
+            new ACHIEVEMENT_BRICK_BREAKER(),
+            new ACHIEVEMENT_BRICK_DESTROYER(),
+            new ACHIEVEMENT_BRICK_ANNIHILATOR(),
+            new ACHIEVEMENT_BRICK_OBLITERATOR(),
+            
+            new ACHIEVEMENT_WAVE_CLIMBER_1(),
+            new ACHIEVEMENT_WAVE_CLIMBER_2(),
+            new ACHIEVEMENT_WAVE_CLIMBER_3(),
+            new ACHIEVEMENT_WAVE_CLIMBER_4(),
+            new ACHIEVEMENT_WAVE_CLIMBER_5(),
+
+            new ACHIEVEMENT_BALL_SPAWNER(),
+            new ACHIEVEMENT_BALL_MACHINE(),
+            new ACHIEVEMENT_BALL_PRODUCTION_LINE(),
+            new ACHIEVEMENT_BALL_FACTORY()
         };
 
         LoadDailyQuests();
@@ -171,31 +175,31 @@ public partial class AchievementManager : MonoBehaviour
 
         if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_LEVEL_UP>(), statistics.LevelUpCount);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_AUGMENTATION>(), statistics.AchievedAugmentCount);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_EUREKA>(), statistics.AchievedRareAugmentCount);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_GIANT_SLAYER>(), statistics.DestroyedBossBricks);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_LEVEL_UP>().FirstOrDefault(), statistics.LevelUpCount);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_AUGMENTATION>().FirstOrDefault(), statistics.AchievedAugmentCount);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_EUREKA>().FirstOrDefault(), statistics.AchievedRareAugmentCount);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_GIANT_SLAYER>().FirstOrDefault(), statistics.DestroyedBossBricks);
 
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_NEWBIE>(), statistics.PassedWave);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_NOVICE>(), statistics.PassedWave);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_VETERAN>(), statistics.PassedWave);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_PINBALLBRICKS_MASTER>(), statistics.PassedWave);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_PINBALLBRICKS_NEWBIE>().FirstOrDefault(), statistics.PassedWave);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_PINBALLBRICKS_NOVICE>().FirstOrDefault(), statistics.PassedWave);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_PINBALLBRICKS_VETERAN>().FirstOrDefault(), statistics.PassedWave);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_PINBALLBRICKS_MASTER>().FirstOrDefault(), statistics.PassedWave);
 
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_BREAKER>(), statistics.DestroyedBricks);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_DESTROYER>(), statistics.DestroyedBricks);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_ANNIHILATOR>(), statistics.DestroyedBricks);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BRICK_OBLITERATOR>(), statistics.DestroyedBricks);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_BRICK_BREAKER>().FirstOrDefault(), statistics.DestroyedBricks);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_BRICK_DESTROYER>().FirstOrDefault(), statistics.DestroyedBricks);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_BRICK_ANNIHILATOR>().FirstOrDefault(), statistics.DestroyedBricks);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_BRICK_OBLITERATOR>().FirstOrDefault(), statistics.DestroyedBricks);
 
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_1>(), statistics.ReachedWave);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_2>(), statistics.ReachedWave);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_3>(), statistics.ReachedWave);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_4>(), statistics.ReachedWave);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_WAVE_CLIMBER_5>(), statistics.ReachedWave);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_WAVE_CLIMBER_1>().FirstOrDefault(), statistics.ReachedWave);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_WAVE_CLIMBER_2>().FirstOrDefault(), statistics.ReachedWave);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_WAVE_CLIMBER_3>().FirstOrDefault(), statistics.ReachedWave);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_WAVE_CLIMBER_4>().FirstOrDefault(), statistics.ReachedWave);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_WAVE_CLIMBER_5>().FirstOrDefault(), statistics.ReachedWave);
 
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_SPAWNER>(), statistics.SummonedBalls);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_MACHINE>(), statistics.SummonedBalls);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_PRODUCTION_LINE>(), statistics.SummonedBalls);
-            AchievementProgressing(gameObject.GetComponent<ACHIEVEMENT_BALL_FACTORY>(), statistics.SummonedBalls);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_BALL_SPAWNER>().FirstOrDefault(), statistics.SummonedBalls);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_BALL_MACHINE>().FirstOrDefault(), statistics.SummonedBalls);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_BALL_PRODUCTION_LINE>().FirstOrDefault(), statistics.SummonedBalls);
+            AchievementProgressing(AchievementList.OfType<ACHIEVEMENT_BALL_FACTORY>().FirstOrDefault(), statistics.SummonedBalls);
         }
     }
 
@@ -259,7 +263,7 @@ public partial class AchievementManager : MonoBehaviour
 
     }
 
-    public void OnAchievementButton_1()
+    public void OnAchievementButton_1() //Level Up
     {
         if (PlayerPrefs.GetInt("1_Value") >= PlayerPrefs.GetInt("1_Goal"))
         {
@@ -272,33 +276,33 @@ public partial class AchievementManager : MonoBehaviour
         }
     }
 
-    public void OnAchievementButton_2()
+    public void OnAchievementButton_2() //Destroyed Bricks
     {
         if (PlayerPrefs.GetInt("2_Value") >= PlayerPrefs.GetInt("2_Goal"))
         {
             PlayerPrefs.SetInt("2_Level", PlayerPrefs.GetInt("2_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("2_Reward"));
             UpgradeManager.Instance.UpdateGoldUI();
-            PlayerPrefs.SetInt("2_Goal", PlayerPrefs.GetInt("2_Goal") + (5 * PlayerPrefs.GetInt("2_Level")));
+            PlayerPrefs.SetInt("2_Goal", PlayerPrefs.GetInt("2_Goal") + (20 * PlayerPrefs.GetInt("2_Level")));
             PlayerPrefs.SetInt("2_Reward", PlayerPrefs.GetInt("2_Reward") + 45);
             UpdateInGameAchievement();
         }
     }
 
-    public void OnAchievementButton_3()
+    public void OnAchievementButton_3() //Soawned Ball
     {
         if (PlayerPrefs.GetInt("3_Value") >= PlayerPrefs.GetInt("3_Goal"))
         {
             PlayerPrefs.SetInt("3_Level", PlayerPrefs.GetInt("3_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("3_Reward"));
             UpgradeManager.Instance.UpdateGoldUI();
-            PlayerPrefs.SetInt("3_Goal", PlayerPrefs.GetInt("3_Goal") + (5 * PlayerPrefs.GetInt("3_Level")));
+            PlayerPrefs.SetInt("3_Goal", PlayerPrefs.GetInt("3_Goal") + (10 * PlayerPrefs.GetInt("3_Level")));
             PlayerPrefs.SetInt("3_Reward", PlayerPrefs.GetInt("3_Reward") + 45);
             UpdateInGameAchievement();
         }
     }
 
-    public void OnAchievementButton_4()
+    public void OnAchievementButton_4() //Passed Wave
     {
         if (PlayerPrefs.GetInt("4_Value") >= PlayerPrefs.GetInt("4_Goal"))
         {
@@ -311,14 +315,14 @@ public partial class AchievementManager : MonoBehaviour
         }
     }
 
-    public void OnAchievementButton_5()
+    public void OnAchievementButton_5() //Destroyed Boss
     {
         if (PlayerPrefs.GetInt("5_Value") >= PlayerPrefs.GetInt("5_Goal"))
         {
             PlayerPrefs.SetInt("5_Level", PlayerPrefs.GetInt("5_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("5_Reward"));
             UpgradeManager.Instance.UpdateGoldUI();
-            PlayerPrefs.SetInt("5_Goal", PlayerPrefs.GetInt("5_Goal") + 2);
+            PlayerPrefs.SetInt("5_Goal", PlayerPrefs.GetInt("5_Goal") + (2 * PlayerPrefs.GetInt("5_Level")));
             PlayerPrefs.SetInt("5_Reward", PlayerPrefs.GetInt("5_Reward") + 67);
             UpdateInGameAchievement();
         }

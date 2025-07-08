@@ -109,7 +109,7 @@ public partial class AugmentManager
     public void AddAugment(IAugment augment)
     {
         alreadyChosenAugments.Clear();
-        exceptionAugments.Add(augment);
+        LockAugment(augment);
         activeAugments.Add(augment);
         augment.Apply();
         ActivatedAugmentNumber++;
@@ -120,7 +120,7 @@ public partial class AugmentManager
 
     public void RemoveAugment(IAugment augment)
     {
-        LockAugment(augment);
+        UnlockAugment(augment);
         activeAugments.Remove(augment);
         augment.Remove();
         ActivatedAugmentNumber--;
@@ -131,7 +131,7 @@ public partial class AugmentManager
         var activeAugmentsCopy = activeAugments.ToList();
         foreach (IAugment augment in activeAugmentsCopy)
         {
-            if(augment.Type == augmentType)
+            if (augment.Type == augmentType)
             {
                 RemoveAugment(augment);
             }
@@ -148,7 +148,7 @@ public partial class AugmentManager
     }
     public void ClearAllAugments()
     {
-        for(int i = 0; i < activeAugments.Count; i++)
+        for (int i = 0; i < activeAugments.Count; i++)
         {
             activeAugments[i].Remove();
         }
@@ -157,13 +157,19 @@ public partial class AugmentManager
 
     public void UnlockAugment(IAugment augment)
     {
-        if(exceptionAugments.Contains(augment))
+        if (exceptionAugments.Contains(augment))
+        {
             exceptionAugments.Remove(augment);
+            ExceptedAugmentNumber--;
+        }
     }
 
     public void LockAugment(IAugment augment)
     {
         if (!exceptionAugments.Contains(augment))
+        {
             exceptionAugments.Add(augment);
+            ExceptedAugmentNumber++;
+        }
     }
 }

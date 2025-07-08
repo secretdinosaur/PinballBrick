@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using static UnityEngine.Rendering.HableCurve;
+using System.Collections;
+using System;
+using System.Linq;
 
 public partial class AugmentManager : MonoBehaviour //Declaration
 {
     public static AugmentManager instance;
     public List<IAugment> augmentsSet;
+    public int ExceptedAugmentNumber;
     public List<IAugment> exceptionAugments;
 
     public List<IAugment> RouletteAugmentsSet;
     //private List<int> usedIndexes;
     public int ActivatedAugmentNumber;
     public List<IAugment> activeAugments = new List<IAugment>();
-    public static GameObject AugmentSet;
     
     public EffectChance effectChance;
     public int FireStackLimit;
@@ -37,8 +40,10 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public bool isLevelUpOnceAgain;
 
+    public AugmentRoutine AugmentRoutines;
     [SerializeField]
     public static IAugment RandomAugment;
+
 
     public Dictionary<int, float> rarityWeights = new Dictionary<int, float>
     {
@@ -66,8 +71,9 @@ public partial class AugmentManager : MonoBehaviour //Declaration
         AfterDeathActiveNumber = 1;
         isLevelUpOnceAgain = false;
         ActivatedAugmentNumber = 0;
+        ExceptedAugmentNumber = 0;
         ClearAllAugments();
-        AugmentSet = GameObject.Find("AugmentSet").gameObject;
+        AugmentRoutines = new AugmentRoutine(this);
 
         exceptionAugments = new List<IAugment>
         {
@@ -76,151 +82,160 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         augmentsSet = new List<IAugment>
         {
-            AugmentSet.AddComponent<AtkUp1>(),
-            AugmentSet.AddComponent<AtkUp2>(),
-            AugmentSet.AddComponent<AtkUp3>(),
-            AugmentSet.AddComponent < CritChance10Up >(),
-            AugmentSet.AddComponent < CritChance20Up >(),
-            AugmentSet.AddComponent < CritChance35Up >(),
-            AugmentSet.AddComponent < CritDamage15Up >(),
-            AugmentSet.AddComponent < CritDamage30Up >(),
-            AugmentSet.AddComponent < GoldGain10Up >(),
-            AugmentSet.AddComponent < GoldGain30Up >(),
-            AugmentSet.AddComponent < GoldGain50Up >(),
-            AugmentSet.AddComponent < CritChanceToAttackDamage >(),
-            AugmentSet.AddComponent<EffectDamageUp1>(),
-            AugmentSet.AddComponent<EffectDamageUp2>(),
-            AugmentSet.AddComponent<EffectDamageUp3>(),
-            AugmentSet.AddComponent<WeakButStrongEffect>(),
-            AugmentSet.AddComponent<WeakButStrongAtk>(),
-            AugmentSet.AddComponent<DecreaseFieldCooldown5>(),
-            AugmentSet.AddComponent<DecreaseFieldCooldown10>(),
-            AugmentSet.AddComponent<DecreaseFieldCooldown20>(),
-            AugmentSet.AddComponent<RandomStatUpOrDown>(),
-            AugmentSet.AddComponent<Trinity>(),
-            AugmentSet.AddComponent<Perfectionism>(),
-            AugmentSet.AddComponent<MassivelyCriticalDamageUp>(),
-            AugmentSet.AddComponent<ExpGain10Up>(),
-            AugmentSet.AddComponent<ExpGain30Up>(),
-            AugmentSet.AddComponent<ExpGain50Up>(),
-            AugmentSet.AddComponent<AttackEffectBothUp>(),
-            AugmentSet.AddComponent<LevelUpMania>(),
-            AugmentSet.AddComponent<EffectDuration10>(),
-            AugmentSet.AddComponent<EffectDuration15>(),
-            AugmentSet.AddComponent<EffectDuration30>(),
-            AugmentSet.AddComponent<LateBloomer>(),
+            new AtkUp1(),
+            new AtkUp2(),
+            new AtkUp3(),
+            new CritChance10Up(),
+            new CritChance20Up(),
+            new CritChance35Up(),
+            new CritDamage15Up(),
+            new CritDamage30Up(),
+            new GoldGain10Up(),
+            new GoldGain30Up(),
+            new GoldGain50Up(),
+            new CritChanceToAttackDamage(),
+            new EffectDamageUp1(),
+            new EffectDamageUp2(),
+            new EffectDamageUp3(),
+            new WeakButStrongEffect(),
+            new WeakButStrongAtk(),
+            new DecreaseFieldCooldown5(),
+            new DecreaseFieldCooldown10(),
+            new DecreaseFieldCooldown20(),
+            new RandomStatUpOrDown(),
+            new Trinity(),
+            new Perfectionism(),
+            new MassivelyCriticalDamageUp(),
+            new ExpGain10Up(),
+            new ExpGain30Up(),
+            new ExpGain50Up(),
+            new AttackEffectBothUp(),
+            new LevelUpMania(),
+            new EffectDuration10(),
+            new EffectDuration15(),
+            new EffectDuration30(),
+            new LateBloomer(),
             ///////////////////////// Stat
-            AugmentSet.AddComponent<AllDamage>(),
-            AugmentSet.AddComponent<AngryBall>(),
-            AugmentSet.AddComponent<PhoenixBall>(),
-            AugmentSet.AddComponent<TargetMark>(),
-            AugmentSet.AddComponent<SatelliteBeam>(),
-            AugmentSet.AddComponent<AutoGetExp>(),
-            AugmentSet.AddComponent<AntiGravity>(),
-            AugmentSet.AddComponent<BountyHunter>(),
-            AugmentSet.AddComponent<AttackOrDie>(),
-            AugmentSet.AddComponent<WeatherChange>(),
-            AugmentSet.AddComponent<DiceGamble>(),
-            AugmentSet.AddComponent<Trampoline>(),
+            new AllDamage(),
+            new AngryBall(),
+            new PhoenixBall(),
+            new TargetMark(),
+            new SatelliteBeam(),
+            new AutoGetExp(),
+            new AntiGravity(),
+            new BountyHunter(),
+            new AttackOrDie(),
+            new WeatherChange(),
+            new DiceGamble(),
+            new Trampoline(),
             ///////////////////////// Field
-            AugmentSet.AddComponent<FireBall>(),
-            AugmentSet.AddComponent<Homing>(),
-            AugmentSet.AddComponent<BouncePower>(),
-            AugmentSet.AddComponent<AdditionalThreeAttack>(),
-            AugmentSet.AddComponent<CriticalAdditionalAttack>(),
-            AugmentSet.AddComponent<Execution>(),
-            AugmentSet.AddComponent<EffectChanceUp>(),
-            AugmentSet.AddComponent<DeathExp>(),
-            AugmentSet.AddComponent<DeathGold>(),
-            AugmentSet.AddComponent<BigBoss>(),
-            AugmentSet.AddComponent<ChangeBallSpawnPosition>(),
-            AugmentSet.AddComponent<Lightning>(),
-            AugmentSet.AddComponent<PoisonBall>(),
-            AugmentSet.AddComponent<Chaos>(),
-            AugmentSet.AddComponent<DecayBall>(),
-            AugmentSet.AddComponent<ExplosionWithBall>(),
-            AugmentSet.AddComponent<LevelUpQuest>(),
-            AugmentSet.AddComponent<GrowBallQuest>(),
-            AugmentSet.AddComponent<InfiniteGrowBall>(),
-            AugmentSet.AddComponent<SacrificeQuest1>(),
-            AugmentSet.AddComponent<AttackAfterAdditionalBall>(),
-            AugmentSet.AddComponent<StrongAdditionalAttack>(),
-            AugmentSet.AddComponent<RandomEffect>(),
-            AugmentSet.AddComponent<RebirthBall>(),
-            AugmentSet.AddComponent<BossKillBall>(),
-            AugmentSet.AddComponent<SpawnBallAmountMultiple1>(),
-            AugmentSet.AddComponent<SpawnBallAmountMultiple2>(),
-            AugmentSet.AddComponent<BallSwarm>(),
-            AugmentSet.AddComponent<LonelyBall>(),
-            AugmentSet.AddComponent<SplitBall>(),
-            AugmentSet.AddComponent<CurseBall>(),
-            AugmentSet.AddComponent<DeathEffectTwice>(),
-            AugmentSet.AddComponent<SpawnBombBall>(),
-            AugmentSet.AddComponent<ChangeNormalToGlass>(),
-            AugmentSet.AddComponent<OneMoreChance>(),
-            AugmentSet.AddComponent<Concentrate>(),
-            AugmentSet.AddComponent<GroupViolence>(),
-            AugmentSet.AddComponent<Oneness>(),
-            AugmentSet.AddComponent<HappyBirthday>(),
-            AugmentSet.AddComponent<MidasHand>(),
-            AugmentSet.AddComponent<HalfBallSacrifice>(),
-            AugmentSet.AddComponent<Chronobreak>(),
-            AugmentSet.AddComponent<CritAfterThreeAttack>(),
-            AugmentSet.AddComponent<DamageInfection>(),
-            AugmentSet.AddComponent<RollDiceBall>(),
-            AugmentSet.AddComponent<PortalBall>(),
-            AugmentSet.AddComponent<InfiniteRapid>(),
-            AugmentSet.AddComponent<MoreAndWeakBricks>(),
-            AugmentSet.AddComponent<LessAndStrongBricks>(),
-            AugmentSet.AddComponent<DoubleBoss>(),
-            AugmentSet.AddComponent<FusionBricks>(),
-            AugmentSet.AddComponent<GainBallAfterLevelUp>(),
-            AugmentSet.AddComponent<SpecialBrickChanceUp>(),
-            AugmentSet.AddComponent<IncreseStatUpValue>(),
-            AugmentSet.AddComponent<GoalWaveBonus>(),
-            AugmentSet.AddComponent<ReducesExp10>(),
-            AugmentSet.AddComponent<ReducesExp15>(),
-            AugmentSet.AddComponent<WaveFourBoss>(),
-            AugmentSet.AddComponent<RerollAugments>(),
-            AugmentSet.AddComponent<BossDamageUp>(),
-            AugmentSet.AddComponent<LevelUpAgain>(),
-            AugmentSet.AddComponent<AtkUpWhenCritical>(),
-            AugmentSet.AddComponent<AdditionalEffectDamage>(),
-            AugmentSet.AddComponent<PenetratingBall>(),
+            new FireBall(),
+            new Homing(),
+            new BouncePower(),
+            new AdditionalThreeAttack(),
+            new CriticalAdditionalAttack(),
+            new Execution(),
+            new EffectChanceUp(),
+            new DeathExp(),
+            new DeathGold(),
+            new BigBoss(),
+            new ChangeBallSpawnPosition(),
+            new Lightning(),
+            new PoisonBall(),
+            new Chaos(),
+            new DecayBall(),
+            new ExplosionWithBall(),
+            new LevelUpQuest(),
+            new GrowBallQuest(),
+            new InfiniteGrowBall(),
+            new SacrificeQuest1(),
+            new AttackAfterAdditionalBall(),
+            new StrongAdditionalAttack(),
+            new RandomEffect(),
+            new RebirthBall(),
+            new BossKillBall(),
+            new SpawnBallAmountMultiple1(),
+            new SpawnBallAmountMultiple2(),
+            new BallSwarm(),
+            new LonelyBall(),
+            new SplitBall(),
+            new CurseBall(),
+            new DeathEffectTwice(),
+            new SpawnBombBall(),
+            new ChangeNormalToGlass(),
+            new OneMoreChance(),
+            new Concentrate(),
+            new GroupViolence(),
+            new Oneness(),
+            new HappyBirthday(),
+            new MidasHand(),
+            new HalfBallSacrifice(),
+            new Chronobreak(),
+            new CritAfterThreeAttack(),
+            new DamageInfection(),
+            new RollDiceBall(),
+            new PortalBall(),
+            new InfiniteRapid(),
+            new MoreAndWeakBricks(),
+            new LessAndStrongBricks(),
+            new DoubleBoss(),
+            new FusionBricks(),
+            new GainBallAfterLevelUp(),
+            new SpecialBrickChanceUp(),
+            new IncreseStatUpValue(),
+            new GoalWaveBonus(),
+            new ReducesExp10(),
+            new ReducesExp15(),
+            new WaveFourBoss(),
+            new RerollAugments(),
+            new BossDamageUp(),
+            new LevelUpAgain(),
+            new AtkUpWhenCritical(),
+            new AdditionalEffectDamage(),
+            new PenetratingBall(),
             ////////////////////////// Special
-            AugmentSet.AddComponent<FireEffectStackBlast>(),
-            AugmentSet.AddComponent<TheFlamethrower>(),
-            AugmentSet.AddComponent<Pyromaniac>(),
+            new FireEffectStackBlast(),
+            new TheFlamethrower(),
+            new Pyromaniac(),
 
-            AugmentSet.AddComponent<DeadlyPoison>(),
-            AugmentSet.AddComponent<InfinitePoison>(),
-            AugmentSet.AddComponent<DecayingPoison>(),
-            AugmentSet.AddComponent<FlammablePoison>(),
+            new DeadlyPoison(),
+            new InfinitePoison(),
+            new DecayingPoison(),
+            new FlammablePoison(),
 
-            AugmentSet.AddComponent<PowerfulDecay>(),
-            AugmentSet.AddComponent<DecayExplosion>(),
-            AugmentSet.AddComponent<DecayZone>(),
+            new PowerfulDecay(),
+            new DecayExplosion(),
+            new DecayZone(),
 
-            AugmentSet.AddComponent<ThunderStrike>(),
-            AugmentSet.AddComponent<ChainLightning>(),
-            AugmentSet.AddComponent<LightningRod>(),
+            new ThunderStrike(),
+            new ChainLightning(),
+            new LightningRod(),
 
-            AugmentSet.AddComponent<SacrificeQuest2>(),
-            AugmentSet.AddComponent<SacrificeQuest3>(),
+            new SacrificeQuest2(),
+            new SacrificeQuest3(),
 
-            AugmentSet.AddComponent<ShareBallAtk>(),
+            new ShareBallAtk(),
 
-            AugmentSet.AddComponent<SummonGhostBall>(),
-            AugmentSet.AddComponent<EnhanceCurseAttack>(),
-            AugmentSet.AddComponent<ContinuingCurseAttack>(),
+            new SummonGhostBall(),
+            new EnhanceCurseAttack(),
+            new ContinuingCurseAttack(),
 
-            AugmentSet.AddComponent<RebornBombBall>(),
-            AugmentSet.AddComponent<SuicideBoomBall>(),
-            AugmentSet.AddComponent<Bombardment>(),
-            AugmentSet.AddComponent<InstantBombBall>()
+            new RebornBombBall(),
+            new SuicideBoomBall(),
+            new Bombardment(),
+            new InstantBombBall(),
+
         };
 
-        if(RandomAugment != null)
+        foreach (IAugment augment in augmentsSet)
+        {
+            if (augment.isFollowUpAugment)
+            {
+                LockAugment(augment);
+            }
+        }
+
+        if (RandomAugment != null)
         {
             AddAugment(RandomAugment);
             RandomAugment = null;
@@ -228,7 +243,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            
+
         };
 
         foreach (IAugment augment in TestAugments)
@@ -239,7 +254,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
     public void AddAugmentButton()
     {
-        AddAugment(AugmentSet.GetComponent<Perfectionism>());
+        AddAugment(augmentsSet.OfType<Perfectionism>().FirstOrDefault());
     }
 }
 
@@ -288,5 +303,58 @@ public class EffectDuration
         FireDuration = fireDuration;
         PoisonDuration = poisonDuration;
         DecayDuration = decayDuration;
+    }
+}
+
+public class AugmentRoutine
+{
+    private readonly MonoBehaviour runner;
+    private readonly Dictionary<string, Coroutine> routines = new();
+
+    public AugmentRoutine(MonoBehaviour coroutineRunner)
+    {
+        runner = coroutineRunner ?? throw new ArgumentNullException(nameof(coroutineRunner));
+    }
+
+    public Coroutine Add(string key, IEnumerator routine)
+    {
+        if (routines.ContainsKey(key))
+        {
+            Stop(key);
+        }
+
+        Coroutine coroutine = runner.StartCoroutine(routine);
+        routines[key] = coroutine;
+        return coroutine;
+    }
+
+    public void Stop(string key)
+    {
+        if (routines.TryGetValue(key, out var coroutine))
+        {
+            runner.StopCoroutine(coroutine);
+            routines.Remove(key);
+        }
+    }
+
+    public void StopAll()
+    {
+        foreach (var kvp in routines)
+        {
+            runner.StopCoroutine(kvp.Value);
+        }
+        routines.Clear();
+    }
+
+    public bool hasKey(string key)
+    {
+        if (routines.ContainsKey(key))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

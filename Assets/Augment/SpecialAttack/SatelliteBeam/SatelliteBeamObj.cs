@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class SatelliteBeamObj : SpecialObj
 {
     private float TouchDamage;
-    private float EffectDamage;
 
     public Coroutine Routine = null;
 
@@ -49,12 +48,11 @@ public class SatelliteBeamObj : SpecialObj
                 {
                     if (!TouchedBricks.Contains(brick))
                     {
-                        TouchDamage = (StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.AttackDamageMultiplier * 10;
+                        TouchDamage = StatManager.EffectDamage * 8;
                         brick.ArbitraryDamageAttack(TouchDamage, false, TouchDamage.ToString("F1"), "Fire");
                         TouchedBricks.Add(brick);
                     }
-                    EffectDamage = (StatManager.instance.Temporary_stat.EffectDamage) * StatManager.instance.statMultiplier.EffectDamageMultiplier;
-                    brick.ArbitraryDamageAttack(EffectDamage, false, EffectDamage.ToString("F1"), "Fire");
+                    brick.ArbitraryDamageAttack(StatManager.EffectDamage, false, StatManager.EffectDamage.ToString("F1"), "Fire");
                 }
             }
         }

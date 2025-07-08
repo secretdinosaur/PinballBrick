@@ -12775,7 +12775,6 @@ MonoBehaviour:
   - {fileID: 3788167435311697132, guid: 6f68f645b5373aa49b4bd19637162b1c, type: 3}
   OptionButtons: []
   isThereRerolled: 0
-  RerollAugment: {fileID: 0}
 --- !u!114 &218456170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12832,11 +12831,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 350071e32e8a418a8fe1fe82613f90dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  augmentsSet: []
-  exceptionAugments: []
-  RouletteAugmentsSet: []
+  ExceptedAugmentNumber: 0
   ActivatedAugmentNumber: 0
-  activeAugments: []
   FireStackLimit: 0
   PoisonStackLimit: 0
   DecayStackLimit: 0
@@ -12908,7 +12904,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b9492d0aa1ce4c46af188356a5516a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AchievementList: []
   questSet: {fileID: 11400000, guid: 09fda9303f024d54b96b080065b1305d, type: 2}
   DailyQuestSet: []
 --- !u!1 &236723706
@@ -25671,37 +25666,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &617523778
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 617523779}
-  m_Layer: 0
-  m_Name: AugmentSet
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &617523779
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617523778}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05875018, y: -0.12526509, z: -1.1846017}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &624654959
 GameObject:
   m_ObjectHideFlags: 0
@@ -117691,7 +117655,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 218456167}
-  - {fileID: 617523779}
   - {fileID: 1874502473}
   - {fileID: 1917997162}
   - {fileID: 374219221}
