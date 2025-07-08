@@ -413,6 +413,12 @@ public partial class AchievementManager //daily quest
 
             else if (DailyQuestSet[i].QuestId == "Play5Minutes")
                 DailyQuestSet[i].QuestProgressValue = PlayerPrefs.GetInt("Play5Minutes");
+
+            if (DailyQuestSet[i].QuestProgressValue >= DailyQuestSet[i].QuestGoal)
+            {
+                DailyQuestSet[i].QuestProgressValue = DailyQuestSet[i].QuestGoal;
+            }
+
             DailyQuestSet[i].isCleared = PlayerPrefs.GetInt("isGetDailyQuest" + (i + 1) + "Reward") == 1 ? true : false;
         }
 
@@ -421,7 +427,7 @@ public partial class AchievementManager //daily quest
         DailyQuest_3_Name.text = DailyQuestSet[2].QuestName;
 
         DailyQuest_1_Progress.text = DailyQuestSet[0].isCleared ?
-            "Clear" :
+            "Clear" : 
             DailyQuestSet[0].QuestId == "Play5Minutes" ? 
             (DailyQuestSet[0].QuestProgressValue / 60).ToString("F1") + " / " + (DailyQuestSet[0].QuestGoal / 60).ToString("F1") :
             DailyQuestSet[0].QuestProgressValue.ToString("F0") + " / " + DailyQuestSet[0].QuestGoal.ToString("F0");
