@@ -243,9 +243,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            augmentsSet.OfType<FireBall>().FirstOrDefault(),
-            augmentsSet.OfType<BallSwarm>().FirstOrDefault(),
-            augmentsSet.OfType<Bombardment>().FirstOrDefault()
+
         };
 
         foreach (IAugment augment in TestAugments)

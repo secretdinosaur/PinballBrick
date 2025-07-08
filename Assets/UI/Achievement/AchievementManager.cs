@@ -263,7 +263,7 @@ public partial class AchievementManager : MonoBehaviour
 
     }
 
-    public void OnAchievementButton_1()
+    public void OnAchievementButton_1() //Level Up
     {
         if (PlayerPrefs.GetInt("1_Value") >= PlayerPrefs.GetInt("1_Goal"))
         {
@@ -276,33 +276,33 @@ public partial class AchievementManager : MonoBehaviour
         }
     }
 
-    public void OnAchievementButton_2()
+    public void OnAchievementButton_2() //Destroyed Bricks
     {
         if (PlayerPrefs.GetInt("2_Value") >= PlayerPrefs.GetInt("2_Goal"))
         {
             PlayerPrefs.SetInt("2_Level", PlayerPrefs.GetInt("2_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("2_Reward"));
             UpgradeManager.Instance.UpdateGoldUI();
-            PlayerPrefs.SetInt("2_Goal", PlayerPrefs.GetInt("2_Goal") + (5 * PlayerPrefs.GetInt("2_Level")));
+            PlayerPrefs.SetInt("2_Goal", PlayerPrefs.GetInt("2_Goal") + (20 * PlayerPrefs.GetInt("2_Level")));
             PlayerPrefs.SetInt("2_Reward", PlayerPrefs.GetInt("2_Reward") + 45);
             UpdateInGameAchievement();
         }
     }
 
-    public void OnAchievementButton_3()
+    public void OnAchievementButton_3() //Soawned Ball
     {
         if (PlayerPrefs.GetInt("3_Value") >= PlayerPrefs.GetInt("3_Goal"))
         {
             PlayerPrefs.SetInt("3_Level", PlayerPrefs.GetInt("3_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("3_Reward"));
             UpgradeManager.Instance.UpdateGoldUI();
-            PlayerPrefs.SetInt("3_Goal", PlayerPrefs.GetInt("3_Goal") + (5 * PlayerPrefs.GetInt("3_Level")));
+            PlayerPrefs.SetInt("3_Goal", PlayerPrefs.GetInt("3_Goal") + (10 * PlayerPrefs.GetInt("3_Level")));
             PlayerPrefs.SetInt("3_Reward", PlayerPrefs.GetInt("3_Reward") + 45);
             UpdateInGameAchievement();
         }
     }
 
-    public void OnAchievementButton_4()
+    public void OnAchievementButton_4() //Passed Wave
     {
         if (PlayerPrefs.GetInt("4_Value") >= PlayerPrefs.GetInt("4_Goal"))
         {
@@ -315,14 +315,14 @@ public partial class AchievementManager : MonoBehaviour
         }
     }
 
-    public void OnAchievementButton_5()
+    public void OnAchievementButton_5() //Destroyed Boss
     {
         if (PlayerPrefs.GetInt("5_Value") >= PlayerPrefs.GetInt("5_Goal"))
         {
             PlayerPrefs.SetInt("5_Level", PlayerPrefs.GetInt("5_Level") + 1);
             StatManager.instance.GetGold(PlayerPrefs.GetInt("5_Reward"));
             UpgradeManager.Instance.UpdateGoldUI();
-            PlayerPrefs.SetInt("5_Goal", PlayerPrefs.GetInt("5_Goal") + 2);
+            PlayerPrefs.SetInt("5_Goal", PlayerPrefs.GetInt("5_Goal") + (2 * PlayerPrefs.GetInt("5_Level")));
             PlayerPrefs.SetInt("5_Reward", PlayerPrefs.GetInt("5_Reward") + 67);
             UpdateInGameAchievement();
         }
