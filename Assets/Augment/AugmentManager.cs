@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 using UnityEngine;
 using static UnityEngine.Rendering.HableCurve;
 using System.Text.RegularExpressions;
+using NUnit.Framework;
 
 public partial class AugmentManager //Utility
 {
@@ -44,13 +45,10 @@ public partial class AugmentManager //Utility
     {
         printAugments();
      }
-    public bool determineSpecialAugmentType(string Type)
+
+    public bool determineAugment(Type type)
     {
-        return activeAugments.Any(a => a.Type == Type);
-    }
-    public bool determineAugmentID(string ID)
-    {
-        return activeAugments.Any(a => a.ID == ID);
+        return activeAugments.Any(x => x.GetType() == type);
     }
     
     private List<IAugment> alreadyChosenAugments = new List<IAugment>();

@@ -24,7 +24,8 @@ public class ExpBrick : IBrick
         if (collision.gameObject.CompareTag("Ball"))
         {
             TakeDamage(collision.gameObject.GetComponent<IBall>());
-            ItemManager.Instance.SpawnSpecificItem("ExpBead", transform.position, 1);
+            ItemManager.Instance.SpawnSpecificItem("ExpBead", transform.position, 1,
+                    (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Exp", false));
             var activeBalls = System.Array.FindAll(Balls, b => b.gameObject.activeSelf);
             int index = Random.Range(0, activeBalls.Length);
             if (activeBalls.Length > 0)
@@ -41,7 +42,8 @@ public class ExpBrick : IBrick
         if (other.CompareTag("Ball"))
         {
             TakeDamage(other.gameObject.GetComponent<IBall>());
-            ItemManager.Instance.SpawnSpecificItem("ExpBead", transform.position, 1);
+            ItemManager.Instance.SpawnSpecificItem("ExpBead", transform.position, 1,
+                    (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Exp", false));
             var activeBalls = System.Array.FindAll(Balls, b => b.gameObject.activeSelf);
             int index = Random.Range(0, activeBalls.Length);
             activeBalls[index].gameObject.SetActive(false);

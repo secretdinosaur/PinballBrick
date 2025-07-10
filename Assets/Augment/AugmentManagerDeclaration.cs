@@ -4,6 +4,7 @@ using static UnityEngine.Rendering.HableCurve;
 using System.Collections;
 using System;
 using System.Linq;
+using Unity.Mathematics;
 
 public partial class AugmentManager : MonoBehaviour //Declaration
 {
@@ -237,7 +238,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         if (RandomAugment != null)
         {
-            AddAugment(RandomAugment);
+            Type type = RandomAugment.GetType();
+            AddAugment(augmentsSet.FirstOrDefault(x => x.GetType() == type));
             RandomAugment = null;
         }
 

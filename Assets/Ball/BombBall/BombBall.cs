@@ -16,7 +16,7 @@ public class BombBall : IBall
         BallType = "BombBall";
         BallBaseDamage = 0;
         gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-        isInstantBomb = AugmentManager.instance.determineAugmentID("SPECIAL_78");
+        isInstantBomb = AugmentManager.instance.determineAugment(typeof(InstantBombBall));
         if (!isInstantBomb)
         {
             StartCoroutine(StartBoomCount());
@@ -62,7 +62,7 @@ public class BombBall : IBall
         }
         SoundManager.instance.ExplosionSound_Big();
         VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_48"))
+        if (AugmentManager.instance.determineAugment(typeof(RebornBombBall)))
         {
             if(Random.value < 0.5f)
             {

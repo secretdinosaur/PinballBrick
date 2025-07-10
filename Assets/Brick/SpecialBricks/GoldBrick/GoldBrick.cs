@@ -27,13 +27,16 @@ public class GoldBrick : IBrick
             switch (i)
             {
                 case 0:
-                    ItemManager.Instance.SpawnSpecificItem("Gold1", transform.position, 1);
+                    ItemManager.Instance.SpawnSpecificItem("Gold1", transform.position, 1, 
+                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
                     break;
                 case 1:
-                    ItemManager.Instance.SpawnSpecificItem("Gold2", transform.position, 1);
+                    ItemManager.Instance.SpawnSpecificItem("Gold2", transform.position, 1,
+                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
                     break;
                 case 2:
-                    ItemManager.Instance.SpawnSpecificItem("Gold3", transform.position, 1);
+                    ItemManager.Instance.SpawnSpecificItem("Gold3", transform.position, 1,
+                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
                     break;
             }
 
@@ -57,13 +60,16 @@ public class GoldBrick : IBrick
             switch (i)
             {
                 case 0:
-                    ItemManager.Instance.SpawnSpecificItem("Gold1", transform.position, 1);
+                    ItemManager.Instance.SpawnSpecificItem("Gold1", transform.position, 1,
+                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
                     break;
                 case 1:
-                    ItemManager.Instance.SpawnSpecificItem("Gold2", transform.position, 1);
+                    ItemManager.Instance.SpawnSpecificItem("Gold2", transform.position, 1,
+                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
                     break;
                 case 2:
-                    ItemManager.Instance.SpawnSpecificItem("Gold3", transform.position, 1);
+                    ItemManager.Instance.SpawnSpecificItem("Gold3", transform.position, 1,
+                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
                     break;
             }
 

@@ -540,10 +540,14 @@ public class BountyHunter: FieldAugment
                 if (isDestroy)
                 {
                         
-                    ItemManager.Instance.SpawnSpecificItem("ExpBead", Position, WantedBrick.IsBoss ? Random.Range(30, 50) : Random.Range(10, 15));
-                    ItemManager.Instance.SpawnSpecificItem("Gold1", Position, WantedBrick.IsBoss ? Random.Range(10, 15) : Random.Range(3, 5));
-                    ItemManager.Instance.SpawnSpecificItem("Gold2", Position, WantedBrick.IsBoss ? Random.Range(10, 15) : Random.Range(3, 5));
-                    ItemManager.Instance.SpawnSpecificItem("Gold3", Position, WantedBrick.IsBoss ? Random.Range(10, 15) : Random.Range(3, 5));
+                    ItemManager.Instance.SpawnSpecificItem("ExpBead", Position, WantedBrick.IsBoss ? Random.Range(30, 50) : Random.Range(10, 15), 
+                        (GainValue) => WantedBrick.ShowText("+" + GainValue.ToString("F1"), "Exp", false));
+                    ItemManager.Instance.SpawnSpecificItem("Gold1", Position, WantedBrick.IsBoss ? Random.Range(10, 15) : Random.Range(3, 5),
+                        (GainValue) => WantedBrick.ShowText("+" + GainValue.ToString("F1"), "Gold", false));
+                    ItemManager.Instance.SpawnSpecificItem("Gold2", Position, WantedBrick.IsBoss ? Random.Range(10, 15) : Random.Range(3, 5),
+                        (GainValue) => WantedBrick.ShowText("+" + GainValue.ToString("F1"), "Gold", false));
+                    ItemManager.Instance.SpawnSpecificItem("Gold3", Position, WantedBrick.IsBoss ? Random.Range(10, 15) : Random.Range(3, 5),
+                        (GainValue) => WantedBrick.ShowText("+" + GainValue.ToString("F1"), "Gold", false));
                     BountyHunterObj.SetActive(false);
                 }
                 else

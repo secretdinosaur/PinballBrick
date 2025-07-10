@@ -53,7 +53,7 @@ public partial class IBrick : MonoBehaviour
             hp = value;
             if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
 
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_6") && (BrickType != "ShieldBrick" 
+            if (AugmentManager.instance.determineAugment(typeof(Execution)) && (BrickType != "ShieldBrick" 
                 || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
             {
                 if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999 && !IsSpecialBrick)
@@ -329,11 +329,11 @@ public partial class IBrick
             Poison = StartCoroutine(BrickEffect.DamageByPoisonEffect(effectDuration));
             SoundManager.instance.PoisonSound();
 
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_55"))
+            if (AugmentManager.instance.determineAugment(typeof(DecayingPoison)))
             {
                 DecayEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.DecayDuration);
             }
-            else if (AugmentManager.instance.determineAugmentID("SPECIAL_56"))
+            else if (AugmentManager.instance.determineAugment(typeof(FlammablePoison)))
             {
                 DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.FireDuration);
             }
@@ -372,7 +372,7 @@ public partial class IBrick
     public void DamageByCurse(Vector2? StartingPos = null)
     {
         if (!gameObject.activeSelf) return;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_75"))
+        if (AugmentManager.instance.determineAugment(typeof(ContinuingCurseAttack)))
         {
             if(Curse == null)
                 StartCoroutine(BrickEffect.DamageByCurse2(StartingPos));
@@ -381,7 +381,6 @@ public partial class IBrick
         {
             StartCoroutine(DamageManager.DamageByCurse(this, StartingPos));
         }
-
     }
 
     public float DecayDamageCalculate(float Damage)

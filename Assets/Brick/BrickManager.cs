@@ -163,7 +163,7 @@ public class BrickManager : MonoBehaviour
         {
             WavePause = false;
 
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            if (AugmentManager.instance.determineAugment(typeof(DoubleBoss)))
             {
                 int BossSpawned = 2;
                 for (int i = 0; i < CurrentBricks.Count; i++)
@@ -208,14 +208,22 @@ public class BrickManager : MonoBehaviour
                 brick.StopCoroutine(brick.ExecutionCor);
             }
             if (brick.BrickType == "ExpBrick")
-                ItemManager.Instance.SpawnSpecificItem("ExpBead", brick.transform.position, 10);
+            {
+                ItemManager.Instance.SpawnSpecificItem("ExpBead", brick.transform.position, 10,
+                    (GainValue) => brick.ShowText("+" + GainValue.ToString("F1"), "Exp", false));
+            }            
             else if (brick.BrickType == "GoldBrick")
             {
-                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3);
-                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 4);
-                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3);
+                float GoldValue = 0;
+                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3,
+                    (GainValue) => GoldValue += GainValue);
+                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 4,
+                    (GainValue) => GoldValue += GainValue);
+                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3,
+                    (GainValue) => GoldValue += GainValue);
+                brick.ShowText("+" + GoldValue.ToString("F1"), "Gold", false);
             }
-            else if(brick.BrickType != "BallBrick")
+            else if (brick.BrickType != "BallBrick")
                 ItemManager.Instance.SpawnItem(brick.transform.position);
 
             availablePositions.Add(brick.transform.position);
@@ -273,8 +281,8 @@ public class BrickManager : MonoBehaviour
             if (BrickQueue == null)
             {
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
-                    || AugmentManager.instance.determineAugmentID("SPECIAL_62")
-                    || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
+                    || AugmentManager.instance.determineAugment(typeof(InfiniteRapid))
+                    || (AugmentManager.instance.determineAugment(typeof(WaveFourBoss)) && BossSpawnCondition(Wave));
                 SettingBrickSpawnChance();
                 if(WaveRoutine != null)
                 {
@@ -625,7 +633,7 @@ public class BrickManager : MonoBehaviour
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
         SettingBrickHp(brick, Wave, AddPerWave);
         IBrick Brick = new IBrick();
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_65") && !brick.IsBigBoss && !brick.IsSpecialBrick)
+        if (AugmentManager.instance.determineAugment(typeof(FusionBricks)) && !brick.IsBigBoss && !brick.IsSpecialBrick)
         {
             if(BrickQueue.Count == 0)
             {
@@ -685,7 +693,7 @@ public class BrickManager : MonoBehaviour
         if (Brick.IsBoss)
         {
             WavePause = true;
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            if (AugmentManager.instance.determineAugment(typeof(DoubleBoss)))
             {
                 int BossSpawned = 1;
                 for(int i = 0; i < CurrentBricks.Count; i++)
@@ -700,7 +708,7 @@ public class BrickManager : MonoBehaviour
             }
         }
 
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_81"))
+        if (AugmentManager.instance.determineAugment(typeof(PenetratingBall)))
         {
             Brick.GetComponent<Collider2D>().isTrigger = true;
         }

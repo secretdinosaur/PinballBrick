@@ -173,9 +173,9 @@ public partial class IBall : MonoBehaviour
     }
     public virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
+        if (AugmentManager.instance.determineAugment(typeof(BouncePower))) //Bounce = Power
         {
-            if (collision.gameObject.CompareTag("Wall") || (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball")))
+            if (collision.gameObject.CompareTag("Wall") || (AugmentManager.instance.determineAugment(typeof(ExplosionWithBall)) && collision.gameObject.CompareTag("Ball")))
             {
                 if (MaxBounce < 6)
                 {
@@ -192,7 +192,7 @@ public partial class IBall : MonoBehaviour
                     spriteRenderer.color = BrickColor;
             }
         }
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball"))
+        if (AugmentManager.instance.determineAugment(typeof(ExplosionWithBall)) && collision.gameObject.CompareTag("Ball"))
         {
             Rigidbody2D TartgetRigidBody = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 TargetDirection = (TartgetRigidBody.position - (Vector2)transform.position).normalized;
@@ -295,7 +295,7 @@ public partial class IBall //Homing
     public Coroutine HomingRoutine = null;
     public void FixedUpdate()
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_2")) //Homing
+        if (AugmentManager.instance.determineAugment(typeof(Homing))) //Homing
         {
             if (currentTarget != null && HomingRoutine == null)
             {
