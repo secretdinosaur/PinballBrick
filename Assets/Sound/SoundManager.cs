@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine.Rendering;
 using Redcode.Pools;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
@@ -42,23 +42,33 @@ public class SoundManager : MonoBehaviour
         {
             InitializeVolumeData();
         }
-
+        
         Bgm = gameObject.transform.Find("Bgm").GetComponent<AudioSource>();
         Sfx = gameObject.transform.Find("Sfx").GetComponent<AudioSource>();
-        BgmVolumeSlider = GameManager.instance.PausePanel.transform.Find("BgmText")
+
+        if(SceneManager.GetActiveScene().name != "Main")
+        {
+            BgmVolumeSlider = GameManager.instance.PausePanel.transform.Find("BgmText")
             .gameObject.transform.Find("BgmVolume").GetComponent<Slider>();
-        SfxVolumeSlider = GameManager.instance.PausePanel.transform.Find("SfxText")
-            .gameObject.transform.Find("SfxVolume").GetComponent<Slider>();
-        BgmVolumeText = GameManager.instance.PausePanel.transform.Find("BgmText")
-            .gameObject.transform.Find("BgmVolumeText").GetComponent<TMP_Text>();
-        SfxVolumeText = GameManager.instance.PausePanel.transform.Find("SfxText")
-            .gameObject.transform.Find("SfxVolumeText").GetComponent<TMP_Text>();
+            SfxVolumeSlider = GameManager.instance.PausePanel.transform.Find("SfxText")
+                .gameObject.transform.Find("SfxVolume").GetComponent<Slider>();
+            BgmVolumeText = GameManager.instance.PausePanel.transform.Find("BgmText")
+                .gameObject.transform.Find("BgmVolumeText").GetComponent<TMP_Text>();
+            SfxVolumeText = GameManager.instance.PausePanel.transform.Find("SfxText")
+                .gameObject.transform.Find("SfxVolumeText").GetComponent<TMP_Text>();
+        }
+        
 
         volumeSaveData = LoadVolumeData();
         Bgm.volume = volumeSaveData.BgmVolume;
-        BgmVolumeSlider.value = volumeSaveData.BgmVolume;
         Sfx.volume = volumeSaveData.SfxVolume;
-        SfxVolumeSlider.value = volumeSaveData.SfxVolume;
+
+        if (SceneManager.GetActiveScene().name != "Main")
+        {
+            SfxVolumeSlider.value = volumeSaveData.SfxVolume;
+            BgmVolumeSlider.value = volumeSaveData.BgmVolume;
+
+        }
 
         Bgm.mute = true; //이거 뮤트가 아니라 멈췄다가 실행되게 하기 GameManager에 StartGame 코루틴이랑 연동해서 사용
 
@@ -112,7 +122,7 @@ public class SoundManager : MonoBehaviour
 
     void Update()
     {
-        if(GameManager.instance.PausePanel.activeSelf)
+        if (SceneManager.GetActiveScene().name != "Main" && GameManager.instance.PausePanel.activeSelf)
         {
             Bgm.volume = BgmVolumeSlider.value;
             volumeSaveData.BgmVolume = BgmVolumeSlider.value;
@@ -123,14 +133,18 @@ public class SoundManager : MonoBehaviour
             BgmVolumeText.text = ((int)(BgmVolumeSlider.value * 100)).ToString();
             SfxVolumeText.text = ((int)(SfxVolumeSlider.value * 100)).ToString();
         }
-        if (!Bgm.isPlaying)
+        else
+        {
+
+        }
+        if (SceneManager.GetActiveScene().name != "Main" && !Bgm.isPlaying)
         {
             NowBgm = BgmPlaylist.Dequeue();
             Bgm.clip = BgmClips[NowBgm];
             BgmPlaylist.Enqueue(NowBgm);
             Bgm.Play();
         }
-        if (LevelManager.Instance.LevelUpPanel.activeSelf)
+        if (SceneManager.GetActiveScene().name != "Main" && LevelManager.Instance.LevelUpPanel.activeSelf)
         {
             Bgm.pitch = 0.7f;
         }
@@ -235,7 +249,10 @@ public class SoundManager : MonoBehaviour
 
     public void GetGoldSOund(AudioSource audio)
     {
-        audio.volume = SfxVolumeSlider.value / 1.1f;
+        if (SfxVolumeSlider != null)
+            audio.volume = SfxVolumeSlider.value / 1.1f;
+        else
+            audio.volume = 0.5f;
         audio.PlayOneShot(SfxClips_Game[10]);
     }
     public void GetExpSound(AudioSource audio)

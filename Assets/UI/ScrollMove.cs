@@ -31,12 +31,26 @@ public class ScrollMove : MonoBehaviour, IEndDragHandler, IBeginDragHandler
         if (Startpos > Endpos + MinimumScrollValue)
         {
             targetPosition = -(CurrentIndex + 1) * itemSize - 720;
+            CurrentIndex += 1;
         }
         else if(Startpos < Endpos - MinimumScrollValue)
         {
             targetPosition = -(CurrentIndex - 1) * itemSize - 720;
+            CurrentIndex -= 1;
         }
-
+        for (int j = 0; j < 5; j++)
+        {
+            if (j != CurrentIndex)
+            {
+                UnderBarButtons[j].GetComponent<Image>().material.SetFloat("_Alpha", 1.5f);
+                UnderBarButtons[j].transform.localScale = Vector3.one * 1f;
+            }
+            else
+            {
+                UnderBarButtons[j].GetComponent<Image>().material.SetFloat("_Alpha", 2.5f);
+                UnderBarButtons[j].transform.localScale = Vector3.one * 1.1f;
+            }
+        }
         StopAllCoroutines();
         StartCoroutine(SmoothMove(content.anchoredPosition.x, targetPosition, 0.2f));
     }
@@ -62,10 +76,12 @@ public class ScrollMove : MonoBehaviour, IEndDragHandler, IBeginDragHandler
             if(j != i)
             {
                 UnderBarButtons[j].GetComponent<Image>().material.SetFloat("_Alpha", 1.5f);
+                UnderBarButtons[j].transform.localScale = Vector3.one * 1f;
             }
             else
             {
                 UnderBarButtons[j].GetComponent<Image>().material.SetFloat("_Alpha", 2.5f);
+                UnderBarButtons[j].transform.localScale = Vector3.one * 1.1f;
             }
         }
     }

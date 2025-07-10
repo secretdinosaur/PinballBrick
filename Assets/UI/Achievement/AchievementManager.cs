@@ -20,7 +20,6 @@ public partial class AchievementManager : MonoBehaviour
     public List<List<object>> InGameAchievementProgress;
 
     public GameObject[] CompleteButtons;
-
     enum InGameAchievementList
     {
         LevelUp,
@@ -113,6 +112,9 @@ public partial class AchievementManager : MonoBehaviour
             new List<object>{ "Passed Waves", PlayerPrefs.GetInt("4_Level"), PlayerPrefs.GetInt("4_Goal"), PlayerPrefs.GetInt("4_Value"), PlayerPrefs.GetInt("4_Reward") },
             new List<object>{ "Destroyed Boss Bricks", PlayerPrefs.GetInt("5_Level"), PlayerPrefs.GetInt("5_Goal"), PlayerPrefs.GetInt("5_Value"), PlayerPrefs.GetInt("5_Reward") },
         };
+
+        UpdateInGameAchievement();
+        DailyQuestUpdate();
     }
 
     public void AchievementProgressing(IAchievement achievement, int progress)
@@ -231,35 +233,69 @@ public partial class AchievementManager : MonoBehaviour
 
         AchievementSlider_1.maxValue = PlayerPrefs.GetInt("1_Goal");
         AchievementSlider_1.value = PlayerPrefs.GetInt("1_Value");
-            AchievementSlider_1.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_1.value / AchievementSlider_1.maxValue));
-            CompleteButtons[0].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_1.value / AchievementSlider_1.maxValue));
-
-
+        AchievementSlider_1.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_1.value / AchievementSlider_1.maxValue));
 
         AchievementSlider_2.maxValue = PlayerPrefs.GetInt("2_Goal");
         AchievementSlider_2.value = PlayerPrefs.GetInt("2_Value");
-            AchievementSlider_2.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_2.value / AchievementSlider_2.maxValue));
-            CompleteButtons[1].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_1.value / AchievementSlider_2.maxValue));
-
+        AchievementSlider_2.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_2.value / AchievementSlider_2.maxValue));
 
         AchievementSlider_3.maxValue = PlayerPrefs.GetInt("3_Goal");
         AchievementSlider_3.value = PlayerPrefs.GetInt("3_Value");
-        AchievementSlider_2.maxValue = PlayerPrefs.GetInt("2_Goal");
-        AchievementSlider_2.value = PlayerPrefs.GetInt("2_Value");
-            AchievementSlider_3.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_3.value / AchievementSlider_3.maxValue));
-        CompleteButtons[2].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_3.value / AchievementSlider_3.maxValue));
-
+        AchievementSlider_3.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_3.value / AchievementSlider_3.maxValue));
 
         AchievementSlider_4.maxValue = PlayerPrefs.GetInt("4_Goal");
         AchievementSlider_4.value = PlayerPrefs.GetInt("4_Value");
-            AchievementSlider_4.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_4.value / AchievementSlider_4.maxValue));
-            CompleteButtons[3].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_4.value / AchievementSlider_4.maxValue));
-
+        AchievementSlider_4.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_4.value / AchievementSlider_4.maxValue));
 
         AchievementSlider_5.maxValue = PlayerPrefs.GetInt("5_Goal");
         AchievementSlider_5.value = PlayerPrefs.GetInt("5_Value");
-            AchievementSlider_5.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_5.value / AchievementSlider_5.maxValue));
-            CompleteButtons[4].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_5.value / AchievementSlider_5.maxValue));
+        AchievementSlider_5.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_5.value / AchievementSlider_5.maxValue));
+        
+        AchievementSlider_1.interactable = false;
+        AchievementSlider_2.interactable = false;
+        AchievementSlider_3.interactable = false;
+        AchievementSlider_4.interactable = false;
+        AchievementSlider_5.interactable = false;
+
+        if (PlayerPrefs.GetInt("1_Value") < PlayerPrefs.GetInt("1_Goal"))
+            CompleteButtons[0].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+        else
+        {
+            CompleteButtons[0].GetComponent<Image>().material.SetFloat("_Value", 1);
+            CompleteButtons[0].GetComponent<Image>().color = new Color(1, 1, 1);
+        }
+
+        if (PlayerPrefs.GetInt("2_Value") < PlayerPrefs.GetInt("2_Goal"))
+            CompleteButtons[1].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+        else
+        {
+            CompleteButtons[1].GetComponent<Image>().material.SetFloat("_Value", 1);
+            CompleteButtons[1].GetComponent<Image>().color = new Color(1, 1, 1);
+        }
+
+        if (PlayerPrefs.GetInt("3_Value") < PlayerPrefs.GetInt("3_Goal"))
+            CompleteButtons[2].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+        else
+        {
+            CompleteButtons[2].GetComponent<Image>().material.SetFloat("_Value", 1);
+            CompleteButtons[2].GetComponent<Image>().color = new Color(1, 1, 1);
+        }
+
+        if (PlayerPrefs.GetInt("4_Value") < PlayerPrefs.GetInt("4_Goal"))
+            CompleteButtons[3].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+        else
+        {
+            CompleteButtons[3].GetComponent<Image>().material.SetFloat("_Value", 1);
+            CompleteButtons[3].GetComponent<Image>().color = new Color(1, 1, 1);
+        }
+
+        if (PlayerPrefs.GetInt("5_Value") < PlayerPrefs.GetInt("5_Goal"))
+            CompleteButtons[4].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+        else
+        {
+            CompleteButtons[4].GetComponent<Image>().material.SetFloat("_Value", 1);
+            CompleteButtons[4].GetComponent<Image>().color = new Color(1, 1, 1);
+        }
 
     }
 
@@ -268,8 +304,7 @@ public partial class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("1_Value") >= PlayerPrefs.GetInt("1_Goal"))
         {
             PlayerPrefs.SetInt("1_Level", PlayerPrefs.GetInt("1_Level") + 1);
-            StatManager.instance.GetGold(PlayerPrefs.GetInt("1_Reward"));
-            UpgradeManager.Instance.UpdateGoldUI();
+            GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("1_Reward"), CompleteButtons[0].transform.position);
             PlayerPrefs.SetInt("1_Goal", PlayerPrefs.GetInt("1_Goal") + (5 * PlayerPrefs.GetInt("1_Level")));
             PlayerPrefs.SetInt("1_Reward", PlayerPrefs.GetInt("1_Reward") + 39);
             UpdateInGameAchievement();
@@ -281,8 +316,7 @@ public partial class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("2_Value") >= PlayerPrefs.GetInt("2_Goal"))
         {
             PlayerPrefs.SetInt("2_Level", PlayerPrefs.GetInt("2_Level") + 1);
-            StatManager.instance.GetGold(PlayerPrefs.GetInt("2_Reward"));
-            UpgradeManager.Instance.UpdateGoldUI();
+            GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("2_Reward"), CompleteButtons[1].transform.position);
             PlayerPrefs.SetInt("2_Goal", PlayerPrefs.GetInt("2_Goal") + (20 * PlayerPrefs.GetInt("2_Level")));
             PlayerPrefs.SetInt("2_Reward", PlayerPrefs.GetInt("2_Reward") + 45);
             UpdateInGameAchievement();
@@ -294,8 +328,7 @@ public partial class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("3_Value") >= PlayerPrefs.GetInt("3_Goal"))
         {
             PlayerPrefs.SetInt("3_Level", PlayerPrefs.GetInt("3_Level") + 1);
-            StatManager.instance.GetGold(PlayerPrefs.GetInt("3_Reward"));
-            UpgradeManager.Instance.UpdateGoldUI();
+            GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("3_Reward"), CompleteButtons[2].transform.position);
             PlayerPrefs.SetInt("3_Goal", PlayerPrefs.GetInt("3_Goal") + (10 * PlayerPrefs.GetInt("3_Level")));
             PlayerPrefs.SetInt("3_Reward", PlayerPrefs.GetInt("3_Reward") + 45);
             UpdateInGameAchievement();
@@ -307,8 +340,7 @@ public partial class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("4_Value") >= PlayerPrefs.GetInt("4_Goal"))
         {
             PlayerPrefs.SetInt("4_Level", PlayerPrefs.GetInt("4_Level") + 1);
-            StatManager.instance.GetGold(PlayerPrefs.GetInt("4_Reward"));
-            UpgradeManager.Instance.UpdateGoldUI();
+            GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("4_Reward"), CompleteButtons[3].transform.position);
             PlayerPrefs.SetInt("4_Goal", PlayerPrefs.GetInt("4_Goal") + (5 * PlayerPrefs.GetInt("4_Level")));
             PlayerPrefs.SetInt("4_Reward", PlayerPrefs.GetInt("4_Reward") + 53);
             UpdateInGameAchievement();
@@ -320,8 +352,7 @@ public partial class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("5_Value") >= PlayerPrefs.GetInt("5_Goal"))
         {
             PlayerPrefs.SetInt("5_Level", PlayerPrefs.GetInt("5_Level") + 1);
-            StatManager.instance.GetGold(PlayerPrefs.GetInt("5_Reward"));
-            UpgradeManager.Instance.UpdateGoldUI();
+            GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("5_Reward"), CompleteButtons[4].transform.position);
             PlayerPrefs.SetInt("5_Goal", PlayerPrefs.GetInt("5_Goal") + (2 * PlayerPrefs.GetInt("5_Level")));
             PlayerPrefs.SetInt("5_Reward", PlayerPrefs.GetInt("5_Reward") + 67);
             UpdateInGameAchievement();
@@ -450,19 +481,57 @@ public partial class AchievementManager //daily quest
 
         DailyQuest_1_Slider.maxValue = DailyQuestSet[0].QuestGoal;
         DailyQuest_1_Slider.value = DailyQuestSet[0].QuestProgressValue;
-        DailyQuest_1_Slider.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_1_Slider.value / DailyQuest_1_Slider.maxValue));
-        CompleteButtons[5].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_1_Slider.value / DailyQuest_1_Slider.maxValue));
+        DailyQuest_1_Slider.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_1_Slider.value / DailyQuest_1_Slider.maxValue));
 
 
         DailyQuest_2_Slider.maxValue = DailyQuestSet[1].QuestGoal;
         DailyQuest_2_Slider.value = DailyQuestSet[1].QuestProgressValue;
-        DailyQuest_2_Slider.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_2_Slider.value / DailyQuest_2_Slider.maxValue));
-        CompleteButtons[6].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_2_Slider.value / DailyQuest_2_Slider.maxValue));
+        DailyQuest_2_Slider.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_2_Slider.value / DailyQuest_2_Slider.maxValue));
 
         DailyQuest_3_Slider.maxValue = DailyQuestSet[2].QuestGoal;
         DailyQuest_3_Slider.value = DailyQuestSet[2].QuestProgressValue;
-        DailyQuest_3_Slider.GetComponentInChildren<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_3_Slider.value / DailyQuest_3_Slider.maxValue));
-        CompleteButtons[7].GetComponent<Image>().material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_3_Slider.value / DailyQuest_3_Slider.maxValue));
+        DailyQuest_3_Slider.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_3_Slider.value / DailyQuest_3_Slider.maxValue));
+
+        DailyQuest_1_Slider.interactable = false;
+        DailyQuest_2_Slider.interactable = false;
+        DailyQuest_3_Slider.interactable = false;
+
+        if (DailyQuestSet[0].QuestProgressValue >= DailyQuestSet[0].QuestGoal && PlayerPrefs.GetInt("isGetDailyQuest1Reward") == 0)
+            CompleteButtons[5].GetComponent<Image>().color = new Color(1, 1, 1);
+        else
+            CompleteButtons[5].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+
+        if (DailyQuestSet[1].QuestProgressValue >= DailyQuestSet[1].QuestGoal && PlayerPrefs.GetInt("isGetDailyQuest2Reward") == 0)
+            CompleteButtons[6].GetComponent<Image>().color = new Color(1, 1, 1);
+        else
+            CompleteButtons[6].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+
+        if (DailyQuestSet[2].QuestProgressValue >= DailyQuestSet[2].QuestGoal && PlayerPrefs.GetInt("isGetDailyQuest3Reward") == 0)
+            CompleteButtons[7].GetComponent<Image>().color = new Color(1, 1, 1);
+        else
+            CompleteButtons[7].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+        CompleteButtons[5].GetComponent<Image>().material.SetFloat("_Value", 0);
+        CompleteButtons[6].GetComponent<Image>().material.SetFloat("_Value", 0);
+        CompleteButtons[7].GetComponent<Image>().material.SetFloat("_Value", 0);
+
+        if (DailyQuestSet[0].isCleared)
+        {
+            CompleteButtons[5].GetComponent<Image>().color = new Color(1, 1, 1);
+            CompleteButtons[5].GetComponent<Image>().material.SetFloat("_Value", 1);
+            CompleteButtons[5].GetComponentInChildren<TextMeshProUGUI>().text = "Clear";
+        }
+        if (DailyQuestSet[1].isCleared)
+        {
+            CompleteButtons[6].GetComponent<Image>().color = new Color(1, 1, 1);
+            CompleteButtons[6].GetComponent<Image>().material.SetFloat("_Value", 1);
+            CompleteButtons[6].GetComponentInChildren<TextMeshProUGUI>().text = "Clear";
+        }
+        if (DailyQuestSet[2].isCleared)
+        {
+            CompleteButtons[7].GetComponent<Image>().color = new Color(1, 1, 1);
+            CompleteButtons[7].GetComponent<Image>().material.SetFloat("_Value", 1);
+            CompleteButtons[7].GetComponentInChildren<TextMeshProUGUI>().text = "Clear";
+        }
     }
 
     public void OnDailyQuestClear_1()
@@ -470,8 +539,7 @@ public partial class AchievementManager //daily quest
         if (DailyQuestSet[0].QuestProgressValue >= DailyQuestSet[0].QuestGoal && PlayerPrefs.GetInt("isGetDailyQuest1Reward") == 0)
         {
             DailyQuestSet[0].isCleared = true;
-            StatManager.instance.GetGold((int)DailyQuestSet[0].QuestRewards);
-            UpgradeManager.Instance.UpdateGoldUI();
+            GoldSpawn_Achievement.Instance.SpawnGold((int)DailyQuestSet[0].QuestRewards, CompleteButtons[5].transform.position);
             PlayerPrefs.SetInt("isGetDailyQuest1Reward", 1);
             DailyQuestUpdate();
         }
@@ -482,8 +550,7 @@ public partial class AchievementManager //daily quest
         if (DailyQuestSet[1].QuestProgressValue >= DailyQuestSet[1].QuestGoal && PlayerPrefs.GetInt("isGetDailyQuest2Reward") == 0)
         {
             DailyQuestSet[1].isCleared = true;
-            StatManager.instance.GetGold((int)DailyQuestSet[1].QuestRewards);
-            UpgradeManager.Instance.UpdateGoldUI();
+            GoldSpawn_Achievement.Instance.SpawnGold((int)DailyQuestSet[1].QuestRewards, CompleteButtons[6].transform.position);
             PlayerPrefs.SetInt("isGetDailyQuest2Reward", 1);
             DailyQuestUpdate();
         }
@@ -494,8 +561,7 @@ public partial class AchievementManager //daily quest
         if (DailyQuestSet[2].QuestProgressValue >= DailyQuestSet[2].QuestGoal && PlayerPrefs.GetInt("isGetDailyQuest3Reward") == 0)
         {
             DailyQuestSet[2].isCleared = true;
-            StatManager.instance.GetGold((int)DailyQuestSet[2].QuestRewards);
-            UpgradeManager.Instance.UpdateGoldUI();
+            GoldSpawn_Achievement.Instance.SpawnGold((int)DailyQuestSet[2].QuestRewards, CompleteButtons[7].transform.position);
             PlayerPrefs.SetInt("isGetDailyQuest3Reward", 1);
             DailyQuestUpdate();
         }
@@ -569,15 +635,15 @@ public partial class AchievementManager
                 transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Boss Bricks/Name").GetComponent<TMP_Text>();
 
             AchievementProgress_1 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Level Up/Progress").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Level Up/Slider/Progress").GetComponent<TMP_Text>();
             AchievementProgress_2 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Bricks/Progress").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Bricks/Slider/Progress").GetComponent<TMP_Text>();
             AchievementProgress_3 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Spawned Balls/Progress").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Spawned Balls/Slider/Progress").GetComponent<TMP_Text>();
             AchievementProgress_4 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Passed Waves/Progress").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Passed Waves/Slider/Progress").GetComponent<TMP_Text>();
             AchievementProgress_5 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Boss Bricks/Progress").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Boss Bricks/Slider/Progress").GetComponent<TMP_Text>();
 
             AchievementLevel_1 = GameObject.Find("Canvas").
                 transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Level Up/Level").GetComponent<TMP_Text>();
@@ -620,11 +686,11 @@ public partial class AchievementManager
                 transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_3/Name").GetComponent<TMP_Text>();
 
             DailyQuest_1_Progress = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_1/Progress").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_1/Slider/Progress").GetComponent<TMP_Text>();
             DailyQuest_2_Progress = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_2/Progress").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_2/Slider/Progress").GetComponent<TMP_Text>();
             DailyQuest_3_Progress = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_3/Progress").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_3/Slider/Progress").GetComponent<TMP_Text>();
 
             DailyQuest_1_Reward = GameObject.Find("Canvas").
                 transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_1/CompleteButton/Reward").GetComponent<TMP_Text>();
