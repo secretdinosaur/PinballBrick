@@ -274,7 +274,7 @@ public partial class UpgradeManager //Powers
 
     public void GetRandomAugment()
     {
-        float Cost = 1000;
+        float Cost = 1;
         if (StatManager.instance.Persistent_stat.Gold >= Cost)
         {
             StatManager.instance.Persistent_stat.Gold -= Cost;

@@ -1578,7 +1578,7 @@ public class BallSwarm : SpecialAugment
         for (int i = 0; i < num; i++)
         {
             IBall ball = GetSpecificBall(BallManager.Instance.NormalBall);
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+            if (AugmentManager.instance.determineAugment(typeof(SpawnBombBall)) && Random.value < 0.1f)
             {
                 IBall BombBall = GetSpecificBall("BombBall");
             }
@@ -1666,7 +1666,7 @@ public class LonelyBall : SpecialAugment
         for(int i = 0; i < num; i++)
         {
             IBall ball = GetSpecificBall(BallManager.Instance.NormalBall);
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+            if (AugmentManager.instance.determineAugment(typeof(SpawnBombBall)) && Random.value < 0.1f)
             {
                 IBall BombBall = GetSpecificBall("BombBall");
             }
@@ -1768,16 +1768,16 @@ public class SplitBall : SpecialAugment
 
     public void CreateBall(int Num, IBall RecentlyBall)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_50"))
+        if (AugmentManager.instance.determineAugment(typeof(Concentrate)))
         {
             StatManager.instance.ChangeTemporaryStats_AttackDamage(Num * 0.2f);
             StatManager.instance.ChangeTemporaryStats_EffectDamage(Num * 0.2f);
         }
-        else if (AugmentManager.instance.determineAugmentID("SPECIAL_38"))
+        else if (AugmentManager.instance.determineAugment(typeof(LonelyBall)))
         {
             BallManager.Instance.LeftBallCount += Num;
         }
-        else if (AugmentManager.instance.determineAugmentID("SPECIAL_39"))
+        else if (AugmentManager.instance.determineAugment(typeof(BallSwarm)))
         {
             BallManager.Instance.LeftBallCount += Num;
         }
@@ -1786,7 +1786,7 @@ public class SplitBall : SpecialAugment
             for (int i = 0; i < Num; i++)
             {
                 IBall ball = GetSpecificBall(RecentlyBall.BallType);
-                if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+                if (AugmentManager.instance.determineAugment(typeof(SpawnBombBall)) && Random.value < 0.1f)
                 {
                     IBall BombBall = GetSpecificBall("BombBall");
                 }

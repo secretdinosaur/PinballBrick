@@ -163,7 +163,7 @@ public class BrickManager : MonoBehaviour
         {
             WavePause = false;
 
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            if (AugmentManager.instance.determineAugment(typeof(DoubleBoss)))
             {
                 int BossSpawned = 2;
                 for (int i = 0; i < CurrentBricks.Count; i++)
@@ -281,8 +281,8 @@ public class BrickManager : MonoBehaviour
             if (BrickQueue == null)
             {
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
-                    || AugmentManager.instance.determineAugmentID("SPECIAL_62")
-                    || (AugmentManager.instance.determineAugmentID("SPECIAL_72") && BossSpawnCondition(Wave));
+                    || AugmentManager.instance.determineAugment(typeof(InfiniteRapid))
+                    || (AugmentManager.instance.determineAugment(typeof(WaveFourBoss)) && BossSpawnCondition(Wave));
                 SettingBrickSpawnChance();
                 if(WaveRoutine != null)
                 {
@@ -633,7 +633,7 @@ public class BrickManager : MonoBehaviour
         int AddPerWave = Wave / 10 >= 10 ? 10 : Wave / 10;
         SettingBrickHp(brick, Wave, AddPerWave);
         IBrick Brick = new IBrick();
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_65") && !brick.IsBigBoss && !brick.IsSpecialBrick)
+        if (AugmentManager.instance.determineAugment(typeof(FusionBricks)) && !brick.IsBigBoss && !brick.IsSpecialBrick)
         {
             if(BrickQueue.Count == 0)
             {
@@ -693,7 +693,7 @@ public class BrickManager : MonoBehaviour
         if (Brick.IsBoss)
         {
             WavePause = true;
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_64"))
+            if (AugmentManager.instance.determineAugment(typeof(DoubleBoss)))
             {
                 int BossSpawned = 1;
                 for(int i = 0; i < CurrentBricks.Count; i++)
@@ -708,7 +708,7 @@ public class BrickManager : MonoBehaviour
             }
         }
 
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_81"))
+        if (AugmentManager.instance.determineAugment(typeof(PenetratingBall)))
         {
             Brick.GetComponent<Collider2D>().isTrigger = true;
         }

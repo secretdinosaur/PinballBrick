@@ -55,7 +55,7 @@ public class BallManager : MonoBehaviour
     public void CreateBall(int Num)
     {
         Num *= AugmentManager.instance.SpawnBallAmount;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_60"))
+        if (AugmentManager.instance.determineAugment(typeof(RollDiceBall)))
         {
             DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(Num, OnCreateBall));
         }
@@ -67,16 +67,16 @@ public class BallManager : MonoBehaviour
 
     public void OnCreateBall(int diceSum)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_50"))
+        if (AugmentManager.instance.determineAugment(typeof(Concentrate)))
         {
             StatManager.instance.ChangeTemporaryStats_AttackDamage(diceSum * 0.2f);
             StatManager.instance.ChangeTemporaryStats_EffectDamage(diceSum * 0.2f);
         }
-        else if (AugmentManager.instance.determineAugmentID("SPECIAL_38"))
+        else if (AugmentManager.instance.determineAugment(typeof(LonelyBall)))
         {
             LeftBallCount += diceSum;
         }
-        else if (AugmentManager.instance.determineAugmentID("SPECIAL_39"))
+        else if (AugmentManager.instance.determineAugment(typeof(BallSwarm)))
         {
             LeftBallCount += diceSum;
         }
@@ -85,7 +85,7 @@ public class BallManager : MonoBehaviour
             for (int i = 0; i < diceSum; i++)
             {
                 IBall ball = GetSpecificBall(NormalBall);
-                if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+                if (AugmentManager.instance.determineAugment(typeof(SpawnBombBall)) && Random.value < 0.1f)
                 {
                     CreateBombBall(1);
                 }
@@ -97,16 +97,16 @@ public class BallManager : MonoBehaviour
     {
         Num *= AugmentManager.instance.SpawnBallAmount;
 
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_50"))
+        if (AugmentManager.instance.determineAugment(typeof(Concentrate)))
         {
             StatManager.instance.ChangeTemporaryStats_AttackDamage(Num * 0.2f);
             StatManager.instance.ChangeTemporaryStats_EffectDamage(Num * 0.2f);
         }
-        else if (AugmentManager.instance.determineAugmentID("SPECIAL_38"))
+        else if (AugmentManager.instance.determineAugment(typeof(LonelyBall)))
         {
             LeftBallCount += Num;
         }
-        else if (AugmentManager.instance.determineAugmentID("SPECIAL_39"))
+        else if (AugmentManager.instance.determineAugment(typeof(BallSwarm)))
         {
             LeftBallCount += Num;
         }
@@ -115,7 +115,7 @@ public class BallManager : MonoBehaviour
             for (int i = 0; i < Num; i++)
             {
                 IBall ball = GetSpecificBall(BallType, IsRebirth);
-                if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.05f)
+                if (AugmentManager.instance.determineAugment(typeof(SpawnBombBall)) && Random.value < 0.05f)
                 {
                     CreateBombBall(1);
                 }

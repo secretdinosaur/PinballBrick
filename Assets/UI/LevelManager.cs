@@ -229,11 +229,6 @@ public partial class LevelManager : MonoBehaviour
         
         List<string> keys = new List<string>(statTable.Keys);
 
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
-        {
-            keys.RemoveAt(5);
-        }
-
         List<KeyValuePair<string, int>> selectedStats = new List<KeyValuePair<string, int>>();
         while (selectedStats.Count < 3)
         {

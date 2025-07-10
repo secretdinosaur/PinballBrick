@@ -168,7 +168,7 @@ public static partial class DamageManager //Special Effect Attack
         bool isCritical = true;
         if(type == "Lightning")
             SoundManager.instance.LightningSound();
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
+        if (AugmentManager.instance.determineAugment(typeof(CriticalOnEffect)))
         {
             isCritical = IsCriticalHit(brick);
         }
@@ -199,7 +199,7 @@ public static partial class DamageManager //Special Effect Attack
         if (StartingPos == null)
             StartingPos = new Vector2(Random.Range(-1.5f,1.5f), -10);
         bool isCritical = true;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
+        if (AugmentManager.instance.determineAugment(typeof(CriticalOnEffect)))
         {
             isCritical = IsCriticalHit(brick);
         }
@@ -260,7 +260,7 @@ public static partial class DamageManager //Special Effect Attack
     {
         float BaseExplosiveDamage = 30;
         bool isCritical = false;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
+        if (AugmentManager.instance.determineAugment(typeof(CriticalOnEffect)))
         {
             isCritical = IsCriticalHit(brick);
         }
@@ -387,7 +387,7 @@ public class BrickEffectManager : MonoBehaviour
                 brick.lineRenderer.material.SetColor("_CenterFireColor", new Color(191 / 255f, 181 / 255f, 0) * 2f);
                 brick.lineRenderer.material.SetFloat("_FireHeight", 1.5f);
             }
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
+            if (AugmentManager.instance.determineAugment(typeof(CriticalOnEffect)))
             {
                 isCritical = DamageManager.IsCriticalHit(brick);
             }
@@ -505,7 +505,7 @@ public class BrickEffectManager : MonoBehaviour
             }
             bool isCritical = false;
             float EffectAttackDamage;
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
+            if (AugmentManager.instance.determineAugment(typeof(CriticalOnEffect)))
             {
                 isCritical = DamageManager.IsCriticalHit(brick);
             }
@@ -526,7 +526,7 @@ public class BrickEffectManager : MonoBehaviour
             {
                 yield break;
             }
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_16"))
+            if (AugmentManager.instance.determineAugment(typeof(InfinitePoison)))
             {
                 if (Random.value < AugmentManager.instance.effectChance.PoisonChance)
                 {
@@ -608,7 +608,7 @@ public class BrickEffectManager : MonoBehaviour
     {
         float multipleCount = 1;
         bool isCritical = true;
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_59"))
+        if (AugmentManager.instance.determineAugment(typeof(CriticalOnEffect)))
         {
             isCritical = DamageManager.IsCriticalHit(brick);
         }

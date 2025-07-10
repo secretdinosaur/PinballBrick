@@ -666,7 +666,7 @@ public partial class StatManager
     {
         Temporary_stat.AttackDamage += value;
         TotalChangedStatValue[0] += value;
-        if (AugmentManager.instance.determineAugmentID("STAT_28"))
+        if (AugmentManager.instance.determineAugment(typeof(AttackEffectBothUp)))
         {
             Temporary_stat.EffectDamage += value * 0.2f;
             TotalChangedStatValue[3] += value * 0.2f;
@@ -684,11 +684,11 @@ public partial class StatManager
     public void ChangeTemporaryStats_CriticalChance(float value)
     {
         float MaxCriChance = 1f;
-        if (AugmentManager.instance.determineAugmentID("STAT_25"))
+        if (AugmentManager.instance.determineAugment(typeof(MassivelyCriticalDamageUp)))
         {
             MaxCriChance = 0.1f;
         }
-        if (AugmentManager.instance.determineAugmentID("STAT_21"))
+        if (AugmentManager.instance.determineAugment(typeof(CritChanceToAttackDamage)))
         {
             if(Persistent_stat.CriticalChance + Temporary_stat.CriticalChance + value != 0)
             {
@@ -733,7 +733,7 @@ public partial class StatManager
     {
         Temporary_stat.EffectDamage += (float)System.Math.Round(value, 2);
         TotalChangedStatValue[3] += (float)System.Math.Round(value, 2);
-        if (AugmentManager.instance.determineAugmentID("STAT_28"))
+        if (AugmentManager.instance.determineAugment(typeof(AttackEffectBothUp)))
         {
             Temporary_stat.AttackDamage += value * 0.2f;
             TotalChangedStatValue[0] += value * 0.2f;
