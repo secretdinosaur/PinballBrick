@@ -256,6 +256,7 @@ public partial class UpgradeManager
 public partial class UpgradeManager //Powers
 {
     public GameObject RandomAugment;
+    private int Count;
 
     public void SettingRandomAugment()
     {
@@ -267,17 +268,23 @@ public partial class UpgradeManager //Powers
 
         string colorCode = ColorUtility.ToHtmlStringRGB(color);
 
-        RandomAugment.GetComponentsInChildren<TMP_Text>()[1].text = "The next game will start with\n" +
+        RandomAugment.GetComponentsInChildren<TMP_Text>()[0].text = "The next game will start with\n" +
              "<color=#" + colorCode + ">" + AugmentManager.RandomAugment.Name + "</color>";
     }
 
     public void GetRandomAugment()
     {
-        AugmentManager.RandomAugment =
-            Random.value < 0.05 ? AugmentManager.instance.GetRandomAugmentByRarity(1) :
-            Random.value < 0.15 ? AugmentManager.instance.GetRandomAugmentByRarity(2) :
-            Random.value < 0.4 ? AugmentManager.instance.GetRandomAugmentByRarity(3) :
-            AugmentManager.instance.GetRandomAugmentByRarity(4);
-        SettingRandomAugment();
+        float Cost = 1000;
+        if (StatManager.instance.Persistent_stat.Gold >= Cost)
+        {
+            StatManager.instance.Persistent_stat.Gold -= Cost;
+            AugmentManager.RandomAugment =
+                Random.value < 0.05 ? AugmentManager.instance.GetRandomAugmentByRarity(1) :
+                Random.value < 0.15 ? AugmentManager.instance.GetRandomAugmentByRarity(2) :
+                Random.value < 0.4 ? AugmentManager.instance.GetRandomAugmentByRarity(3) :
+                AugmentManager.instance.GetRandomAugmentByRarity(4);
+            SettingRandomAugment();
+            UpdateGoldUI();
+        }
     }
 }
