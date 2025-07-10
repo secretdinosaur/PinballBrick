@@ -30,8 +30,10 @@ public class Background : MonoBehaviour
     {
         if(ScrollContent.GetComponent<RectTransform>().anchoredPosition.x != - 3600)
         {
-            StopCoroutine(Routine1);
-            StopCoroutine(Routine2);
+            if(Routine1 != null)
+                StopCoroutine(Routine1);
+            if(Routine2 != null)
+                StopCoroutine(Routine2);
             Routine1 = null;
             Routine2 = null;
         }
