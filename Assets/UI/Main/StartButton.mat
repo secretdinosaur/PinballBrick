@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6320480255820975374
+--- !u!114 &-249440218206100358
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DailyMissionButton 5
-  m_Shader: {fileID: -6465566751694194690, guid: dcadb162842935f4196d25a498563716, type: 3}
+  m_Name: StartButton
+  m_Shader: {fileID: -6465566751694194690, guid: 32baba4767692594793f6ad7f0cd845b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -52,8 +52,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_f5e9657464364170a4ee25c871591fbe_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 6f2d69070e9b96845be57eb64d17bbf2, type: 3}
+    - _SampleTexture2D_524fd39d280e46a783666b3d263b913a_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 914f8aacecc8a94479cc6ee5837ee579, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_9e5df6ec07f04397add7ce5552094609_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 914f8aacecc8a94479cc6ee5837ee579, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -70,10 +74,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha: 1.27
     - _ColorMask: 15
     - _EnableExternalAlpha: 0
-    - _HasEnoughMoney: 0
-    - _IsEnoughMoney: 1
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -81,9 +84,6 @@ Material:
     - _StencilWriteMask: 255
     - _UIMaskSoftnessX: 1
     - _UIMaskSoftnessY: 1
-    - _Under50: 0
-    - _Upper50: 1
-    - _Value: 0.7133333
     - _ZWrite: 0
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
