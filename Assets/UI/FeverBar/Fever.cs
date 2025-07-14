@@ -98,4 +98,9 @@ public class Fever : MonoBehaviour
             FeverObj.SetActive(false);
         }
     }
+
+    public void FeverOff()
+    {
+        FeverGauge = 0;
+    }
 }
