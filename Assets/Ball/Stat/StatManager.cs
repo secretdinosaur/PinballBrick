@@ -665,7 +665,7 @@ public partial class StatManager
     public void ChangeTemporaryStats_AttackDamage(float value)
     {
         Temporary_stat.AttackDamage += value;
-        TotalChangedStatValue[0] += value;
+        TotalChangedStatValue[0] += value * statMultiplier.AttackDamageMultiplier;
         if (AugmentManager.instance.determineAugment(typeof(AttackEffectBothUp)))
         {
             Temporary_stat.EffectDamage += value * 0.2f;
@@ -732,7 +732,7 @@ public partial class StatManager
     public void ChangeTemporaryStats_EffectDamage(float value)
     {
         Temporary_stat.EffectDamage += (float)System.Math.Round(value, 2);
-        TotalChangedStatValue[3] += (float)System.Math.Round(value, 2);
+        TotalChangedStatValue[3] += (float)System.Math.Round(value * statMultiplier.EffectDamageMultiplier, 2);
         if (AugmentManager.instance.determineAugment(typeof(AttackEffectBothUp)))
         {
             Temporary_stat.AttackDamage += value * 0.2f;
