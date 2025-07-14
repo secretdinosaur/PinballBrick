@@ -58,27 +58,29 @@ public class BrickManager : MonoBehaviour
     enum BrickType
     {
         Brick,
-        HardBrick,
         HealBrick,
+        HardBrick,
         SlimeBrick,
         ShieldBrick,
         TeleportBrick,
         IgnoreBrick,
         AbsorbBrick,
         TwinBrick,
+        RebornBrick,
     }
 
     public List<float> BrickExpValue = new List<float>
     {
         10f,
-        20f,
         12.5f,
+        20f,
         10f,
         20f,
         15f,
         20f,
         20f,
         20f,
+        13.5f,
     };
 
     void Awake()
@@ -283,7 +285,7 @@ public class BrickManager : MonoBehaviour
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
                     || AugmentManager.instance.determineAugment(typeof(InfiniteRapid))
                     || (AugmentManager.instance.determineAugment(typeof(WaveFourBoss)) && BossSpawnCondition(Wave));
-                SettingBrickSpawnChance();
+                //SettingBrickSpawnChance();
                 if(WaveRoutine != null)
                 {
                     StopCoroutine(WaveRoutine);
@@ -426,21 +428,23 @@ public class BrickManager : MonoBehaviour
     {
         int Wave = GameManager.instance.Wave;
         if (Wave < 11)
-            return (int)BrickType.Brick;
+            return UnityEngine.Random.value > 0.5 ? (int)BrickType.Brick : (int)BrickType.HealBrick;
         else if (Wave < 21)
-            return (int)BrickType.HealBrick;
-        else if (Wave < 31)
-            return (int)BrickType.ShieldBrick;
-        else if (Wave < 41)
-            return (int)BrickType.SlimeBrick;
-        else if (Wave < 51)
             return (int)BrickType.HardBrick;
+        else if (Wave < 31)
+            return (int)BrickType.SlimeBrick;
+        else if (Wave < 41)
+            return (int)BrickType.RebornBrick;
+        else if (Wave < 51)
+            return (int)BrickType.ShieldBrick;
         else if (Wave < 61)
             return (int)BrickType.TeleportBrick;
         else if (Wave < 71)
-            return (int)BrickType.TwinBrick;
+            return (int)BrickType.IgnoreBrick;
         else if (Wave < 81)
             return (int)BrickType.AbsorbBrick;
+        else if (Wave < 91)
+            return (int)BrickType.TwinBrick;
         else
             return UnityEngine.Random.Range(0, BrickInfo.Bricks.Length);
     }
@@ -465,6 +469,8 @@ public class BrickManager : MonoBehaviour
             return 5;
         else if (brickType == "AbsorbBrick")
             return 5;
+        else if (brickType == "RebornBrick")
+            return 2;
         else
             return 1;
     }
@@ -498,6 +504,9 @@ public class BrickManager : MonoBehaviour
         else if (brickType == "AbsorbBrick")
             return BrickExpValue[(int)BrickType.AbsorbBrick];
 
+        else if (brickType == "RebornBrick")
+            return BrickExpValue[(int)BrickType.RebornBrick];
+
         else
             return BrickExpValue[(int)BrickType.Brick];
     }
@@ -528,12 +537,12 @@ public class BrickManager : MonoBehaviour
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
                 }
-                else if (Wave < 21 && i == (int)BrickType.HealBrick)
+                else if (Wave < 21 && i == (int)BrickType.SlimeBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
                 }
-                else if (Wave < 31 && i == (int)BrickType.SlimeBrick)
+                else if (Wave < 31 && i == (int)BrickType.RebornBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
@@ -572,7 +581,8 @@ public class BrickManager : MonoBehaviour
         }
         if (remain > 0f)
         {
-            BrickInfo.BrickSpawnChance[0] += remain;
+            BrickInfo.BrickSpawnChance[(int)BrickType.Brick] += remain / 2;
+            BrickInfo.BrickSpawnChance[(int)BrickType.HealBrick] += remain / 2;
         }
     }
     public IBrick SettingBrick()

@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour
     public void GameExit()
     {
         SoundManager.instance.SaveVolume();
-
+        Fever.Instance.FeverOff();
         isGameEnded = true;
         GameEnd();
     }

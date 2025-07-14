@@ -10,6 +10,7 @@ public class ShieldBrick : IBrick
     public bool FirstShieldSpawn = true;
 
     public GameObject Shield;
+
     private void OnEnable()
     {
         base.OnEnable();

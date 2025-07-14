@@ -11205,6 +11205,7 @@ MonoBehaviour:
   - 15.5
   - 20
   - 10
+  - 10
 --- !u!114 &137631893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11275,6 +11276,11 @@ MonoBehaviour:
     _nonLazy: 1
   - _name: BallBrick
     _component: {fileID: 7680240655323945563, guid: 9e7e6c6a330962347b97694316ae50d0, type: 3}
+    _count: 0
+    _container: {fileID: 137631891}
+    _nonLazy: 1
+  - _name: RebornBrick
+    _component: {fileID: 3565851936464872657, guid: cae34b24110011a4fb2993fd74f94ce5, type: 3}
     _count: 0
     _container: {fileID: 137631891}
     _nonLazy: 1

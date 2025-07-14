@@ -49,7 +49,6 @@ public partial class IBrick : MonoBehaviour
         get { return hp; }
         set
         {
-
             hp = value;
             if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
 
@@ -74,9 +73,18 @@ public partial class IBrick : MonoBehaviour
                     StartCoroutine(GetComponent<TwinBrick>().StartRebirth());
                     HPText.text = "10";
                 }
-                else if(BrickType == "TwinBrick")
+                else if(BrickType == "RebornBrick")
                 {
-
+                    GetComponent<RebornBrick>().RebornProcess((count) =>
+                    {
+                        hp =
+                            count == 1 ? HpTemp * 0.7f :
+                            count == 0 ? HpTemp * 0.3f : HpTemp * 0.1f;
+                        if(hp <= 0)
+                        {
+                            hp = 1;
+                        }
+                    });
                 }
                 else if (IsBigBoss)
                 {
@@ -143,7 +151,7 @@ public partial class IBrick : MonoBehaviour
 
     public void UpdateHPtext()
     {
-
+        HPText.enabled = true;
         if ((int)hp <= 0 && BrickType == "TwinBrick")
         {
             return;
