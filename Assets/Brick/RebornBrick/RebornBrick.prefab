@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &9219065873637946999
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4196403253232580860, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333168213614402114, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_Name
+      value: RebornBrick
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5333168213614402114, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3565851936464872657}
+  m_SourcePrefab: {fileID: 100100000, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+--- !u!114 &698776347205216078 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8521442660743975225, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  m_PrefabInstance: {fileID: 9219065873637946999}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2934354081028932274 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6289374651800827077, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  m_PrefabInstance: {fileID: 9219065873637946999}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3887604469318921269 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5333168213614402114, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  m_PrefabInstance: {fileID: 9219065873637946999}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3565851936464872657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3887604469318921269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d9d048b3dd235242ab2ac782bdc00ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Point: 5
+  Exp: 1
+  BasicHP: 1.5
+  IsBoss: 0
+  IsSpecialBrick: 0
+  IsBigBoss: 0
+  HPText: {fileID: 698776347205216078}
+  BrickType: 
+  BrickTransform: {fileID: 0}
+  HpTemp: 0
+  BallSpeed: 0
+  detectArea: {fileID: 0}
+  spriteRenderer: {fileID: 6294104636878035562}
+  lineRenderer: {fileID: 7406418537737396489}
+  PoisonEffect: {fileID: 6144703286576763514}
+  TotalMultiple: 0
+  ExecutionObject1: {fileID: 5018559660891575385}
+  ExecutionObject2: {fileID: 2934354081028932274}
+  isGoldBrick: 0
+  RecentlyBall: {fileID: 0}
+  SpecialCriticalChance: 0
+  BrickEffect: {fileID: 0}
+  RecentReceivedDamage: 0
+--- !u!1 &5018559660891575385 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4203321890243191342, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  m_PrefabInstance: {fileID: 9219065873637946999}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6144703286576763514 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3077907449073165325, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  m_PrefabInstance: {fileID: 9219065873637946999}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &6294104636878035562 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2930037138640383005, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  m_PrefabInstance: {fileID: 9219065873637946999}
+  m_PrefabAsset: {fileID: 0}
+--- !u!120 &7406418537737396489 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 1817292585717798782, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+  m_PrefabInstance: {fileID: 9219065873637946999}
+  m_PrefabAsset: {fileID: 0}
