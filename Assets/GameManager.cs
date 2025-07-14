@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     TMP_Text NoticePointText_End;
     TMP_Text NoticeWaveText_End;
     TMP_Text NoticeDestroyedBricksText_End;
+    TMP_Text NoticeNewRecordText;
 
     Sequence GameEndSequence;
 
@@ -97,6 +98,8 @@ public class GameManager : MonoBehaviour
         NoticePointText_End = GameEndPanel.transform.Find("Point").GetComponent<TMP_Text>();
         NoticeWaveText_End = GameEndPanel.transform.Find("Wave").GetComponent<TMP_Text>();
         NoticeDestroyedBricksText_End = GameEndPanel.transform.Find("DestroyedBricks").GetComponent<TMP_Text>();
+        NoticeNewRecordText = NoticePointText_End.gameObject.transform.Find("NewRecord").GetComponent<TMP_Text>();
+        NoticeNewRecordText.gameObject.SetActive(false);
 
         WaveNoticeText = GameObject.Find("Canvas").transform.Find("WaveNoticeText").GetComponent<TMP_Text>();
         WaveExtraNoticeText = GameObject.Find("Canvas").transform.Find("WaveExtraNoticeText").GetComponent<TMP_Text>();
@@ -240,8 +243,8 @@ public class GameManager : MonoBehaviour
     public void GameEnd()
     {
         RecordStatistics.Playtime += TimeManager.instance.time;
-
-        LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore);
+        bool isHighscore = false;
+        LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore, (x) => isHighscore = x);
         StatManager.instance.SavePersistentStats(); //for save gold
         AchievementManager.instance.AchievementCheck(RecordStatistics);
         StatManager.instance.UpdateStatistics(RecordStatistics);
@@ -310,6 +313,13 @@ public class GameManager : MonoBehaviour
                 NoticePointText_End.text = "Total Point : " + Mathf.RoundToInt(value).ToString();
             })
         );
+        GameEndSequence.AppendCallback(() =>
+        {
+            if (isHighscore)
+            {
+                NoticeNewRecordText.gameObject.SetActive(true);
+            }
+        });
     }
 
     private IEnumerator BallRemoveEffect(IBall ball)
