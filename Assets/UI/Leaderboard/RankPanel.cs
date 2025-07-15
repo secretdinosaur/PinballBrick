@@ -23,7 +23,7 @@ public class RankPanel : MonoBehaviour
         if (Rank == 1)
         {
             this.Rank.text = Rank.ToString("F0") + "st";
-            GetComponent<Image>().color = new Color(253 / 255, 30 / 255, 0);
+            GetComponent<Image>().color = new Color(253 / 255f, 30 / 255f, 0);
         }
         else if (Rank == 2)
         {
@@ -38,7 +38,7 @@ public class RankPanel : MonoBehaviour
         else
         {
             this.Rank.text = Rank.ToString("F0") + "th";
-            GetComponent<Image>().color = new Color(136 / 255, 153 / 255f, 212 / 255f);
+            GetComponent<Image>().color = new Color(136 / 255f, 153 / 255f, 212 / 255f);
         }
         this.Name.text = Name;
         this.Score.text = Score.ToString("F0");
