@@ -84,6 +84,7 @@ public partial class IBrick : MonoBehaviour
                         {
                             hp = 1;
                         }
+                        HPText.enabled = true;
                     });
                 }
                 else if (IsBigBoss)
@@ -151,7 +152,6 @@ public partial class IBrick : MonoBehaviour
 
     public void UpdateHPtext()
     {
-        HPText.enabled = true;
         if ((int)hp <= 0 && BrickType == "TwinBrick")
         {
             return;
