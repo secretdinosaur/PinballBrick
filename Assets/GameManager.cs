@@ -238,8 +238,9 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1f;
     }
 
-    int displayedDestroyedBricksValue = 0;
-    int displayedPointValue = 0;
+    private float[] stepTimes = new float[] { 0f, 1.5f, 3f, 4.5f, 6f };
+    private int currentStep = 0;
+
     public void GameEnd()
     {
         RecordStatistics.Playtime += TimeManager.instance.time;
@@ -320,6 +321,22 @@ public class GameManager : MonoBehaviour
                 NoticeNewRecordText.gameObject.SetActive(true);
             }
         });
+        GameEndSequence.Pause();
+        GameEndSequence.Goto(0, true);
+    }
+
+    public void OnSkipGameEnd()
+    {
+        if (currentStep < stepTimes.Length - 1)
+        {
+            currentStep++;
+            float nextTime = stepTimes[currentStep];
+            GameEndSequence.Goto(nextTime, true);
+        }
+        else
+        {
+            GameEndSequence.Complete();
+        }
     }
 
     private IEnumerator BallRemoveEffect(IBall ball)

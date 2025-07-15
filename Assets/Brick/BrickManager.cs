@@ -285,7 +285,7 @@ public class BrickManager : MonoBehaviour
                 isRapid = (UnityEngine.Random.value < RapidStageChance && GameManager.instance.Wave > 10)
                     || AugmentManager.instance.determineAugment(typeof(InfiniteRapid))
                     || (AugmentManager.instance.determineAugment(typeof(WaveFourBoss)) && BossSpawnCondition(Wave));
-                //SettingBrickSpawnChance();
+                SettingBrickSpawnChance();
                 if(WaveRoutine != null)
                 {
                     StopCoroutine(WaveRoutine);
