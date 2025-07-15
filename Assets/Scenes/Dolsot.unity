@@ -12707,6 +12707,7 @@ GameObject:
   - component: {fileID: 218456173}
   - component: {fileID: 218456174}
   - component: {fileID: 218456175}
+  - component: {fileID: 218456176}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -12913,6 +12914,19 @@ MonoBehaviour:
   CompleteButtons: []
   questSet: {fileID: 11400000, guid: 09fda9303f024d54b96b080065b1305d, type: 2}
   DailyQuestSet: []
+--- !u!114 &218456176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218456163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4215d2e0fe4c3f84f8221f4a2135f6b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Loading: {fileID: 3019864171059667109, guid: aa2b820311e7e9a4e8ab4dc92f5ba2f0, type: 3}
 --- !u!1 &236723706
 GameObject:
   m_ObjectHideFlags: 0
@@ -19491,9 +19505,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 218456173}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnClickGoToMain
+      - m_Target: {fileID: 218456176}
+        m_TargetAssemblyTypeName: SceneMove, Assembly-CSharp
+        m_MethodName: GoToMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

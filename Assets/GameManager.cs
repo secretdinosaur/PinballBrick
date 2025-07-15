@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     TMP_Text CriticalDamageStatValueText;
     TMP_Text CriticalChanceStatValueText;
     TMP_Text EffectDamageStatValueText;
-    TMP_Text EffectCriticalDamageStatValueText;
     TMP_Text EffectDurationStatValueText;
     TMP_Text GoldGainStatValueText;
     TMP_Text ExpGainStatValueText;
@@ -343,10 +342,5 @@ public class GameManager : MonoBehaviour
     {
         VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
         yield return null;
-    }
-
-    public void OnClickGoToMain()
-    {
-        SceneManager.LoadScene("Main");
     }
 }
