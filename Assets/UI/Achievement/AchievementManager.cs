@@ -260,7 +260,10 @@ public partial class AchievementManager : MonoBehaviour
             AchievementSlider_5.interactable = false;
 
             if (PlayerPrefs.GetInt("1_Value") < PlayerPrefs.GetInt("1_Goal"))
+            {
+                CompleteButtons[0].GetComponent<Image>().material.SetFloat("_Value", 0);
                 CompleteButtons[0].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+            }
             else
             {
                 CompleteButtons[0].GetComponent<Image>().material.SetFloat("_Value", 1);
@@ -268,7 +271,10 @@ public partial class AchievementManager : MonoBehaviour
             }
 
             if (PlayerPrefs.GetInt("2_Value") < PlayerPrefs.GetInt("2_Goal"))
+            {
                 CompleteButtons[1].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+                CompleteButtons[1].GetComponent<Image>().material.SetFloat("_Value", 0);
+            }
             else
             {
                 CompleteButtons[1].GetComponent<Image>().material.SetFloat("_Value", 1);
@@ -276,7 +282,10 @@ public partial class AchievementManager : MonoBehaviour
             }
 
             if (PlayerPrefs.GetInt("3_Value") < PlayerPrefs.GetInt("3_Goal"))
+            {
                 CompleteButtons[2].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+                CompleteButtons[2].GetComponent<Image>().material.SetFloat("_Value", 0);
+            }
             else
             {
                 CompleteButtons[2].GetComponent<Image>().material.SetFloat("_Value", 1);
@@ -284,7 +293,10 @@ public partial class AchievementManager : MonoBehaviour
             }
 
             if (PlayerPrefs.GetInt("4_Value") < PlayerPrefs.GetInt("4_Goal"))
+            {
                 CompleteButtons[3].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+                CompleteButtons[3].GetComponent<Image>().material.SetFloat("_Value", 0);
+            }
             else
             {
                 CompleteButtons[3].GetComponent<Image>().material.SetFloat("_Value", 1);
@@ -292,7 +304,10 @@ public partial class AchievementManager : MonoBehaviour
             }
 
             if (PlayerPrefs.GetInt("5_Value") < PlayerPrefs.GetInt("5_Goal"))
+            {
                 CompleteButtons[4].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+                CompleteButtons[4].GetComponent<Image>().material.SetFloat("_Value", 0);
+            }
             else
             {
                 CompleteButtons[4].GetComponent<Image>().material.SetFloat("_Value", 1);
