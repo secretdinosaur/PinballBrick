@@ -2077,7 +2077,7 @@ public class Concentrate : SpecialAugment
 
         if (Count <= 0)
         {
-            Debug.Log("Game Over");
+            GameManager.instance.GameEnd();
         }
     }
 

@@ -9,6 +9,8 @@ using System.Text;
 using TMPro;
 using System.Security.Cryptography.X509Certificates;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using GoogleMobileAds;
+using GoogleMobileAds.Api;
 public class GoogleManager : MonoBehaviour
 {
     public static GoogleManager instance;
@@ -19,6 +21,10 @@ public class GoogleManager : MonoBehaviour
         {
             Login();
         }
+        MobileAds.Initialize((InitializationStatus initStatus) =>
+        {
+            
+        });
     }
 
     public void Login()
