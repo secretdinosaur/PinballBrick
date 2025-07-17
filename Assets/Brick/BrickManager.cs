@@ -126,7 +126,7 @@ public class BrickManager : MonoBehaviour
         isBossSpawned = false;
         GameOverTimerRoutine = null;
 
-        GameOverTimer = 5.0f;
+        GameOverTimer = 60.0f;
         WavePause = false;
     }
 

@@ -281,7 +281,7 @@ public class GameManager : MonoBehaviour
         Color panelColor = panelImage.color;
 
         GameEndSequence.Append(
-            DOVirtual.Float(0, 204f / 255f, 3f, value =>
+            DOVirtual.Float(0, 225f / 255f, 3f, value =>
             {
                 Color newColor = panelColor;
                 newColor.a = value;
