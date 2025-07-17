@@ -6,6 +6,8 @@ using System.Collections;
 using System.Linq;
 using System.Drawing;
 using NUnit.Framework;
+using UnityEngine.UI;
+using TMPro;
 public class BrickManager : MonoBehaviour
 {
     public List<float> HPPool;
@@ -51,6 +53,11 @@ public class BrickManager : MonoBehaviour
     public int BaseBossSpawnValue;
     public int NextBossSpawnWave;
     public int BossSpawnWaveNumber;
+    public bool isBossSpawned;
+    private Coroutine GameOverTimerRoutine;
+
+    public float GameOverTimer;
+    private Slider GameOverTimerSlider;
 
     private bool WavePause;
     public Coroutine WaveRoutine;
@@ -90,6 +97,8 @@ public class BrickManager : MonoBehaviour
         ScreenHeight = Screen.height;
         InitializeGrid();
         InitializeVariables();
+        GameOverTimerSlider = GameObject.Find("Canvas").transform.Find("GameOverTimer").GetComponent<Slider>();
+        GameOverTimerSlider.gameObject.SetActive(false);
         SpawnBrickQueue = new Queue<Queue<IBrick>>();
         BrickQueue = new Queue<IBrick>();
         PoolManager = GetComponent<PoolManager>();
@@ -114,7 +123,10 @@ public class BrickManager : MonoBehaviour
         BaseBossSpawnValue = 1;
         NextBossSpawnWave = 10;
         BossSpawnWaveNumber = 10;
+        isBossSpawned = false;
+        GameOverTimerRoutine = null;
 
+        GameOverTimer = 5.0f;
         WavePause = false;
     }
 
@@ -164,6 +176,10 @@ public class BrickManager : MonoBehaviour
         if (brick.IsBoss)
         {
             WavePause = false;
+            isBossSpawned = false;
+            if (GameOverTimerRoutine != null)
+                StopCoroutine(GameOverTimerRoutine);
+            GameOverTimer = 60.0f;
 
             if (AugmentManager.instance.determineAugment(typeof(DoubleBoss)))
             {
@@ -174,9 +190,18 @@ public class BrickManager : MonoBehaviour
                         BossSpawned -= 1;
                 }
                 if (BossSpawned == 1) // currentbrick does not updated yet
+                {
                     WavePause = false;
+                    isBossSpawned = false;
+                    if (GameOverTimerRoutine != null)
+                        StopCoroutine(GameOverTimerRoutine);
+                    GameOverTimer = 60.0f;
+                }
                 else
+                {
                     WavePause = true;
+                    isBossSpawned = true;
+                }
             }
         }
         SoundManager.instance.BrickDieSound(brick.BrickType);
@@ -703,6 +728,11 @@ public class BrickManager : MonoBehaviour
         if (Brick.IsBoss)
         {
             WavePause = true;
+            isBossSpawned = true;
+            if(GameOverTimerRoutine == null)
+            {
+                GameOverTimerRoutine = StartCoroutine(CalAfterBossTime());
+            }
             if (AugmentManager.instance.determineAugment(typeof(DoubleBoss)))
             {
                 int BossSpawned = 1;
@@ -712,9 +742,22 @@ public class BrickManager : MonoBehaviour
                         BossSpawned += 1;
                 }
                 if (BossSpawned == 2)
+                {
                     WavePause = true;
+                    isBossSpawned = true;
+                    if (GameOverTimerRoutine == null)
+                    {
+                        GameOverTimerRoutine = StartCoroutine(CalAfterBossTime());
+                    }
+                }
                 else
+                {
                     WavePause = false;
+                    isBossSpawned = false;
+                    if (GameOverTimerRoutine != null)
+                        StopCoroutine(GameOverTimerRoutine);
+                    GameOverTimer = 60.0f;
+                }   
             }
         }
 
@@ -839,6 +882,23 @@ public class BrickManager : MonoBehaviour
                 brick = CurrentBricks[UnityEngine.Random.Range(0, CurrentBricks.Count)];
             }
         return brick;
+    }
+
+    IEnumerator CalAfterBossTime()
+    {
+        TMP_Text GameOverTimerText = GameOverTimerSlider.gameObject.GetComponentsInChildren<TMP_Text>()[0];
+        GameOverTimerSlider.gameObject.SetActive(true);
+        while (isBossSpawned && GameOverTimer > 0)
+        {
+            GameOverTimerSlider.value = GameOverTimer;
+            GameOverTimerText.text = GameOverTimer.ToString("F1");
+            GameOverTimer -= 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+        if(GameOverTimer <= 0)
+        {
+            GameManager.instance.GameEnd();
+        }
     }
 
     //Test Button Functions

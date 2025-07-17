@@ -68,7 +68,7 @@ Material:
     - _UIMaskSoftnessY: 1
     - _Under50: 0
     - _Upper50: 1
-    - _Value: 0
+    - _Value: 0.66
     - _ZWrite: 0
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}

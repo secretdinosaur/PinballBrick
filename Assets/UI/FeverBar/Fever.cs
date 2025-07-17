@@ -101,6 +101,12 @@ public class Fever : MonoBehaviour
 
     public void FeverOff()
     {
+        ScoreManager.Instance.TotalScore += ScoreManager.Instance.ContinuousScore * FeverCount;
+        ScoreManager.Instance.ContinuousScore = 0;
+        FeverGaugeLossValue = 0.1f;
+        MultipleText.fontSize = 70f;
         FeverGauge = 0;
+        FeverCount = 0;
+        StartFever = false;
     }
 }

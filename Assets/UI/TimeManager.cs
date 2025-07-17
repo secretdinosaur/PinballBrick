@@ -4,7 +4,6 @@ using System.Collections;
 public class TimeManager : MonoBehaviour
 {
     public static TimeManager instance;
-    TMP_Text TimeText;
     Coroutine TimeRoutine;
     public int time;
 
@@ -14,7 +13,6 @@ public class TimeManager : MonoBehaviour
     {
         instance = this;
         TimeRoutine = null;
-        TimeText = GameObject.Find("Canvas").transform.Find("GameTimeText").GetComponent<TMP_Text>();
 
         QualitySettings.vSyncCount = 0; // Set vSyncCount to 0 so that using .targetFrameRate is enabled.
         Application.targetFrameRate = 60;
@@ -31,18 +29,6 @@ public class TimeManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
             time++;
-        }
-    }
-
-    private void Update()
-    {
-        if (TimeRoutine != null)
-        {
-            //TimeText.text = time / 60 + ":" + time % 60;
-
-            deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-            float fps = 1.0f / deltaTime;
-            TimeText.text = $"FPS: {Mathf.Ceil(fps)}";
         }
     }
 }

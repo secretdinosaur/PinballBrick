@@ -1,11 +1,13 @@
+using DG.Tweening;
+using GoogleMobileAds.Api;
+using GooglePlayGames;
 using System.Collections;
 using System.Xml;
 using TMPro;
 using UnityEngine;
-using DG.Tweening;
-using static UnityEngine.Rendering.DebugUI;
 using UnityEngine.SceneManagement;
-using GooglePlayGames;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
@@ -41,6 +43,9 @@ public class GameManager : MonoBehaviour
 
     public TMP_Text WaveNoticeText;
     public TMP_Text WaveExtraNoticeText;
+
+    private string adUnitId;
+    private InterstitialAd _interstitialAd;
 
     private int wave;
     public int Wave
@@ -107,7 +112,9 @@ public class GameManager : MonoBehaviour
 
         RecordStatistics = new StatisticsSet();
 
-        UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
+        adUnitId = "ca-app-pub-3940256099942544/1033173712";
+        _interstitialAd = null;
+        LoadAds();
 
         StartCoroutine(StartGame());
     }
@@ -237,7 +244,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1f;
     }
 
-    private float[] stepTimes = new float[] { 0f, 1.5f, 3f, 4.5f, 6f };
+    private float[] stepTimes = new float[] { 0f, 3f, 4.5f, 6f, 7.5f, 9f };
     private int currentStep = 0;
 
     public void GameEnd()
@@ -269,21 +276,31 @@ public class GameManager : MonoBehaviour
         NoticeDestroyedBricksText_End.text = "Destroyed Bricks : ";
         NoticePointText_End.text = "Total Point : ";
 
-        GameEndSequence = DOTween.Sequence().SetUpdate(true); ;
+        GameEndSequence = DOTween.Sequence().SetUpdate(true);
+        Image panelImage = GameEndPanel.GetComponent<Image>();
+        Color panelColor = panelImage.color;
 
         GameEndSequence.Append(
+            DOVirtual.Float(0, 204f / 255f, 3f, value =>
+            {
+                Color newColor = panelColor;
+                newColor.a = value;
+                panelImage.color = newColor;
+            })
+        ).Insert(
+            3f,
             DOVirtual.Float(0, LevelManager.Instance.Level, 1f, value =>
             {
                 NoticeLevelText_End.text = "Level  " + Mathf.RoundToInt(value).ToString();
             })
         ).Insert(
-            1.5f,
+            4.5f,
             DOVirtual.Float(0, Wave, 1f, value =>
             {
                 NoticeWaveText_End.text = "Wave : " + Mathf.RoundToInt(value).ToString();
             })
         ).Insert(
-            3f,
+            6f,
             DOVirtual.Float(0, TimeManager.instance.time, 1f, value =>
             {
                 int totalSeconds = Mathf.RoundToInt(value);
@@ -301,13 +318,13 @@ public class GameManager : MonoBehaviour
                     NoticePlaytimeText_End.text = $"Playtime : {minutes:D2}:{seconds:D2}";
             })
         ).Insert(
-            4.5f,
+            7.5f,
             DOVirtual.Float(0, RecordStatistics.DestroyedBricks, 1f, value =>
             {
                 NoticeDestroyedBricksText_End.text = "Destroyed Bricks : " + Mathf.RoundToInt(value).ToString();
             })
         ).Insert(
-            6f,
+            9f,
             DOVirtual.Float(0, ScoreManager.Instance.TotalScore, 1f, value =>
             {
                 NoticePointText_End.text = "Total Point : " + Mathf.RoundToInt(value).ToString();
@@ -337,6 +354,57 @@ public class GameManager : MonoBehaviour
             GameEndSequence.Complete();
         }
     }
+
+    private void LoadAds()
+    {
+        if (_interstitialAd != null)
+        {
+            _interstitialAd.Destroy();
+            _interstitialAd = null;
+        }
+        var adRequest = new AdRequest();
+        InterstitialAd.Load(adUnitId, adRequest,
+          (InterstitialAd ad, LoadAdError error) =>
+          {
+              // if error is not null, the load request failed.
+              if (error != null || ad == null)
+              {
+                  Debug.LogError("interstitial ad failed to load an ad " +
+                                 "with error : " + error);
+                  return;
+              }
+
+              Debug.Log("Interstitial ad loaded with response : "
+                        + ad.GetResponseInfo());
+
+              _interstitialAd = ad;
+          });
+        _interstitialAd.OnAdFullScreenContentClosed += () =>
+        {
+            LoadAds();
+            gameObject.GetComponent<SceneMove>().GoToMain();
+        };
+        _interstitialAd.OnAdFullScreenContentFailed += (AdError error) =>
+        {
+            Debug.LogError("Interstitial ad failed to open full screen content " +
+                           "with error : " + error);
+            gameObject.GetComponent<SceneMove>().GoToMain();
+        };
+    }
+
+    public void ShowAds()
+    {
+        if (_interstitialAd != null && _interstitialAd.CanShowAd())
+        {
+            Debug.Log("Showing interstitial ad.");
+            _interstitialAd.Show();
+        }
+        else
+        {
+            Debug.LogError("Interstitial ad is not ready yet.");
+        }
+    }
+
 
     private IEnumerator BallRemoveEffect(IBall ball)
     {
