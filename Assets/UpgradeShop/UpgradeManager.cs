@@ -4,14 +4,41 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.ComponentModel;
 public partial class UpgradeManager : MonoBehaviour
 {
+    bool IsRandomAugmentTaken = false;
+
     public static UpgradeManager Instance;
 
     void Awake()
     {
         Instance = this;
+        bool IsRandomAugmentTaken = false;
         Panels = new GameObject[] { AttDamage, EffDamage, BonusEXP, CriChance, CriDamage, StartingBall};
+        
+        RandomAugmentButton.SetActive(true);
+        RandomAugmentPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Start next game with the random augmentation";
+
+    }
+
+    private void Start()
+    {
+        Image img = RandomAugmentPanel.GetComponent<Image>();
+        Material mat = img.material;
+        mat.SetFloat("_IsTaken", 0);
+
+        img = RandomAugmentButton.GetComponent<Image>();
+        mat = img.material;
+
+        if (StatManager.instance.Persistent_stat.Gold >= 1000)
+        {
+            mat.SetFloat("_HasEnoughMoney", 1);
+        }
+        else
+        {
+            mat.SetFloat("_HasEnoughMoney", 0);
+        }
     }
 }
 
@@ -26,6 +53,9 @@ public partial class UpgradeManager
     public UpgradeInfo UpgradeInfo;
 
     public GameObject[] UpgradeButtons;
+
+    public GameObject RandomAugmentButton;
+    public Image RandomAugmentPanel;
 
     public TMP_Text GoldText;
     float[] Descriptions =
@@ -153,18 +183,10 @@ public partial class UpgradeManager
         };
 
 
-        TMP_Text[] texts;
         for (int i = 0; i < 6; i++)
         {
             int Cost = GetUpgradeCost(i);
-            if (StatManager.instance.Persistent_stat.Gold >= Cost)
-            {
-                UpgradeButtons[i].GetComponent<Image>().material.SetFloat("_HasEnoughMoney", 1);
-            }
-            else
-            {
-                UpgradeButtons[i].GetComponent<Image>().material.SetFloat("_HasEnoughMoney", 0);
-            }
+            
             switch (i)
             {
                 case 0: //Attack Damage
@@ -240,6 +262,34 @@ public partial class UpgradeManager
     public void UpdateGoldUI()
     {
         GoldText.text = ChangeNumber(StatManager.instance.Persistent_stat.Gold.ToString("F0"));
+        for (int i = 0; i < 6; i++)
+        {
+            Image img = UpgradeButtons[i].GetComponent<Image>();
+            Material mat = img.material;
+
+            int Cost = GetUpgradeCost(i);
+            if (StatManager.instance.Persistent_stat.Gold >= Cost)
+            {
+                mat.SetFloat("_HasEnoughMoney", 1);
+            }
+            else
+            {
+                mat.SetFloat("_HasEnoughMoney", 0);
+            }
+        }
+
+        Image randomImg = RandomAugmentButton.GetComponent<Image>();
+        Material randomMat = randomImg.material;
+
+        if (StatManager.instance.Persistent_stat.Gold >= 1000)
+        {
+            randomMat.SetFloat("_HasEnoughMoney", 1);
+        }
+        else
+        {
+            randomMat.SetFloat("_HasEnoughMoney", 0);
+        }
+
     }
 
     int GetUpgradeCost(int statNum)
@@ -258,32 +308,22 @@ public partial class UpgradeManager //Powers
     public GameObject RandomAugment;
     private int Count;
 
-    public void SettingRandomAugment()
-    {
-        Color color =
-            AugmentManager.RandomAugment.Rarity == 1 ? new Color(1.0f, 0f, 129 / 255f) * 2 :
-            AugmentManager.RandomAugment.Rarity == 2 ? Color.yellow * 2 :
-            AugmentManager.RandomAugment.Rarity == 3 ? new Color(1.0f, 0.41f, 0.71f) * 2 :
-            new Color(51 / 255f, 1f, 4 / 255f) * 2;
-
-        string colorCode = ColorUtility.ToHtmlStringRGB(color);
-
-        RandomAugment.GetComponentsInChildren<TMP_Text>()[0].text = "The next game will start with\n" +
-             "<color=#" + colorCode + ">" + AugmentManager.RandomAugment.Name + "</color>";
-    }
-
     public void GetRandomAugment()
     {
-        float Cost = 1;
-        if (StatManager.instance.Persistent_stat.Gold >= Cost)
+        if (StatManager.instance.Persistent_stat.Gold >= 1000)
         {
-            StatManager.instance.Persistent_stat.Gold -= Cost;
+            StatManager.instance.Persistent_stat.Gold -= 1000;
             AugmentManager.RandomAugment =
                 Random.value < 0.05 ? AugmentManager.instance.GetRandomAugmentByRarity(1) :
                 Random.value < 0.15 ? AugmentManager.instance.GetRandomAugmentByRarity(2) :
                 Random.value < 0.4 ? AugmentManager.instance.GetRandomAugmentByRarity(3) :
                 AugmentManager.instance.GetRandomAugmentByRarity(4);
-            SettingRandomAugment();
+            Image img = RandomAugmentPanel.GetComponent<Image>();
+            Material mat = img.material;
+            mat.SetFloat("_IsTaken", 1);
+            RandomAugmentPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Augment is Ready";
+            RandomAugmentButton.SetActive(false);
+            IsRandomAugmentTaken = true;
             UpdateGoldUI();
         }
     }
