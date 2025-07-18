@@ -490,7 +490,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9063779}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bricks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -588,7 +588,7 @@ GameObject:
   - component: {fileID: 13266699}
   - component: {fileID: 13266698}
   - component: {fileID: 13266700}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (28)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -750,7 +750,7 @@ GameObject:
   - component: {fileID: 22646473}
   - component: {fileID: 22646472}
   - component: {fileID: 22646474}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (6)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -1082,7 +1082,7 @@ GameObject:
   - component: {fileID: 29953097}
   - component: {fileID: 29953096}
   - component: {fileID: 29953098}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (26)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -1380,7 +1380,7 @@ GameObject:
   - component: {fileID: 34854846}
   - component: {fileID: 34854845}
   - component: {fileID: 34854847}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (59)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -1542,7 +1542,7 @@ GameObject:
   - component: {fileID: 38475660}
   - component: {fileID: 38475659}
   - component: {fileID: 38475661}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (53)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -1779,7 +1779,7 @@ GameObject:
   - component: {fileID: 46413590}
   - component: {fileID: 46413589}
   - component: {fileID: 46413591}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (30)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -1941,7 +1941,7 @@ GameObject:
   - component: {fileID: 47144699}
   - component: {fileID: 47144698}
   - component: {fileID: 47144700}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (40)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -2465,7 +2465,7 @@ GameObject:
   - component: {fileID: 62346497}
   - component: {fileID: 62346496}
   - component: {fileID: 62346498}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (58)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -2706,7 +2706,7 @@ GameObject:
   - component: {fileID: 70539731}
   - component: {fileID: 70539730}
   - component: {fileID: 70539732}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (11)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -3286,7 +3286,7 @@ GameObject:
   - component: {fileID: 110036996}
   - component: {fileID: 110036995}
   - component: {fileID: 110036997}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (46)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -3753,7 +3753,7 @@ GameObject:
   - component: {fileID: 121487173}
   - component: {fileID: 121487172}
   - component: {fileID: 121487174}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (34)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -4126,7 +4126,7 @@ GameObject:
   - component: {fileID: 129998111}
   - component: {fileID: 129998110}
   - component: {fileID: 129998112}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (9)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -4414,7 +4414,7 @@ GameObject:
   - component: {fileID: 182002164}
   - component: {fileID: 182002163}
   - component: {fileID: 182002165}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (42)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -4576,7 +4576,7 @@ GameObject:
   - component: {fileID: 192952099}
   - component: {fileID: 192952098}
   - component: {fileID: 192952100}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (51)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -5036,7 +5036,7 @@ GameObject:
   - component: {fileID: 241027613}
   - component: {fileID: 241027612}
   - component: {fileID: 241027614}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (49)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -5322,6 +5322,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242242878}
   m_CullTransparentMesh: 1
+--- !u!1 &247457464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 247457466}
+  - component: {fileID: 247457465}
+  m_Layer: 14
+  m_Name: Global Volume (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &247457465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247457464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 1
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: ca5e137a768a28649be39857cef27d2a, type: 2}
+--- !u!4 &247457466
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247457464}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.020495, y: 1.9736562, z: 6.631833}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &249269552
 GameObject:
   m_ObjectHideFlags: 0
@@ -6051,7 +6100,7 @@ GameObject:
   - component: {fileID: 293216429}
   - component: {fileID: 293216428}
   - component: {fileID: 293216430}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (7)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -6213,6 +6262,7 @@ GameObject:
   - component: {fileID: 299397776}
   - component: {fileID: 299397775}
   - component: {fileID: 299397778}
+  - component: {fileID: 299397779}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6314,7 +6364,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 16375
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
@@ -6338,6 +6388,26 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &299397779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299397774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 893ff11cc0e220042832c9cc3ba187c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderMode: 0
+  kernelSize: 0
+  interpolation: 1
+  downsample: 1
+  iterations: 1
+  gammaCorrection: 1
+  blurMaterial: {fileID: 2100000, guid: a314f2e218740a247b98360461873aa1, type: 2}
+  UIMaterial: {fileID: 2100000, guid: cc6f9e43678b9f246afadac09de5c5c8, type: 2}
 --- !u!1 &303096688
 GameObject:
   m_ObjectHideFlags: 0
@@ -7213,81 +7283,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1 &332122158
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 332122159}
-  - component: {fileID: 332122161}
-  - component: {fileID: 332122160}
-  m_Layer: 5
-  m_Name: SubBackground
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &332122159
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332122158}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10133.334}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1018477872}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &332122160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332122158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.17610055, g: 0.17610055, b: 0.17610055, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &332122161
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332122158}
-  m_CullTransparentMesh: 1
 --- !u!1 &348697141
 GameObject:
   m_ObjectHideFlags: 0
@@ -7675,7 +7670,7 @@ GameObject:
   - component: {fileID: 399211795}
   - component: {fileID: 399211794}
   - component: {fileID: 399211796}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (37)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -8911,7 +8906,7 @@ GameObject:
   - component: {fileID: 509991328}
   - component: {fileID: 509991327}
   - component: {fileID: 509991329}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (12)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -9340,7 +9335,7 @@ GameObject:
   - component: {fileID: 544126959}
   - component: {fileID: 544126958}
   - component: {fileID: 544126960}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (52)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -9609,7 +9604,7 @@ GameObject:
   - component: {fileID: 580307883}
   - component: {fileID: 580307882}
   - component: {fileID: 580307884}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (27)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -10340,9 +10335,9 @@ RectTransform:
   - {fileID: 2056458823}
   m_Father: {fileID: 320653767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 2160, y: -1245}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1440, y: 2490}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &638222221
@@ -10801,7 +10796,7 @@ GameObject:
   - component: {fileID: 665126740}
   - component: {fileID: 665126739}
   - component: {fileID: 665126741}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (1)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -10999,7 +10994,7 @@ GameObject:
   - component: {fileID: 678879290}
   - component: {fileID: 678879289}
   - component: {fileID: 678879291}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (20)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -11181,9 +11176,9 @@ RectTransform:
   - {fileID: 1351016728}
   m_Father: {fileID: 320653767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5040, y: -1245}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1440, y: 2490}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &707999118
@@ -11273,7 +11268,7 @@ GameObject:
   - component: {fileID: 713253450}
   - component: {fileID: 713253449}
   - component: {fileID: 713253451}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -11571,7 +11566,7 @@ GameObject:
   - component: {fileID: 719709447}
   - component: {fileID: 719709446}
   - component: {fileID: 719709448}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (24)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -12312,7 +12307,7 @@ GameObject:
   - component: {fileID: 767491396}
   - component: {fileID: 767491395}
   - component: {fileID: 767491397}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (21)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -12895,7 +12890,7 @@ GameObject:
   - component: {fileID: 792907160}
   - component: {fileID: 792907159}
   - component: {fileID: 792907161}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (17)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -13243,7 +13238,7 @@ GameObject:
   - component: {fileID: 808118037}
   - component: {fileID: 808118036}
   - component: {fileID: 808118038}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (16)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -13405,7 +13400,7 @@ GameObject:
   - component: {fileID: 823602503}
   - component: {fileID: 823602502}
   - component: {fileID: 823602504}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (39)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -15072,7 +15067,7 @@ GameObject:
   - component: {fileID: 925242698}
   - component: {fileID: 925242697}
   - component: {fileID: 925242699}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (8)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -15313,143 +15308,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &927412491
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 927412495}
-  - component: {fileID: 927412494}
-  - component: {fileID: 927412493}
-  - component: {fileID: 927412492}
-  m_Layer: 0
-  m_Name: BlurCamera
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &927412492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 927412491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
-  m_Cameras: []
-  m_RendererIndex: -1
-  m_VolumeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_VolumeTrigger: {fileID: 0}
-  m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
-  m_Antialiasing: 0
-  m_AntialiasingQuality: 2
-  m_StopNaN: 0
-  m_Dithering: 0
-  m_ClearDepth: 1
-  m_AllowXRRendering: 1
-  m_AllowHDROutput: 1
-  m_UseScreenCoordOverride: 0
-  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  m_RequiresDepthTexture: 0
-  m_RequiresColorTexture: 0
-  m_Version: 2
-  m_TaaSettings:
-    m_Quality: 3
-    m_FrameInfluence: 0.1
-    m_JitterScale: 1
-    m_MipBias: 0
-    m_VarianceClampScale: 0.9
-    m_ContrastAdaptiveSharpening: 0
---- !u!81 &927412493
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 927412491}
-  m_Enabled: 1
---- !u!20 &927412494
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 927412491}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 4
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 1
-  orthographic size: 5
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: f07182c5b8410c74cabd70cde0ddab8c, type: 2}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!4 &927412495
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 927412491}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &960021679
 GameObject:
   m_ObjectHideFlags: 0
@@ -15731,7 +15589,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 965092553}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Balls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15931,16 +15789,17 @@ RectTransform:
   m_LocalScale: {x: 1.00016, y: 1.00016, z: 1.00016}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1917655299}
+  - {fileID: 1212061431}
   - {fileID: 197032874}
   - {fileID: 1299881717}
   - {fileID: 836694872}
   - {fileID: 865630805}
-  - {fileID: 1212061431}
   m_Father: {fileID: 320653767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 3600, y: -1245}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1440, y: 2490}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1006869181
@@ -16159,118 +16018,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007119838}
   m_CullTransparentMesh: 1
---- !u!1 &1018477867
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1018477872}
-  - component: {fileID: 1018477871}
-  - component: {fileID: 1018477870}
-  - component: {fileID: 1018477869}
-  - component: {fileID: 1018477868}
-  m_Layer: 5
-  m_Name: BackgroundCanvas (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!222 &1018477868
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018477867}
-  m_CullTransparentMesh: 1
---- !u!114 &1018477869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018477867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!114 &1018477870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018477867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
---- !u!223 &1018477871
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018477867}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 1
-  m_Camera: {fileID: 1212061438}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: -2
-  m_TargetDisplay: 0
---- !u!224 &1018477872
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018477867}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 332122159}
-  - {fileID: 1566439676}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
 --- !u!1 &1036065501
 GameObject:
   m_ObjectHideFlags: 0
@@ -16283,7 +16030,7 @@ GameObject:
   - component: {fileID: 1036065504}
   - component: {fileID: 1036065503}
   - component: {fileID: 1036065505}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (3)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -16445,7 +16192,7 @@ GameObject:
   - component: {fileID: 1044029566}
   - component: {fileID: 1044029565}
   - component: {fileID: 1044029567}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (23)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -16818,7 +16565,7 @@ GameObject:
   - component: {fileID: 1074262061}
   - component: {fileID: 1074262060}
   - component: {fileID: 1074262062}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (14)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -17598,7 +17345,7 @@ GameObject:
   - component: {fileID: 1102446865}
   - component: {fileID: 1102446867}
   - component: {fileID: 1102446866}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17808,7 +17555,7 @@ GameObject:
   - component: {fileID: 1134867517}
   - component: {fileID: 1134867516}
   - component: {fileID: 1134867518}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (19)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -18457,11 +18204,7 @@ GameObject:
   - component: {fileID: 1212061432}
   - component: {fileID: 1212061433}
   - component: {fileID: 1212061435}
-  - component: {fileID: 1212061434}
-  - component: {fileID: 1212061438}
-  - component: {fileID: 1212061437}
-  - component: {fileID: 1212061436}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BackGroundGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18488,7 +18231,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1242.3013}
+  m_AnchoredPosition: {x: 0, y: -1242.2642}
   m_SizeDelta: {x: 4.76, y: 8.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1212061432
@@ -18525,36 +18268,6 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 965092553}
     _nonLazy: 0
---- !u!114 &1212061434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212061430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: a314f2e218740a247b98360461873aa1, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1212061435
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18563,121 +18276,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212061430}
   m_CullTransparentMesh: 1
---- !u!114 &1212061436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212061430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
-  m_Cameras: []
-  m_RendererIndex: -1
-  m_VolumeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_VolumeTrigger: {fileID: 0}
-  m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
-  m_AntialiasingQuality: 2
-  m_StopNaN: 0
-  m_Dithering: 0
-  m_ClearDepth: 1
-  m_AllowXRRendering: 1
-  m_AllowHDROutput: 1
-  m_UseScreenCoordOverride: 0
-  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  m_RequiresDepthTexture: 0
-  m_RequiresColorTexture: 0
-  m_Version: 2
-  m_TaaSettings:
-    m_Quality: 3
-    m_FrameInfluence: 0.1
-    m_JitterScale: 1
-    m_MipBias: 0
-    m_VarianceClampScale: 0.9
-    m_ContrastAdaptiveSharpening: 0
---- !u!114 &1212061437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212061430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 893ff11cc0e220042832c9cc3ba187c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  renderMode: 0
-  kernelSize: 2
-  interpolation: 1
-  downsample: 4
-  iterations: 8
-  gammaCorrection: 1
-  blurMaterial: {fileID: 2100000, guid: a314f2e218740a247b98360461873aa1, type: 2}
-  UIMaterial: {fileID: 2100000, guid: cc6f9e43678b9f246afadac09de5c5c8, type: 2}
---- !u!20 &1212061438
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212061430}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 6.4
-  orthographic: 1
-  orthographic size: 5
-  m_Depth: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
 --- !u!1 &1225553887
 GameObject:
   m_ObjectHideFlags: 0
@@ -18906,7 +18504,7 @@ GameObject:
   - component: {fileID: 1246893157}
   - component: {fileID: 1246893156}
   - component: {fileID: 1246893158}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (57)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -19068,7 +18666,7 @@ GameObject:
   - component: {fileID: 1263690059}
   - component: {fileID: 1263690058}
   - component: {fileID: 1263690060}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (33)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -19252,9 +18850,9 @@ RectTransform:
   - {fileID: 1301588626}
   m_Father: {fileID: 320653767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 6480, y: -1245}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1440, y: 2490}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1287326795
@@ -20739,7 +20337,7 @@ GameObject:
   - component: {fileID: 1374341257}
   - component: {fileID: 1374341256}
   - component: {fileID: 1374341258}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (47)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -21554,7 +21152,7 @@ GameObject:
   - component: {fileID: 1425045589}
   - component: {fileID: 1425045588}
   - component: {fileID: 1425045590}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (50)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -22007,7 +21605,7 @@ GameObject:
   - component: {fileID: 1447657548}
   - component: {fileID: 1447657547}
   - component: {fileID: 1447657549}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (15)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -22305,7 +21903,7 @@ GameObject:
   - component: {fileID: 1482750438}
   - component: {fileID: 1482750437}
   - component: {fileID: 1482750439}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (54)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -22671,7 +22269,7 @@ GameObject:
   - component: {fileID: 1514425893}
   - component: {fileID: 1514425892}
   - component: {fileID: 1514425894}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (29)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -23154,7 +22752,7 @@ GameObject:
   - component: {fileID: 1541004781}
   - component: {fileID: 1541004780}
   - component: {fileID: 1541004782}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (48)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -23304,6 +22902,164 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &1543948435
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1543948440}
+  - component: {fileID: 1543948439}
+  - component: {fileID: 1543948438}
+  - component: {fileID: 1543948437}
+  - component: {fileID: 1543948436}
+  m_Layer: 0
+  m_Name: Main Camera (1)
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1543948436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543948435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 893ff11cc0e220042832c9cc3ba187c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderMode: 0
+  kernelSize: 0
+  interpolation: 1
+  downsample: 1
+  iterations: 1
+  gammaCorrection: 1
+  blurMaterial: {fileID: 2100000, guid: a314f2e218740a247b98360461873aa1, type: 2}
+  UIMaterial: {fileID: 2100000, guid: cc6f9e43678b9f246afadac09de5c5c8, type: 2}
+--- !u!114 &1543948437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543948435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+--- !u!81 &1543948438
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543948435}
+  m_Enabled: 1
+--- !u!20 &1543948439
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543948435}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 1
+  orthographic size: 5
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 8400000, guid: 0f1b3f5da3e740041b8d49eeb5a3b663, type: 2}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &1543948440
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543948435}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1544048702
 GameObject:
   m_ObjectHideFlags: 0
@@ -23647,96 +23403,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565011476}
-  m_CullTransparentMesh: 1
---- !u!1 &1566439675
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1566439676}
-  - component: {fileID: 1566439679}
-  - component: {fileID: 1566439678}
-  - component: {fileID: 1566439677}
-  m_Layer: 5
-  m_Name: MainBackground
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1566439676
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566439675}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10133.334}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1018477872}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1566439677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566439675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 0.4733333
---- !u!114 &1566439678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566439675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.08496499, g: 0.09237219, b: 0.1509434, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1566439679
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566439675}
   m_CullTransparentMesh: 1
 --- !u!1 &1607477669
 GameObject:
@@ -24220,7 +23886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IsGlobal: 1
-  priority: 0
+  priority: 1
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 298d1f0c893ec8a43ada42ea29f2b392, type: 2}
@@ -24599,7 +24265,7 @@ GameObject:
   - component: {fileID: 1640579459}
   - component: {fileID: 1640579458}
   - component: {fileID: 1640579460}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (55)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -25855,7 +25521,7 @@ GameObject:
   - component: {fileID: 1726091219}
   - component: {fileID: 1726091218}
   - component: {fileID: 1726091220}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (45)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -26431,7 +26097,7 @@ GameObject:
   - component: {fileID: 1736356906}
   - component: {fileID: 1736356905}
   - component: {fileID: 1736356907}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (35)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -27031,7 +26697,7 @@ GameObject:
   - component: {fileID: 1760117478}
   - component: {fileID: 1760117477}
   - component: {fileID: 1760117479}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (31)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -28134,7 +27800,7 @@ GameObject:
   - component: {fileID: 1831122544}
   - component: {fileID: 1831122546}
   - component: {fileID: 1831122545}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28576,7 +28242,7 @@ GameObject:
   - component: {fileID: 1863047570}
   - component: {fileID: 1863047569}
   - component: {fileID: 1863047571}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (36)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -28874,7 +28540,7 @@ GameObject:
   - component: {fileID: 1881377824}
   - component: {fileID: 1881377823}
   - component: {fileID: 1881377825}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (2)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -29137,9 +28803,9 @@ RectTransform:
   - {fileID: 82792324}
   m_Father: {fileID: 320653767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 720, y: -1245}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1440, y: 2490}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1906186924
@@ -29491,6 +29157,78 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1913132158}
   m_CullTransparentMesh: 1
+--- !u!1 &1917655298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1917655299}
+  - component: {fileID: 1917655301}
+  - component: {fileID: 1917655300}
+  m_Layer: 5
+  m_Name: RawImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1917655299
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917655298}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 995962593}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -1245}
+  m_SizeDelta: {x: 1440, y: 2490}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1917655300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917655298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 8400000, guid: 0f1b3f5da3e740041b8d49eeb5a3b663, type: 2}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &1917655301
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917655298}
+  m_CullTransparentMesh: 1
 --- !u!1 &1921139774
 GameObject:
   m_ObjectHideFlags: 0
@@ -29503,7 +29241,7 @@ GameObject:
   - component: {fileID: 1921139777}
   - component: {fileID: 1921139776}
   - component: {fileID: 1921139778}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (38)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -29949,7 +29687,7 @@ GameObject:
   - component: {fileID: 1942071406}
   - component: {fileID: 1942071405}
   - component: {fileID: 1942071407}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (44)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -30111,7 +29849,7 @@ GameObject:
   - component: {fileID: 1961418864}
   - component: {fileID: 1961418863}
   - component: {fileID: 1961418865}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (43)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -30273,7 +30011,7 @@ GameObject:
   - component: {fileID: 1967940235}
   - component: {fileID: 1967940234}
   - component: {fileID: 1967940236}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (18)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -30661,7 +30399,7 @@ GameObject:
   - component: {fileID: 2002268361}
   - component: {fileID: 2002268360}
   - component: {fileID: 2002268362}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (22)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -31156,7 +30894,7 @@ GameObject:
   - component: {fileID: 2030335750}
   - component: {fileID: 2030335749}
   - component: {fileID: 2030335751}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (25)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -31318,7 +31056,7 @@ GameObject:
   - component: {fileID: 2031137757}
   - component: {fileID: 2031137756}
   - component: {fileID: 2031137758}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (13)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -31766,7 +31504,7 @@ GameObject:
   - component: {fileID: 2049183247}
   - component: {fileID: 2049183246}
   - component: {fileID: 2049183248}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (32)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -32066,7 +31804,7 @@ GameObject:
   - component: {fileID: 2054530191}
   - component: {fileID: 2054530190}
   - component: {fileID: 2054530192}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (5)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -32560,7 +32298,7 @@ GameObject:
   - component: {fileID: 2077065183}
   - component: {fileID: 2077065182}
   - component: {fileID: 2077065184}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (10)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -32797,7 +32535,7 @@ GameObject:
   - component: {fileID: 2092114936}
   - component: {fileID: 2092114935}
   - component: {fileID: 2092114937}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (41)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -33038,7 +32776,7 @@ GameObject:
   - component: {fileID: 2105412267}
   - component: {fileID: 2105412266}
   - component: {fileID: 2105412268}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (4)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -33200,7 +32938,7 @@ GameObject:
   - component: {fileID: 2113666958}
   - component: {fileID: 2113666957}
   - component: {fileID: 2113666959}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Brick (56)
   m_TagString: Brick
   m_Icon: {fileID: 0}
@@ -34038,11 +33776,11 @@ SceneRoots:
   - {fileID: 1155424524}
   - {fileID: 547938875}
   - {fileID: 299397777}
-  - {fileID: 927412495}
+  - {fileID: 1543948440}
   - {fileID: 2055792776}
   - {fileID: 1636142170}
   - {fileID: 827528586}
-  - {fileID: 1018477872}
   - {fileID: 1630562063}
   - {fileID: 305808724}
   - {fileID: 902232214}
+  - {fileID: 247457466}
