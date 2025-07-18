@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8444083972494180989}
   - component: {fileID: -2231093413387828345}
   - component: {fileID: 4505491017306167288}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Ball
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 1157475124098437019}
   - component: {fileID: 6598040097742510224}
   - component: {fileID: 6832919151671175762}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DetectArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 5509094702745881992}
   - component: {fileID: 3509347304175653776}
   - component: {fileID: 291838562286687295}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Flamethrower
   m_TagString: Flamethrower
   m_Icon: {fileID: 0}

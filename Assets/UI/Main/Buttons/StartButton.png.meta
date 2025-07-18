@@ -142,9 +142,9 @@ TextureImporter:
       name: StartButton_0
       rect:
         serializedVersion: 2
-        x: 19
+        x: 20
         y: 40
-        width: 187
+        width: 185
         height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 4127814c7acee10489629f04ecbfb1c8
+    spriteID: 7ecd1c15657ccbb48a9b704c4505b7a9
     internalID: 0
     vertices: []
     indices: 
