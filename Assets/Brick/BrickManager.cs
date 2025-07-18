@@ -6,6 +6,8 @@ using System.Collections;
 using System.Linq;
 using System.Drawing;
 using NUnit.Framework;
+using UnityEngine.UI;
+using TMPro;
 public class BrickManager : MonoBehaviour
 {
     public List<float> HPPool;
@@ -51,6 +53,11 @@ public class BrickManager : MonoBehaviour
     public int BaseBossSpawnValue;
     public int NextBossSpawnWave;
     public int BossSpawnWaveNumber;
+    public bool isBossSpawned;
+    private Coroutine GameOverTimerRoutine;
+
+    public float GameOverTimer;
+    private Slider GameOverTimerSlider;
 
     private bool WavePause;
     public Coroutine WaveRoutine;
@@ -58,27 +65,29 @@ public class BrickManager : MonoBehaviour
     enum BrickType
     {
         Brick,
-        HardBrick,
         HealBrick,
+        HardBrick,
         SlimeBrick,
         ShieldBrick,
         TeleportBrick,
         IgnoreBrick,
         AbsorbBrick,
         TwinBrick,
+        RebornBrick,
     }
 
     public List<float> BrickExpValue = new List<float>
     {
         10f,
-        20f,
         12.5f,
+        20f,
         10f,
         20f,
         15f,
         20f,
         20f,
         20f,
+        13.5f,
     };
 
     void Awake()
@@ -88,6 +97,8 @@ public class BrickManager : MonoBehaviour
         ScreenHeight = Screen.height;
         InitializeGrid();
         InitializeVariables();
+        GameOverTimerSlider = GameObject.Find("Canvas").transform.Find("GameOverTimer").GetComponent<Slider>();
+        GameOverTimerSlider.gameObject.SetActive(false);
         SpawnBrickQueue = new Queue<Queue<IBrick>>();
         BrickQueue = new Queue<IBrick>();
         PoolManager = GetComponent<PoolManager>();
@@ -112,7 +123,10 @@ public class BrickManager : MonoBehaviour
         BaseBossSpawnValue = 1;
         NextBossSpawnWave = 10;
         BossSpawnWaveNumber = 10;
+        isBossSpawned = false;
+        GameOverTimerRoutine = null;
 
+        GameOverTimer = 60.0f;
         WavePause = false;
     }
 
@@ -162,6 +176,10 @@ public class BrickManager : MonoBehaviour
         if (brick.IsBoss)
         {
             WavePause = false;
+            isBossSpawned = false;
+            if (GameOverTimerRoutine != null)
+                StopCoroutine(GameOverTimerRoutine);
+            GameOverTimer = 60.0f;
 
             if (AugmentManager.instance.determineAugment(typeof(DoubleBoss)))
             {
@@ -172,9 +190,18 @@ public class BrickManager : MonoBehaviour
                         BossSpawned -= 1;
                 }
                 if (BossSpawned == 1) // currentbrick does not updated yet
+                {
                     WavePause = false;
+                    isBossSpawned = false;
+                    if (GameOverTimerRoutine != null)
+                        StopCoroutine(GameOverTimerRoutine);
+                    GameOverTimer = 60.0f;
+                }
                 else
+                {
                     WavePause = true;
+                    isBossSpawned = true;
+                }
             }
         }
         SoundManager.instance.BrickDieSound(brick.BrickType);
@@ -426,21 +453,23 @@ public class BrickManager : MonoBehaviour
     {
         int Wave = GameManager.instance.Wave;
         if (Wave < 11)
-            return (int)BrickType.Brick;
+            return UnityEngine.Random.value > 0.5 ? (int)BrickType.Brick : (int)BrickType.HealBrick;
         else if (Wave < 21)
-            return (int)BrickType.HealBrick;
-        else if (Wave < 31)
-            return (int)BrickType.ShieldBrick;
-        else if (Wave < 41)
-            return (int)BrickType.SlimeBrick;
-        else if (Wave < 51)
             return (int)BrickType.HardBrick;
+        else if (Wave < 31)
+            return (int)BrickType.SlimeBrick;
+        else if (Wave < 41)
+            return (int)BrickType.RebornBrick;
+        else if (Wave < 51)
+            return (int)BrickType.ShieldBrick;
         else if (Wave < 61)
             return (int)BrickType.TeleportBrick;
         else if (Wave < 71)
-            return (int)BrickType.TwinBrick;
+            return (int)BrickType.IgnoreBrick;
         else if (Wave < 81)
             return (int)BrickType.AbsorbBrick;
+        else if (Wave < 91)
+            return (int)BrickType.TwinBrick;
         else
             return UnityEngine.Random.Range(0, BrickInfo.Bricks.Length);
     }
@@ -465,6 +494,8 @@ public class BrickManager : MonoBehaviour
             return 5;
         else if (brickType == "AbsorbBrick")
             return 5;
+        else if (brickType == "RebornBrick")
+            return 2;
         else
             return 1;
     }
@@ -498,6 +529,9 @@ public class BrickManager : MonoBehaviour
         else if (brickType == "AbsorbBrick")
             return BrickExpValue[(int)BrickType.AbsorbBrick];
 
+        else if (brickType == "RebornBrick")
+            return BrickExpValue[(int)BrickType.RebornBrick];
+
         else
             return BrickExpValue[(int)BrickType.Brick];
     }
@@ -528,12 +562,12 @@ public class BrickManager : MonoBehaviour
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
                 }
-                else if (Wave < 21 && i == (int)BrickType.HealBrick)
+                else if (Wave < 21 && i == (int)BrickType.SlimeBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
                 }
-                else if (Wave < 31 && i == (int)BrickType.SlimeBrick)
+                else if (Wave < 31 && i == (int)BrickType.RebornBrick)
                 {
                     remain += BrickInfo.BrickSpawnChance[i];
                     BrickInfo.BrickSpawnChance[i] = 0;
@@ -572,7 +606,8 @@ public class BrickManager : MonoBehaviour
         }
         if (remain > 0f)
         {
-            BrickInfo.BrickSpawnChance[0] += remain;
+            BrickInfo.BrickSpawnChance[(int)BrickType.Brick] += remain / 2;
+            BrickInfo.BrickSpawnChance[(int)BrickType.HealBrick] += remain / 2;
         }
     }
     public IBrick SettingBrick()
@@ -693,6 +728,11 @@ public class BrickManager : MonoBehaviour
         if (Brick.IsBoss)
         {
             WavePause = true;
+            isBossSpawned = true;
+            if(GameOverTimerRoutine == null)
+            {
+                GameOverTimerRoutine = StartCoroutine(CalAfterBossTime());
+            }
             if (AugmentManager.instance.determineAugment(typeof(DoubleBoss)))
             {
                 int BossSpawned = 1;
@@ -702,9 +742,22 @@ public class BrickManager : MonoBehaviour
                         BossSpawned += 1;
                 }
                 if (BossSpawned == 2)
+                {
                     WavePause = true;
+                    isBossSpawned = true;
+                    if (GameOverTimerRoutine == null)
+                    {
+                        GameOverTimerRoutine = StartCoroutine(CalAfterBossTime());
+                    }
+                }
                 else
+                {
                     WavePause = false;
+                    isBossSpawned = false;
+                    if (GameOverTimerRoutine != null)
+                        StopCoroutine(GameOverTimerRoutine);
+                    GameOverTimer = 60.0f;
+                }   
             }
         }
 
@@ -829,6 +882,23 @@ public class BrickManager : MonoBehaviour
                 brick = CurrentBricks[UnityEngine.Random.Range(0, CurrentBricks.Count)];
             }
         return brick;
+    }
+
+    IEnumerator CalAfterBossTime()
+    {
+        TMP_Text GameOverTimerText = GameOverTimerSlider.gameObject.GetComponentsInChildren<TMP_Text>()[0];
+        GameOverTimerSlider.gameObject.SetActive(true);
+        while (isBossSpawned && GameOverTimer > 0)
+        {
+            GameOverTimerSlider.value = GameOverTimer;
+            GameOverTimerText.text = GameOverTimer.ToString("F1");
+            GameOverTimer -= 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+        if(GameOverTimer <= 0)
+        {
+            GameManager.instance.GameEnd();
+        }
     }
 
     //Test Button Functions

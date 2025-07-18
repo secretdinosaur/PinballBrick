@@ -166,7 +166,7 @@ public class LeaderboardManager : MonoBehaviour
         });
     }
 
-    public void RecordScore(long Score)
+    public void RecordScore(long Score, System.Action<bool> callback)
     {
         PlayGamesPlatform.Instance.ReportScore(Score, GPGSIds.leaderboard_point, (bool success) => {
 
@@ -176,6 +176,17 @@ public class LeaderboardManager : MonoBehaviour
                 if (PlayerPrefs.GetInt("HighScore") < ScoreManager.Instance.TotalScore)
                 {
                     PlayerPrefs.SetInt("HighScore", ScoreManager.Instance.TotalScore);
+                    if (callback != null)
+                    {
+                        callback.Invoke(true);
+                    }
+                }
+                else
+                {
+                    if (callback != null)
+                    {
+                        callback.Invoke(false);
+                    }
                 }
             }
             else
@@ -183,12 +194,27 @@ public class LeaderboardManager : MonoBehaviour
                 if (!PlayerPrefs.HasKey("HighScore"))
                 {
                     PlayerPrefs.SetInt("HighScore", ScoreManager.Instance.TotalScore);
+                    if (callback != null)
+                    {
+                        callback.Invoke(true);
+                    }
                     return;
                 }
                 if (PlayerPrefs.GetInt("HighScore") < ScoreManager.Instance.TotalScore)
                 {
                     Debug.Log("HighScore!\nSave score fail. Save score to local");
                     PlayerPrefs.SetInt("HighScore", ScoreManager.Instance.TotalScore);
+                    if (callback != null)
+                    {
+                        callback.Invoke(true);
+                    }
+                }
+                else
+                {
+                    if (callback != null)
+                    {
+                        callback.Invoke(false);
+                    }
                 }
             }
         });
@@ -197,5 +223,11 @@ public class LeaderboardManager : MonoBehaviour
     public void OpenGoogleLeaderboard()
     {
         PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_point);
+    }
+
+    public void InitializingRecord()
+    {
+        PlayerPrefs.SetInt("HighScore", 0);
+        LoadMyRank();
     }
 }

@@ -28,6 +28,7 @@ public class BallManager : MonoBehaviour
     public static float linearVelocityYValue = 10;
 
     public int LeftBallCount;
+
     void Awake()
     {
         Instance = this;
@@ -38,7 +39,39 @@ public class BallManager : MonoBehaviour
         camera = Camera.main;
 
         LeftBallCount = 0;
+        StartCoroutine(CalInGameBallCount());
+    }
 
+    IEnumerator CalInGameBallCount()
+    {
+        float Timer = 3;
+        yield return new WaitForSeconds(5f);
+        while (true)
+        {
+            yield return new WaitUntil(() => InGameBall.Count == 0 && InGameSpecialBall.Count == 0);
+            while(InGameBall.Count == 0 && InGameSpecialBall.Count == 0 && Timer > 0)
+            {
+                Timer -= 0.1f;
+                yield return new WaitForSeconds(0.1f);
+            }
+            if(Timer <= 0)
+            {
+                break;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+        GameManager.instance.GameEnd();
+    }
+
+    private void Update()
+    {
+        if(InGameBall.Count == 0 && InGameSpecialBall.Count == 0)
+        {
+
+        }
     }
 
     public IEnumerator CreateStartingBall()

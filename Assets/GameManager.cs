@@ -1,11 +1,13 @@
+using DG.Tweening;
+using GoogleMobileAds.Api;
+using GooglePlayGames;
 using System.Collections;
 using System.Xml;
 using TMPro;
 using UnityEngine;
-using DG.Tweening;
-using static UnityEngine.Rendering.DebugUI;
 using UnityEngine.SceneManagement;
-using GooglePlayGames;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +23,6 @@ public class GameManager : MonoBehaviour
     TMP_Text CriticalDamageStatValueText;
     TMP_Text CriticalChanceStatValueText;
     TMP_Text EffectDamageStatValueText;
-    TMP_Text EffectCriticalDamageStatValueText;
     TMP_Text EffectDurationStatValueText;
     TMP_Text GoldGainStatValueText;
     TMP_Text ExpGainStatValueText;
@@ -36,11 +37,15 @@ public class GameManager : MonoBehaviour
     TMP_Text NoticePointText_End;
     TMP_Text NoticeWaveText_End;
     TMP_Text NoticeDestroyedBricksText_End;
+    TMP_Text NoticeNewRecordText;
 
     Sequence GameEndSequence;
 
     public TMP_Text WaveNoticeText;
     public TMP_Text WaveExtraNoticeText;
+
+    private string adUnitId;
+    private InterstitialAd _interstitialAd;
 
     private int wave;
     public int Wave
@@ -97,6 +102,8 @@ public class GameManager : MonoBehaviour
         NoticePointText_End = GameEndPanel.transform.Find("Point").GetComponent<TMP_Text>();
         NoticeWaveText_End = GameEndPanel.transform.Find("Wave").GetComponent<TMP_Text>();
         NoticeDestroyedBricksText_End = GameEndPanel.transform.Find("DestroyedBricks").GetComponent<TMP_Text>();
+        NoticeNewRecordText = NoticePointText_End.gameObject.transform.Find("NewRecord").GetComponent<TMP_Text>();
+        NoticeNewRecordText.gameObject.SetActive(false);
 
         WaveNoticeText = GameObject.Find("Canvas").transform.Find("WaveNoticeText").GetComponent<TMP_Text>();
         WaveExtraNoticeText = GameObject.Find("Canvas").transform.Find("WaveExtraNoticeText").GetComponent<TMP_Text>();
@@ -105,7 +112,9 @@ public class GameManager : MonoBehaviour
 
         RecordStatistics = new StatisticsSet();
 
-        UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false; //DebugCanvas Off
+        adUnitId = "ca-app-pub-3940256099942544/1033173712";
+        _interstitialAd = null;
+        LoadAds();
 
         StartCoroutine(StartGame());
     }
@@ -185,7 +194,7 @@ public class GameManager : MonoBehaviour
     public void GameExit()
     {
         SoundManager.instance.SaveVolume();
-
+        Fever.Instance.FeverOff();
         isGameEnded = true;
         GameEnd();
     }
@@ -235,13 +244,14 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1f;
     }
 
-    int displayedDestroyedBricksValue = 0;
-    int displayedPointValue = 0;
+    private float[] stepTimes = new float[] { 0f, 3f, 4.5f, 6f, 7.5f, 9f };
+    private int currentStep = 0;
+
     public void GameEnd()
     {
         RecordStatistics.Playtime += TimeManager.instance.time;
-
-        LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore);
+        bool isHighscore = false;
+        LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore, (x) => isHighscore = x);
         StatManager.instance.SavePersistentStats(); //for save gold
         AchievementManager.instance.AchievementCheck(RecordStatistics);
         StatManager.instance.UpdateStatistics(RecordStatistics);
@@ -266,21 +276,31 @@ public class GameManager : MonoBehaviour
         NoticeDestroyedBricksText_End.text = "Destroyed Bricks : ";
         NoticePointText_End.text = "Total Point : ";
 
-        GameEndSequence = DOTween.Sequence().SetUpdate(true); ;
+        GameEndSequence = DOTween.Sequence().SetUpdate(true);
+        Image panelImage = GameEndPanel.GetComponent<Image>();
+        Color panelColor = panelImage.color;
 
         GameEndSequence.Append(
+            DOVirtual.Float(0, 225f / 255f, 3f, value =>
+            {
+                Color newColor = panelColor;
+                newColor.a = value;
+                panelImage.color = newColor;
+            })
+        ).Insert(
+            3f,
             DOVirtual.Float(0, LevelManager.Instance.Level, 1f, value =>
             {
                 NoticeLevelText_End.text = "Level  " + Mathf.RoundToInt(value).ToString();
             })
         ).Insert(
-            1.5f,
+            4.5f,
             DOVirtual.Float(0, Wave, 1f, value =>
             {
                 NoticeWaveText_End.text = "Wave : " + Mathf.RoundToInt(value).ToString();
             })
         ).Insert(
-            3f,
+            6f,
             DOVirtual.Float(0, TimeManager.instance.time, 1f, value =>
             {
                 int totalSeconds = Mathf.RoundToInt(value);
@@ -298,28 +318,97 @@ public class GameManager : MonoBehaviour
                     NoticePlaytimeText_End.text = $"Playtime : {minutes:D2}:{seconds:D2}";
             })
         ).Insert(
-            4.5f,
+            7.5f,
             DOVirtual.Float(0, RecordStatistics.DestroyedBricks, 1f, value =>
             {
                 NoticeDestroyedBricksText_End.text = "Destroyed Bricks : " + Mathf.RoundToInt(value).ToString();
             })
         ).Insert(
-            6f,
+            9f,
             DOVirtual.Float(0, ScoreManager.Instance.TotalScore, 1f, value =>
             {
                 NoticePointText_End.text = "Total Point : " + Mathf.RoundToInt(value).ToString();
             })
         );
+        GameEndSequence.AppendCallback(() =>
+        {
+            if (isHighscore)
+            {
+                NoticeNewRecordText.gameObject.SetActive(true);
+            }
+        });
+        GameEndSequence.Pause();
+        GameEndSequence.Goto(0, true);
     }
+
+    public void OnSkipGameEnd()
+    {
+        if (currentStep < stepTimes.Length - 1)
+        {
+            currentStep++;
+            float nextTime = stepTimes[currentStep];
+            GameEndSequence.Goto(nextTime, true);
+        }
+        else
+        {
+            GameEndSequence.Complete();
+        }
+    }
+
+    private void LoadAds()
+    {
+        if (_interstitialAd != null)
+        {
+            _interstitialAd.Destroy();
+            _interstitialAd = null;
+        }
+        var adRequest = new AdRequest();
+        InterstitialAd.Load(adUnitId, adRequest,
+          (InterstitialAd ad, LoadAdError error) =>
+          {
+              // if error is not null, the load request failed.
+              if (error != null || ad == null)
+              {
+                  Debug.LogError("interstitial ad failed to load an ad " +
+                                 "with error : " + error);
+                  return;
+              }
+
+              Debug.Log("Interstitial ad loaded with response : "
+                        + ad.GetResponseInfo());
+
+              _interstitialAd = ad;
+          });
+        _interstitialAd.OnAdFullScreenContentClosed += () =>
+        {
+            LoadAds();
+            gameObject.GetComponent<SceneMove>().GoToMain();
+        };
+        _interstitialAd.OnAdFullScreenContentFailed += (AdError error) =>
+        {
+            Debug.LogError("Interstitial ad failed to open full screen content " +
+                           "with error : " + error);
+            gameObject.GetComponent<SceneMove>().GoToMain();
+        };
+    }
+
+    public void ShowAds()
+    {
+        if (_interstitialAd != null && _interstitialAd.CanShowAd())
+        {
+            Debug.Log("Showing interstitial ad.");
+            _interstitialAd.Show();
+        }
+        else
+        {
+            Debug.LogError("Interstitial ad is not ready yet.");
+        }
+    }
+
 
     private IEnumerator BallRemoveEffect(IBall ball)
     {
         VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
         yield return null;
-    }
-
-    public void OnClickGoToMain()
-    {
-        SceneManager.LoadScene("Main");
     }
 }

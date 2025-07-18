@@ -18,14 +18,14 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] SfxClips_Effect;
 
     public AudioSource Bgm;
-    Slider BgmVolumeSlider;
-    TMP_Text BgmVolumeText;
+    public Slider BgmVolumeSlider;
+    public TMP_Text BgmVolumeText;
     private int NowBgm;
     private Queue<int> BgmPlaylist;
 
     public AudioSource Sfx;
-    Slider SfxVolumeSlider;
-    TMP_Text SfxVolumeText;
+    public Slider SfxVolumeSlider;
+    public TMP_Text SfxVolumeText;
 
     public PoolManager Pool;
 
@@ -46,7 +46,7 @@ public class SoundManager : MonoBehaviour
         Bgm = gameObject.transform.Find("Bgm").GetComponent<AudioSource>();
         Sfx = gameObject.transform.Find("Sfx").GetComponent<AudioSource>();
 
-        if(SceneManager.GetActiveScene().name != "Main")
+        if (SceneManager.GetActiveScene().name != "Main")
         {
             BgmVolumeSlider = GameManager.instance.PausePanel.transform.Find("BgmText")
             .gameObject.transform.Find("BgmVolume").GetComponent<Slider>();
@@ -63,12 +63,10 @@ public class SoundManager : MonoBehaviour
         Bgm.volume = volumeSaveData.BgmVolume;
         Sfx.volume = volumeSaveData.SfxVolume;
 
-        if (SceneManager.GetActiveScene().name != "Main")
-        {
-            SfxVolumeSlider.value = volumeSaveData.SfxVolume;
-            BgmVolumeSlider.value = volumeSaveData.BgmVolume;
+        SfxVolumeSlider.value = volumeSaveData.SfxVolume;
+        BgmVolumeSlider.value = volumeSaveData.BgmVolume;
 
-        }
+        
 
         Bgm.mute = true; //이거 뮤트가 아니라 멈췄다가 실행되게 하기 GameManager에 StartGame 코루틴이랑 연동해서 사용
 
@@ -133,11 +131,18 @@ public class SoundManager : MonoBehaviour
             BgmVolumeText.text = ((int)(BgmVolumeSlider.value * 100)).ToString();
             SfxVolumeText.text = ((int)(SfxVolumeSlider.value * 100)).ToString();
         }
-        else
+        else if(SceneManager.GetActiveScene().name == "Main")
         {
+            Bgm.volume = BgmVolumeSlider.value;
+            volumeSaveData.BgmVolume = BgmVolumeSlider.value;
 
+            Sfx.volume = SfxVolumeSlider.value;
+            volumeSaveData.SfxVolume = SfxVolumeSlider.value;
+
+            BgmVolumeText.text = ((int)(BgmVolumeSlider.value * 100)).ToString();
+            SfxVolumeText.text = ((int)(SfxVolumeSlider.value * 100)).ToString();
         }
-        if (SceneManager.GetActiveScene().name != "Main" && !Bgm.isPlaying)
+        if (!Bgm.isPlaying)
         {
             NowBgm = BgmPlaylist.Dequeue();
             Bgm.clip = BgmClips[NowBgm];
