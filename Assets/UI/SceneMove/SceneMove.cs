@@ -13,7 +13,7 @@ public class SceneMove : MonoBehaviour
 
     public void GoToGame()
     {
-        StartCoroutine(LoadScene("Dolsot"));
+        StartCoroutine(LoadScene("Game"));
     }
 
     public void GoToTitle()
