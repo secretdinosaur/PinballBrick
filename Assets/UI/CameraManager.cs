@@ -1,15 +1,19 @@
 using UnityEngine;
+using System.Collections;
 
 public class CameraManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public static CameraManager instance;
+    private Vector2 initialPosition;
     void Start()
     {
+        instance = this;
+        initialPosition = transform.position;
         AdjustCamera();
     }
     void AdjustCamera()
     {
-        float targetAspect = 9f / 19.5f; // 예: 기준 비율 (세로 기준)
+        float targetAspect = 9f / 19.5f;
         float windowAspect = (float)Screen.width / (float)Screen.height;
         float scaleHeight = windowAspect / targetAspect;
 
@@ -39,5 +43,23 @@ public class CameraManager : MonoBehaviour
 
             camera.rect = rect;
         }
+    }
+
+    private float Timer;
+    public void ShakeCamera(float timer = 0.3f)
+    {
+        Timer = timer;
+        StartCoroutine(GetShakeCamera());
+    }
+    IEnumerator GetShakeCamera()
+    {
+        while (Timer > 0)
+        {
+            Vector2 shakeOffset = Random.insideUnitCircle * 0.1f;
+            transform.position = new Vector3(initialPosition.x + shakeOffset.x, initialPosition.y + shakeOffset.y);
+            Timer -= Time.deltaTime;
+            yield return null;
+        }
+        transform.position = initialPosition;
     }
 }
