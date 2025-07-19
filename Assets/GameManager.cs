@@ -249,6 +249,7 @@ public class GameManager : MonoBehaviour
 
     public void GameEnd()
     {
+        CameraManager.instance.ShakeCamera();
         RecordStatistics.Playtime += TimeManager.instance.time;
         bool isHighscore = false;
         LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore, (x) => isHighscore = x);
