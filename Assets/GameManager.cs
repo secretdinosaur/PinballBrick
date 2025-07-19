@@ -195,7 +195,6 @@ public class GameManager : MonoBehaviour
     {
         SoundManager.instance.SaveVolume();
         Fever.Instance.FeverOff();
-        isGameEnded = true;
         GameEnd();
     }
 
@@ -249,97 +248,101 @@ public class GameManager : MonoBehaviour
 
     public void GameEnd()
     {
-        CameraManager.instance.ShakeCamera();
-        RecordStatistics.Playtime += TimeManager.instance.time;
-        bool isHighscore = false;
-        LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore, (x) => isHighscore = x);
-        StatManager.instance.SavePersistentStats(); //for save gold
-        AchievementManager.instance.AchievementCheck(RecordStatistics);
-        StatManager.instance.UpdateStatistics(RecordStatistics);
-
-        if (BallManager.Instance.InGameBall.Count > 0)
+        if (!isGameEnded)
         {
-            foreach (IBall ball in BallManager.Instance.InGameBall)
+            isGameEnded = true;
+            CameraManager.instance.ShakeCamera();
+            RecordStatistics.Playtime += TimeManager.instance.time;
+            bool isHighscore = false;
+            LeaderboardManager.instance.RecordScore((long)ScoreManager.Instance.TotalScore, (x) => isHighscore = x);
+            StatManager.instance.SavePersistentStats(); //for save gold
+            AchievementManager.instance.AchievementCheck(RecordStatistics);
+            StatManager.instance.UpdateStatistics(RecordStatistics);
+
+            if (BallManager.Instance.InGameBall.Count > 0)
             {
-                StartCoroutine(BallRemoveEffect(ball));
-                BallManager.Instance.TakeBall(ball);
+                foreach (IBall ball in BallManager.Instance.InGameBall)
+                {
+                    StartCoroutine(BallRemoveEffect(ball));
+                    BallManager.Instance.TakeBall(ball);
+                }
             }
+
+            PausePanel.SetActive(false);
+            LevelManager.Instance.LevelUpPanel.SetActive(false);
+            PausePanelOff();
+            GameEndPanel.SetActive(true);
+
+            NoticeLevelText_End.text = "Level  ";
+            NoticeWaveText_End.text = "Wave : ";
+            NoticePlaytimeText_End.text = $"Playtime : {00:D2}:{00:D2}";
+            NoticeDestroyedBricksText_End.text = "Destroyed Bricks : ";
+            NoticePointText_End.text = "Total Point : ";
+
+            GameEndSequence = DOTween.Sequence().SetUpdate(true);
+            Image panelImage = GameEndPanel.GetComponent<Image>();
+            Color panelColor = panelImage.color;
+
+            GameEndSequence.Append(
+                DOVirtual.Float(0, 225f / 255f, 3f, value =>
+                {
+                    Color newColor = panelColor;
+                    newColor.a = value;
+                    panelImage.color = newColor;
+                })
+            ).Insert(
+                3f,
+                DOVirtual.Float(0, LevelManager.Instance.Level, 1f, value =>
+                {
+                    NoticeLevelText_End.text = "Level  " + Mathf.RoundToInt(value).ToString();
+                })
+            ).Insert(
+                4.5f,
+                DOVirtual.Float(0, Wave, 1f, value =>
+                {
+                    NoticeWaveText_End.text = "Wave : " + Mathf.RoundToInt(value).ToString();
+                })
+            ).Insert(
+                6f,
+                DOVirtual.Float(0, TimeManager.instance.time, 1f, value =>
+                {
+                    int totalSeconds = Mathf.RoundToInt(value);
+
+                    int days = totalSeconds / 86400;
+                    int hours = (totalSeconds % 86400) / 3600;
+                    int minutes = (totalSeconds % 3600) / 60;
+                    int seconds = totalSeconds % 60;
+
+                    if (days > 0)
+                        NoticePlaytimeText_End.text = $"Playtime : {days:D2}:{hours:D2}:{minutes:D2}:{seconds:D2}";
+                    else if (hours > 0)
+                        NoticePlaytimeText_End.text = $"Playtime : {hours:D2}:{minutes:D2}:{seconds:D2}";
+                    else
+                        NoticePlaytimeText_End.text = $"Playtime : {minutes:D2}:{seconds:D2}";
+                })
+            ).Insert(
+                7.5f,
+                DOVirtual.Float(0, RecordStatistics.DestroyedBricks, 1f, value =>
+                {
+                    NoticeDestroyedBricksText_End.text = "Destroyed Bricks : " + Mathf.RoundToInt(value).ToString();
+                })
+            ).Insert(
+                9f,
+                DOVirtual.Float(0, ScoreManager.Instance.TotalScore, 1f, value =>
+                {
+                    NoticePointText_End.text = "Total Point : " + Mathf.RoundToInt(value).ToString();
+                })
+            );
+            GameEndSequence.AppendCallback(() =>
+            {
+                if (isHighscore)
+                {
+                    NoticeNewRecordText.gameObject.SetActive(true);
+                }
+            });
+            GameEndSequence.Pause();
+            GameEndSequence.Goto(0, true);
         }
-
-        PausePanel.SetActive(false);
-        LevelManager.Instance.LevelUpPanel.SetActive(false);
-        PausePanelOff();
-        GameEndPanel.SetActive(true);
-
-        NoticeLevelText_End.text = "Level  ";
-        NoticeWaveText_End.text = "Wave : ";
-        NoticePlaytimeText_End.text = $"Playtime : {00:D2}:{00:D2}";
-        NoticeDestroyedBricksText_End.text = "Destroyed Bricks : ";
-        NoticePointText_End.text = "Total Point : ";
-
-        GameEndSequence = DOTween.Sequence().SetUpdate(true);
-        Image panelImage = GameEndPanel.GetComponent<Image>();
-        Color panelColor = panelImage.color;
-
-        GameEndSequence.Append(
-            DOVirtual.Float(0, 225f / 255f, 3f, value =>
-            {
-                Color newColor = panelColor;
-                newColor.a = value;
-                panelImage.color = newColor;
-            })
-        ).Insert(
-            3f,
-            DOVirtual.Float(0, LevelManager.Instance.Level, 1f, value =>
-            {
-                NoticeLevelText_End.text = "Level  " + Mathf.RoundToInt(value).ToString();
-            })
-        ).Insert(
-            4.5f,
-            DOVirtual.Float(0, Wave, 1f, value =>
-            {
-                NoticeWaveText_End.text = "Wave : " + Mathf.RoundToInt(value).ToString();
-            })
-        ).Insert(
-            6f,
-            DOVirtual.Float(0, TimeManager.instance.time, 1f, value =>
-            {
-                int totalSeconds = Mathf.RoundToInt(value);
-
-                int days = totalSeconds / 86400;
-                int hours = (totalSeconds % 86400) / 3600;
-                int minutes = (totalSeconds % 3600) / 60;
-                int seconds = totalSeconds % 60;
-
-                if (days > 0)
-                    NoticePlaytimeText_End.text = $"Playtime : {days:D2}:{hours:D2}:{minutes:D2}:{seconds:D2}";
-                else if (hours > 0)
-                    NoticePlaytimeText_End.text = $"Playtime : {hours:D2}:{minutes:D2}:{seconds:D2}";
-                else
-                    NoticePlaytimeText_End.text = $"Playtime : {minutes:D2}:{seconds:D2}";
-            })
-        ).Insert(
-            7.5f,
-            DOVirtual.Float(0, RecordStatistics.DestroyedBricks, 1f, value =>
-            {
-                NoticeDestroyedBricksText_End.text = "Destroyed Bricks : " + Mathf.RoundToInt(value).ToString();
-            })
-        ).Insert(
-            9f,
-            DOVirtual.Float(0, ScoreManager.Instance.TotalScore, 1f, value =>
-            {
-                NoticePointText_End.text = "Total Point : " + Mathf.RoundToInt(value).ToString();
-            })
-        );
-        GameEndSequence.AppendCallback(() =>
-        {
-            if (isHighscore)
-            {
-                NoticeNewRecordText.gameObject.SetActive(true);
-            }
-        });
-        GameEndSequence.Pause();
-        GameEndSequence.Goto(0, true);
     }
 
     public void OnSkipGameEnd()

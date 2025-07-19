@@ -72,7 +72,7 @@ Material:
     m_Floats:
     - _ColorMask: 15
     - _EnableExternalAlpha: 0
-    - _HasEnoughMoney: 0
+    - _HasEnoughMoney: 1
     - _IsEnoughMoney: 1
     - _Stencil: 0
     - _StencilComp: 8
