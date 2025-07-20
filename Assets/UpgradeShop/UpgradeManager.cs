@@ -55,12 +55,12 @@ public partial class UpgradeManager
 
     float[] UpgradeCostCoefficient =
     {
-        1.025f,
-        1.025f,
+        1.035f,
+        1.035f,
         1.05f,
         1.1f,
         1.05f,
-        1.2f,
+        1.18f,
     };
     public int[] levels;
     GameObject[] Panels;

@@ -241,14 +241,9 @@ public class BrickManager : MonoBehaviour
             }            
             else if (brick.BrickType == "GoldBrick")
             {
-                float GoldValue = 0;
-                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3,
-                    (GainValue) => GoldValue += GainValue);
-                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 4,
-                    (GainValue) => GoldValue += GainValue);
-                ItemManager.Instance.SpawnSpecificItem("Gold1", brick.transform.position, 3,
-                    (GainValue) => GoldValue += GainValue);
-                brick.ShowText("+" + GoldValue.ToString("F1"), "Gold", false);
+                int GainedGold = (int)(brick.gameObject.GetComponent<GoldBrick>().GainedGold * 4.5f);
+                ItemManager.Instance.SpawnGold(GainedGold, brick.gameObject.transform.position);
+                brick.ShowText("+" + GainedGold.ToString("F1"), "Gold", false);
             }
             else if (brick.BrickType != "BallBrick")
                 ItemManager.Instance.SpawnItem(brick.transform.position);

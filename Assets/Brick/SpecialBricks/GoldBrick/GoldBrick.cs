@@ -5,12 +5,13 @@ using UnityEngine.UI;
 public class GoldBrick : IBrick
 {
     public CircleCollider2D[] Balls;
+    public int GainedGold;
     private void OnEnable()
     {
         base.OnEnable();
         BrickType = "GoldBrick";
         StartCoroutine(TimeSet());
-
+        GainedGold = 0;
         Balls = GetComponentsInChildren<CircleCollider2D>(true);
         for (int i = 0; i < HP; i++)
         {
@@ -27,16 +28,28 @@ public class GoldBrick : IBrick
             switch (i)
             {
                 case 0:
-                    ItemManager.Instance.SpawnSpecificItem("Gold1", transform.position, 1, 
-                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
+                    ItemManager.Instance.SpawnSpecificItem("Gold1", transform.position, 1,
+                        (GainValue) =>
+                        {
+                            ShowText("+" + GainValue.ToString("F1"), "Gold", false);
+                            GainedGold += (int)GainValue;
+                        });
                     break;
                 case 1:
                     ItemManager.Instance.SpawnSpecificItem("Gold2", transform.position, 1,
-                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
+                        (GainValue) =>
+                        {
+                            ShowText("+" + GainValue.ToString("F1"), "Gold", false);
+                            GainedGold += (int)GainValue;
+                        });
                     break;
                 case 2:
                     ItemManager.Instance.SpawnSpecificItem("Gold3", transform.position, 1,
-                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
+                        (GainValue) =>
+                        {
+                            ShowText("+" + GainValue.ToString("F1"), "Gold", false);
+                            GainedGold += (int)GainValue;
+                        });
                     break;
             }
 
@@ -61,15 +74,27 @@ public class GoldBrick : IBrick
             {
                 case 0:
                     ItemManager.Instance.SpawnSpecificItem("Gold1", transform.position, 1,
-                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
+                        (GainValue) =>
+                        {
+                            ShowText("+" + GainValue.ToString("F1"), "Gold", false);
+                            GainedGold += (int)GainValue;
+                        });
                     break;
                 case 1:
                     ItemManager.Instance.SpawnSpecificItem("Gold2", transform.position, 1,
-                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
+                        (GainValue) =>
+                        {
+                            ShowText("+" + GainValue.ToString("F1"), "Gold", false);
+                            GainedGold += (int)GainValue;
+                        });
                     break;
                 case 2:
                     ItemManager.Instance.SpawnSpecificItem("Gold3", transform.position, 1,
-                        (GainValue) => ShowText("+" + GainValue.ToString("F1"), "Gold", false));
+                        (GainValue) =>
+                        {
+                            ShowText("+" + GainValue.ToString("F1"), "Gold", false);
+                            GainedGold += (int)GainValue;
+                        });
                     break;
             }
 
