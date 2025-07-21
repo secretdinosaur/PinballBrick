@@ -20,8 +20,6 @@ public class TitleManager : MonoBehaviour
             hasRun = true;
         }
     }
-    private float[] stepTimes = new float[] { 0f, 4.5f };
-    private int currentStep = 0;
     private void Opening()
     {
         GameOpeningSequence = DOTween.Sequence();
@@ -60,20 +58,10 @@ public class TitleManager : MonoBehaviour
         {
             GameOpeningPanel.SetActive(false);
         });
-        GameOpeningSequence.Pause();
-        GameOpeningSequence.Goto(0, true);
     }
     public void OnSkipGameOpen()
     {
-        if (currentStep < stepTimes.Length - 1)
-        {
-            currentStep++;
-            float nextTime = stepTimes[currentStep];
-            GameOpeningSequence.Goto(nextTime, true);
-        }
-        else
-        {
-            GameOpeningSequence.Complete();
-        }
+        GameOpeningSequence.Complete();
+        GameOpeningPanel.SetActive(false);
     }
 }
