@@ -107,6 +107,13 @@ public class SoundManager : MonoBehaviour
             Pool.TakeToPool<SoundObject>(source.GetComponent<SoundObject>());
     }
 
+    private IEnumerator WaitForAudioFinish_Pausable(AudioSource source, float Duration)
+    {
+        yield return new WaitForSeconds(Duration);
+        if (source.gameObject.activeSelf)
+            Pool.TakeToPool <PausableSoundObject>(source.GetComponent<PausableSoundObject>());
+    }
+
     public void TakeSound(AudioSource source)
     {
         if(source.gameObject.activeSelf)
@@ -144,10 +151,19 @@ public class SoundManager : MonoBehaviour
         }
         if (!Bgm.isPlaying)
         {
-            NowBgm = BgmPlaylist.Dequeue();
-            Bgm.clip = BgmClips[NowBgm];
-            BgmPlaylist.Enqueue(NowBgm);
-            Bgm.Play();
+            if (SceneManager.GetActiveScene().name == "Main")
+            {
+                Bgm.clip = BgmClips[3];
+                Bgm.Play();
+            }
+            else
+            {
+                NowBgm = BgmPlaylist.Dequeue();
+                Bgm.clip = BgmClips[NowBgm];
+                BgmPlaylist.Enqueue(NowBgm);
+                Bgm.Play();
+            }
+            
         }
         if (SceneManager.GetActiveScene().name != "Main" && LevelManager.Instance.LevelUpPanel.activeSelf)
         {
@@ -185,6 +201,36 @@ public class SoundManager : MonoBehaviour
         volumeSaveData = JsonUtility.FromJson<VolumeData>(json);
     }
 
+    public void ButtonClickSound_Light()
+    {
+        AudioClip clip = SfxClips_UI[0];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.clip = clip;
+        audio.volume = SfxVolumeSlider.value;
+        audio.Play();
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void MissionCompleteSound()
+    {
+        AudioClip clip = SfxClips_UI[1];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.clip = clip;
+        audio.volume = SfxVolumeSlider.value;
+        audio.Play();
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
+    public void UpgradeSound()
+    {
+        AudioClip clip = SfxClips_UI[2];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.clip = clip;
+        audio.volume = SfxVolumeSlider.value;
+        audio.Play();
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
+
     public void SpawnBrickSound(AudioSource audio)
     {
         audio.volume = SfxVolumeSlider.value / 2f;
@@ -202,12 +248,6 @@ public class SoundManager : MonoBehaviour
     {
         audio.volume = SfxVolumeSlider.value / 1.25f;
         audio.PlayOneShot(SfxClips_Game[2]);
-    }
-
-    public void ButtonClickSound_Light()
-    {
-        Sfx.clip = SfxClips_UI[0];
-        Sfx.Play();
     }
 
     public void AugmentDrawSound(AudioSource audio)
@@ -340,7 +380,7 @@ public class SoundManager : MonoBehaviour
         audio.loop = true;
         audio.volume = SfxVolumeSlider.value;
         audio.Play();
-        StartCoroutine(WaitForAudioFinish(audio, Duration));
+        StartCoroutine(WaitForAudioFinish_Pausable(audio, Duration));
     }
 
     public void SatelliteBeamChargeSound()
@@ -349,7 +389,7 @@ public class SoundManager : MonoBehaviour
         AudioSource audio = Pool.GetFromPool<PausableSoundObject>().GetComponent<AudioSource>();
         audio.volume = SfxVolumeSlider.value;
         audio.PlayOneShot(clip);
-        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+        StartCoroutine(WaitForAudioFinish_Pausable(audio, clip.length));
     }
 
     public void StartFireSound()
@@ -478,5 +518,14 @@ public class SoundManager : MonoBehaviour
         audio.volume = SfxVolumeSlider.value;
 
         return audio;
+    }
+
+    public void GameOverSound()
+    {
+        AudioClip clip = SfxClips_Game[15];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value * 1.75f;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
     }
 }
