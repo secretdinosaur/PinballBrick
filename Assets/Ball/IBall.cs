@@ -240,10 +240,14 @@ public partial class IBall : MonoBehaviour
         {
             if (collision.gameObject.GetComponent<IBrick>().IsBoss)
             {
-                BallStuckCoroutine = StartCoroutine(BossReflectBall(collision.gameObject.GetComponent<IBrick>()));
+                if (BallStuckCoroutine == null)
+                    BallStuckCoroutine = StartCoroutine(BossReflectBall(collision.gameObject.GetComponent<IBrick>()));
             }
             else
-                BallStuckCoroutine = StartCoroutine(BallStuckDamage(collision.gameObject.GetComponent<IBrick>()));
+            {
+                if (BallStuckCoroutine == null)
+                    BallStuckCoroutine = StartCoroutine(BallStuckDamage(collision.gameObject.GetComponent<IBrick>()));
+            }
         }
     }
 
@@ -254,7 +258,7 @@ public partial class IBall : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.2f);
-            rb.AddForce(new Vector2(Random.Range(-1,1) * 300, Random.value * 500));
+            rb.AddForce(new Vector2(Random.Range(-1, 1) * 300, Random.value * 500));
         }
     }
 
