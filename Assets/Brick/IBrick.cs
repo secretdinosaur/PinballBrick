@@ -43,7 +43,7 @@ public partial class IBrick : MonoBehaviour
 
     private Collider2D Collider;
 
-    public bool isGoldBrick;
+    public bool isBrickDie = false;
     public float HP
     {
         get { return hp; }
@@ -60,7 +60,7 @@ public partial class IBrick : MonoBehaviour
                     ExecutionCor = StartCoroutine(Execution());
                 }
             }
-            if ((int)hp <= 0)
+            if ((int)hp <= 0 && !isBrickDie)
             {
                 hp = 0;
                 HPText.enabled = false;
@@ -128,6 +128,7 @@ public partial class IBrick : MonoBehaviour
             Augment.AfterBrickDieEffect(this);
         }
         //StopCoroutineAfterDie();
+        isBrickDie = true;
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
 
@@ -230,7 +231,7 @@ public partial class IBrick : MonoBehaviour
             HPText.enabled = false;
         ExecutionObject1.transform.position = transform.position;
         ExecutionObject2.transform.position = transform.position;
-        isGoldBrick = false;
+        isBrickDie = false;
         spriteRenderer.material.SetFloat("_Decay", 0);
         if (detectArea.NearbyBricks.Contains(this))
             detectArea.NearbyBricks.Remove(this);
@@ -387,7 +388,15 @@ public partial class IBrick
         }
         else
         {
-            StartCoroutine(DamageManager.DamageByCurse(this, StartingPos));
+            DamageManager.DamageByCurse(this, StartingPos);
+            if (AugmentManager.instance.determineAugment(typeof(Cursebolt)))
+            {
+                DamageByLightningEffect(1, 1);
+            }
+            else if (AugmentManager.instance.determineAugment(typeof(Duality)))
+            {
+                HolyRainAttack();
+            }
         }
     }
 

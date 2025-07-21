@@ -59,7 +59,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
     void Awake()
     {
         instance = this;
-        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 0.3f, 1f);
+        effectChance = new EffectChance(0.3f, 0.3f, 0.3f, 1f, 1f);
         effectDuration = new EffectDuration(1.1f, 4.5f, 2.5f);
         FireStackLimit = 3;
         PoisonStackLimit = 3;
@@ -169,7 +169,6 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             new GroupViolence(),
             new Oneness(),
             new HappyBirthday(),
-            new MidasHand(),
             new HalfBallSacrifice(),
             new Chronobreak(),
             new CritAfterThreeAttack(),
@@ -220,6 +219,8 @@ public partial class AugmentManager : MonoBehaviour //Declaration
             new SummonGhostBall(),
             new EnhanceCurseAttack(),
             new ContinuingCurseAttack(),
+            new Cursebolt(),
+            new Duality(),
 
             new RebornBombBall(),
             new SuicideBoomBall(),
@@ -245,12 +246,13 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-
+            
         };
 
         foreach (IAugment augment in TestAugments)
         {
-            AddAugment(augment);
+            Type type = augment.GetType();
+            AddAugment(augmentsSet.FirstOrDefault(x => x.GetType() == type));
         }
     }
 

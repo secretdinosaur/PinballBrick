@@ -48,16 +48,13 @@ public class FireBall : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<FireEffectStackBlast>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<TheFlamethrower>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<Pyromaniac>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugmentByType("Fire");
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<FireEffectStackBlast>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<TheFlamethrower>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Pyromaniac>().FirstOrDefault());
+        AugmentManager.instance.LockAugmentByType("Fire");
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<FireBall>().FirstOrDefault());
     }
 
     public override void AfterMainAttackEffect(IBrick Brick)
@@ -418,16 +415,13 @@ public class Lightning : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<ThunderStrike>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<ChainLightning>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<LightningRod>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugmentByType("Lightning");
     }
 
     public override void Remove() 
     {
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<ThunderStrike>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<ChainLightning>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<LightningRod>().FirstOrDefault());
+        AugmentManager.instance.LockAugmentByType("Lightning");
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<Lightning>().FirstOrDefault());
     }
 
     public override void AfterAttackEffect(IBrick brick)
@@ -448,18 +442,12 @@ public class PoisonBall : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DeadlyPoison>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<InfinitePoison>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugmentByType("Poison");
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DeadlyPoison>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<InfinitePoison>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault());
+        AugmentManager.instance.LockAugmentByType("Poison");
     }
 
     public override void AfterMainAttackEffect(IBrick Brick)
@@ -676,16 +664,13 @@ public class DecayBall : SpecialAugment
 
     public override void Apply() 
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<PowerfulDecay>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DecayExplosion>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DecayZone>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugmentByType("Decay");
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<PowerfulDecay>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayExplosion>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayZone>().FirstOrDefault());
+        AugmentManager.instance.LockAugmentByType("Decay");
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<DecayBall>().FirstOrDefault());
     }
 
     public override void BeforeAttackEffect(IBrick Brick)
@@ -1830,24 +1815,20 @@ public class CurseBall : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SummonGhostBall>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<EnhanceCurseAttack>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<EnhanceCurseAttack>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugmentByType("Curse");
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SummonGhostBall>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<EnhanceCurseAttack>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<EnhanceCurseAttack>().FirstOrDefault());
+        AugmentManager.instance.LockAugmentByType("Curse");
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<CurseBall>().FirstOrDefault());
     }
 
     public override void AfterDeathEffect(IBall ball)
     {
         if (Random.value < AugmentManager.instance.effectChance.CurseChance && BrickManager.Instance.CurrentBricks.Count > 0)
         {
-            IBrick brick = BrickManager.Instance.GetRandomBrick();
-            if(brick != null) brick.DamageByCurse();
+            BrickManager.Instance.GetRandomBrick().DamageByCurse();
         }
     }
 }
@@ -1943,18 +1924,13 @@ public class SpawnBombBall : SpecialAugment
 
     public override void Apply()
     {
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<RebornBombBall>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SuicideBoomBall>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<Bombardment>().FirstOrDefault());
-        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<InstantBombBall>().FirstOrDefault());
+        AugmentManager.instance.UnlockAugmentByType("Bomb");
     }
 
     public override void Remove()
     {
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<RebornBombBall>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<SuicideBoomBall>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Bombardment>().FirstOrDefault());
-        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<InstantBombBall>().FirstOrDefault());
+        AugmentManager.instance.LockAugmentByType("Bomb");
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<SpawnBombBall>().FirstOrDefault());
     }
 }
 public class ChangeNormalToGlass : SpecialAugment
@@ -2284,68 +2260,27 @@ public class HappyBirthday : SpecialAugment
     }
 }
 
-public class MidasHand : SpecialAugment
+public class Cursebolt : SpecialAugment
 {
     public override string ID => "SPECIAL_55";
-    public override string Name => "Midas Hand";
-    public override string Description => "Attacked bricks have a low chance to\ntransform into golden blocks";
+    public override string Name => "Cursebolt";
+    public override string Description => "Each time a curse is cast, lightning strikes";
     public override int Rarity => 4;
-    public override string Type => "Special";
+    public override string Type => "Curse";
     public override string AdditionalDescription => null;
-    public override bool isFollowUpAugment => false;
+    public override bool isFollowUpAugment => true;
 
-    Coroutine Routine = null;
-    public override void Apply() { }
-
-    public override void Remove() { }
-
-    public override void AfterMainAttackEffect(IBrick Brick)
+    public override void Apply() 
     {
-        if(Random.value < 0.5f 
-            && Brick.BrickType != "TwinBrick" && Brick.BrickType != "ShieldBrick" 
-            && Brick.BrickType != "TeleportBrick" && Brick.BrickType != "BlackBrick"
-            && Brick.BrickType != "IgnoreBrick" && Routine == null)
-        {
-            Routine = Brick.StartCoroutine(ChangeToGoldBrick(Brick));
-        }
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Duality>().FirstOrDefault());
     }
 
-    public override void AfterBrickDieEffect(IBrick Brick)
+    public override void Remove() 
     {
-        if(Brick.isGoldBrick)
-        {
-            StatManager.instance.GetGold(Random.Range(1, 10));
-        }
-    }
-
-    IEnumerator ChangeToGoldBrick(IBrick Brick)
-    {
-        SpriteRenderer BrickRenderer = Brick.gameObject.GetComponent<SpriteRenderer>();
-        Color PreviousColor = BrickRenderer.color;
-
-        yield return null;
-        Brick.isGoldBrick = true;
-        BrickRenderer.color = new Color(1f, 0.843f, 0f);
-
-        float elapsedTime = 0f;
-        while(elapsedTime < 0.25f)
-        {
-            BrickRenderer.color = new Color(Mathf.Lerp(PreviousColor.r, 2, elapsedTime / 0.25f), Mathf.Lerp(PreviousColor.g, 0.843f * 2, elapsedTime / 0.25f), Mathf.Lerp(PreviousColor.b, 0, elapsedTime / 0.25f));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(4.75f);
-        elapsedTime = 0;
-        while (elapsedTime < 0.25f)
-        {
-            BrickRenderer.color = new Color(Mathf.Lerp(2, PreviousColor.r, elapsedTime / 0.25f), Mathf.Lerp(0.843f * 2, PreviousColor.g, elapsedTime / 0.25f), Mathf.Lerp(0, PreviousColor.b, elapsedTime / 0.25f));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        Brick.isGoldBrick = false;
-        BrickRenderer.color = PreviousColor;
-        Routine = null;
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<Duality>().FirstOrDefault());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<CurseBall>().FirstOrDefault()) ||
+            AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<Duality>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Cursebolt>().FirstOrDefault());
     }
 }
 
@@ -2433,7 +2368,6 @@ public class DecayingPoison: SpecialAugment
     public override void Apply()
     {
         AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault());
-        AugmentManager.instance.effectDuration.FireDuration += 1f;
     }
 
     public override void Remove()
@@ -2442,7 +2376,6 @@ public class DecayingPoison: SpecialAugment
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<PoisonBall>().FirstOrDefault()) ||
             AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault()))
             AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault());
-        AugmentManager.instance.effectDuration.FireDuration -= 1f;
     }
 }
 
@@ -2459,7 +2392,6 @@ public class FlammablePoison: SpecialAugment
     public override void Apply()
     {
         AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault());
-        AugmentManager.instance.effectDuration.DecayDuration += 2f;
     }
 
     public override void Remove()
@@ -2468,7 +2400,6 @@ public class FlammablePoison: SpecialAugment
         if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<PoisonBall>().FirstOrDefault()) ||
             AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<DecayingPoison>().FirstOrDefault()))
             AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<FlammablePoison>().FirstOrDefault());
-        AugmentManager.instance.effectDuration.DecayDuration -= 2f;
     }
 }
 
@@ -3318,5 +3249,29 @@ public class PenetratingBall: SpecialAugment
         {
             BrickManager.Instance.CurrentBricks[i].GetComponent<Collider2D>().isTrigger = false;
         }
+    }
+}
+
+public class Duality : SpecialAugment
+{
+    public override string ID => "SPECIAL_86";
+    public override string Name => "Duality";
+    public override string Description => "Each time a curse is cast, falling holy rain";
+    public override int Rarity => 3;
+    public override string Type => "Curse";
+    public override string AdditionalDescription => null;
+    public override bool isFollowUpAugment => true;
+
+    public override void Apply()
+    {
+        AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Cursebolt>().FirstOrDefault());
+    }
+
+    public override void Remove()
+    {
+        AugmentManager.instance.UnlockAugment(AugmentManager.instance.augmentsSet.OfType<Cursebolt>().FirstOrDefault());
+        if (!AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<CurseBall>().FirstOrDefault()) ||
+            AugmentManager.instance.activeAugments.Contains(AugmentManager.instance.augmentsSet.OfType<Cursebolt>().FirstOrDefault()))
+            AugmentManager.instance.LockAugment(AugmentManager.instance.augmentsSet.OfType<Duality>().FirstOrDefault());
     }
 }
