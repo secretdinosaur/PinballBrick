@@ -20,11 +20,11 @@ public class TitleManager : MonoBehaviour
             hasRun = true;
         }
     }
-    private float[] stepTimes = new float[] { 0f, 3f, 7.5f };
+    private float[] stepTimes = new float[] { 0f, 4.5f };
     private int currentStep = 0;
     private void Opening()
     {
-        GameOpeningSequence = DOTween.Sequence().SetUpdate(false);
+        GameOpeningSequence = DOTween.Sequence();
 
         Image panelImage = GameOpeningPanel.GetComponent<Image>();
         Color panelColor = panelImage.color;

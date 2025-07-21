@@ -864,7 +864,7 @@ public class BrickManager : MonoBehaviour
         List<IBrick> bricks = CurrentBricks.Where(b => !b.IsSpecialBrick).ToList();
         if (bricks.Count == 0) return null;
 
-        return bricks[UnityEngine.Random.Range(0, bricks.Count)]; ;
+        return bricks[UnityEngine.Random.Range(0, bricks.Count)];
     }
 
     IEnumerator CalAfterBossTime()
