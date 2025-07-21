@@ -66,24 +66,28 @@ public class ItemManager : MonoBehaviour
             { 
                 ExpBead itemType = item.GetComponent<ExpBead>();
                 itemType.ExpAmount = (10 + GameManager.instance.Wave / 3 + LevelManager.Instance.LevelBar.maxValue / 200) / 2;
+                if (itemType.ExpAmount < 1) { itemType.ExpAmount = 1; }
                 callbackValue += itemType.ExpAmount;
             }
             if (item.ItemName == "Gold1")
             {
                 Gold1 itemType = item.GetComponent<Gold1>();
-                itemType.GoldAmount = (5 + GameManager.instance.Wave / 2) / 2;
+                itemType.GoldAmount = (int)((2 + GameManager.instance.Wave / 2) / 2.5);
+                if(itemType.GoldAmount < 1) { itemType.GoldAmount = 1; }
                 callbackValue += itemType.GoldAmount;
             }
             if (item.ItemName == "Gold2")
             {
                 Gold2 itemType = item.GetComponent<Gold2>();
-                itemType.GoldAmount = (25 + GameManager.instance.Wave / 2) / 2;
+                itemType.GoldAmount = (int)((15 + GameManager.instance.Wave / 2) / 2.5);
+                if (itemType.GoldAmount < 1) { itemType.GoldAmount = 1; }
                 callbackValue += itemType.GoldAmount;
             }
             if (item.ItemName == "Gold3")
             {
                 Gold3 itemType = item.GetComponent<Gold3>();
-                itemType.GoldAmount = (50 + GameManager.instance.Wave / 2) / 2;
+                itemType.GoldAmount = (int)((30 + GameManager.instance.Wave / 2) / 2.5);
+                if (itemType.GoldAmount < 1) { itemType.GoldAmount = 1; }
                 callbackValue += itemType.GoldAmount;
             }
             item.MoveItem();
@@ -119,6 +123,42 @@ public class ItemManager : MonoBehaviour
             item.MoveItem();
             yield return new WaitForSeconds(interval);
         }
+    }
+
+    public void SpawnGold(int amount, Vector2 position)
+    {
+        int[] goldValues = { 100, 10, 1 };
+        string[] goldNames = { "Gold3", "Gold2", "Gold1" };
+
+        for (int i = 0; i < goldValues.Length; i++)
+        {
+            int goldValue = goldValues[i];
+            string goldName = goldNames[i];
+            int count = amount / goldValue;
+            amount %= goldValue;
+
+            for (int j = 0; j < count; j++)
+            {
+                SpawnGoldByType(goldName, position);
+            }
+        }
+    }
+
+    private void SpawnGoldByType(string itemName, Vector2 position)
+    {
+        Type type = Type.GetType(itemName);
+        var method = typeof(PoolManager).GetMethod("GetFromPool");
+        var genericMethod = method.MakeGenericMethod(type);
+        Item item = (Item)genericMethod.Invoke(PoolManager, null);
+        item.GetComponent<SpriteRenderer>().enabled = true;
+        item.transform.position = position;
+        item.ItemName = itemName;
+
+        if (itemName == "Gold1") item.GetComponent<Gold1>().GoldAmount = 1;
+        if (itemName == "Gold2") item.GetComponent<Gold2>().GoldAmount = 10;
+        if (itemName == "Gold3") item.GetComponent<Gold3>().GoldAmount = 100;
+
+        item.MoveItem();
     }
 
     public void TakeItem(Item item)

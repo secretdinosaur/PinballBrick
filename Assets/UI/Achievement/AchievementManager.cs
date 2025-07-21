@@ -81,27 +81,27 @@ public partial class AchievementManager : MonoBehaviour
             PlayerPrefs.SetInt("1_Level", 1);
             PlayerPrefs.SetInt("1_Goal", 5);
             PlayerPrefs.SetInt("1_Value", 0);
-            PlayerPrefs.SetInt("1_Reward", 20);
+            PlayerPrefs.SetInt("1_Reward", 15);
 
             PlayerPrefs.SetInt("2_Level", 1);
             PlayerPrefs.SetInt("2_Goal", 20);
             PlayerPrefs.SetInt("2_Value", 0);
-            PlayerPrefs.SetInt("2_Reward", 20);
+            PlayerPrefs.SetInt("2_Reward", 10);
 
             PlayerPrefs.SetInt("3_Level", 1);
             PlayerPrefs.SetInt("3_Goal", 20);
             PlayerPrefs.SetInt("3_Value", 0);
-            PlayerPrefs.SetInt("3_Reward", 20);
+            PlayerPrefs.SetInt("3_Reward", 10);
 
             PlayerPrefs.SetInt("4_Level", 1);
             PlayerPrefs.SetInt("4_Goal", 10);
             PlayerPrefs.SetInt("4_Value", 0);
-            PlayerPrefs.SetInt("4_Reward", 30);
+            PlayerPrefs.SetInt("4_Reward", 20);
 
             PlayerPrefs.SetInt("5_Level", 1);
             PlayerPrefs.SetInt("5_Goal", 5);
             PlayerPrefs.SetInt("5_Value", 0);
-            PlayerPrefs.SetInt("5_Reward", 200);
+            PlayerPrefs.SetInt("5_Reward", 150);
         }
 
         InGameAchievementProgress = new List<List<object>>
@@ -323,7 +323,7 @@ public partial class AchievementManager : MonoBehaviour
             PlayerPrefs.SetInt("1_Level", PlayerPrefs.GetInt("1_Level") + 1);
             GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("1_Reward"), CompleteButtons[0].transform.position);
             PlayerPrefs.SetInt("1_Goal", PlayerPrefs.GetInt("1_Goal") + (5 * PlayerPrefs.GetInt("1_Level")));
-            PlayerPrefs.SetInt("1_Reward", PlayerPrefs.GetInt("1_Reward") + 39);
+            PlayerPrefs.SetInt("1_Reward", PlayerPrefs.GetInt("1_Reward") + 35);
             UpdateInGameAchievement();
         }
     }
@@ -334,8 +334,8 @@ public partial class AchievementManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("2_Level", PlayerPrefs.GetInt("2_Level") + 1);
             GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("2_Reward"), CompleteButtons[1].transform.position);
-            PlayerPrefs.SetInt("2_Goal", PlayerPrefs.GetInt("2_Goal") + (20 * PlayerPrefs.GetInt("2_Level")));
-            PlayerPrefs.SetInt("2_Reward", PlayerPrefs.GetInt("2_Reward") + 45);
+            PlayerPrefs.SetInt("2_Goal", PlayerPrefs.GetInt("2_Goal") + (25 * PlayerPrefs.GetInt("2_Level")));
+            PlayerPrefs.SetInt("2_Reward", PlayerPrefs.GetInt("2_Reward") + 40);
             UpdateInGameAchievement();
         }
     }
@@ -346,8 +346,8 @@ public partial class AchievementManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("3_Level", PlayerPrefs.GetInt("3_Level") + 1);
             GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("3_Reward"), CompleteButtons[2].transform.position);
-            PlayerPrefs.SetInt("3_Goal", PlayerPrefs.GetInt("3_Goal") + (10 * PlayerPrefs.GetInt("3_Level")));
-            PlayerPrefs.SetInt("3_Reward", PlayerPrefs.GetInt("3_Reward") + 45);
+            PlayerPrefs.SetInt("3_Goal", PlayerPrefs.GetInt("3_Goal") + (20 * PlayerPrefs.GetInt("3_Level")));
+            PlayerPrefs.SetInt("3_Reward", PlayerPrefs.GetInt("3_Reward") + 40);
             UpdateInGameAchievement();
         }
     }
@@ -359,7 +359,7 @@ public partial class AchievementManager : MonoBehaviour
             PlayerPrefs.SetInt("4_Level", PlayerPrefs.GetInt("4_Level") + 1);
             GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("4_Reward"), CompleteButtons[3].transform.position);
             PlayerPrefs.SetInt("4_Goal", PlayerPrefs.GetInt("4_Goal") + (5 * PlayerPrefs.GetInt("4_Level")));
-            PlayerPrefs.SetInt("4_Reward", PlayerPrefs.GetInt("4_Reward") + 53);
+            PlayerPrefs.SetInt("4_Reward", PlayerPrefs.GetInt("4_Reward") + 45);
             UpdateInGameAchievement();
         }
     }
@@ -371,7 +371,7 @@ public partial class AchievementManager : MonoBehaviour
             PlayerPrefs.SetInt("5_Level", PlayerPrefs.GetInt("5_Level") + 1);
             GoldSpawn_Achievement.Instance.SpawnGold(PlayerPrefs.GetInt("5_Reward"), CompleteButtons[4].transform.position);
             PlayerPrefs.SetInt("5_Goal", PlayerPrefs.GetInt("5_Goal") + (2 * PlayerPrefs.GetInt("5_Level")));
-            PlayerPrefs.SetInt("5_Reward", PlayerPrefs.GetInt("5_Reward") + 67);
+            PlayerPrefs.SetInt("5_Reward", PlayerPrefs.GetInt("5_Reward") + 50);
             UpdateInGameAchievement();
         }
     }
