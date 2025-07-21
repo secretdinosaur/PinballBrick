@@ -71385,7 +71385,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 12.5, y: -10}
+  m_AnchoredPosition: {x: 12.5, y: 10}
   m_SizeDelta: {x: -25, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1523271192
@@ -71443,7 +71443,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -71885,7 +71885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.49803922}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.12156863}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -84243,7 +84243,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 800, y: 80}
+  m_CellSize: {x: 1350, y: 80}
   m_Spacing: {x: 0, y: 15}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -89652,9 +89652,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BgmClips:
-  - {fileID: 8300000, guid: 280e18c3fe0a52641aee51291e63e285, type: 3}
-  - {fileID: 8300000, guid: d00613518f321ea479b9447cb4b35284, type: 3}
-  - {fileID: 8300000, guid: 02f9acfb54052ed499f4cc48f6cf020e, type: 3}
+  - {fileID: 8300000, guid: 7485ae8a464d4444d844c0b1b59c57ce, type: 3}
+  - {fileID: 8300000, guid: 8d16c54d9738e82409f96af6f5d719e3, type: 3}
+  - {fileID: 8300000, guid: ab949edaeeb948b469cfa0fb74813523, type: 3}
+  - {fileID: 8300000, guid: 4bad2418c76f74347a73c55f7d3ecfde, type: 3}
   SfxClips_UI:
   - {fileID: 8300000, guid: ffdd252a833708e4db5b14672b1480f4, type: 3}
   SfxClips_Game:

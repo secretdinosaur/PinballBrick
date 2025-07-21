@@ -4,9 +4,12 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Collections;
+using Unity.VisualScripting;
 public partial class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance;
+
+    public Canvas canvas;
 
     void Awake()
     {
@@ -106,6 +109,7 @@ public partial class UpgradeManager
         int Cost = GetUpgradeCost(statNum);
         if (StatManager.instance.Persistent_stat.Gold >= Cost)
         {
+            SoundManager.instance.UpgradeSound();
             levels[statNum] += 1;
             StatManager.instance.Persistent_stat.Gold -= Cost;
             SetPersistentStat();
@@ -130,7 +134,7 @@ public partial class UpgradeManager
         StatManager.instance.Persistent_stat.EffectDamage = 5 + (levels[1] - levels[1] / 10 - 1) * 0.1f + levels[1] / 10 * 0.3f;
         StatManager.instance.Persistent_stat.BonusExp = 1 + (levels[2] - levels[2] / 10 - 1) * 0.03f + levels[2] / 10 * 0.1f;
         StatManager.instance.Persistent_stat.CriticalChance = (levels[3] - levels[3] / 10 - 1) * 0.005f + levels[3] / 10 * 0.02f;
-        StatManager.instance.Persistent_stat.CriticalDamage = 1 + (levels[4] - levels[4] / 10 - 1) * 0.005f + levels[4] / 10 * 0.02f;
+        StatManager.instance.Persistent_stat.CriticalDamage = 1.1f + (levels[4] - levels[4] / 10 - 1) * 0.005f + levels[4] / 10 * 0.02f;
         StatManager.instance.Persistent_stat.StartingBall = 5 + (levels[5] - levels[5] / 10 - 1) + levels[5] / 10 * 3;
 
         StatManager.instance.SavePersistentStats();
@@ -166,10 +170,14 @@ public partial class UpgradeManager
             if (StatManager.instance.Persistent_stat.Gold >= Cost)
             {
                 UpgradeButtons[i].GetComponent<Image>().material.SetFloat("_HasEnoughMoney", 1);
+                UpgradeButtons[i].GetComponent<Image>().material.SetColor("_Color", new Color(12 / 255f, 191 / 255f, 58 / 255f));
+                UpgradeButtons[i].GetComponent<Button>().interactable = true;
             }
             else
             {
-                UpgradeButtons[i].GetComponent<Image>().material.SetFloat("_HasEnoughMoney", 0);
+                UpgradeButtons[i].GetComponent<Image>().material.SetFloat("_HasEnoughMoney", 5);
+                UpgradeButtons[i].GetComponent<Image>().material.SetColor("_Color", new Color(191 / 255f, 12 / 255f, 15 / 255f));
+                UpgradeButtons[i].GetComponent<Button>().interactable = false;
             }
             switch (i)
             {
@@ -240,7 +248,23 @@ public partial class UpgradeManager
             Panels[i].GetComponentsInChildren<TMP_Text>()[2].text = GetUpgradeCost(i).ToString();
             Panels[i].GetComponentsInChildren<TMP_Text>()[3].text = LevelList[i].ToString();
         }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(canvas.GetComponent<RectTransform>());
+        canvas.GetComponent<RectTransform>().ForceUpdateRectTransforms();
         UpdateGoldUI();
+        canvas.gameObject.SetActive(false);
+        canvas.gameObject.SetActive(true);
+        UpgradeButtons[0].GetComponent<Image>().SetLayoutDirty();
+        UpgradeButtons[1].GetComponent<Image>().SetLayoutDirty();
+        UpgradeButtons[2].GetComponent<Image>().SetLayoutDirty();
+        UpgradeButtons[3].GetComponent<Image>().SetLayoutDirty();
+        UpgradeButtons[4].GetComponent<Image>().SetLayoutDirty();
+        UpgradeButtons[5].GetComponent<Image>().SetLayoutDirty();
+        UpgradeButtons[0].GetComponent<Image>().SetAllDirty();
+        UpgradeButtons[1].GetComponent<Image>().SetAllDirty();
+        UpgradeButtons[2].GetComponent<Image>().SetAllDirty();
+        UpgradeButtons[3].GetComponent<Image>().SetAllDirty();
+        UpgradeButtons[4].GetComponent<Image>().SetAllDirty();
+        UpgradeButtons[5].GetComponent<Image>().SetAllDirty();
     }
 
     public void UpdateGoldUI()
@@ -256,6 +280,31 @@ public partial class UpgradeManager
         else
             Cost = (int)(UpgradeInfo.UpgradeBasicCosts[statNum] * Mathf.Pow(UpgradeCostCoefficient[statNum], levels[statNum])) * 2;
         return Cost;
+    }
+
+    public void InitializeStat()
+    {
+        int totalGold = 0;
+        for (int statNum = 0; statNum < levels.Length; statNum++)
+        {
+            float baseCost = UpgradeInfo.UpgradeBasicCosts[statNum];
+            float coeff = UpgradeCostCoefficient[statNum];
+
+            for (int lvl = 0; lvl < levels[statNum]; lvl++)
+            {
+                int cost = (int)(baseCost * Mathf.Pow(coeff, lvl));
+                if (lvl % 10 == 9)
+                    cost *= 2; // 매 10레벨마다 비용 2배
+
+                totalGold += cost;
+            }
+        }
+        StatManager.instance.InitializePersistentStats();
+        StatManager.instance.GetGold(totalGold);
+        SetUpgradePanel();
+        SetPersistentStat();
+
+
     }
 } //Stat Upgrade
 

@@ -352,7 +352,7 @@ public partial class StatManager : MonoBehaviour
         Debug.Log("Load Successfully on local session");
 
     }
-    private void InitializePersistentStats() // Initialize Persistent Stat on local session
+    public void InitializePersistentStats() // Initialize Persistent Stat on local session
     {
         string json = JsonUtility.ToJson(initialPersistentStats, true);
         File.WriteAllText(Application.persistentDataPath + "/PinballBrick_persistentData.json", json);

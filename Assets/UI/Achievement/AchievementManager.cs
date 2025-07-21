@@ -15,6 +15,8 @@ public partial class AchievementManager : MonoBehaviour
 {
     public static AchievementManager instance;
 
+    public Canvas canvas;
+
     public List<IAchievement> AchievementList;
 
     public List<List<object>> InGameAchievementProgress;
@@ -115,6 +117,16 @@ public partial class AchievementManager : MonoBehaviour
 
         UpdateInGameAchievement();
         DailyQuestUpdate();
+
+        DailyQuest_1_Slider.interactable = false;
+        DailyQuest_2_Slider.interactable = false;
+        DailyQuest_3_Slider.interactable = false;
+
+        AchievementSlider_1.interactable = false;
+        AchievementSlider_2.interactable = false;
+        AchievementSlider_3.interactable = false;
+        AchievementSlider_4.interactable = false;
+        AchievementSlider_5.interactable = false;
     }
 
     public void AchievementProgressing(IAchievement achievement, int progress)
@@ -253,66 +265,92 @@ public partial class AchievementManager : MonoBehaviour
             AchievementSlider_5.value = PlayerPrefs.GetInt("5_Value");
             AchievementSlider_5.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(AchievementSlider_5.value / AchievementSlider_5.maxValue));
 
-            AchievementSlider_1.interactable = false;
-            AchievementSlider_2.interactable = false;
-            AchievementSlider_3.interactable = false;
-            AchievementSlider_4.interactable = false;
-            AchievementSlider_5.interactable = false;
+            CompleteButtons[0].GetComponent<Button>().interactable = false;
+            CompleteButtons[1].GetComponent<Button>().interactable = false;
+            CompleteButtons[2].GetComponent<Button>().interactable = false;
+            CompleteButtons[3].GetComponent<Button>().interactable = false;
+            CompleteButtons[4].GetComponent<Button>().interactable = false;
 
             if (PlayerPrefs.GetInt("1_Value") < PlayerPrefs.GetInt("1_Goal"))
             {
                 CompleteButtons[0].GetComponent<Image>().material.SetFloat("_Value", 0);
                 CompleteButtons[0].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
+                CompleteButtons[0].GetComponent<Button>().interactable = false;
             }
             else
             {
                 CompleteButtons[0].GetComponent<Image>().material.SetFloat("_Value", 1);
                 CompleteButtons[0].GetComponent<Image>().color = new Color(1, 1, 1);
+                CompleteButtons[0].GetComponent<Button>().interactable = true;
             }
 
             if (PlayerPrefs.GetInt("2_Value") < PlayerPrefs.GetInt("2_Goal"))
             {
                 CompleteButtons[1].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
                 CompleteButtons[1].GetComponent<Image>().material.SetFloat("_Value", 0);
+                CompleteButtons[1].GetComponent<Button>().interactable = false;
             }
             else
             {
                 CompleteButtons[1].GetComponent<Image>().material.SetFloat("_Value", 1);
                 CompleteButtons[1].GetComponent<Image>().color = new Color(1, 1, 1);
+                CompleteButtons[1].GetComponent<Button>().interactable = true;
             }
 
             if (PlayerPrefs.GetInt("3_Value") < PlayerPrefs.GetInt("3_Goal"))
             {
                 CompleteButtons[2].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
                 CompleteButtons[2].GetComponent<Image>().material.SetFloat("_Value", 0);
+                CompleteButtons[2].GetComponent<Button>().interactable = false;
             }
             else
             {
                 CompleteButtons[2].GetComponent<Image>().material.SetFloat("_Value", 1);
                 CompleteButtons[2].GetComponent<Image>().color = new Color(1, 1, 1);
+                CompleteButtons[2].GetComponent<Button>().interactable = true;
             }
 
             if (PlayerPrefs.GetInt("4_Value") < PlayerPrefs.GetInt("4_Goal"))
             {
                 CompleteButtons[3].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
                 CompleteButtons[3].GetComponent<Image>().material.SetFloat("_Value", 0);
+                CompleteButtons[3].GetComponent<Button>().interactable = false;
             }
             else
             {
                 CompleteButtons[3].GetComponent<Image>().material.SetFloat("_Value", 1);
                 CompleteButtons[3].GetComponent<Image>().color = new Color(1, 1, 1);
+                CompleteButtons[3].GetComponent<Button>().interactable = true;
             }
 
             if (PlayerPrefs.GetInt("5_Value") < PlayerPrefs.GetInt("5_Goal"))
             {
                 CompleteButtons[4].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
                 CompleteButtons[4].GetComponent<Image>().material.SetFloat("_Value", 0);
+                CompleteButtons[4].GetComponent<Button>().interactable = false;
             }
             else
             {
                 CompleteButtons[4].GetComponent<Image>().material.SetFloat("_Value", 1);
                 CompleteButtons[4].GetComponent<Image>().color = new Color(1, 1, 1);
+                CompleteButtons[4].GetComponent<Button>().interactable = true;
             }
+            LayoutRebuilder.ForceRebuildLayoutImmediate(canvas.GetComponent<RectTransform>());
+            canvas.GetComponent<RectTransform>().ForceUpdateRectTransforms();
+            canvas.gameObject.SetActive(false);
+            canvas.gameObject.SetActive(true);
+            CompleteButtons[0].GetComponent<Image>().SetLayoutDirty();
+            CompleteButtons[1].GetComponent<Image>().SetLayoutDirty();
+            CompleteButtons[2].GetComponent<Image>().SetLayoutDirty();
+            CompleteButtons[3].GetComponent<Image>().SetLayoutDirty();
+            CompleteButtons[4].GetComponent<Image>().SetLayoutDirty();
+            CompleteButtons[0].GetComponent<Image>().SetAllDirty();
+            CompleteButtons[1].GetComponent<Image>().SetAllDirty();
+            CompleteButtons[2].GetComponent<Image>().SetAllDirty();
+            CompleteButtons[3].GetComponent<Image>().SetAllDirty();
+            CompleteButtons[4].GetComponent<Image>().SetAllDirty();
+
+
         }
     }
 
@@ -511,22 +549,31 @@ public partial class AchievementManager //daily quest
             DailyQuest_3_Slider.value = DailyQuestSet[2].QuestProgressValue;
             DailyQuest_3_Slider.GetComponentsInChildren<Image>()[1].material.SetFloat("_Value", Mathf.Clamp01(DailyQuest_3_Slider.value / DailyQuest_3_Slider.maxValue));
 
-            DailyQuest_1_Slider.interactable = false;
-            DailyQuest_2_Slider.interactable = false;
-            DailyQuest_3_Slider.interactable = false;
+            CompleteButtons[5].GetComponent<Button>().interactable = false;
+            CompleteButtons[6].GetComponent<Button>().interactable = false;
+            CompleteButtons[7].GetComponent<Button>().interactable = false;
 
             if (DailyQuestSet[0].QuestProgressValue >= DailyQuestSet[0].QuestGoal && PlayerPrefs.GetInt("isGetDailyQuest1Reward") == 0)
+            {
+                CompleteButtons[5].GetComponent<Button>().interactable = true;
                 CompleteButtons[5].GetComponent<Image>().color = new Color(1, 1, 1);
+            }
             else
                 CompleteButtons[5].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
 
             if (DailyQuestSet[1].QuestProgressValue >= DailyQuestSet[1].QuestGoal && PlayerPrefs.GetInt("isGetDailyQuest2Reward") == 0)
+            {
+                CompleteButtons[6].GetComponent<Button>().interactable = true;
                 CompleteButtons[6].GetComponent<Image>().color = new Color(1, 1, 1);
+            }
             else
                 CompleteButtons[6].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
 
             if (DailyQuestSet[2].QuestProgressValue >= DailyQuestSet[2].QuestGoal && PlayerPrefs.GetInt("isGetDailyQuest3Reward") == 0)
+            {
                 CompleteButtons[7].GetComponent<Image>().color = new Color(1, 1, 1);
+                CompleteButtons[7].GetComponent<Button>().interactable = true;
+            }
             else
                 CompleteButtons[7].GetComponent<Image>().color = new Color(77 / 255f, 77 / 255f, 77 / 255f);
             CompleteButtons[5].GetComponent<Image>().material.SetFloat("_Value", 0);
@@ -538,19 +585,35 @@ public partial class AchievementManager //daily quest
                 CompleteButtons[5].GetComponent<Image>().color = new Color(1, 1, 1);
                 CompleteButtons[5].GetComponent<Image>().material.SetFloat("_Value", 1);
                 CompleteButtons[5].GetComponentInChildren<TextMeshProUGUI>().text = "Clear";
+                CompleteButtons[5].GetComponent<Button>().interactable = false;
+
             }
             if (DailyQuestSet[1].isCleared)
             {
                 CompleteButtons[6].GetComponent<Image>().color = new Color(1, 1, 1);
                 CompleteButtons[6].GetComponent<Image>().material.SetFloat("_Value", 1);
                 CompleteButtons[6].GetComponentInChildren<TextMeshProUGUI>().text = "Clear";
+                CompleteButtons[6].GetComponent<Button>().interactable = false;
+
             }
             if (DailyQuestSet[2].isCleared)
             {
                 CompleteButtons[7].GetComponent<Image>().color = new Color(1, 1, 1);
                 CompleteButtons[7].GetComponent<Image>().material.SetFloat("_Value", 1);
                 CompleteButtons[7].GetComponentInChildren<TextMeshProUGUI>().text = "Clear";
+                CompleteButtons[7].GetComponent<Button>().interactable = false;
+
             }
+            LayoutRebuilder.ForceRebuildLayoutImmediate(canvas.GetComponent<RectTransform>());
+            canvas.GetComponent<RectTransform>().ForceUpdateRectTransforms();
+            canvas.gameObject.SetActive(false);
+            canvas.gameObject.SetActive(true);
+            CompleteButtons[5].GetComponent<Image>().SetLayoutDirty();
+            CompleteButtons[6].GetComponent<Image>().SetLayoutDirty();
+            CompleteButtons[7].GetComponent<Image>().SetLayoutDirty();
+            CompleteButtons[5].GetComponent<Image>().SetAllDirty();
+            CompleteButtons[6].GetComponent<Image>().SetAllDirty();
+            CompleteButtons[7].GetComponent<Image>().SetAllDirty();
         }
 
     }
@@ -645,59 +708,59 @@ public partial class AchievementManager
         if (SceneManager.GetActiveScene().name == "Main")
         {
             AchievementName_1 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Level Up/Name").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Level Up/Name").GetComponent<TMP_Text>();
             AchievementName_2 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Bricks/Name").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Bricks/Name").GetComponent<TMP_Text>();
             AchievementName_3 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Spawned Balls/Name").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Spawned Balls/Name").GetComponent<TMP_Text>();
             AchievementName_4 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Passed Waves/Name").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Passed Waves/Name").GetComponent<TMP_Text>();
             AchievementName_5 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Boss Bricks/Name").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Boss Bricks/Name").GetComponent<TMP_Text>();
 
             AchievementProgress_1 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Level Up/Slider/Progress").GetComponent<TMP_Text>();
-            AchievementProgress_2 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Bricks/Slider/Progress").GetComponent<TMP_Text>();
-            AchievementProgress_3 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Spawned Balls/Slider/Progress").GetComponent<TMP_Text>();
-            AchievementProgress_4 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Passed Waves/Slider/Progress").GetComponent<TMP_Text>();
-            AchievementProgress_5 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Boss Bricks/Slider/Progress").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Level Up/Slider/Progress").GetComponent<TMP_Text>();
+            AchievementProgress_2 = GameObject.Find("Canvas").                  
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Bricks/Slider/Progress").GetComponent<TMP_Text>();
+            AchievementProgress_3 = GameObject.Find("Canvas").                  
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Spawned Balls/Slider/Progress").GetComponent<TMP_Text>();
+            AchievementProgress_4 = GameObject.Find("Canvas").                  
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Passed Waves/Slider/Progress").GetComponent<TMP_Text>();
+            AchievementProgress_5 = GameObject.Find("Canvas").                  
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Boss Bricks/Slider/Progress").GetComponent<TMP_Text>();
 
             AchievementLevel_1 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Level Up/Level").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Level Up/Level").GetComponent<TMP_Text>();
             AchievementLevel_2 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Bricks/Level").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Bricks/Level").GetComponent<TMP_Text>();
             AchievementLevel_3 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Spawned Balls/Level").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Spawned Balls/Level").GetComponent<TMP_Text>();
             AchievementLevel_4 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Passed Waves/Level").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Passed Waves/Level").GetComponent<TMP_Text>();
             AchievementLevel_5 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Boss Bricks/Level").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Boss Bricks/Level").GetComponent<TMP_Text>();
 
             AchievementReward_1 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Level Up/CompleteButton/Reward").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Level Up/CompleteButton/Reward").GetComponent<TMP_Text>();
             AchievementReward_2 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Bricks/CompleteButton/Reward").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Bricks/CompleteButton/Reward").GetComponent<TMP_Text>();
             AchievementReward_3 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Spawned Balls/CompleteButton/Reward").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Spawned Balls/CompleteButton/Reward").GetComponent<TMP_Text>();
             AchievementReward_4 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Passed Waves/CompleteButton/Reward").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Passed Waves/CompleteButton/Reward").GetComponent<TMP_Text>();
             AchievementReward_5 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Boss Bricks/CompleteButton/Reward").GetComponent<TMP_Text>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Boss Bricks/CompleteButton/Reward").GetComponent<TMP_Text>();
 
             AchievementSlider_1 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Level Up/Slider").GetComponent<Slider>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Level Up/Slider").GetComponent<Slider>();
             AchievementSlider_2 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Bricks/Slider").GetComponent<Slider>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Bricks/Slider").GetComponent<Slider>();
             AchievementSlider_3 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Spawned Balls/Slider").GetComponent<Slider>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Spawned Balls/Slider").GetComponent<Slider>();
             AchievementSlider_4 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Passed Waves/Slider").GetComponent<Slider>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Passed Waves/Slider").GetComponent<Slider>();
             AchievementSlider_5 = GameObject.Find("Canvas").
-                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Scroll View/Viewport/Content/Destroyed Boss Bricks/Slider").GetComponent<Slider>();
+                transform.Find("Scroll View/Viewport/Content/Mission/Achievement/Panels/Destroyed Boss Bricks/Slider").GetComponent<Slider>();
 
             DailyQuest_1_Name = GameObject.Find("Canvas").
                 transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/Panels/DailyQuest_1/Name").GetComponent<TMP_Text>();

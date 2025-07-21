@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 708748481802058043, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_SortingOrder
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 2930037138640383005, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -55,6 +59,10 @@ PrefabInstance:
     - target: {fileID: 5333168213614402114, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
       propertyPath: m_Name
       value: RebornBrick
+      objectReference: {fileID: 0}
+    - target: {fileID: 8148410119273561135, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
+      propertyPath: m_SortingOrder
+      value: -3
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
