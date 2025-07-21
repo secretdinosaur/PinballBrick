@@ -250,6 +250,8 @@ public class GameManager : MonoBehaviour
     {
         if (!isGameEnded)
         {
+            StopCoroutine(BrickManager.Instance.GameOverTimerRoutine);
+            BrickManager.Instance.GameOverTimerSlider.gameObject.SetActive(false);
             SoundManager.instance.GameOverSound();
             isGameEnded = true;
             CameraManager.instance.ShakeCamera();

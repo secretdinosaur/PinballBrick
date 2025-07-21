@@ -170,4 +170,27 @@ public partial class AugmentManager
             ExceptedAugmentNumber++;
         }
     }
+    public void UnlockAugmentByType(string Type)
+    {
+        foreach (IAugment augment in augmentsSet)
+        {
+            if (exceptionAugments.Contains(augment) && augment.Type == Type)
+            {
+                exceptionAugments.Remove(augment);
+                ExceptedAugmentNumber--;
+            }
+        }
+    }
+
+    public void LockAugmentByType(string Type)
+    {
+        foreach (IAugment augment in augmentsSet)
+        {
+            if (!exceptionAugments.Contains(augment) && augment.Type == Type)
+            {
+                exceptionAugments.Add(augment);
+                ExceptedAugmentNumber++;
+            }
+        }
+    }
 }

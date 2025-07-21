@@ -194,7 +194,7 @@ public static partial class DamageManager //Special Effect Attack
         if (!brick.IsSpecialBrick) brick.ShowText(FinalDamage.ToString("F1"), "Lightning", isCritical);
     }
 
-    public static IEnumerator DamageByCurse(IBrick brick, Vector2? StartingPos)
+    public static void DamageByCurse(IBrick brick, Vector2? StartingPos)
     {
         if (StartingPos == null)
             StartingPos = new Vector2(Random.Range(-1.5f,1.5f), -10);
@@ -206,7 +206,7 @@ public static partial class DamageManager //Special Effect Attack
         if (brick.BrickType == "IgnoreBrick")
         {
             if (brick.GetComponent<IgnoreBrick>().Ignoring)
-                yield break;
+                return;
             else
                 brick.GetComponent<IgnoreBrick>().StartCoroutine(brick.GetComponent<IgnoreBrick>().IgnoreDamage());
         }
@@ -223,9 +223,13 @@ public static partial class DamageManager //Special Effect Attack
                 ? 1
                 : brick.DecayDamageCalculate(damage);
         SoundManager.instance.CurseSound(AugmentManager.instance.CurseDamageValue);
-        yield return new WaitForSeconds(0.5f);
-        brick.HP -= FinalDamage;
-        if (!brick.IsSpecialBrick) brick.ShowText(FinalDamage.ToString("F1"), "Curse", isCritical);
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(0.5f)
+           .AppendCallback(() =>
+           {
+               brick.HP -= FinalDamage;
+               if (!brick.IsSpecialBrick) brick.ShowText(FinalDamage.ToString("F1"), "Curse", isCritical); ;
+           });
     }
     
     public static void ArbitraryDamageAttack(IBrick brick, float damage, bool isCritical, string damageText, string DamageType)
@@ -636,6 +640,14 @@ public class BrickEffectManager : MonoBehaviour
         {
             SoundManager.instance.CurseSound(multipleCount / 10 + AugmentManager.instance.CurseDamageValue - 1);
             VisualEffectManager.Instance.SpawnCurseEffect(brick.transform.position, StartingPos, multipleCount);
+            if (AugmentManager.instance.determineAugment(typeof(Cursebolt)))
+            {
+                DamageManager.DamageByLightningEffect(brick, 1, 1, "Lightning");
+            }
+            else if (AugmentManager.instance.determineAugment(typeof(Duality)))
+            {
+                DamageManager.HolyRainDamageAttack(brick);
+            }
             yield return new WaitForSeconds(0.2f);
             multipleCount += 1.3f;
             brick.HP -= FinalDamage;

@@ -7200,7 +7200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b9492d0aa1ce4c46af188356a5516a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
+  canvas: {fileID: 2055792775}
   CompleteButtons:
   - {fileID: 786781293}
   - {fileID: 855280090}
