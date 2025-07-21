@@ -54,10 +54,10 @@ public class BrickManager : MonoBehaviour
     public int NextBossSpawnWave;
     public int BossSpawnWaveNumber;
     public bool isBossSpawned;
-    private Coroutine GameOverTimerRoutine;
+    public Coroutine GameOverTimerRoutine;
 
     public float GameOverTimer;
-    private Slider GameOverTimerSlider;
+    public Slider GameOverTimerSlider;
 
     private bool WavePause;
     public Coroutine WaveRoutine;
@@ -180,6 +180,7 @@ public class BrickManager : MonoBehaviour
             if (GameOverTimerRoutine != null)
                 StopCoroutine(GameOverTimerRoutine);
             GameOverTimer = 60.0f;
+            GameOverTimerSlider.gameObject.SetActive(false);
 
             if (AugmentManager.instance.determineAugment(typeof(DoubleBoss)))
             {
@@ -196,6 +197,7 @@ public class BrickManager : MonoBehaviour
                     if (GameOverTimerRoutine != null)
                         StopCoroutine(GameOverTimerRoutine);
                     GameOverTimer = 60.0f;
+                    GameOverTimerSlider.gameObject.SetActive(false);
                 }
                 else
                 {
@@ -752,6 +754,7 @@ public class BrickManager : MonoBehaviour
                     if (GameOverTimerRoutine != null)
                         StopCoroutine(GameOverTimerRoutine);
                     GameOverTimer = 60.0f;
+                    GameOverTimerSlider.gameObject.SetActive(false);
                 }   
             }
         }
