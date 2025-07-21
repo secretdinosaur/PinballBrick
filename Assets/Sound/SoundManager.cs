@@ -519,4 +519,13 @@ public class SoundManager : MonoBehaviour
 
         return audio;
     }
+
+    public void GameOverSound()
+    {
+        AudioClip clip = SfxClips_Game[15];
+        AudioSource audio = Pool.GetFromPool<SoundObject>().GetComponent<AudioSource>();
+        audio.volume = SfxVolumeSlider.value * 1.75f;
+        audio.PlayOneShot(clip);
+        StartCoroutine(WaitForAudioFinish(audio, clip.length));
+    }
 }

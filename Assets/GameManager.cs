@@ -250,6 +250,7 @@ public class GameManager : MonoBehaviour
     {
         if (!isGameEnded)
         {
+            SoundManager.instance.GameOverSound();
             isGameEnded = true;
             CameraManager.instance.ShakeCamera();
             RecordStatistics.Playtime += TimeManager.instance.time;
