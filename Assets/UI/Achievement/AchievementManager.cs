@@ -552,6 +552,7 @@ public partial class AchievementManager //daily quest
                 CompleteButtons[7].GetComponentInChildren<TextMeshProUGUI>().text = "Clear";
             }
         }
+
     }
 
     public void OnDailyQuestClear_1()
