@@ -19,7 +19,16 @@ public class ScrollMove : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     {
         if (scrollRect == null)
             scrollRect = GetComponent<ScrollRect>();
+
+        for (int j = 0; j < 5; j++)
+        {
+            UnderBarButtons[j].GetComponent<Image>().material.SetFloat("_Alpha", 1.5f);
+            UnderBarButtons[j].transform.localScale = Vector3.one * 1f;
+        }
+        UnderBarButtons[2].GetComponent<Image>().material.SetFloat("_Alpha", 2.5f);
+        UnderBarButtons[2].transform.localScale = Vector3.one * 1.1f;
     }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         Startpos = content.anchoredPosition.x;
