@@ -117,16 +117,6 @@ public partial class AchievementManager : MonoBehaviour
 
         UpdateInGameAchievement();
         DailyQuestUpdate();
-
-        DailyQuest_1_Slider.interactable = false;
-        DailyQuest_2_Slider.interactable = false;
-        DailyQuest_3_Slider.interactable = false;
-
-        AchievementSlider_1.interactable = false;
-        AchievementSlider_2.interactable = false;
-        AchievementSlider_3.interactable = false;
-        AchievementSlider_4.interactable = false;
-        AchievementSlider_5.interactable = false;
     }
 
     public void AchievementProgressing(IAchievement achievement, int progress)
@@ -792,6 +782,16 @@ public partial class AchievementManager
 
             DailyQuestResetTimer = GameObject.Find("Canvas").
                 transform.Find("Scroll View/Viewport/Content/Mission/Daily Mission/ResetTimer").GetComponent<TMP_Text>();
+
+            DailyQuest_1_Slider.interactable = false;
+            DailyQuest_2_Slider.interactable = false;
+            DailyQuest_3_Slider.interactable = false;
+
+            AchievementSlider_1.interactable = false;
+            AchievementSlider_2.interactable = false;
+            AchievementSlider_3.interactable = false;
+            AchievementSlider_4.interactable = false;
+            AchievementSlider_5.interactable = false;
 
             UpdateInGameAchievement();
             DailyQuestUpdate();
