@@ -18,6 +18,14 @@ public class GoldSpawn_Achievement : MonoBehaviour
         int[] goldValues = { 100, 10, 1 };
         string[] goldNames = { "Gold3", "Gold2", "Gold1" };
 
+        if (amount >= 1000)
+        {
+            for(int i = 0; i <  goldValues.Length; i++)
+            {
+                 goldValues[i] *= (amount / 100);
+            }
+        }
+
         for (int i = 0; i < goldValues.Length; i++)
         {
             int goldValue = goldValues[i];
@@ -27,12 +35,16 @@ public class GoldSpawn_Achievement : MonoBehaviour
 
             for (int j = 0; j < count; j++)
             {
-                SpawnGoldByType(goldName, position);
+                SpawnGoldByType(goldName, position, goldValue);
             }
+        }
+        if(amount >= 1)
+        {
+            StatManager.instance.GetGold(amount);
         }
     }
 
-    private void SpawnGoldByType(string itemName, Vector2 position)
+    private void SpawnGoldByType(string itemName, Vector2 position, int amount)
     {
         Type type = Type.GetType(itemName);
         var method = typeof(PoolManager).GetMethod("GetFromPool");
@@ -42,9 +54,9 @@ public class GoldSpawn_Achievement : MonoBehaviour
         item.transform.position = position;
         item.ItemName = itemName;
 
-        if (itemName == "Gold1") item.GetComponent<Gold1>().GoldAmount = 1;
-        if (itemName == "Gold2") item.GetComponent<Gold2>().GoldAmount = 10;
-        if (itemName == "Gold3") item.GetComponent<Gold3>().GoldAmount = 100;
+        if (itemName == "Gold1") item.GetComponent<Gold1>().GoldAmount = amount;
+        if (itemName == "Gold2") item.GetComponent<Gold2>().GoldAmount = amount;
+        if (itemName == "Gold3") item.GetComponent<Gold3>().GoldAmount = amount;
 
         item.MoveItem_Main();
     }
