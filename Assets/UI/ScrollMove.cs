@@ -9,6 +9,8 @@ public class ScrollMove : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     public int itemCount = 3; 
     public float itemSize = 1440;
 
+    public GameObject BackgroundGame;
+
     private float targetPosition;
     float Startpos;
     float Endpos;
@@ -46,6 +48,14 @@ public class ScrollMove : MonoBehaviour, IEndDragHandler, IBeginDragHandler
         {
             targetPosition = -(CurrentIndex - 1) * itemSize - 720;
             CurrentIndex -= 1;
+        }
+        if(CurrentIndex != 2)
+        {
+            BackgroundGame.SetActive(false);
+        }
+        else
+        {
+            BackgroundGame.SetActive(true);
         }
         for (int j = 0; j < 5; j++)
         {
