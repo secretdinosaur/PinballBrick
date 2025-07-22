@@ -420,6 +420,23 @@ public class AntiGravity : FieldAugment
     {
         while (true)
         {
+            
+            AugmentManager.instance.StartCoroutine(AntiGravityEffect(false));
+            BallManager.Instance.isAntiGravity = false;
+
+            foreach (Ball ball in BallManager.Instance.InGameBall)
+            {
+                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                rb.gravityScale = 0.5f;
+            }
+            foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
+            {
+                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
+                rb.gravityScale = 0.5f;
+            }
+
+            yield return new WaitForSeconds(Cooldown);
+
             BallManager.Instance.isAntiGravity = true;
 
             foreach (Ball ball in BallManager.Instance.InGameBall)
@@ -439,21 +456,7 @@ public class AntiGravity : FieldAugment
 
             AugmentManager.instance.StartCoroutine(AntiGravityEffect(true));
             yield return new WaitForSeconds(Duration);
-            AugmentManager.instance.StartCoroutine(AntiGravityEffect(false));
-            BallManager.Instance.isAntiGravity = false;
 
-            foreach (Ball ball in BallManager.Instance.InGameBall)
-            {
-                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
-                rb.gravityScale = 0.5f;
-            }
-            foreach (Ball ball in BallManager.Instance.InGameSpecialBall)
-            {
-                Rigidbody2D rb = ball.gameObject.GetComponent<Rigidbody2D>();
-                rb.gravityScale = 0.5f;
-            }
-
-            yield return new WaitForSeconds(Cooldown);
         }
     }
 
