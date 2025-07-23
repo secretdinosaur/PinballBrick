@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
 
         RecordStatistics = new StatisticsSet();
 
-        adUnitId = "ca-app-pub-3940256099942544/1033173712";
+        adUnitId = "ca-app-pub-4642784601432021/4380194092";
         _interstitialAd = null;
         LoadAds();
 

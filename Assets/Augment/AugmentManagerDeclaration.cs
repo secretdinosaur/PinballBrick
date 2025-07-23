@@ -246,8 +246,7 @@ public partial class AugmentManager : MonoBehaviour //Declaration
 
         List<IAugment> TestAugments = new List<IAugment>
         {
-            new AntiGravity(),
-            new ChangeNormalToGlass()
+            
         };
 
         foreach (IAugment augment in TestAugments)
