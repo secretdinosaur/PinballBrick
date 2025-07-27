@@ -1,25 +1,35 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneMove : MonoBehaviour
 {
+    public GameObject Loading;
     public void GoToMain()
     {
-        SceneManager.LoadScene("Main");
+        StartCoroutine(LoadScene("Main"));
     }
 
     public void GoToGame()
     {
-        SceneManager.LoadScene("Game");
+        StartCoroutine(LoadScene("Game"));
     }
 
-    public void GoToHighScore()
+    public void GoToTitle()
     {
-        SceneManager.LoadScene("HighScore");
+        StartCoroutine(LoadScene("Title"));
     }
 
-    public void GoToShop()
+    private IEnumerator LoadScene(string sceneName)
     {
-        SceneManager.LoadScene("Shop");
+        AsyncOperation asyncOper = SceneManager.LoadSceneAsync(sceneName);
+        GameObject LoadingPanel = Instantiate(Loading, GameObject.Find("Canvas").transform);
+        Slider slider = LoadingPanel.GetComponentInChildren<Slider>();
+        while (!asyncOper.isDone)
+        {
+            slider.value = asyncOper.progress;
+            yield return null;
+        }
     }
 }

@@ -461,7 +461,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac38ddb599cd4c47a912205714d8cc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dices: []
   IsRolling: 0
 --- !u!114 &160033618
 MonoBehaviour:
@@ -2000,6 +1999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolManager: {fileID: 0}
+  ItemInfo: {fileID: 0}
 --- !u!114 &535793919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4419,9 +4419,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34a86ae4ccff6854286b10139bad7c39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BrickStage: 1
+  HPPool: []
   CurrentBricks: []
-  Brick: {fileID: 4578290841325250270, guid: 40ee803e6939e2b4499a3707f777b2dd, type: 3}
+  BrickInfo: {fileID: 0}
+  availablePositions: []
+  usingPositions: []
+  MainBrick: {fileID: 0}
+  BigBossBrick: {fileID: 0}
+  SpecialBrickSpawnChance: 0
+  SpecialBrickSpawnChanceValue: 0
+  isRapid: 0
+  RapidStageChance: 0
+  RapidStageChanceValue: 0
+  BaseBrickSpawnValue: 0
+  BaseBrickHealthValue: 0
+  BaseBossHealthValue: 0
+  BaseSpawnTimeValue: 0
+  BaseWaitingTimeValue: 0
+  BaseBossSpawnValue: 0
+  NextBossSpawnWave: 0
+  BossSpawnWaveNumber: 0
+  BrickExpValue:
+  - 10
+  - 20
+  - 12.5
+  - 20
+  - 15.5
+  - 12.5
+  - 15.5
+  - 20
+  - 10
 --- !u!114 &1268440066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4504,11 +4531,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Persistent_stat:
     AttackDamage: 0
+    EffectDamage: 0
+    AttackDamageMultiplier: 0
+    EffectDamageMultiplier: 0
     StartingBall: 0
     BonusExp: 0
-    ItemDropChance: 0
+    BonusGold: 0
     CriticalChance: 0
     CriticalDamage: 0
+    Gold: 0
+    AttackDamageLevel: 0
+    EffectDamageLevel: 0
+    BonusEXPLevel: 0
+    BonusGoldLevel: 0
+    CriChanceLevel: 0
+    CriDamageLevel: 0
+    StartingBallLevel: 0
   Temporary_stat:
     StatLevel: 
     AttackDamage: 0
@@ -4518,9 +4556,12 @@ MonoBehaviour:
     EffectDamage: 0
     EffectDuration: 0
     GoldGain: 0
+    ExpGain: 0
+    SummonBall: 0
   statMultiplier:
     AttackDamageMultiplier: 0
     EffectDamageMultiplier: 0
+  isChangedStat: 0
 --- !u!114 &1274481334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4547,18 +4588,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelBar: {fileID: 0}
   LevelUpPanel: {fileID: 0}
-  StatPoints: 0
-  StatPointsTemp: 0
-  Temporary_Stat:
-    StatLevel: 
-    AttackDamage: 0
-    CriticalDamage: 0
-    CriticalChance: 0
-    BallSpeed: 0
-    EffectDamage: 0
-    EffectDuration: 0
-    GoldGain: 0
-  StatLevelTemp: 
+  CanvasForLevelUpPanel: {fileID: 0}
+  BaseStatUpValue: 0
+  BaseMaxExpValue: 0
+  OptionButtonSprites: []
+  OptionButtons: []
+  isThereRerolled: 0
+  RerollAugment: {fileID: 0}
 --- !u!114 &1274481336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5335,7 +5371,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891e30582599bb24f9f2130d1a873f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 2
   RotationSpeed: 300
   TargetAngle: 40
   CurrentAngle: 0
@@ -6468,7 +6503,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891e30582599bb24f9f2130d1a873f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 2
   RotationSpeed: -300
   TargetAngle: 40
   CurrentAngle: 0
@@ -7167,13 +7201,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d02ab0ae92952046be590bdd1864f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Persistent_Stat:
-    AttackDamage: 0
-    StartingBall: 0
-    BonusExp: 0
-    ItemDropChance: 0
-    CriticalChance: 0
-    CriticalDamage: 0
+  maxSpeed: 15
+  isOnFlamerower: 0
+  isAntiGravity: 0
+  PoolManager: {fileID: 0}
+  NormalBall: 
+  BallInfo: {fileID: 0}
+  LeftBallCount: 0
+  InGameBall: []
+  InGameSpecialBall: []
+  inGameBallPosition: []
+  inGameSpecialBallPosition: []
+  inGameBallCollider: []
+  inGameSpecialBallCollider: []
+  thereISPhoenix: 0
+  boxSize: {x: 5, y: 10}
+  SpecialBallList:
+  - GhostBall
+  - BombBall
+  BallList:
+  - GlassBall
+  - Ball
 --- !u!114 &2056700638
 MonoBehaviour:
   m_ObjectHideFlags: 0

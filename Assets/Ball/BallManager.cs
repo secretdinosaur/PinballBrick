@@ -7,6 +7,7 @@ using UnityEditor;
 using Random = UnityEngine.Random;
 using System.Collections;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class BallManager : MonoBehaviour
 {
@@ -22,6 +23,12 @@ public class BallManager : MonoBehaviour
     
     private Canvas canvas;
     private Camera camera;
+
+    public static Vector3 StartPosition = new Vector3(0f, -5f, 35);
+    public static float linearVelocityYValue = 10;
+
+    public int LeftBallCount;
+
     void Awake()
     {
         Instance = this;
@@ -30,11 +37,58 @@ public class BallManager : MonoBehaviour
         
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         camera = Camera.main;
+
+        LeftBallCount = 0;
+        StartCoroutine(CalInGameBallCount());
+    }
+
+    IEnumerator CalInGameBallCount()
+    {
+        float Timer = 3;
+        yield return new WaitForSeconds(5f);
+        while (true)
+        {
+            yield return new WaitUntil(() => InGameBall.Count == 0 && InGameSpecialBall.Count == 0);
+            while(InGameBall.Count == 0 && InGameSpecialBall.Count == 0 && Timer > 0)
+            {
+                Timer -= 0.1f;
+                yield return new WaitForSeconds(0.1f);
+            }
+            if(Timer <= 0)
+            {
+                break;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+        GameManager.instance.GameEnd();
+    }
+
+    private void Update()
+    {
+        if(InGameBall.Count == 0 && InGameSpecialBall.Count == 0)
+        {
+
+        }
+    }
+
+    public IEnumerator CreateStartingBall()
+    {
+        for(int i = 0; i < StatManager.instance.Persistent_stat.StartingBall; i++)
+        {
+            IBall ball = GetSpecificBall(NormalBall);
+            ball.transform.position = new Vector3(Random.Range(-2, 2), 6, 0);
+            ball.rb.linearVelocity = new Vector2(Random.value, 0);
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     public void CreateBall(int Num)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_60"))
+        Num *= AugmentManager.instance.SpawnBallAmount;
+        if (AugmentManager.instance.determineAugment(typeof(RollDiceBall)))
         {
             DiceManager.Instance.StartCoroutine(DiceManager.Instance.RollDices(Num, OnCreateBall));
         }
@@ -44,30 +98,83 @@ public class BallManager : MonoBehaviour
         }
     }
 
-    private void OnCreateBall(int diceSum)
+    public void OnCreateBall(int diceSum)
     {
-        for (int i = 0; i < diceSum; i++)
+        if (AugmentManager.instance.determineAugment(typeof(Concentrate)))
         {
-            IBall ball = GetSpecificBall(NormalBall);
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.1f)
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(diceSum * 0.2f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(diceSum * 0.2f);
+        }
+        else if (AugmentManager.instance.determineAugment(typeof(LonelyBall)))
+        {
+            LeftBallCount += diceSum;
+        }
+        else if (AugmentManager.instance.determineAugment(typeof(BallSwarm)))
+        {
+            LeftBallCount += diceSum;
+        }
+        else
+        {
+            for (int i = 0; i < diceSum; i++)
             {
-                IBall BombBall = GetSpecificBall("BombBall");
+                IBall ball = GetSpecificBall(NormalBall);
+                if (AugmentManager.instance.determineAugment(typeof(SpawnBombBall)) && Random.value < 0.1f)
+                {
+                    CreateBombBall(1);
+                }
             }
         }
     }
 
     public void CreateSpecificBall(int Num, string BallType, bool IsRebirth = false)
     {
-        for (int i = 0; i < Num; i++)
+        Num *= AugmentManager.instance.SpawnBallAmount;
+
+        if (AugmentManager.instance.determineAugment(typeof(Concentrate)))
         {
-            IBall ball = GetSpecificBall(BallType, IsRebirth);
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_46") && Random.value < 0.05f)
+            StatManager.instance.ChangeTemporaryStats_AttackDamage(Num * 0.2f);
+            StatManager.instance.ChangeTemporaryStats_EffectDamage(Num * 0.2f);
+        }
+        else if (AugmentManager.instance.determineAugment(typeof(LonelyBall)))
+        {
+            LeftBallCount += Num;
+        }
+        else if (AugmentManager.instance.determineAugment(typeof(BallSwarm)))
+        {
+            LeftBallCount += Num;
+        }
+        else
+        {
+            for (int i = 0; i < Num; i++)
             {
-                IBall BombBall = GetSpecificBall("Ball", IsRebirth);
+                IBall ball = GetSpecificBall(BallType, IsRebirth);
+                if (AugmentManager.instance.determineAugment(typeof(SpawnBombBall)) && Random.value < 0.05f)
+                {
+                    CreateBombBall(1);
+                }
             }
         }
     }
-    
+
+    public void CreateGhostBall(int Num, IBall DeadBall, bool IsRebirth = false)
+    {
+        Num *= AugmentManager.instance.SpawnBallAmount;
+        for (int i = 0; i < Num; i++)
+        {
+            IBall ball = GetSpecificBall("GhostBall", IsRebirth);
+            ball.GetComponent<GhostBall>().Init(DeadBall.GetComponent<SpriteRenderer>().sprite, DeadBall.BallBaseDamage);
+        }
+    }
+
+    public void CreateBombBall(int Num, bool IsRebirth = false)
+    {
+        Num *= AugmentManager.instance.SpawnBallAmount;
+        for (int i = 0; i < Num; i++)
+        {
+            IBall ball = GetSpecificBall("BombBall", IsRebirth);
+        }
+    }
+
     private IBall GetSpecificBall(string ballTypeName, bool IsRebirth = false)
     {
         IBall ball = null;
@@ -76,6 +183,8 @@ public class BallManager : MonoBehaviour
         var method = typeof(PoolManager).GetMethod("GetFromPool");
         var genericMethod = method.MakeGenericMethod(ballType);
         ball = (IBall)genericMethod.Invoke(PoolManager, null);
+        ball.StartPosition = StartPosition;
+        ball.rb.linearVelocityY = linearVelocityYValue;
         if (IsRebirth)
         {
             StartCoroutine(RebirthBallEffect(ball));
@@ -103,11 +212,38 @@ public class BallManager : MonoBehaviour
         }
     }
 
+    public void DestroyBallNum(int Num, bool isBallDied = false)
+    {
+        var ballsCopy = InGameBall.ToList();
+        if (isBallDied)
+        {
+            for (int i = 0; i < Mathf.Min(Num, ballsCopy.Count); i++)
+            {
+                StartCoroutine(BallRemoveEffect(InGameBall[i]));
+                InGameBall[i].BallDied();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Mathf.Min(Num, ballsCopy.Count); i++)
+            {
+                StartCoroutine(BallRemoveEffect(InGameBall[i]));
+                TakeBall(InGameBall[i]);
+            }
+        }  
+    }
+
+    private IEnumerator BallRemoveEffect(IBall ball)
+    {
+        VisualEffectManager.Instance.SpawnParticle("BallSacrifice", ball.transform.position, 30);
+        yield return null;
+    }
+
     public void TakeBall(IBall ball)
     {
         ball.GetComponent<Rigidbody2D>().angularVelocity = 0;
         ball.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0, 0);
-        ball.transform.position = new Vector2(0, -5);
+        ball.transform.position = new Vector3(0, -5, 35);
         
         Type ballType = Type.GetType(ball.BallType);
         var method = typeof(PoolManager).GetMethod("TakeToPool");
@@ -135,10 +271,26 @@ public class BallManager : MonoBehaviour
     }
     
     public List<IBall> InGameBall = new List<IBall>();
+    public List<IBall> InGameSpecialBall = new List<IBall>();
+
     public List<Transform> inGameBallPosition = new List<Transform>();
+    public List<Transform> inGameSpecialBallPosition = new List<Transform>();
+
     public List<Collider2D> inGameBallCollider = new List<Collider2D>();
+    public List<Collider2D> inGameSpecialBallCollider = new List<Collider2D>();
+
     public bool thereISPhoenix = false;
     public Vector2 boxSize = new Vector2(5f, 10f);
+
+    public List<string> SpecialBallList = new List<string>
+    {
+        "GhostBall", "BombBall"
+    };
+
+    public List<string> BallList = new List<string>
+    {
+        "GlassBall", "Ball"
+    };
 
     void FixedUpdate()
     {
@@ -153,11 +305,17 @@ public class BallManager : MonoBehaviour
         foreach (Collider2D collider in colliders)
         {
             IBall obj = collider.gameObject.GetComponent<IBall>();
-            if (obj != null && collider.gameObject.activeInHierarchy && !InGameBall.Contains(obj) && obj != this)
+            if (obj != null && collider.gameObject.activeInHierarchy && !InGameBall.Contains(obj) && obj != this && BallList.Contains(obj.BallType))
             {
                 InGameBall.Add(obj);
                 inGameBallPosition.Add(obj.gameObject.GetComponent<Transform>());
                 inGameBallCollider.Add(obj.gameObject.GetComponent<Collider2D>());
+            }
+            else if(obj != null && collider.gameObject.activeInHierarchy && !InGameSpecialBall.Contains(obj) && obj != this && SpecialBallList.Contains(obj.BallType))
+            {
+                InGameSpecialBall.Add(obj);
+                inGameSpecialBallPosition.Add(obj.gameObject.GetComponent<Transform>());
+                inGameSpecialBallCollider.Add(obj.gameObject.GetComponent<Collider2D>());
             }
         }
     }
@@ -167,6 +325,10 @@ public class BallManager : MonoBehaviour
         InGameBall.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
         inGameBallPosition.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
         inGameBallCollider.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
+
+        InGameSpecialBall.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
+        inGameSpecialBallPosition.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
+        inGameSpecialBallCollider.RemoveAll(ball => ball == null || !ball.gameObject.activeInHierarchy);
     }
     
     void OnDrawGizmos()

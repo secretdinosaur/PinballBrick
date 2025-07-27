@@ -4,13 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Random = UnityEngine.Random;
+using UnityEngine.UIElements;
 
 public partial class IBrick : MonoBehaviour
 {
     public int Point;
+    public float Exp;
     public float BasicHP;
     private float hp;
     public bool IsBoss = false;
+    public bool IsSpecialBrick = false;
+    public bool IsBigBoss = false;
     public TextMeshPro HPText;
     public string BrickType;
     public Transform BrickTransform;
@@ -19,7 +23,9 @@ public partial class IBrick : MonoBehaviour
     public float HpTemp;
     public float BallSpeed;
 
-    private SpriteRenderer spriteRenderer;
+    public BrickDetect detectArea;
+
+    public SpriteRenderer spriteRenderer;
     public LineRenderer lineRenderer;
 
     public GameObject PoisonEffect;
@@ -28,6 +34,7 @@ public partial class IBrick : MonoBehaviour
     public Coroutine Fire = null;
     public Coroutine Poison = null;
     public Coroutine Decay = null;
+    public Coroutine Curse = null;
     public Coroutine ExecutionCor = null;
     public Coroutine BrickHealCoroutine = null;
 
@@ -36,9 +43,7 @@ public partial class IBrick : MonoBehaviour
 
     private Collider2D Collider;
 
-    public bool IsNeedDelayedDIeForEffect = false;
-
-    public bool isGoldBrick;
+    public bool isBrickDie = false;
     public float HP
     {
         get { return hp; }
@@ -47,28 +52,46 @@ public partial class IBrick : MonoBehaviour
             hp = value;
             if (hp > HpTemp && HpTemp > 0) hp = HpTemp;
 
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_6"))
+            if (AugmentManager.instance.determineAugment(typeof(Execution)) && (BrickType != "ShieldBrick" 
+                || (BrickType == "ShieldBrick" && GetComponent<ShieldBrick>().IsShieldDestroyed)) && BrickType != "TwinBrick")
             {
-                if (hp <= HpTemp * 0.15 && hp > 0)
+                if (hp <= HpTemp * 0.15 && hp > 0 && HpTemp != 9999999 && !IsSpecialBrick)
                 {
                     ExecutionCor = StartCoroutine(Execution());
                 }
             }
-            if (hp <= 0)
+            if ((int)hp <= 0 && !isBrickDie)
             {
                 hp = 0;
                 HPText.enabled = false;
-                if (BrickType == "TwinBrick")
-                {
-                    GetComponentInParent<TwinBrick>().CheckBothBrickDead();
-                }
-                else if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+                if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
                 {
                     GetComponent<ShieldBrick>().DestroyShield();
                 }
-                else if (BrickType == "BlackBrick")
+                else if(BrickType == "TwinBrick" && !GetComponent<TwinBrick>().IsHpZero)
                 {
-                    GetComponent<BlackBrick>().WhiteBrick.isBlackBrickDied();
+                    StartCoroutine(GetComponent<TwinBrick>().StartRebirth());
+                    HPText.text = "10";
+                }
+                else if(BrickType == "RebornBrick")
+                {
+                    GetComponent<RebornBrick>().RebornProcess((count) =>
+                    {
+                        hp =
+                            count == 1 ? HpTemp * 0.7f :
+                            count == 0 ? HpTemp * 0.3f : HpTemp * 0.1f;
+                        if(hp <= 0)
+                        {
+                            hp = 1;
+                        }
+                        HPText.enabled = true;
+                    });
+                }
+                else if (IsBigBoss)
+                {
+                    AugmentManager.instance.AddAugment(AugmentManager.instance.augmentsSet.OfType<LevelUpAgain>().FirstOrDefault());
+                    BrickManager.Instance.BigBossBrick = null;
+                    BrickDie();
                 }
                 else
                 {
@@ -76,33 +99,38 @@ public partial class IBrick : MonoBehaviour
                     BrickDie();
                 }
             }
-            UpdateHPtext();
+            if(!IsSpecialBrick)
+                UpdateHPtext();
         }
     }
 
     public void BrickDie()
     {
+        foreach(IBrick brick in detectArea.NearbyBricks)
+        {
+            if (brick.BrickType == "AbsorbBrick")
+                brick.GetComponent<AbsorbBrick>().absorbHP(this);
+        }
+        if(BrickType == "TwinBrick") GetComponent<TwinBrick>().Twin = null;
+        if(BrickType == "HealBrick") spriteRenderer.material.SetColor("_Color", GetComponent<HealBrick>().startColor);
+        GameManager.instance.RecordStatistics.DestroyedBricks++;
+        if (IsBoss)
+            GameManager.instance.RecordStatistics.DestroyedBossBricks++;
+        if(IsSpecialBrick)
+            GameManager.instance.RecordStatistics.DestroyedSpecialBricks++;
         Fever.StartFever = true;
-        Fever.Instance.FeverCount *= 2;
+        Fever.Instance.CalFeverCount();
         Fever.Instance.FeverGauge = 100;
         ScoreManager.Instance.ContinuousScore += Point;
-        LevelManager.Instance.Exp += 20 * StatManager.instance.Persistent_stat.BonusExp;
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        LevelManager.Instance.GetExp(Exp);
+        foreach (IAugment Augment in AugmentManager.instance.activeAugments)
         {
             Augment.AfterBrickDieEffect(this);
         }
         //StopCoroutineAfterDie();
+        isBrickDie = true;
         BrickManager.Instance.TakeBrick(gameObject.GetComponent<IBrick>());
     }
-
-    /*
-    private void StopCoroutineAfterDie()
-    {
-        if(Fire != null) { BrickEffect.StopFire(); }
-        if(Poison !=  null) { BrickEffect.StopPoison(); }
-        if(Decay != null) { BrickEffect.StopDecay(); }
-    }
-    */
 
     public void ShowText(string Text, string DamageType, bool isCritical)
     {
@@ -125,38 +153,95 @@ public partial class IBrick : MonoBehaviour
 
     public void UpdateHPtext()
     {
+        if ((int)hp <= 0 && BrickType == "TwinBrick")
+        {
+            return;
+        }
+
         if (HPText != null)
         {
             HPText.text = ((int)hp).ToString();
+            HPText.color = IsBoss ? Color.red : Color.white;
+
         }
         else
         {
             HPText = GetComponentInChildren<TextMeshPro>();
             HPText.text = ((int)hp).ToString();
+            HPText.color = IsBoss ? Color.red : Color.white;
+
         }
+
+        if ((int)hp >= 100000)
+        {
+            HPText.fontSize = 2.7f;
+        }
+        else if ((int)hp >= 10000)
+        {
+            HPText.fontSize = 3.2f;
+        }
+        else if ((int)hp >= 1000)
+        {
+            HPText.fontSize = 4f;
+        }
+        else
+        {
+            HPText.fontSize = 5f;
+        }
+    }
+    public void Init(bool IsBoss, bool IsSpecialBrick, bool IsBigBoss, int Point, float Exp)
+    {
+        this.IsBoss = IsBoss;
+        this.IsSpecialBrick = IsSpecialBrick;
+        this.IsBigBoss = IsBigBoss;
+        this.Point = Point;
+        this.Exp = Exp;
+
+        if (IsBoss)
+            spriteRenderer.material.SetFloat("_IsBoss", 1);
+        else
+            spriteRenderer.material.SetFloat("_IsBoss", 0);
+
+        HPText.color = IsBoss ? Color.red : Color.white;
     }
     public void Start()
     {
         HPText = GetComponentInChildren<TextMeshPro>();
+        if(!IsSpecialBrick)
+            HPText.enabled = true;
+        else
+            HPText.enabled = false;
+
     }
     public void OnEnable()
     {
         HpTemp = 9999999;
-        HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
+        //To sync Twin's HP
+        if(BrickType == "TwinBrick")
+            HP = BasicHP * BrickManager.Instance.HPPool[1];
+        else
+            HP = BasicHP * BrickManager.Instance.HPPool[Random.Range(0, BrickManager.Instance.HPPool.Count)];
         HpTemp = HP;
-        
+
         GetComponents();
         spriteRenderer.enabled = true;
-        HPText.enabled = true;
+        if (!IsSpecialBrick)
+            HPText.enabled = true;
+        else
+            HPText.enabled = false;
         ExecutionObject1.transform.position = transform.position;
         ExecutionObject2.transform.position = transform.position;
-        isGoldBrick = false;
+        isBrickDie = false;
+        spriteRenderer.material.SetFloat("_Decay", 0);
+        if (detectArea.NearbyBricks.Contains(this))
+            detectArea.NearbyBricks.Remove(this);
     }
 
     public void GetComponents()
     {
         Collider = GetComponent<Collider2D>();
-        boxSize = new Vector2(2f, 2f);
+        detectArea = GetComponentInChildren<BrickDetect>();
+        detectArea.NearbyBricks.Clear();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         BrickTransform = GetComponent<Transform>();
         camera = Camera.main;
@@ -166,6 +251,10 @@ public partial class IBrick : MonoBehaviour
         if (spriteRenderer != null)
             UpdateOutline();
         BrickEffect = new BrickEffectManager(this);
+        spriteRenderer.enabled = true;
+        Collider.enabled = true;
+        ExecutionObject1.SetActive(false);
+        ExecutionObject2.SetActive(false);
     }
 
     public void UpdateOutline()
@@ -212,10 +301,11 @@ public partial class IBrick
 
     public void TakeDamage(IBall ball)
     {
+        if (!gameObject.activeSelf) return;
         RecentlyBall = ball;
         float PreviousCritChance = RecentlyBall.SpecialCriticalChance;
         RecentlyBall.AttackDelayTime = 0f;
-        if(RecentlyBall.AttackNumber % 3 == 0 && RecentlyBall.AttackNumber != 0)
+        if(RecentlyBall.AttackNumber % 4 == 0 && RecentlyBall.AttackNumber != 0)
         {
             RecentlyBall.SpecialCriticalChance = 1f;
         }
@@ -225,10 +315,12 @@ public partial class IBrick
 
     public void DamageByFireEffect(float effectDuration)
     {
+        if (!gameObject.activeSelf) return;
         BrickEffect.EffectStatusSet["Fire"].EffectStack +=
                 (BrickEffect.EffectStatusSet["Fire"].EffectStack != BrickEffect.EffectStatusSet["Fire"].EffectStackLimit) ? 1 : 0;
         if (Fire == null)
         {
+            SoundManager.instance.StartFireSound();
             Fire = StartCoroutine(BrickEffect.DamageByFireEffect(effectDuration));
         }
         else
@@ -238,18 +330,21 @@ public partial class IBrick
     }
     public void DamageByPoisonEffect(float effectDuration)
     {
+        if (!gameObject.activeSelf) return;
         BrickEffect.EffectStatusSet["Poison"].EffectStack +=
                 (BrickEffect.EffectStatusSet["Poison"].EffectStack != BrickEffect.EffectStatusSet["Poison"].EffectStackLimit) ? 1 : 0;
         if (Poison == null)
         {
             Poison = StartCoroutine(BrickEffect.DamageByPoisonEffect(effectDuration));
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_55"))
+            SoundManager.instance.PoisonSound();
+
+            if (AugmentManager.instance.determineAugment(typeof(DecayingPoison)))
             {
-                DecayEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.DecayDuration);
+                DecayEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.DecayDuration);
             }
-            else if (AugmentManager.instance.determineAugmentID("SPECIAL_56"))
+            else if (AugmentManager.instance.determineAugment(typeof(FlammablePoison)))
             {
-                DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration + AugmentManager.instance.effectDuration.FireDuration);
+                DamageByFireEffect(StatManager.instance.Temporary_stat.EffectDuration * AugmentManager.instance.effectDuration.FireDuration);
             }
         }
         else
@@ -259,10 +354,15 @@ public partial class IBrick
     }
     public void DecayEffect(float effectDuration)
     {
+        if (!gameObject.activeSelf) return;
         BrickEffect.EffectStatusSet["Decay"].EffectStack +=
                 (BrickEffect.EffectStatusSet["Decay"].EffectStack != BrickEffect.EffectStatusSet["Decay"].EffectStackLimit) ? 1 : 0;
         if (Decay == null)
         {
+            if (BrickType == "ShieldBrick" && !GetComponent<ShieldBrick>().IsShieldDestroyed)
+            {
+                return;
+            }
             Decay = StartCoroutine(BrickEffect.DecayEffect(effectDuration));
         }
         else
@@ -270,15 +370,34 @@ public partial class IBrick
             BrickEffect.DecayTimeUpdate(effectDuration);
         }
     }
-    
-    public void DamageByLightningEffect(float DamageAmount, int ParticleCount)
+
+    public void DamageByLightningEffect(float DamageAmount, int ParticleCount, string type = "Lightning")
     {
-        DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount);
+        if (!gameObject.activeSelf) return;
+        if(Random.value < AugmentManager.instance.effectChance.LightningChance)
+            DamageManager.DamageByLightningEffect(this, DamageAmount, ParticleCount, type);
     }
 
-    public void DamageByCurse()
+    public void DamageByCurse(Vector2? StartingPos = null)
     {
-        DamageManager.DamageByCurse(this);
+        if (!gameObject.activeSelf) return;
+        if (AugmentManager.instance.determineAugment(typeof(ContinuingCurseAttack)))
+        {
+            if(Curse == null)
+                StartCoroutine(BrickEffect.DamageByCurse2(StartingPos));
+        }
+        else
+        {
+            DamageManager.DamageByCurse(this, StartingPos);
+            if (AugmentManager.instance.determineAugment(typeof(Cursebolt)))
+            {
+                DamageByLightningEffect(1, 1);
+            }
+            else if (AugmentManager.instance.determineAugment(typeof(Duality)))
+            {
+                HolyRainAttack();
+            }
+        }
     }
 
     public float DecayDamageCalculate(float Damage)
@@ -291,50 +410,35 @@ public partial class IBrick
         DamageManager.AdditionalAttack(this, MaxAttackTime, TimeCount, DamageMultiflier);
     }
 
+    public void ExplosionAttack(float value)
+    {
+        DamageManager.ExplosionDamageAttack(this, value);
+    }
+
+    public void HolyRainAttack()
+    {
+        if (!gameObject.activeSelf) return;
+        BrickEffect.EffectStatusSet["Holy"].EffectStack +=
+                (BrickEffect.EffectStatusSet["Holy"].EffectStack != BrickEffect.EffectStatusSet["Holy"].EffectStackLimit) ? 1 : 0;
+        DamageManager.HolyRainDamageAttack(this);
+    }
+
     public void ArbitraryDamageAttack(float damage, bool isCritical, string damageText, string DamageType)
     {
         DamageManager.ArbitraryDamageAttack(this, damage, isCritical, damageText, DamageType);
     }
 }
 
-public partial class IBrick //Detect Nearby Bricks
-{
-    public List<IBrick> NearbyBricks = new List<IBrick>();
-    public Vector2 boxSize;
+public partial class IBrick
+{  
+    public IEnumerator Execution()
+    {
+        if (ExecutionCor != null) yield break;
+        ExecutionObject1.SetActive(true);
+        ExecutionObject2.SetActive(true);
 
-    void Update()
-    {
-        CollectNearbyBricks();
-        RemoveInactiveBricks();
-    }
-
-    void CollectNearbyBricks()
-    {
-        LayerMask detectionLayer = LayerMask.GetMask("Game");
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, boxSize, 0, detectionLayer);
-        foreach (Collider2D collider in colliders)
-        {
-            IBrick obj = collider.gameObject.GetComponent<IBrick>();
-            if (obj != null && collider.gameObject.activeInHierarchy && !NearbyBricks.Contains(obj) && obj != this)
-            {
-                NearbyBricks.Add(obj);
-            }
-        }
-    }
-
-    void RemoveInactiveBricks()
-    {
-        NearbyBricks.RemoveAll(brick => brick == null || !brick.gameObject.activeInHierarchy);
-    }
-    
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position, boxSize);
-    }
-
-    private IEnumerator Execution()
-    {
+        SoundManager.instance.ExecutionSound();
+        yield return new WaitForSecondsRealtime(0.02f);
         spriteRenderer.enabled = false;
         HPText.enabled = false;
         Collider.enabled = false;
@@ -347,9 +451,12 @@ public partial class IBrick //Detect Nearby Bricks
 
         Vector3 Execute1Dir;
         Vector3 Execute2Dir;
-
+        
         ExecutionObject1.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
         ExecutionObject2.GetComponent<SpriteRenderer>().material.SetFloat("_Rotation", RandomRadian);
+
+        ExecutionObject1.GetComponent<SpriteRenderer>().material.SetColor("_Color", spriteRenderer.material.color);
+        ExecutionObject2.GetComponent<SpriteRenderer>().material.SetColor("_Color", spriteRenderer.material.color);
 
         float Speed = 0.006f;
         if(Random.value < 0.5f)
@@ -371,21 +478,10 @@ public partial class IBrick //Detect Nearby Bricks
             ElapsedTime += Time.deltaTime;
             yield return null;
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
         hp -= 999999 + HpTemp;
         ShowText("EXECUTION", null, true);
         Collider.enabled = true;
         BrickDie();
-    }
-}
-
-public partial class IBrick //BlackHole Brick
-{
-    public bool isTouchedBlackHole = false;
-    public GameObject TouchedObject;
-    public void TouchedBlackHole(IBall ball)
-    {
-        isTouchedBlackHole = true;
-        TouchedObject = ball.gameObject;
     }
 }

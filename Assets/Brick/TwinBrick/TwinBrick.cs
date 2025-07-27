@@ -4,50 +4,64 @@ using UnityEngine.UI;
 using System.Collections;
 public class TwinBrick : IBrick
 {
-    bool IsWaitingHeal = false;
-    public LowerBrick LowerBrick;
+    public TwinBrick Twin = null;
+    public bool IsHpZero;
     private void OnEnable()
     {
         base.OnEnable();
-        HP = BasicHP * BrickManager.Instance.HPPool[0];
         BrickType = "TwinBrick";
-        GetComponents();
+        IsHpZero = false;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ball") && HP > 0)
+        if (collision.gameObject.CompareTag("Ball") && !IsHpZero)
         {
             TakeDamage(collision.gameObject.GetComponent<IBall>());
         }
     }
 
-    public void CheckBothBrickDead()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (HP <= 0 && LowerBrick.HP <= 0)
+        if (other.CompareTag("Ball"))
         {
-            IsWaitingHeal = false;
-            BrickDie();
-        }
-        else if (HP <= 0 || LowerBrick.HP <= 0)
-        {
-            if (!IsWaitingHeal)
-            {
-                if (gameObject.activeInHierarchy)
-                {
-                    StartCoroutine(HealAfter10s());
-
-                }
-            }
+            TakeDamage(other.gameObject.GetComponent<IBall>());
         }
     }
 
-    public IEnumerator HealAfter10s()
+    public IEnumerator StartRebirth()
     {
-        IsWaitingHeal = true;
-        yield return new WaitForSeconds(10);
+        GetComponent<Collider2D>().enabled = false;
+        IsHpZero = true;
+        float Timer = 10;
+        HPText.color = Color.blue;
 
-        if (HP < LowerBrick.HP) HP = LowerBrick.HP;
-        else LowerBrick.HP = HP;
-        IsWaitingHeal = false;
+        while (Timer > 0)
+        {
+            if (Twin.IsHpZero || !Twin.enabled || Twin == null)
+            {
+                IsHpZero = false;
+                Twin.IsHpZero = false;
+                GetComponent<Collider2D>().enabled = true;
+
+                if(Twin.enabled)
+                {
+                    Twin.IsHpZero = false;
+                    Twin.Twin = null;
+                    Twin.BrickDie();
+                }
+                Twin = null;
+                IsHpZero = false;
+                BrickDie();
+            }
+            HPText.text = Timer.ToString();
+            HPText.enabled = true;
+            yield return new WaitForSeconds(1);
+            Timer -= 1;
+        }
+        HP = Twin.HP;
+        GetComponent<Collider2D>().enabled = true;
+
+        HPText.color = IsBoss ? Color.red : Color.white;
+        IsHpZero = false;
     }
 }

@@ -7,13 +7,39 @@ using Random = UnityEngine.Random;
 public class BombBall : IBall
 {
     private int BoomCount;
+    bool isInstantBomb = false;
+
     void OnEnable()
     {
         base.OnEnable();
         BoomCount = 3;
         BallType = "BombBall";
         BallBaseDamage = 0;
-        StartCoroutine(StartBoomCount());
+        gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        isInstantBomb = AugmentManager.instance.determineAugment(typeof(InstantBombBall));
+        if (!isInstantBomb)
+        {
+            StartCoroutine(StartBoomCount());
+        }
+    }
+
+    public override void OnCollisionEnter2D(Collision2D collision)
+    {
+        base.OnCollisionEnter2D(collision);
+        if (isInstantBomb && collision.gameObject.CompareTag("Brick"))
+        {
+            BallManager.Instance.BallShowText(this, "Boom", null, false);
+            if (detectArea.BoomArea != null)
+            {
+                foreach (IBrick brick in detectArea.BoomArea.ToArray())
+                {
+                    if (brick.gameObject.activeInHierarchy)
+                        brick.ExplosionAttack(6.5f);
+                }
+            }
+            VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);
+            BallDied();
+        }
     }
 
     IEnumerator StartBoomCount()
@@ -30,20 +56,17 @@ public class BombBall : IBall
         {
             foreach (IBrick brick in detectArea.BoomArea.ToArray())
             {
-                if(brick.gameObject.activeInHierarchy)
-                brick.ArbitraryDamageAttack(
-                    100 * StatManager.instance.statMultiplier.EffectDamageMultiplier,
-                    false,
-                    (100 * StatManager.instance.statMultiplier.EffectDamageMultiplier).ToString("F1"),
-                    "Fire");
+                if (brick.gameObject.activeInHierarchy)
+                    brick.ExplosionAttack(6.5f);
             }
         }
+        SoundManager.instance.ExplosionSound_Big();
         VisualEffectManager.Instance.SpawnParticle("BombBall", this.transform.position, 1);
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_48"))
+        if (AugmentManager.instance.determineAugment(typeof(RebornBombBall)))
         {
             if(Random.value < 0.5f)
             {
-                BallManager.Instance.CreateSpecificBall(1, "BombBall");
+                BallManager.Instance.CreateBombBall(1);
             }
         }
         BallDied();
