@@ -14,34 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Bricks:
   - {fileID: 3876147228226315843, guid: 5f7b51e58b1285d438d381b5b3b0dc19, type: 3}
-  - {fileID: -977798360730988515, guid: 5d8e5d6e556634948bffc7c88fffd630, type: 3}
-  - {fileID: 8715328750586643657, guid: a4c16860799e88e4da46f796a23d139a, type: 3}
-  - {fileID: 4506351670689749019, guid: 02cb33b1921d238428146e6deed00a99, type: 3}
-  - {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
-  - {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
-  - {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
-  - {fileID: -3384781788680756480, guid: de966c7a39a1b0f40a7d91811b707933, type: 3}
-  - {fileID: 1708533091770634106, guid: 2c348e231a74f5045a32d0f3665b8982, type: 3}
   - {fileID: 1824619304834806856, guid: bf73b28786367574196390cd1711acd8, type: 3}
-  BrickSpawnChance:
-  - 1
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - {fileID: -977798360730988515, guid: 5d8e5d6e556634948bffc7c88fffd630, type: 3}
+  - {fileID: -3342971910647362179, guid: c380cf9cbcc874e419b15a4d30002d1b, type: 3}
+  - {fileID: 8715328750586643657, guid: a4c16860799e88e4da46f796a23d139a, type: 3}
+  - {fileID: 1173025412015795663, guid: d8c6ed2a66fb67f4aa926e646996048f, type: 3}
+  - {fileID: 486530839918093134, guid: d539953803a8d8141a018d33565cb122, type: 3}
+  - {fileID: 1943494403981103725, guid: e41be9370a421834aa79b5b81765f184, type: 3}
+  - {fileID: 5816147708443735478, guid: 0879a275d8b9b7145889469f962ecd0e, type: 3}
+  - {fileID: 3565851936464872657, guid: cae34b24110011a4fb2993fd74f94ce5, type: 3}
   BrickTypes:
   - Brick
-  - HardBrick
-  - ShieldBrick
-  - TwinBrick
-  - IgnoreBrick
-  - SlimeBrick
-  - TeleportBrick
-  - BlackBrick
-  - WhiteBrick
   - HealBrick
+  - HardBrick
+  - SlimeBrick
+  - ShieldBrick
+  - TeleportBrick
+  - IgnoreBrick
+  - AbsorbBrick
+  - TwinBrick
+  - RebornBrick
+  BrickSpawnChance:
+  - 0.00013384853
+  - 0.0044324547
+  - 0.05399835
+  - 0.24200383
+  - 0.39899686
+  - 0.24200383
+  - 0.05399835
+  - 0.004432455
+  - 0
+  - 0
+  SpecialBricks:
+  - {fileID: -7027782104363891570, guid: 7939d13e8e8fc5748bca7056835515e9, type: 3}
+  - {fileID: 5734178081787487032, guid: 8546d68879e3f4c478aa9a716abef5b2, type: 3}
+  - {fileID: 7680240655323945563, guid: 9e7e6c6a330962347b97694316ae50d0, type: 3}
+  SpecialBrickTypes:
+  - ExpBrick
+  - GoldBrick
+  - BallBrick

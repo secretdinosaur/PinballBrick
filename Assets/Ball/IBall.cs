@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Random = UnityEngine.Random;
 using TMPro;
 using TrailRenderer = UnityEngine.TrailRenderer;
+using Unity.VisualScripting;
 
 public partial class IBall : MonoBehaviour
 {
@@ -24,12 +25,13 @@ public partial class IBall : MonoBehaviour
     public bool isOverDeathLine;
 
     public Queue<Vector2> PositionSet = new Queue<Vector2>();
-    public Vector2 StartPosition = new Vector2(0f, -5f);
-    public float linearVelocityYValue = 10;
+    public Vector3 StartPosition;
+    public float linearVelocityYValue;
 
     public Coroutine FusionMoveRoutine = null;
 
     public Renderer Renderer;
+    public Color BrickColor;
 
     public int AttackNumber;
 
@@ -40,21 +42,16 @@ public partial class IBall : MonoBehaviour
 
     public void OnEnable()
     {
-        foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
+        foreach (IAugment Augment in AugmentManager.instance.activeAugments)
         {
             Augment.AfterBirthEffect(this);
         }
         gameObject.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-        GetComponent<CircleCollider2D>().enabled = true;
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.position = StartPosition;
-        gameObject.GetComponent<Rigidbody2D>().linearVelocityY = linearVelocityYValue;
         gameObject.GetComponent<Rigidbody2D>().linearVelocityX = Random.Range(-5f, 5f);
-        linearVelocityYValue = 10;
-        StartCoroutine(EnableCollider());
         spriteRenderer.color = new Color(1f, 1f, 1f);
-        TrailRenderer = gameObject.GetComponent<TrailRenderer>();
         BounceTime = 1f;
         MaxBounce = 0;
         detectArea = GetComponentInChildren<BallDetect>();
@@ -76,51 +73,75 @@ public partial class IBall : MonoBehaviour
         AttackDelayTime = 0f;
         StartCoroutine(CalAttackDelayTime());
         AttackNumber = 0;
+        StartCoroutine(EnableCollider());
+        BrickColor = spriteRenderer.color;
+
+        if(!BallManager.Instance.InGameBall.Contains(this) && BallManager.Instance.BallList.Contains(BallType))
+        {
+            BallManager.Instance.InGameBall.Add(this);
+            BallManager.Instance.inGameBallPosition.Add(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameBallCollider.Add(gameObject.GetComponent<Collider2D>());
+        }
+        else if (!BallManager.Instance.InGameSpecialBall.Contains(this) && BallManager.Instance.SpecialBallList.Contains(BallType))
+        {
+            BallManager.Instance.InGameSpecialBall.Add(this);
+            BallManager.Instance.inGameSpecialBallPosition.Add(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameSpecialBallCollider.Add(gameObject.GetComponent<Collider2D>());
+        }
+        SoundManager.instance.BallSpawnSound(gameObject.GetComponent<AudioSource>());
+        GameManager.instance.RecordStatistics.SummonedBalls++;
     }
 
     public void BallDied()
     {
-        if (isPhoenix)
+        if (BallManager.Instance.InGameSpecialBall.Contains(this))
         {
-            gameObject.SetActive(false);
-            gameObject.SetActive(true);
+            BallManager.Instance.InGameSpecialBall.Remove(this);
+            BallManager.Instance.inGameSpecialBallPosition.Remove(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameSpecialBallCollider.Remove(gameObject.GetComponent<Collider2D>());
         }
-        
-        else
+        else if (BallManager.Instance.InGameBall.Contains(this))
         {
-            for(int i = 0; i < AugmentManager.instance.AfterDeathActiveNumber; i++)
-            {
-                foreach (IAugment Augment in AugmentManager.instance.activeSpecialAugments)
-                {
-                    Augment.AfterDeathEffect(this);
-                }
-            }
-            GrowthAttackDamage = 0f;
-            if(FusionMoveRoutine != null)
-            {
-                StopCoroutine(FusionMoveRoutine);
-                FusionMoveRoutine = null;
-            }
+            BallManager.Instance.InGameBall.Remove(this);
+            BallManager.Instance.inGameBallPosition.Remove(gameObject.GetComponent<Transform>());
+            BallManager.Instance.inGameBallCollider.Remove(gameObject.GetComponent<Collider2D>());
 
-            BallManager.Instance.TakeBall(gameObject.GetComponent<IBall>());
+            Renderer.material.color = Color.white;
+            if (isPhoenix)
+            {
+                gameObject.SetActive(false);
+                gameObject.SetActive(true);
+            }
+            else
+            {
+                for (int i = 0; i < AugmentManager.instance.AfterDeathActiveNumber; i++)
+                {
+                    foreach (IAugment Augment in AugmentManager.instance.activeAugments)
+                    {
+                        Augment.AfterDeathEffect(this);
+                    }
+                }
+                GrowthAttackDamage = 0f;
+                if (FusionMoveRoutine != null)
+                {
+                    StopCoroutine(FusionMoveRoutine);
+                    FusionMoveRoutine = null;
+                }
+                GetComponent<Collider2D>().enabled = false;
+                StatManager.instance.Statistics.DiedBalls += 1;
+            }
         }
+        BallManager.Instance.TakeBall(this);
     }
 
     private IEnumerator EnableCollider()
     {
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), true);
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), true);
-        foreach (Collider2D collider2D in BallManager.Instance.inGameBallCollider)
+        GetComponent<Collider2D>().enabled = false;
+        while (transform.position.y < -2 || transform.position.y > 4.5f)
         {
-            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collider2D, true);
+            yield return null;
         }
-        yield return new WaitForSeconds(0.3f);
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("LeftPin").GetComponent<Collider2D>(), false);
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("RightPin").GetComponent<Collider2D>(), false);
-        foreach (Collider2D collider2D in BallManager.Instance.inGameBallCollider)
-        {
-            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collider2D, false);
-        }
+        GetComponent<Collider2D>().enabled = true;
     }
     
     private IEnumerator CalAttackDelayTime()
@@ -136,44 +157,9 @@ public partial class IBall : MonoBehaviour
         UpdateCurrentTarget();
 
         GrowthAttackDamageObserve = GrowthAttackDamage;
-        TrailRenderer.startColor = spriteRenderer.color;
         CurrentSpeed = rb.linearVelocity.magnitude;
-        if (isPhoenix)
-        {
-            TrailRenderer.enabled = true;
-            TrailRenderer.material.color = new Color(2, 0, 0);
-            TrailRenderer.time = 1;
-        }
-        else
-        {
-            TrailRenderer.material.color = new Color(1, 1, 1);
-        }
+
         
-        if (CurrentSpeed > 8 && (AugmentManager.instance.determineAugmentID("SPECIAL_12") || AugmentManager.instance.determineAugmentID("SPECIAL_13"))) //Speed Augment
-        {
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
-            {
-                SpecialCriticalChance = ((CurrentSpeed / 100f) * 1.5f);
-            }
-            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
-            {
-                TransformationMultiple = 1f + ((CurrentSpeed / 100f) * 2.5f);
-            }
-            TrailRenderer.enabled = true;
-            TrailRenderer.time = 1;
-        }
-        else
-        {
-            if (AugmentManager.instance.determineAugmentID("SPECIAL_13")) //Speed = Critical
-            {
-                SpecialCriticalChance = 0f;
-            }
-            else if(AugmentManager.instance.determineAugmentID("SPECIAL_12")) // Speed = Power
-            {
-                TransformationMultiple = 1f;
-            }
-            TrailRenderer.enabled = false;
-        }
         if(transform.position.y <= -10 && !isOverDeathLine)
         {
             BallDied();
@@ -187,36 +173,38 @@ public partial class IBall : MonoBehaviour
     }
     public virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_3")) //Bounce = Power
+        if (AugmentManager.instance.determineAugment(typeof(BouncePower))) //Bounce = Power
         {
-            if (collision.gameObject.CompareTag("Wall") || (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball")))
+            if (collision.gameObject.CompareTag("Wall") || (AugmentManager.instance.determineAugment(typeof(ExplosionWithBall)) && collision.gameObject.CompareTag("Ball")))
             {
                 if (MaxBounce < 6)
                 {
-                    BounceTime += 0.05f;
+                    BounceTime += 0.02f;
                     MaxBounce++;
-                    spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
+                    if(BallType != "GhostBall")
+                        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g - 0.2f, spriteRenderer.color.b - 0.2f);
                 }
             }
             else if (collision.gameObject.CompareTag("Brick"))
             {
                 MaxBounce = 0;
-                spriteRenderer.color = new Color(1f, 1f, 1f);
+                if (BallType != "GhostBall")
+                    spriteRenderer.color = BrickColor;
             }
         }
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_21") && collision.gameObject.CompareTag("Ball"))
+        if (AugmentManager.instance.determineAugment(typeof(ExplosionWithBall)) && collision.gameObject.CompareTag("Ball"))
         {
             Rigidbody2D TartgetRigidBody = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 TargetDirection = (TartgetRigidBody.position - (Vector2)transform.position).normalized;
             rb.AddForce(RotateVector(TargetDirection, Random.Range(-30f, 30f)) * Random.Range(5f, 11f), ForceMode2D.Impulse);
 
-            for (int i = 0; i < collision.contacts.Length; i++)
+            if(collision.gameObject.GetInstanceID() < GetInstanceID())
             {
-                Vector2 ContactPos = collision.contacts[i].point;
-                Vector2 ContactVec = collision.contacts[i].normal;
+                Vector2 ContactPos = collision.contacts[0].point;
+                Vector2 ContactVec = collision.contacts[0].normal;
 
                 VisualEffectManager.Instance.SpawnExplosionWithBallEffect(ContactVec, ContactPos);
-            }  
+            }
         }
         if (collision.gameObject.CompareTag("Brick") && gameObject.activeSelf)
         {
@@ -250,7 +238,27 @@ public partial class IBall : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Brick") && !IsStucking && gameObject.activeSelf)
         {
-            BallStuckCoroutine = StartCoroutine(BallStuckDamage(collision.gameObject.GetComponent<IBrick>()));
+            if (collision.gameObject.GetComponent<IBrick>().IsBoss)
+            {
+                if (BallStuckCoroutine == null)
+                    BallStuckCoroutine = StartCoroutine(BossReflectBall(collision.gameObject.GetComponent<IBrick>()));
+            }
+            else
+            {
+                if (BallStuckCoroutine == null)
+                    BallStuckCoroutine = StartCoroutine(BallStuckDamage(collision.gameObject.GetComponent<IBrick>()));
+            }
+        }
+    }
+
+    private IEnumerator BossReflectBall(IBrick brick)
+    {
+        IsStucking = true;
+        yield return new WaitForSeconds(2.5f);
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            rb.AddForce(new Vector2(Random.Range(-1, 1) * 300, Random.value * 500));
         }
     }
 
@@ -280,25 +288,42 @@ public partial class IBall : MonoBehaviour
 
 public partial class IBall //Homing
 {
-    private float homingThrust = 80f;
-    private float detectionRadius = 1.6f;
+    private float homingThrust = 40f;
     private float rotationSpeed = 40f;
 
     public Rigidbody2D rb;
     private Transform currentTarget = new RectTransform();
 
+    float DetectDistance = 1.5f;
+
+    public Coroutine HomingRoutine = null;
     public void FixedUpdate()
     {
-        if (AugmentManager.instance.determineAugmentID("SPECIAL_2")) //Homing
+        if (AugmentManager.instance.determineAugment(typeof(Homing))) //Homing
         {
-            if (currentTarget != null)
+            if (currentTarget != null && HomingRoutine == null)
             {
-                Vector2 directionToTarget = (currentTarget.position - transform.position).normalized;
-                float angle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
-                rb.rotation = Mathf.LerpAngle(rb.rotation, angle, rotationSpeed * Time.fixedDeltaTime);
-                rb.AddForce(directionToTarget * homingThrust);
+                HomingRoutine = StartCoroutine(HomingProcess());
             }
         }
+    }
+
+    private IEnumerator HomingProcess()
+    {
+        rb.linearVelocity = rb.linearVelocity / 1.25f;
+        while (currentTarget != null && (new Vector2(currentTarget.position.x, currentTarget.position.y) - new Vector2(transform.position.x, transform.position.y)).magnitude > 1f)
+        {
+
+            Vector2 directionToTarget = (currentTarget.position - transform.position).normalized;
+            float angle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
+            rb.rotation = Mathf.LerpAngle(rb.rotation, angle, rotationSpeed * Time.fixedDeltaTime);
+            rb.AddForce(directionToTarget * homingThrust);
+
+            yield return null;
+        }
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        HomingRoutine = null;
     }
 
     private void UpdateCurrentTarget()
@@ -311,7 +336,7 @@ public partial class IBall //Homing
             foreach (IBrick target in detectArea.NearbyBricks)
             {
                 float distance = Vector2.Distance(transform.position, target.gameObject.transform.position);
-                if (distance < closestDistance)
+                if (distance < closestDistance && distance < DetectDistance)
                 {
                     closestDistance = distance;
                     closestTarget = target.gameObject.transform;
@@ -331,13 +356,7 @@ public partial class IBall //Bounce = Power
 {
     public float BounceTime { get; set; } = 1f;
     private int MaxBounce = 0;
-    private SpriteRenderer spriteRenderer;
-}
-
-public partial class IBall //Speed = Power
-{
-    private TrailRenderer TrailRenderer;
-    public float TransformationMultiple = 1f;
+    protected SpriteRenderer spriteRenderer;
 }
 
 public partial class IBall //GrowBall
@@ -354,7 +373,7 @@ public partial class IBall //GrowBall
         }
         else
         {
-            GrowthAttackDamage += 0.04f;
+            GrowthAttackDamage += 0.1f;
         }
 
         IEnumerator GrowBall()

@@ -12,6 +12,12 @@ public class ScoreManager : MonoBehaviour
     public TMP_Text TotalText;
     public TMP_Text ContinuousText;
 
+    private void Awake()
+    {
+        TotalText = GameObject.Find("Canvas").transform.Find("TotalScoreText").GetComponent<TMP_Text>();
+        ContinuousText = GameObject.Find("Canvas").transform.Find("Fever").gameObject.transform.Find("ContinuousScoreText").GetComponent<TMP_Text>();
+    }
+
     void Start()
     {
         Instance = this;

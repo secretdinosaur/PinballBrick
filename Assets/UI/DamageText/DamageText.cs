@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using Random = UnityEngine.Random;
+using static UnityEngine.UI.Image;
 
 public class DamageText : MonoBehaviour
 {
@@ -38,6 +39,10 @@ public class DamageText : MonoBehaviour
                 Routine = StartCoroutine(ShowDamageTextRandom());
                 damageText.color = Color.white;
                 break;
+            case "Explosion":
+                Routine = StartCoroutine(ShowDamageTextRandom());
+                damageText.color = Color.red;
+                break;
             case "Additional":
                 Routine = StartCoroutine(ShowDamageTextRandom());
                 damageText.color = new Color(1f, 0.5f, 0f);
@@ -57,10 +62,22 @@ public class DamageText : MonoBehaviour
             case "Curse":
                 Routine = StartCoroutine(ShowDamageTextPoison());
                 damageText.color = new Color(110 / 255f, 0, 2 / 255f);
+                Color.RGBToHSV(damageText.color, out float h, out float s, out float v);
+                v = Mathf.Clamp01(v + 0.3f);
+                Color brighter = Color.HSVToRGB(h, s, v);
+
                 break;
             case "Heal":
                 Routine = StartCoroutine(ShowDamageTextPoison());
                 damageText.color = Color.magenta;
+                break;
+            case "Gold":
+                Routine = StartCoroutine(ShowDamageTextRandom());
+                damageText.color = new Color(1, 1, 160f / 255f);
+                break;
+            case "Exp":
+                Routine = StartCoroutine(ShowDamageTextRandom());
+                damageText.color = new Color(161f / 255f, 1, 1);
                 break;
             default:
                 Routine = StartCoroutine(ShowDamageTextRandom());
@@ -77,7 +94,7 @@ public class DamageText : MonoBehaviour
         Vector2 StartPosition = rectTransform.anchoredPosition;
         while (timer < lifetime)
         {
-            rectTransform.anchoredPosition = StartPosition + (direction * speed * timer - direction * speed * 0.5f * timer * timer);
+            rectTransform.anchoredPosition = StartPosition + (direction * speed * timer - direction * speed * 1f * timer * timer);
             timer += Time.deltaTime;
             yield return null;
         }

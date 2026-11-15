@@ -1,0 +1,53 @@
+using System.Collections;
+using UnityEngine;
+using DG.Tweening;
+using Random = UnityEngine.Random;
+using System;
+
+public class GhostBall : IBall
+{
+    int DurationTime;
+    void OnEnable()
+    {
+        base.OnEnable();
+        BallType = "GhostBall";
+        BallBaseDamage = 0;
+        DurationTime = 8;
+        spriteRenderer.color = Color.cyan;
+        StartCoroutine(StartGhostBall());
+    }
+
+    public void Init(Sprite BallSprite, float BallBaseDamage)
+    {
+        spriteRenderer.sprite = BallSprite;
+        this.BallBaseDamage = BallBaseDamage;
+    }
+
+    IEnumerator StartGhostBall()
+    {
+        int time = 0;
+        bool isFallen = false;
+        DOVirtual.Int(0, DurationTime, DurationTime, value =>
+        {
+            time = value;
+        }).OnComplete(() => isFallen = true);
+
+        yield return new WaitUntil(() => isFallen || transform.position.y <= -10);
+        spriteRenderer.DOFade(0f, 1f)
+            .OnComplete(() => GhostBallDisappearProcess());
+    }
+
+    void GhostBallDisappearProcess()
+    {
+        int index = Random.Range(0, BrickManager.Instance.CurrentBricks.Count);
+        try
+        {
+            BrickManager.Instance.CurrentBricks[index].DamageByCurse(transform.position);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            Debug.Log("There are no Bricks");
+        }
+        BallManager.Instance.TakeBall(this);
+    }
+}

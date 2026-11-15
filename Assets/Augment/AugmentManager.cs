@@ -4,21 +4,53 @@ using System.Linq;
 using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 using UnityEngine;
+using static UnityEngine.Rendering.HableCurve;
+using System.Text.RegularExpressions;
+using NUnit.Framework;
 
 public partial class AugmentManager //Utility
 {
-    public bool determineSpecialAugmentType(string Type)
+    public void printAugments()
     {
-        return activeSpecialAugments.Any(a => a.Type == Type);
+        Dictionary<int, string> spriteDescriptions = new Dictionary<int, string>
+        {
+            { 0, "Attack Damage" },
+            { 1, "Critical Damage" },
+            { 2, "Effect Damage" },
+            { 3, "Critical Chance" },
+            { 6, "Effect Duration" },
+            { 8, "Gold Gain" },
+            { 10, "EXP Gain" },
+            { 11, "Cooltime Reduce" }
+        };
+
+        string ReplaceSpriteTags(string input)
+        {
+            return Regex.Replace(input, @"<sprite=(\d+)>", match =>
+            {
+                int index = int.Parse(match.Groups[1].Value);
+                return spriteDescriptions.ContainsKey(index) ? spriteDescriptions[index] : match.Value;
+            });
+        }
+
+        string str = "";
+        for(int i = 0; i < augmentsSet.Count; i++)
+        {
+            str += augmentsSet[i].Type + "\t" + augmentsSet[i].Rarity + "\t" + augmentsSet[i].Name + "\t" + augmentsSet[i].Description.Replace("\r\n", "").Replace("\n", "") + "\n";
+        }
+        print(ReplaceSpriteTags(str));
     }
 
-    public bool determineAugmentID(string ID)
+    private void Start()
     {
-       return activeStatAugments.Any(a => a.ID == ID) || 
-            activeFieldAugments.Any(a => a.ID == ID) || 
-            activeSpecialAugments.Any(a => a.ID == ID);
+        printAugments();
+     }
+
+    public bool determineAugment(Type type)
+    {
+        return activeAugments.Any(x => x.GetType() == type);
     }
-    private List<IAugment> exceptionAugments = new List<IAugment>();
+    
     private List<IAugment> alreadyChosenAugments = new List<IAugment>();
     public IAugment GetRandomAugment()
     {
@@ -41,7 +73,6 @@ public partial class AugmentManager //Utility
         var availableAugments = augmentsSet
             .Where(a => !alreadyChosenAugments.Contains(a) && !exceptionAugments.Contains(a) && a.Rarity == targetRarity)
             .ToList();
-
         if (availableAugments.Count == 0) return null;
 
         int index = Random.Range(0, availableAugments.Count);
@@ -52,7 +83,7 @@ public partial class AugmentManager //Utility
 
     public int GetTargetRarity()
     {
-        float chance = Random.value * 100f;
+        float chance = Random.value;
         if (chance < rarityWeights[0])
             return 0;
         chance -= rarityWeights[0];
@@ -76,110 +107,90 @@ public partial class AugmentManager
     public void AddAugment(IAugment augment)
     {
         alreadyChosenAugments.Clear();
-        exceptionAugments.Add(augment);
-        if (augment is StatAugment statAugment)
+        LockAugment(augment);
+        activeAugments.Add(augment);
+        augment.Apply();
+        ActivatedAugmentNumber++;
+        GameManager.instance.RecordStatistics.AchievedAugmentCount++;
+        if (augment.Rarity <= 1)
+            GameManager.instance.RecordStatistics.AchievedRareAugmentCount++;
+    }
+
+    public void RemoveAugment(IAugment augment)
+    {
+        UnlockAugment(augment);
+        activeAugments.Remove(augment);
+        augment.Remove();
+        ActivatedAugmentNumber--;
+    }
+
+    public void RemoveAugmentOnType(string augmentType)
+    {
+        var activeAugmentsCopy = activeAugments.ToList();
+        foreach (IAugment augment in activeAugmentsCopy)
         {
-            augment.Apply();
-            activeStatAugments.Add(statAugment);
-        }
-        else if (augment is FieldAugment fieldAugment)
-        {
-            augment.Apply();
-            activeFieldAugments.Add(fieldAugment);
-        }
-        else if (augment is SpecialAugment specialAugment)
-        {
-            augment.Apply();
-            activeSpecialAugments.Add(specialAugment);
-        }
-        IAugment OppositeAugment = GetOppositeAugment(augment);
-        if (OppositeAugment != null)
-        {
-            exceptionAugments.Add(OppositeAugment);
+            if (augment.Type == augmentType)
+            {
+                RemoveAugment(augment);
+            }
         }
     }
 
 
-    public void RemoveAugment(IAugment augment)
+    public void RemoveOnAugmentsSet(IAugment augment)
     {
-        if (augment is StatAugment statAugment)
+        if (activeAugments.Any(a => a.Name == augment.Name && augment.ID != "SPECIAL_73"))
         {
-            if (activeStatAugments.Any(a => a.Name == augment.Name))
-            {
-                augmentsSet.Remove(statAugment);
-            }
-        }
-        else if (augment is FieldAugment fieldAugment)
-        {
-            if (activeFieldAugments.Any(a => a.Name == augment.Name))
-            {
-                augmentsSet.Remove(fieldAugment);
-            }
-        }
-        else if (augment is SpecialAugment specialAugment)
-        {
-            if (activeSpecialAugments.Any(a => a.Name == augment.Name))
-            {
-                augmentsSet.Remove(specialAugment);
-            }
+            augmentsSet.Remove(augment);
         }
     }
     public void ClearAllAugments()
     {
-        foreach (var augment in activeStatAugments)
+        for (int i = 0; i < activeAugments.Count; i++)
         {
-            augment.Remove();
+            activeAugments[i].Remove();
         }
-        foreach (var augment in activeFieldAugments)
-        {
-            augment.Remove();
-        }
-        foreach (var augment in activeSpecialAugments)
-        {
-            augment.Remove();
-        }
-        activeStatAugments.Clear();
-        activeFieldAugments.Clear();
-        activeSpecialAugments.Clear();
+        activeAugments.Clear();
     }
-    
-    private IAugment GetOppositeAugment(IAugment ChosenAugment)
+
+    public void UnlockAugment(IAugment augment)
     {
+        if (exceptionAugments.Contains(augment))
+        {
+            exceptionAugments.Remove(augment);
+            ExceptedAugmentNumber--;
+        }
+    }
 
-        IAugment oppositeAugment;
-        if (ChosenAugment.ID == "STAT_15")
+    public void LockAugment(IAugment augment)
+    {
+        if (!exceptionAugments.Contains(augment))
         {
-            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_16");
-            if (oppositeAugment != null)
+            exceptionAugments.Add(augment);
+            ExceptedAugmentNumber++;
+        }
+    }
+    public void UnlockAugmentByType(string Type)
+    {
+        foreach (IAugment augment in augmentsSet)
+        {
+            if (exceptionAugments.Contains(augment) && augment.Type == Type)
             {
-                return oppositeAugment;
+                exceptionAugments.Remove(augment);
+                ExceptedAugmentNumber--;
             }
         }
-        else if (ChosenAugment.ID == "STAT_16")
-        {
-            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_15");
-            if (oppositeAugment != null)
-            {
-                return oppositeAugment;
-            }
-        }
-        else if (ChosenAugment.ID == "STAT_17")
-        {
-            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_18");
-            if (oppositeAugment != null)
-            {
-                return oppositeAugment;
-            }
-        }
-        else if (ChosenAugment.ID == "STAT_18")
-        {
-            oppositeAugment = augmentsSet.FirstOrDefault(a => a.ID == "STAT_17");
-            if (oppositeAugment != null)
-            {
-                return oppositeAugment;
-            }
-        }
+    }
 
-        return null;
+    public void LockAugmentByType(string Type)
+    {
+        foreach (IAugment augment in augmentsSet)
+        {
+            if (!exceptionAugments.Contains(augment) && augment.Type == Type)
+            {
+                exceptionAugments.Add(augment);
+                ExceptedAugmentNumber++;
+            }
+        }
     }
 }
