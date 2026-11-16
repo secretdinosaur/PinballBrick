@@ -25,8 +25,8 @@ A mobile survivors-like that combines pinball and brick breaker. You control the
 
 | Member | Main areas |
 | --- | --- |
-| woojinss | Augment system, brick/wave system, ball and stats, level-up flow, Google Play Games integration (leaderboard, achievements, cloud save) |
-| dolsot | Shader Graph effects, sound, items (gold, EXP, dice), UI design |
+| 송우진 | Augment system, brick/wave system, ball and stats, level-up flow, Google Play Games integration (leaderboard, achievements, cloud save) |
+| 이주호 | Shader Graph effects, sound, items (gold, EXP, dice), UI design |
 
 <br>
 
@@ -156,8 +156,8 @@ Assets/
 
 | 팀원 | 주요 담당 |
 | --- | --- |
-| woojinss | 증강 시스템, 블록·웨이브 시스템, 공과 스탯, 레벨업 흐름, Google Play Games 연동(랭킹·업적·클라우드 저장) |
-| dolsot | Shader Graph 이펙트, 사운드, 아이템(골드·경험치·주사위), UI 디자인 |
+| 송우진 | 증강 시스템, 블록·웨이브 시스템, 공과 스탯, 레벨업 흐름, Google Play Games 연동(랭킹·업적·클라우드 저장) |
+| 이주호 | Shader Graph 이펙트, 사운드, 아이템(골드·경험치·주사위), UI 디자인 |
 
 <br>
 
