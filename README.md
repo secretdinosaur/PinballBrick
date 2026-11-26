@@ -2,9 +2,18 @@
 
 **[English](#english)** | **[한국어](#korean)**
 
-| Game Over | Main | Gameplay |
-| :---: | :---: | :---: |
-| <img src="./image/gameend.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/main.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/gameplay.jpg" alt="ex_screenshot" width="1080"> |
+<table>
+  <tr>
+    <th align="center">Game Over</th>
+    <th align="center">Main</th>
+    <th align="center">Gameplay</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/gameend.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/main.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/gameplay.jpg" width="250"></td>
+  </tr>
+</table>
 
 <br>
 
@@ -106,9 +115,18 @@ A bottom menu switches between Shop, Missions & Achievements, Main, Ranking, and
 | Ranking | Global leaderboard. Shows the local record when offline. |
 | Settings | Adjust BGM and SFX volume, and reset the game. |
 
-| Shop | Missions & Achievements | Ranking |
-| :---: | :---: | :---: |
-| <img src="./image/shop.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/mission.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/ranking.jpg" alt="ex_screenshot" width="1080"> |
+<table>
+  <tr>
+    <th align="center">Shop</th>
+    <th align="center">Missions & Achievements</th>
+    <th align="center">Ranking</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/shop.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/mission.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/ranking.jpg" width="250"></td>
+  </tr>
+</table>
 
 <br>
 
@@ -218,9 +236,18 @@ Google Play Games와 연동해 글로벌 랭킹, 업적, 클라우드 저장을 
 | 랭킹 | 글로벌 랭킹. 오프라인이면 로컬 기록을 보여 줍니다. |
 | 설정 | BGM, SFX 음량을 조절하고 게임을 초기화 할 수 있습니다. |
 
-| 상점 | 미션과 업적 | 랭킹 |
-| :---: | :---: | :---: |
-| <img src="./image/shop.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/mission.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/ranking.jpg" alt="ex_screenshot" width="1080"> |
+<table>
+  <tr>
+    <th align="center">상점</th>
+    <th align="center">미션과 업적</th>
+    <th align="center">랭킹</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/shop.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/mission.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/ranking.jpg" width="250"></td>
+  </tr>
+</table>
 
 <br>
 
