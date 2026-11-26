@@ -4,7 +4,7 @@
 
 | Game Over | Main | Gameplay |
 | :---: | :---: | :---: |
-| ![ex_screenshot](./image/gameend.jpg) | ![ex_screenshot](./image/main.jpg) | ![ex_screenshot](./image/gameplay.jpg) |
+| <img src="./image/gameend.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/main.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/gameplay.jpg" alt="ex_screenshot" width="1080"> |
 
 <br>
 
@@ -108,7 +108,7 @@ A bottom menu switches between Shop, Missions & Achievements, Main, Ranking, and
 
 | Shop | Missions & Achievements | Ranking |
 | :---: | :---: | :---: |
-| ![ex_screenshot](./image/shop.jpg) | ![ex_screenshot](./image/mission.jpg) | ![ex_screenshot](./image/ranking.jpg) |
+| <img src="./image/shop.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/mission.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/ranking.jpg" alt="ex_screenshot" width="1080"> |
 
 <br>
 
@@ -220,7 +220,7 @@ Google Play Games와 연동해 글로벌 랭킹, 업적, 클라우드 저장을 
 
 | 상점 | 미션과 업적 | 랭킹 |
 | :---: | :---: | :---: |
-| ![ex_screenshot](./image/shop.jpg) | ![ex_screenshot](./image/mission.jpg) | ![ex_screenshot](./image/ranking.jpg) |
+| <img src="./image/shop.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/mission.jpg" alt="ex_screenshot" width="1080"> | <img src="./image/ranking.jpg" alt="ex_screenshot" width="1080"> |
 
 <br>
 
