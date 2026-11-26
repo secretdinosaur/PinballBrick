@@ -1,8 +1,5 @@
 # PinballBricks
 
-[![Google Play](https://img.shields.io/badge/Google_Play-Store-414141?logo=googleplay)](<Google Play 스토어 링크 필요>)
-[![Unity](https://img.shields.io/badge/Unity-6000.0.60f1-black?logo=unity)](https://unity.com/)
-
 **[English](#english)** | **[한국어](#korean)**
 
 | Game Over | Main | Gameplay |
