@@ -1,13 +1,19 @@
 # PinballBricks
 
-[![Google Play](https://img.shields.io/badge/Google_Play-Store-414141?logo=googleplay)](<Google Play 스토어 링크 필요>)
-[![Unity](https://img.shields.io/badge/Unity-6000.0.60f1-black?logo=unity)](https://unity.com/)
-
 **[English](#english)** | **[한국어](#korean)**
 
-| Game Over | Main | Gameplay |
-| :---: | :---: | :---: |
-| ![ex_screenshot](./image/gameend.jpg) | ![ex_screenshot](./image/main.jpg) | ![ex_screenshot](./image/gameplay.jpg) |
+<table>
+  <tr>
+    <th align="center">Game Over</th>
+    <th align="center">Main</th>
+    <th align="center">Gameplay</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/gameend.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/main.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/gameplay.jpg" width="250"></td>
+  </tr>
+</table>
 
 <br>
 
@@ -52,6 +58,17 @@ It is integrated with Google Play Games to support a global leaderboard, achieve
 ### Technical Implementation
 
 #### 1. Augment System
+
+<table>
+  <tr>
+    <th align="center">Augmentation</th>
+    <th align="center">Stat</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/augment.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/stataugment.jpg" width="250"></td>
+  </tr>
+</table>
 
 - PinballBricks has an augment system to strengthen randomness and maximize the thrill that comes with it.
 
@@ -109,9 +126,18 @@ A bottom menu switches between Shop, Missions & Achievements, Main, Ranking, and
 | Ranking | Global leaderboard. Shows the local record when offline. |
 | Settings | Adjust BGM and SFX volume, and reset the game. |
 
-| Shop | Missions & Achievements | Ranking |
-| :---: | :---: | :---: |
-| ![ex_screenshot](./image/shop.jpg) | ![ex_screenshot](./image/mission.jpg) | ![ex_screenshot](./image/ranking.jpg) |
+<table>
+  <tr>
+    <th align="center">Shop</th>
+    <th align="center">Missions & Achievements</th>
+    <th align="center">Ranking</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/shop.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/mission.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/ranking.jpg" width="250"></td>
+  </tr>
+</table>
 
 <br>
 
@@ -164,6 +190,17 @@ Google Play Games와 연동해 글로벌 랭킹, 업적, 클라우드 저장을 
 ### 기술 구현
 
 #### 1. 증강 시스템
+
+<table>
+  <tr>
+    <th align="center">증강</th>
+    <th align="center">스탯</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/augment.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/stataugment.jpg" width="250"></td>
+  </tr>
+</table>
 
 - PinballBricks에서는 무작위성을 강화하고 이에 따라오는 쾌감을 극대화하기 위해 증강 시스템이 존재합니다. 
   
@@ -221,9 +258,18 @@ Google Play Games와 연동해 글로벌 랭킹, 업적, 클라우드 저장을 
 | 랭킹 | 글로벌 랭킹. 오프라인이면 로컬 기록을 보여 줍니다. |
 | 설정 | BGM, SFX 음량을 조절하고 게임을 초기화 할 수 있습니다. |
 
-| 상점 | 미션과 업적 | 랭킹 |
-| :---: | :---: | :---: |
-| ![ex_screenshot](./image/shop.jpg) | ![ex_screenshot](./image/mission.jpg) | ![ex_screenshot](./image/ranking.jpg) |
+<table>
+  <tr>
+    <th align="center">상점</th>
+    <th align="center">미션과 업적</th>
+    <th align="center">랭킹</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/shop.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/mission.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/ranking.jpg" width="250"></td>
+  </tr>
+</table>
 
 <br>
 
