@@ -59,6 +59,17 @@ It is integrated with Google Play Games to support a global leaderboard, achieve
 
 #### 1. Augment System
 
+<table>
+  <tr>
+    <th align="center">Augmentation</th>
+    <th align="center">Stat</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/augment.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/stataugment.jpg" width="250"></td>
+  </tr>
+</table>
+
 - PinballBricks has an augment system to strengthen randomness and maximize the thrill that comes with it.
 
 - **Rarity**: Every augment has a grade. There are 6 grades in total: from grade 5 (lowest) to grade 1 (highest), plus grade 0, which cannot be obtained through normal means.
@@ -179,6 +190,17 @@ Google Play Games와 연동해 글로벌 랭킹, 업적, 클라우드 저장을 
 ### 기술 구현
 
 #### 1. 증강 시스템
+
+<table>
+  <tr>
+    <th align="center">증강</th>
+    <th align="center">스탯</th>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="./image/augment.jpg" width="250"></td>
+    <td align="center" width="33%"><img src="./image/stataugment.jpg" width="250"></td>
+  </tr>
+</table>
 
 - PinballBricks에서는 무작위성을 강화하고 이에 따라오는 쾌감을 극대화하기 위해 증강 시스템이 존재합니다. 
   
