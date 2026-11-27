@@ -65,8 +65,8 @@ It is integrated with Google Play Games to support a global leaderboard, achieve
     <th align="center">Stat</th>
   </tr>
   <tr>
-    <td align="center" width="33%"><img src="./image/augment.jpg" width="250"></td>
-    <td align="center" width="33%"><img src="./image/stataugment.jpg" width="250"></td>
+    <td align="center" width="50%"><img src="./image/augment.jpg" width="250"></td>
+    <td align="center" width="50%"><img src="./image/stataugment.jpg" width="250"></td>
   </tr>
 </table>
 
@@ -197,8 +197,8 @@ Google Play Games와 연동해 글로벌 랭킹, 업적, 클라우드 저장을 
     <th align="center">스탯</th>
   </tr>
   <tr>
-    <td align="center" width="33%"><img src="./image/augment.jpg" width="250"></td>
-    <td align="center" width="33%"><img src="./image/stataugment.jpg" width="250"></td>
+    <td align="center" width="50%"><img src="./image/augment.jpg" width="250"></td>
+    <td align="center" width="50%"><img src="./image/stataugment.jpg" width="250"></td>
   </tr>
 </table>
 
